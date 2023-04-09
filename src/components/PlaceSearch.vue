@@ -65,7 +65,7 @@
 
 <script>
 import '../assets/PlaceSearch/font1/iconfont.css'
-import {get_pin_type, global_token} from '@/global'
+import global from '@/global'
 import {ElMessage} from "element-plus";
 
 export default {
@@ -164,7 +164,7 @@ export default {
                 search_content: that.search_content,
             }, {
                 headers: {
-                    'AUTHORIZATION': global_token
+                    'AUTHORIZATION': global.global_token
                 }
             }).then((res) => {
                 that.search_result = res.data.search_result_list
@@ -191,7 +191,7 @@ export default {
             this.sub_p_id(p_id)
         },
         _get_pin_type(pin_type_id) {
-            return get_pin_type(pin_type_id)
+            return global.get_pin_type(pin_type_id)
         }
     },
     watch: {
