@@ -1,4 +1,11 @@
 <template>
+  <PlaceSearch>
+
+  </PlaceSearch>
+
+  <map-pin-info>
+
+  </map-pin-info>
   <div class="hello">
     <h1>{{ msg }}</h1>
     <p>
@@ -31,8 +38,11 @@
 </template>
 
 <script>
+import PlaceSearch from "@/components/PlaceSearch";
+import MapPinInfo from "@/components/MapPinInfo";
 export default {
   name: 'HelloWorld',
+  components: {MapPinInfo, PlaceSearch},
   props: {
     msg: String
   }
