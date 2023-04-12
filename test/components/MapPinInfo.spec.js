@@ -1,14 +1,6 @@
 import {mount} from "@vue/test-utils";
 import MapPinInfo from "@/components/MapPinInfo";
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
 
-const mock = new MockAdapter(axios);
-
-mock.onPost('/map/pin/changePinInfoById').reply(200, {
-    success: true,
-    message: 'Data updated successfully',
-});
 
 describe("MapPinInfo.vue", () => {
     let wrapper;
