@@ -1,27 +1,27 @@
-name: Build Docker
+name: Deploy to Remote Server
 
 on:
-  pull_request:
-    branches: [ "dev" ]
+  push:
+    branches:
+      - feature/CICD
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - name: pull code
-        uses: appleboy/ssh-action@master
-        env:
-          SERVER_WORKDIR: ${{ secrets.SERVER_WORKDIR }} #传递工作目录变量
-        with:
-          host: ${{ secrets.SERVER_HOST }} #服务器地址
-          username: ${{ secrets.SERVER_USERNAME }} #用户名
-          key: ${{ secrets.SERVER_KEY }} #私钥 安全问题一定都以变量的方式传递！！！
-          envs: SERVER_WORKDIR #使用工作目录变量
-          # 进入到项目目录，执行依赖更新
-          script: |
-            cd $SERVER_WORKDIR #进入到工作目录
-            git checkout . #丢弃修改
-            git pull #拉取代码
-            composer update #更新依赖
-            sudo supervisorctl restart emo #重启项目
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Connect to Remote
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SERVER_KEY }}
+        script: |
+          cd Deploy
+          rm -rf Agile_Frontend
+          git clone https://github.com/Enqurance/Agile_Frontend.git
+          cd Agile_Frontend
+          git checkout dev
