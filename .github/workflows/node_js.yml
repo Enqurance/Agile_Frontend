@@ -11,10 +11,16 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        npm install
+    - name: Build project
+      run: |
+        npm run build
 
     - name: Connect to Remote
       uses: appleboy/ssh-action@master
@@ -25,6 +31,6 @@ jobs:
         script: |
           cd Deploy
           rm -rf Agile_Frontend
-          git clone https://github.com/Enqurance/Agile_Frontend.git
+          git clone git@github.com:Enqurance/Agile_Frontend.git
           cd Agile_Frontend
           git checkout dev
