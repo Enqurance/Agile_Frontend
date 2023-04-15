@@ -136,6 +136,7 @@ export default {
       drawer: false,
       // 对话框可见性
       dialogVisible: false,
+
       formData: {}, // 编辑表单数据
 
       dialogTitle:'编辑信息'
@@ -156,6 +157,7 @@ export default {
       that.$axios.post('map/pin/getPinInfoById', {
         id: that.id,
       }).then((res) => {
+
         that.info.name = res.data.pin.name
         that.info.position = res.data.pin.position
         that.info.brief = res.data.pin.brief
