@@ -1,5 +1,9 @@
 <template>
-    <div :style="{width: screen_params.screenX+'px', height: screen_params.screenY+'px'}">
+    <div class="on_div">
+        <PlaceSearch style="width: 100%; height: 20px" />
+        <MapPinInfo />
+    </div>
+    <div :style="{width: screen_params.screenX+'px', height: screen_params.screenY+'px'}" class="bottom_div">
         <div id="container" style="width: 100%; height: 100%"></div>
     </div>
 </template>
@@ -9,9 +13,16 @@ import AMapLoader from '@amap/amap-jsapi-loader'
 import {shallowRef} from "@vue/reactivity";
 import {ElMessageBox, ElMessage} from "element-plus";
 import global from "@/global";
+import MapPinInfo from "@/components/MapPinInfo.vue";
+import PlaceSearch from "@/components/PlaceSearch.vue";
+
 
 export default {
     name: "MapHomepage",
+    components: {
+        MapPinInfo,
+        PlaceSearch,
+    },
     data() {
         let map = shallowRef(null)
         return {
@@ -243,6 +254,16 @@ export default {
 </script>
 
 <style scoped>
+
+.on_div {
+    position: absolute;
+    z-index: 2;
+}
+
+.bottom_div {
+    position: absolute;
+    z-index: 1;
+}
 
 
 </style>
