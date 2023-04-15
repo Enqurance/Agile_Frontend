@@ -8,6 +8,7 @@
 import AMapLoader from '@amap/amap-jsapi-loader'
 import {shallowRef} from "@vue/reactivity";
 import {ElMessageBox, ElMessage} from "element-plus";
+import global from "@/global";
 
 export default {
     name: "MapHomepage",
@@ -95,21 +96,25 @@ export default {
             })
         },
         init_markers() {
-            this.markers_info = {
-                1: {
-                    name: "北航中心",
-                    type: 1,    // 决定marker样式
-                    visibility: 1,
-                    lnglat: [116.34731, 39.9813]
-                },
-                2: {
-                    id: 2,
-                    name: "操场",
-                    type: 1,    // 决定marker样式，
-                    visibility: 1,
-                    lnglat: [116.34, 39.98]
+            this.markers_info = {}
+
+            let that = this
+            that.$axios.post('map/getUserAllBriefPin/' + global.global_user_id, {}, {
+                headers: {
+                    'token': global.global_token
                 }
-            }
+            }).then((res) => {
+                for (let p_id in res.data.pins_info) {
+                    let info = res.data.pins_info[p_id]
+
+                    this.markers_info[p_id] = {
+                        name: info.name,
+                        type: info.type,
+                        visibility: info.visibility,
+                        lnglat: info.position
+                    }
+                }
+            }).catch((res) => console.log(res))
         },
         init_menu() {
             //创建右键菜单
