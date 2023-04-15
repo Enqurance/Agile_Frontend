@@ -5,8 +5,8 @@
     </div>
     <div class="form-container">
       <el-form ref="loginForm" :model="loginForm" class="login-form">
-        <el-form-item prop="username">
-          <el-input v-model="loginForm.username" placeholder="请输入用户名" @keyup.enter="login"></el-input>
+        <el-form-item prop="email">
+          <el-input v-model="loginForm.email" placeholder="请输入用户邮箱" @keyup.enter="login"></el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" @keyup.enter="login"></el-input>
@@ -31,11 +31,11 @@ export default {
   data() {
     return {
       loginForm: {
-        username: "",
+        email: "",
         password: "",
       },
       loginTitle: {
-        username: "用户名",
+        email: "用户邮箱",
         password: "密码",
       },
     };
@@ -50,7 +50,7 @@ export default {
 
       let that = this
       that.$axios.post('/auth/login', {
-        username: that.loginForm.username,
+        email: that.loginForm.email,
         password: that.loginForm.password
       }).then((res) => {
         if (res.data.state) {
