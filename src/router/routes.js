@@ -1,11 +1,10 @@
-import HelloWorld from '../components/HelloWorld.vue'
-
+import MapHomepage from "@/components/MapHomepage.vue";
 
 const routes = [
     {
-        name: 'home',
+        name: 'homepage',
         path: '/',
-        component: HelloWorld 
+        component: MapHomepage
     },
 ]
 
