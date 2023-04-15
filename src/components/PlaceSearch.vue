@@ -167,7 +167,14 @@ export default {
                     'AUTHORIZATION': global.global_token
                 }
             }).then((res) => {
-                that.search_result = res.data.search_result_list
+                for (let pin_info of res.data.search_result_list) {
+                    that.search_result.push(
+                    {
+                        p_id: pin_info.id,
+                        p_name: pin_info.name,
+                        p_type: pin_info.type
+                    })
+                }
                 that.show_p_ip = res.data.max_suit_p_id
                 that.open_sel = true
             }).catch((res) => console.log(res))
