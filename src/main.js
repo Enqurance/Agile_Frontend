@@ -5,11 +5,12 @@ import axiosInstance from "./axios/axios.js";
 import 'element-plus/dist/index.css'
 import ElementPlus from 'element-plus'
 
-
 const app = createApp(App)
 
 app.use(router)
 app.use(ElementPlus)
+
+
 app.config.globalProperties.$axios = axiosInstance
 app.config.globalProperties.$router = router
 
