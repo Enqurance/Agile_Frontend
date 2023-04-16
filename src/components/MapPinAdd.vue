@@ -64,8 +64,9 @@ export default {
     // 提交修改
     submitForm() {
       let that = this
+      const lnglatString = that.lnglat.join(';');
       const payload = {
-        lnglat: that.lnglat,
+        lnglat: lnglatString,
         name: that.formData.name,
         position: that.formData.position,
         brief: that.formData.brief,
