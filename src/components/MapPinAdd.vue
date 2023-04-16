@@ -41,7 +41,7 @@
 <script>
 export default {
   props: {
-    inglat: {
+    lnglat: {
       type: Array,
       required: true
     }
@@ -65,7 +65,7 @@ export default {
     submitForm() {
       let that = this
       const payload = {
-        inglat: that.inglat,
+        lnglat: that.lnglat,
         name: that.formData.name,
         position: that.formData.position,
         brief: that.formData.brief,
