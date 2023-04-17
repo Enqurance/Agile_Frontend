@@ -1,116 +1,118 @@
 <template>
-  <div class="map-pin-add">
-    <el-button type="primary" @click="addPin">新增地点</el-button>
-    <el-dialog :title="dialogTitle" v-model="dialogVisible">
-      <el-form :model="formData" label-width="100px">
-        <el-form-item label="名称">
-          <el-input v-model="formData.name"></el-input>
-        </el-form-item>
-        <el-form-item label="位置">
-          <el-input v-model="formData.position"></el-input>
-        </el-form-item>
-        <el-form-item label="简介">
-          <el-input v-model="formData.brief"></el-input>
-        </el-form-item>
-        <el-form-item label="类别">
-          <el-radio-group v-model="formData.pin_type">
-            <el-radio :label="1">教室</el-radio>
-            <el-radio :label="2">食堂</el-radio>
-            <el-radio :label="3">宿舍</el-radio>
-            <el-radio :label="4">办公</el-radio>
-            <el-radio :label="5">运动</el-radio>
-            <el-radio :label="6">超市</el-radio>
-            <el-radio :label="7">学习</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="开放时间">
-          <el-input v-model="formData.opening_time"></el-input>
-        </el-form-item>
-        <el-form-item label="电话">
-          <el-input v-model="formData.phone"></el-input>
-        </el-form-item>
-      </el-form>
-      <div>
-        <el-button type="primary" @click="closeDialog">取消</el-button>
-        <el-button type="primary" @click="submitForm">确认</el-button>
-      </div>
-    </el-dialog>
-  </div> 
+    <div class="map-pin-add">
+        <el-dialog :title="dialogTitle" v-model="dialogVisible">
+            <el-form :model="formData" label-width="100px">
+                <el-form-item label="名称">
+                    <el-input v-model="formData.name"></el-input>
+                </el-form-item>
+                <el-form-item label="位置">
+                    <el-input v-model="formData.position"></el-input>
+                </el-form-item>
+                <el-form-item label="简介">
+                    <el-input v-model="formData.brief"></el-input>
+                </el-form-item>
+                <el-form-item label="类别">
+                    <el-radio-group v-model="formData.pin_type">
+                        <el-radio :label="1">教室</el-radio>
+                        <el-radio :label="2">食堂</el-radio>
+                        <el-radio :label="3">宿舍</el-radio>
+                        <el-radio :label="4">办公</el-radio>
+                        <el-radio :label="5">运动</el-radio>
+                        <el-radio :label="6">超市</el-radio>
+                        <el-radio :label="7">学习</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="开放时间">
+                    <el-input v-model="formData.opening_time"></el-input>
+                </el-form-item>
+                <el-form-item label="电话">
+                    <el-input v-model="formData.phone"></el-input>
+                </el-form-item>
+            </el-form>
+            <div>
+                <el-button @click="dialogVisible = false">取消</el-button>
+                <el-button type="primary" @click="submitForm">确认</el-button>
+            </div>
+        </el-dialog>
+    </div>
 </template>
 
 <script>
+import global from "@/global";
+
 export default {
-  props: {
-    lnglat: {
-      type: Array,
-      required: true
-    }
-  },
-  
-  data() {
-    return {
-      dialogVisible: false, // 对话框可见性
-      formData: {},   // 表单数据
-      dialogTitle:'新增地点'
-    }
-  },
+    props: {
+        lnglat: Array,
+        is_add_pin: Boolean
+    },
+    emits: [
+        'addMarker',
+        'close_dialog'
+    ],
 
-  methods: {
-    addPin() {
-      this.formData = {}
-      this.dialogVisible = true
+    data() {
+        return {
+            dialogVisible: false, // 对话框可见性
+            formData: {},   // 表单数据
+            dialogTitle: '新增地点'
+        }
     },
 
-    // 提交修改
-    submitForm() {
-      let that = this
-      const lnglatString = that.lnglat.join(';');
-      const payload = {
-        lnglat: lnglatString,
-        name: that.formData.name,
-        position: that.formData.position,
-        brief: that.formData.brief,
-        type: that.formData.pin_type,
-        openTime: that.formData.opening_time,
-        phone: that.formData.phone 
-      };
-      console.log('新增地点的基本信息：', payload);
+    methods: {
+        addPin() {
+            this.formData = {}
+            this.dialogVisible = true
+        },
 
-      that.$axios.post('/map/pin/addPinById', payload)
-          .then(response => {
-            console.log(response);
-            this.dialogVisible = false;
+        // 提交修改
+        submitForm() {
+            let that = this
+            const lnglatString = that.lnglat.join(';');
 
-            const click_marker_info = {
-              id: response.data.id,
-              name: that.formData.name,
-              type: that.formData.pin_type,
-              visibility: true
+            that.$axios.post('/map/pin/addPinByCoords', {
+                lnglat: lnglatString,
+                name: that.formData.name,
+                position: that.formData.position,
+                brief: that.formData.brief,
+                type: that.formData.pin_type,
+                openTime: that.formData.opening_time,
+                phone: that.formData.phone
+            }, {
+                headers: {
+                    'token': global.global_token
+                }
+            })
+                .then(response => {
+                    this.dialogVisible = false;
+                    const click_marker_info = {
+                        id: response.data.data,
+                        name: that.formData.name,
+                        type: that.formData.pin_type,
+                        visibility: true
+                    }
+                    this.$emit('addMarker', click_marker_info)
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            this.dialogVisible = false
+        },
+    },
+    watch: {
+        is_add_pin(newData) {
+            if (newData === true) {
+                this.addPin()
             }
-            console.log('组件通信', click_marker_info);
-            this.$emit('addMarker', click_marker_info)
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      this.dialogVisible = false
-    },
-
-    // 取消修改
-    closeDialog() {
-      this.dialogVisible = false;
-      const click_marker_info = {
-        id: -1,
-        name: this.formData.name,
-        type: this.formData.pin_type,
-        visibility: true
-      }
-      console.log('组件通信', click_marker_info);
-      this.$emit('addMarker', click_marker_info)
+        },
+        dialogVisible(newData, oldData) {
+            if (newData !== oldData && newData === false) {
+                this.$emit('close_dialog')
+            }
+        }
     }
-  }
 }
 </script>
+
 
 <style scoped>
 </style>
