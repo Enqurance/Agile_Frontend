@@ -1,32 +1,16 @@
 <template>
-    <div class="on_div">
-        <PlaceSearch style="width: 100%; height: 20px; margin-top: 30%; margin-left: 30%" @submit_p_id="(e) => concentrate_pin(e)" />
-        <MapPinInfo :id="show_marker_id" @close_drawer="show_marker_id = -1"/>
-    </div>
-    <div :style="{width: screen_params.screenX+'px', height: screen_params.screenY+'px'}" class="bottom_div">
+    <div :style="{width: screen_params.screenX+'px', height: screen_params.screenY+'px'}">
         <div id="container" style="width: 100%; height: 100%"></div>
     </div>
-    <MapPinAdd :is_add_pin="is_add_marker" :lnglat="click_marker_lnglat" @addMarker="(e) => new_pin(e)"
-               @close_dialog="this.is_add_marker = false"/>
 </template>
 
 <script>
 import AMapLoader from '@amap/amap-jsapi-loader'
 import {shallowRef} from "@vue/reactivity";
 import {ElMessageBox, ElMessage} from "element-plus";
-import global from "@/global";
-import MapPinInfo from "@/components/MapPinInfo.vue";
-import MapPinAdd from "@/components/MapPinAdd.vue";
-import PlaceSearch from "@/components/PlaceSearch.vue";
-
 
 export default {
     name: "MapHomepage",
-    components: {
-        MapPinInfo,
-        MapPinAdd,
-        PlaceSearch,
-    },
     data() {
         let map = shallowRef(null)
         return {
@@ -46,7 +30,7 @@ export default {
             ],
 
             is_add_marker: false,
-            click_marker_lnglat: [],
+            click_marker_lnglat: [116.34731, 39.981],
             click_marker_simple_info: {
                 id: 0,
                 name: "add marker",
@@ -54,13 +38,17 @@ export default {
                 visibility: 0
             },
 
-            is_show_marker: false,
-            show_marker_id: -1,
+            markers_info: {
+                null: {
+                    name: null,
+                    type: null,    // 决定marker样式
+                    visibility: null,
+                    lnglat: null
+                }
+            },
 
-            markers_info: Object,
+            is_delete_marker: false,
             delete_marker_id: 0,
-
-            center_pin_id: -1
         }
     },
     mounted() {
@@ -93,40 +81,35 @@ export default {
                 let bounds = this.map.getBounds();
                 this.map.setLimitBounds(bounds);
 
-                this.markers_info = {}
-                that.$axios.get('map/getUserAllBriefPin', {
-                    headers: {
-                        'token': global.global_token
-                    }
-                }).then((res) => {
-                    that.markers_info = {}
-                    for (let pin of res.data.data) {
-                        that.markers_info[pin["id"]] = {
-                            'name': pin["name"],
-                            'type': pin["type"],
-                            'visibility': pin["visibility"],
-                            'lnglat': pin["lnglat"]
-                        }
-                    }
+                this.init_markers()
+                for (let marker_info in this.markers_info) {
+                    let info = Object.assign({}, {
+                        id: marker_info
+                    }, that.markers_info[marker_info])
+                    this.add_marker(info)
+                }
 
-                    for (let marker_info in that.markers_info) {
-                        let info = Object.assign({}, {
-                            id: marker_info
-                        }, that.markers_info[marker_info])
-                        console.log(marker_info)
-                        this.add_marker(info)
-                    }
-
-                    this.init_menu()
-                }).catch((res) => {
-                    console.log(res)
-                })
+                this.init_menu()
             }).catch(e => {
                 console.log(e)
             })
         },
         init_markers() {
-
+            this.markers_info = {
+                1: {
+                    name: "北航中心",
+                    type: 1,    // 决定marker样式
+                    visibility: 1,
+                    lnglat: [116.34731, 39.9813]
+                },
+                2: {
+                    id: 2,
+                    name: "操场",
+                    type: 1,    // 决定marker样式，
+                    visibility: 1,
+                    lnglat: [116.34, 39.98]
+                }
+            }
         },
         init_menu() {
             //创建右键菜单
@@ -164,6 +147,16 @@ export default {
             // eslint-disable-next-line no-unused-vars
             contextMenu.addItem("添加标记", function () {
                 that.is_add_marker = true
+                that.markers_info[that.click_marker_simple_info.id] = {
+                    name: that.click_marker_simple_info.name,
+                    type: that.click_marker_simple_info.type,    // 决定marker样式
+                    visibility: that.click_marker_simple_info.visibility,
+                    lnglat: that.click_marker_lnglat
+                }
+                console.log(that.markers_info)
+                that.add_marker(Object.assign({}, that.click_marker_simple_info, {
+                    lnglat: that.click_marker_lnglat
+                }))
                 contextMenu.close()
             }, 2);
 
@@ -173,28 +166,6 @@ export default {
                 contextMenu.open(that.map, e.lnglat);
             });
 
-        },
-        new_pin(e) {
-            this.is_add_marker = false
-            if (e.id !== -1) {
-                this.click_marker_simple_info = e
-                this.markers_info[this.click_marker_simple_info.id] = {
-                    name: this.click_marker_simple_info.name,
-                    type: this.click_marker_simple_info.type,    // 决定marker样式
-                    visibility: this.click_marker_simple_info.visibility,
-                    lnglat: this.click_marker_lnglat
-                }
-                // console.log(that.markers_info)
-                this.add_marker(Object.assign({}, that.click_marker_simple_info, {
-                    lnglat: this.click_marker_lnglat
-                }))
-            }
-            else {
-                this.$message({
-                    message: '取消添加地图钉',
-                    type: 'message'
-                })
-            }
         },
         add_marker(info) {
             // eslint-disable-next-line no-undef
@@ -222,13 +193,9 @@ export default {
                 lnglat: info.lnglat
             }
             marker.setMap(this.map)
-            // show_event
-            let that = this
-            marker.on('click', function (e) {
-                that.show_marker_id = e.target._opts.extData.id
-            })
 
             // delete_event
+            let that = this
             marker.on('rightclick', function (e) {
                 // console.log(e)
                 if (e.target._opts.extData.visibility === 1) {
@@ -248,20 +215,15 @@ export default {
                         }
                     ).then(() => {
                         that.delete_marker_id = e.target._opts.extData.id
-
-                        that.$axios.post('map/pin/deletePin/' + that.delete_marker_id, {}, {
-                            headers: {
-                                'token': global.global_token
-                            }
-                        }).then((res) => {
-                            Reflect.deleteProperty(that.markers_info, that.delete_marker_id)
-                            marker.setMap(null)
-                            marker = null
-                            ElMessage({
-                                type: 'success',
-                                message: '成功删除',
-                            })
-                        }).catch((res) => console.log(res))
+                        that.is_delete_marker = true
+                        Reflect.deleteProperty(that.markers_info, that.delete_marker_id)
+                        marker.setMap(null)
+                        marker = null
+                        ElMessage({
+                            type: 'success',
+                            message: '成功删除',
+                        })
+                        console.log(that.markers_info)
                     }).catch(() => {
                         ElMessage({
                             type: 'info',
@@ -271,25 +233,11 @@ export default {
                 }
             })
         },
-        concentrate_pin(pin_id) {
-            this.map.setCenter(this.markers_info[pin_id].lnglat)
-            this.map.setZoom(18)
-        }
     },
 }
 </script>
 
 <style scoped>
-
-.on_div {
-    position: absolute;
-    z-index: 2;
-}
-
-.bottom_div {
-    position: absolute;
-    z-index: 1;
-}
 
 
 </style>
