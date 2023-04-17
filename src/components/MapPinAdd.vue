@@ -1,6 +1,5 @@
 <template>
   <div class="map-pin-add">
-    <el-button type="primary" @click="addPin">新增地点</el-button>
     <el-dialog :title="dialogTitle" v-model="dialogVisible">
       <el-form :model="formData" label-width="100px">
         <el-form-item label="名称">
@@ -40,19 +39,19 @@
 
 <script>
 export default {
-  props: {
-    x: Number,
-    y: Number,
-    id: {
-      type: Number,
-      default: 1111
-    }
-  },
+    props: {
+        lnglat: [],
+        is_add_pin: Boolean
+    },
+    emits: [
+        'addMarker',
+        'close_dialog'
+    ],
   
   data() {
     return {
       dialogVisible: false, // 对话框可见性
-      formData: {name:"test"},   // 表单数据
+      formData: {},   // 表单数据
       dialogTitle:'新增地点'
     }
   },
@@ -67,7 +66,7 @@ export default {
     submitForm() {
       let that = this
       const payload = {
-        id: that.id,
+        lnglat: that.lnglat,
         name: that.formData.name,
         position: that.formData.position,
         brief: that.formData.brief,
@@ -77,25 +76,36 @@ export default {
       };
       console.log('新增地点的基本信息：', payload);
 
-      const click_marker_info = {
-        id: that.id,
-        name: that.formData.name,
-        type: that.formData.pin_type,
-        visibility: true
-      }
-      console.log('组件通信', click_marker_info);
+        that.$axios.post('/map/pin/addPinById', payload)
+            .then(response => {
+                console.log(response);
+                this.dialogVisible = false;
 
-      that.$axios.post('/map/pin/addPinById', payload)
-          .then(response => {
-            console.log(response);
-            this.dialogVisible = false;
-            this.$emit('addMarker', click_marker_info)
-          })
-          .catch(error => {
-            console.error(error);
-          });
+                const click_marker_info = {
+                    id: response.data.id,
+                    name: that.formData.name,
+                    type: that.formData.pin_type,
+                    visibility: true
+                }
+                console.log('组件通信', click_marker_info);
+                this.$emit('addMarker', click_marker_info)
+            })
+            .catch(error => {
+                console.error(error);
+            });
       this.dialogVisible = false
     },
+      closeDialog() {
+          this.dialogVisible = false;
+          const click_marker_info = {
+              id: -1,
+              name: this.formData.name,
+              type: this.formData.pin_type,
+              visibility: true
+          }
+          console.log('组件通信', click_marker_info);
+          this.$emit('addMarker', click_marker_info)
+      }
   }
 }
 </script>
