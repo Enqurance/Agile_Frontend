@@ -55,7 +55,7 @@
             <div class="pin-photo">
                 <el-card :body-style="{ padding: '10px' }">
                     <h4>Photos</h4>
-                    <el-carousel trigger="click" :height="150">
+                    <el-carousel trigger="click" height="150">
                         <el-carousel-item v-for="photoUrl in photos" :key="photoUrl">
                             <img :src="photoUrl"/>
                         </el-carousel-item>
@@ -66,7 +66,7 @@
             <div class="pin-service">
                 <el-card :body-style="{ padding: '10px' }">
                     <h4>Services</h4>
-                    <el-collapse v-model="activeName">
+                    <el-collapse>
                         <el-collapse-item v-for="(service, index) in services" :key="index" :title="service.name">
                             <el-card :body-style="{ padding: '10px' }">
                                 <div class="detail">
@@ -151,17 +151,21 @@ export default {
             let that = this
             that.$axios.post('map/pin/getPinInfoById', {
                 id: that.id,
+            }, {
+                headers: {
+                    'token': global.global_token
+                }
             }).then((res) => {
+                console.log(res)
+                that.info.name = res.data.data.pin.name
+                that.info.position = res.data.data.pin.position
+                that.info.brief = res.data.data.pin.brief
+                that.info.pin_type = res.data.data.pin.type
+                that.info.opening_time = res.data.data.pin.openTime
+                that.info.phone = res.data.data.pin.phone
 
-                that.info.name = res.data.pin.name
-                that.info.position = res.data.pin.position
-                that.info.brief = res.data.pin.brief
-                that.info.pin_type = res.data.pin.type
-                that.info.opening_time = res.data.pin.openTime
-                that.info.phone = res.data.pin.phone
-
-                that.photos = res.data.photos
-                that.services = res.data.services
+                that.photos = res.data.data.photos
+                that.services = res.data.data.services
             }).catch((res) => console.log(res))
         },
 
@@ -176,7 +180,7 @@ export default {
         // 提交修改
         submitForm() {
             let that = this
-            const payload = {
+            that.$axios.post('/map/pin/changePinInfoById', {
                 id: that.id,
                 name: that.formData.name,
                 position: that.formData.position,
@@ -184,9 +188,11 @@ export default {
                 type: that.formData.pin_type,
                 openTime: that.formData.opening_time,
                 phone: that.formData.phone
-            };
-            console.log('编辑后的信息：', payload);
-            that.$axios.post('/map/pin/changePinInfoById', payload)
+            }, {
+                headers: {
+                    'token': global.global_token
+                }
+            })
                 .then(response => {
                     console.log(response);
                     this.dialogVisible = false;

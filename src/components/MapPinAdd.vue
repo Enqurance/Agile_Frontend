@@ -38,19 +38,22 @@
 </template>
 
 <script>
+import global from "@/global";
+
 export default {
     props: {
-        lnglat: [],
+        lnglat: Array,
         is_add_pin: Boolean
     },
     emits: [
         'addMarker',
         'close_dialog'
     ],
+
     data() {
         return {
             dialogVisible: false, // 对话框可见性
-            formData: {name: "test"},   // 表单数据
+            formData: {},   // 表单数据
             dialogTitle: '新增地点'
         }
     },
@@ -64,29 +67,29 @@ export default {
         // 提交修改
         submitForm() {
             let that = this
-            const payload = {
-                id: 1,
+            const lnglatString = that.lnglat.join(';');
+
+            that.$axios.post('/map/pin/addPinByCoords', {
+                lnglat: lnglatString,
                 name: that.formData.name,
                 position: that.formData.position,
                 brief: that.formData.brief,
                 type: that.formData.pin_type,
                 openTime: that.formData.opening_time,
                 phone: that.formData.phone
-            };
-            console.log('新增地点的基本信息：', payload);
-
-            const click_marker_info = {
-                id: that.id,
-                name: that.formData.name,
-                type: that.formData.pin_type,
-                visibility: true
-            }
-            console.log('组件通信', click_marker_info);
-
-            that.$axios.post('/map/pin/addPinById', payload)
+            }, {
+                headers: {
+                    'token': global.global_token
+                }
+            })
                 .then(response => {
-                    console.log(response);
                     this.dialogVisible = false;
+                    const click_marker_info = {
+                        id: response.data.data,
+                        name: that.formData.name,
+                        type: that.formData.pin_type,
+                        visibility: true
+                    }
                     this.$emit('addMarker', click_marker_info)
                 })
                 .catch(error => {
