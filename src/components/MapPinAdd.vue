@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import global from "@/global";
+
 export default {
     props: {
         lnglat: Array,
@@ -65,29 +67,29 @@ export default {
         // 提交修改
         submitForm() {
             let that = this
-            const payload = {
-                lnglat: that.lnglat,
+            const lnglatString = that.lnglat.join(';');
+
+            that.$axios.post('/map/pin/addPinByCoords', {
+                lnglat: lnglatString,
                 name: that.formData.name,
                 position: that.formData.position,
                 brief: that.formData.brief,
                 type: that.formData.pin_type,
                 openTime: that.formData.opening_time,
                 phone: that.formData.phone
-            };
-            console.log('新增地点的基本信息：', payload);
-
-            that.$axios.post('/map/pin/addPinById', payload)
+            }, {
+                headers: {
+                    'token': global.global_token
+                }
+            })
                 .then(response => {
-                    console.log(response);
                     this.dialogVisible = false;
-
                     const click_marker_info = {
-                        id: response.data.id,
+                        id: response.data.data,
                         name: that.formData.name,
                         type: that.formData.pin_type,
                         visibility: true
                     }
-                    console.log('组件通信', click_marker_info);
                     this.$emit('addMarker', click_marker_info)
                 })
                 .catch(error => {
@@ -95,18 +97,6 @@ export default {
                 });
             this.dialogVisible = false
         },
-        // 应该是取消添加使用该函数
-        closeDialog() {
-            this.dialogVisible = false;
-            const click_marker_info = {
-                id: -1,
-                name: this.formData.name,
-                type: this.formData.pin_type,
-                visibility: true
-            }
-            console.log('组件通信', click_marker_info);
-            this.$emit('addMarker', click_marker_info)
-        }
     },
     watch: {
         is_add_pin(newData) {

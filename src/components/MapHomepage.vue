@@ -1,6 +1,7 @@
 <template>
     <div class="on_div">
-        <PlaceSearch style="width: 100%; height: 20px; margin-top: 30%; margin-left: 30%" @submit_p_id="(e) => concentrate_pin(e)" />
+        <PlaceSearch style="width: 100%; height: 20px; margin-top: 30%; margin-left: 30%"
+                     @submit_p_id="(e) => concentrate_pin(e)"/>
         <MapPinInfo :id="show_marker_id" @close_drawer="show_marker_id = -1"/>
     </div>
     <div :style="{width: screen_params.screenX+'px', height: screen_params.screenY+'px'}" class="bottom_div">
@@ -125,9 +126,6 @@ export default {
                 console.log(e)
             })
         },
-        init_markers() {
-
-        },
         init_menu() {
             //创建右键菜单
             // eslint-disable-next-line no-undef
@@ -176,25 +174,17 @@ export default {
         },
         new_pin(e) {
             this.is_add_marker = false
-            if (e.id !== -1) {
-                this.click_marker_simple_info = e
-                this.markers_info[this.click_marker_simple_info.id] = {
-                    name: this.click_marker_simple_info.name,
-                    type: this.click_marker_simple_info.type,    // 决定marker样式
-                    visibility: this.click_marker_simple_info.visibility,
-                    lnglat: this.click_marker_lnglat
-                }
-                // console.log(that.markers_info)
-                this.add_marker(Object.assign({}, that.click_marker_simple_info, {
-                    lnglat: this.click_marker_lnglat
-                }))
+
+            this.click_marker_simple_info = e
+            this.markers_info[this.click_marker_simple_info.id] = {
+                name: this.click_marker_simple_info.name,
+                type: this.click_marker_simple_info.type,    // 决定marker样式
+                visibility: this.click_marker_simple_info.visibility,
+                lnglat: this.click_marker_lnglat
             }
-            else {
-                this.$message({
-                    message: '取消添加地图钉',
-                    type: 'message'
-                })
-            }
+            this.add_marker(Object.assign({}, this.click_marker_simple_info, {
+                lnglat: this.click_marker_lnglat
+            }))
         },
         add_marker(info) {
             // eslint-disable-next-line no-undef
@@ -249,7 +239,7 @@ export default {
                     ).then(() => {
                         that.delete_marker_id = e.target._opts.extData.id
 
-                        that.$axios.post('map/pin/deletePin/' + that.delete_marker_id, {}, {
+                        that.$axios.delete('map/pin/deletePin/' + that.delete_marker_id, {
                             headers: {
                                 'token': global.global_token
                             }
