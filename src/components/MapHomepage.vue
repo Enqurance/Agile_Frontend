@@ -57,17 +57,8 @@ export default {
             is_show_marker: false,
             show_marker_id: -1,
 
-            markers_info: {
-                null: {
-                    name: null,
-                    type: null,    // 决定marker样式
-                    visibility: null,
-                    lnglat: null
-                }
-            },
-
+            markers_info: Object,
             delete_marker_id: 0,
-
 
             center_pin_id: -1
         }
@@ -102,39 +93,40 @@ export default {
                 let bounds = this.map.getBounds();
                 this.map.setLimitBounds(bounds);
 
-                this.init_markers()
-                for (let marker_info in this.markers_info) {
-                    let info = Object.assign({}, {
-                        id: marker_info
-                    }, that.markers_info[marker_info])
-                    this.add_marker(info)
-                }
+                this.markers_info = {}
+                that.$axios.get('map/getUserAllBriefPin', {
+                    headers: {
+                        'token': global.global_token
+                    }
+                }).then((res) => {
+                    that.markers_info = {}
+                    for (let pin of res.data.data) {
+                        that.markers_info[pin["id"]] = {
+                            'name': pin["name"],
+                            'type': pin["type"],
+                            'visibility': pin["visibility"],
+                            'lnglat': pin["lnglat"]
+                        }
+                    }
 
-                this.init_menu()
+                    for (let marker_info in that.markers_info) {
+                        let info = Object.assign({}, {
+                            id: marker_info
+                        }, that.markers_info[marker_info])
+                        console.log(marker_info)
+                        this.add_marker(info)
+                    }
+
+                    this.init_menu()
+                }).catch((res) => {
+                    console.log(res)
+                })
             }).catch(e => {
                 console.log(e)
             })
         },
         init_markers() {
-            this.markers_info = {}
 
-            let that = this
-            that.$axios.post('map/getUserAllBriefPin/' + global.global_user_id, {}, {
-                headers: {
-                    'token': global.global_token
-                }
-            }).then((res) => {
-                for (let p_id in res.data.pins_info) {
-                    let info = res.data.pins_info[p_id]
-
-                    this.markers_info[p_id] = {
-                        name: info.name,
-                        type: info.type,
-                        visibility: info.visibility,
-                        lnglat: info.lnglat
-                    }
-                }
-            }).catch((res) => console.log(res))
         },
         init_menu() {
             //创建右键菜单

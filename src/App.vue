@@ -1,17 +1,11 @@
 <template>
-  <div>
-      <MapHomepage />
-  </div>
+  <router-view />
 </template>
 
 <script>
-import MapHomepage from "@/components/MapHomepage.vue";
 
 export default {
   name: 'App',
-  components: {
-      MapHomepage
-  }
 }
 </script>
 
