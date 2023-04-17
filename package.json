@@ -5,14 +5,11 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "jest": "jest src --watch",
-    "test": "jest"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
     "@vue/reactivity": "^3.2.47",
-    "@testing-library/vue": "^7.0.0",
     "axios": "^1.3.4",
     "core-js": "^3.30.1",
     "element-plus": "^2.3.2",
@@ -21,27 +18,19 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
-    "@babel/eslint-parser": "^7.21.3",
-    "@typescript-eslint/parser": "^5.58.0",
+    "@babel/eslint-parser": "^7.12.16",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
-    "@vue/cli-plugin-unit-jest": "^5.0.8",
     "@vue/cli-service": "~5.0.0",
-    "@vue/compiler-sfc": "^3.2.47",
-    "@vue/vue3-jest": "^27.0.0",
     "eslint": "^7.32.0",
-    "eslint-plugin-jest": "^27.2.1",
-    "eslint-plugin-vue": "^8.7.1"
+    "eslint-plugin-vue": "^8.0.3"
   },
   "eslintConfig": {
     "root": true,
     "env": {
-      "node": true,
-      "vue/setup-compiler-macros": true
+      "node": true
     },
     "extends": [
-      "@vue/standard",
-      "@vue/typescript/recommended",
       "plugin:vue/vue3-essential",
       "eslint:recommended"
     ],
