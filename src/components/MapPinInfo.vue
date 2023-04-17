@@ -71,13 +71,13 @@
         <el-card :body-style="{ padding: '10px' }">
           <h4>Services</h4>
           <el-collapse v-model="activeName">
-            <el-collapse-item v-for="(service, index) in services" :key="index" :title="service.name">
+            <el-collapse-item v-for="(service, index) in services" :key="index" :title="service.serviceName">
               <el-card :body-style="{ padding: '10px' }">
+                <img :src="service.servicePhoto" class="photo" />
                 <div class="detail">
-                  <div class="name">{{ service.name }}</div>
-                  <div class="info">{{ service.brief }}</div>
+                  <div class="name">{{ service.serviceName }}</div>
+                  <div class="info">{{ service.serviceInfo }}</div>
                 </div>
-                <img :src="service.photo" class="photo" />
               </el-card>
             </el-collapse-item>
           </el-collapse>
@@ -122,27 +122,29 @@ export default {
       ],
       services: [
         {
-          name: "羊肉",
-          brief: "这是关于羊肉食品的简介",
-          photo: "https://s2.loli.net/2023/04/10/RMqIaFuidyXotWf.jpg",
+          serviceName: "羊肉",
+          serviceInfo: "这是关于羊肉食品的简介",
+          servicePhoto: "https://s2.loli.net/2023/04/10/RMqIaFuidyXotWf.jpg",
         },
         {
-          name: "羊肉2",
-          brief: "这是关于羊肉2食品的简介",
-          photo: "https://s2.loli.net/2023/04/10/RMqIaFuidyXotWf.jpg",
+          serviceName: "羊肉2",
+          serviceInfo: "这是关于羊肉2食品的简介",
+          servicePhoto: "https://s2.loli.net/2023/04/10/RMqIaFuidyXotWf.jpg",
         }
       ],
       // 信息栏是否展开
       drawer: false,
       // 对话框可见性
       dialogVisible: false,
-
+      isAdmin: 1,
       formData: {}, // 编辑表单数据
-
-      dialogTitle:'编辑信息'
     }
   },
-
+  computed: {
+    dialogTitle() {
+      return this.isAdmin ? '编辑信息' : '无权限'
+    },
+  },
   methods: {
     _get_pin_type(pin_type_id) {
       return global.get_pin_type(pin_type_id)
@@ -157,27 +159,29 @@ export default {
       that.$axios.post('map/pin/getPinInfoById', {
         id: that.id,
       }).then((res) => {
-
-        that.info.name = res.data.pin.name
-        that.info.position = res.data.pin.position
-        that.info.brief = res.data.pin.brief
-        that.info.pin_type = res.data.pin.type
-        that.info.opening_time = res.data.pin.openTime
-        that.info.phone = res.data.pin.phone
-        
+        that.info = res.data.info
         that.photos = res.data.photos
         that.services = res.data.services
       }).catch((res) => console.log(res))
     },
-
     // 编辑请求
     editInfo() {
-      // 进入编辑模式并打开对话框
-      // 修改鉴权交给上一层
-      this.formData = Object.assign({}, this.info)
-      this.dialogVisible = true
+      let that = this
+      that.$axios.post('/map/pin/getPinPermission', {
+        id: that.id,
+      }).then((res) => {
+        that.isAdmin = res.data.user_type
+      }).catch((res) => console.log(res))
+      if (this.isAdmin) { // 进入编辑模式并打开对话框
+        this.formData = Object.assign({}, this.info)
+        this.dialogVisible = true
+      } else {
+        this.$message({
+          message: '你没有编辑权限',
+          type: 'warning'
+        })
+      }
     },
-
     // 提交修改
     submitForm() {
       let that = this
@@ -186,8 +190,8 @@ export default {
         name: that.formData.name,
         position: that.formData.position,
         brief: that.formData.brief,
-        type: that.formData.pin_type,
-        openTime: that.formData.opening_time,
+        pin_type: that.formData.pin_type,
+        opening_time: that.formData.opening_time,
         phone: that.formData.phone
       };
       console.log('编辑后的信息：', payload);
