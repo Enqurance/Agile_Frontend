@@ -15,14 +15,15 @@
                               @keyup.enter="register"></el-input>
                 </el-form-item>
 
-                <el-form-item prop="emailCode">
+                <div style="display:flex;width: 400px;">
+                <el-form-item prop="emailCode" style="width: 330px;padding-right: 110px;">
                     <el-input v-model="registerForm.emailCode" placeholder="请输入验证码"
-                              @keyup.enter="register"></el-input>
+                    @keyup.enter="register"></el-input>
                 </el-form-item>
-
-                <el-form-item prop="emailCodeBotton">
+                <el-form-item prop="emailCodeBotton" style="flex: 1;">
                     <el-button type="primary" @click="sendEmailCode" class="button_left">发送验证码</el-button>
                 </el-form-item>
+                </div>
 
                 <el-form-item prop="password">
                     <el-input type="password" v-model="registerForm.password1" placeholder="请输入密码"
@@ -34,7 +35,7 @@
                 </el-form-item>
 
                 <el-form-item prop="grade">
-                    <el-select v-model="registerForm.grade" placeholder="请选择年级">
+                    <el-select v-model="registerForm.grade" placeholder="请选择年级" class="el-select">
                         <el-option label="本科" value="1"></el-option>
                         <el-option label="硕士" value="2"></el-option>
                         <el-option label="博士" value="3"></el-option>
@@ -42,7 +43,7 @@
                 </el-form-item>
 
                 <el-form-item prop="campus">
-                    <el-select v-model="registerForm.campus" placeholder="请选择校区">
+                    <el-select v-model="registerForm.campus" placeholder="请选择校区" class="el-select">
                         <el-option label="学院路校区" value="1"></el-option>
                         <el-option label="沙河校区" value="2"></el-option>
                     </el-select>
@@ -181,6 +182,7 @@ export default {
     display: flex; /* 添加Flex属性 */
     justify-content: center;
     align-items: center;
+    width: 400px; /* 设置固定宽度为 400px */
 }
 
 .register-form {
@@ -201,6 +203,10 @@ export default {
 .button_left {
     position: absolute;
     right: 0%;
+}
+
+.el-select {
+    width: 100%;
 }
 </style>
 
