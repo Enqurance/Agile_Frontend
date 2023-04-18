@@ -57,7 +57,7 @@
                     <h4>Photos</h4>
                     <el-carousel trigger="click" height="150">
                         <el-carousel-item v-for="photoUrl in photos" :key="photoUrl">
-                            <img :src="photoUrl"/>
+                            <img :src="photoUrl"  class="photo"/>
                         </el-carousel-item>
                     </el-carousel>
                 </el-card>
@@ -245,5 +245,14 @@ export default {
 
 .el-divider {
     margin: 10px 0;
+}
+
+.photo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 </style>
