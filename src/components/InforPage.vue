@@ -78,7 +78,6 @@ export default {
     },
     updateEdit(){
       console.log(this.user);
-      console.log(that.$cookies.get('user_token'));
       let that = this;
       that.$axios.post('user/changeUserBasicByToken' ,
           { name: this.user.name,
