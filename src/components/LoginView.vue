@@ -26,11 +26,11 @@
 
 <script>
 import global from '@/global'
-import FanKuibutton from "@/components/FeedbackButton";
+import FeedbackButton from "@/components/FeedbackButton";
 
 export default {
   name: "LoginPage",
-  components: {FanKuibutton},
+  components: {},
   data() {
     return {
       loginForm: {

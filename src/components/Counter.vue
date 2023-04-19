@@ -1,15 +1,14 @@
 <!-- src/components/Counter.vue -->
 <template>
   <div>
-    <el-button testid="123">
-      123
-    </el-button>
-
+    <feedback-button></feedback-button>
   </div>
 </template>
 
 <script>
+import FeedbackButton from "@/components/FeedbackButton";
 export default {
+  components: {FeedbackButton},
   data() {
     return {
       count: 0,
