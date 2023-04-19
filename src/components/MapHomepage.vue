@@ -1,19 +1,22 @@
 <template>
-    <el-header height="30px">
-      <PageHeader/>
-    </el-header>
-    <el-main>
-    <div class="on_div">
-        <PlaceSearch style="width: 100%; height: 30%; margin-top: 30%; margin-left: 30%"
-                     @submit_p_id="(e) => concentrate_pin(e)" :click_map="close_search" @search_close="close_search=false" />
-        <MapPinInfo :id="show_marker_id" @close_drawer="show_marker_id = -1"/>
+    <div>
+        <!--        <el-header height="7%">-->
+        <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.3"/>
+        <!--        </el-header>-->
+        <!--        <el-main style="height: 93%">-->
+        <div class="on_div">
+            <PlaceSearch style="width: 100%; height: 30%; margin-top: 30%; margin-left: 30%"
+                         @submit_p_id="(e) => concentrate_pin(e)" :click_map="close_search"
+                         @search_close="close_search=false"/>
+            <MapPinInfo :id="show_marker_id" @close_drawer="show_marker_id = -1"/>
+        </div>
+        <div :style="{width: screen_params.screenX+'px', height: screen_params.screenY+'px'}" class="bottom_div">
+            <div id="container" style="width: 100%; height: 100%" @click="close_search=true"></div>
+        </div>
+        <MapPinAdd :is_add_pin="is_add_marker" :lnglat="click_marker_lnglat" @addMarker="(e) => new_pin(e)"
+                   @close_dialog="this.is_add_marker = false"/>
+        <!--        </el-main>-->
     </div>
-    <div :style="{width: screen_params.screenX+'px', height: screen_params.screenY+'px'}" class="bottom_div">
-        <div id="container" style="width: 100%; height: 100%" @click="close_search=true"></div>
-    </div>
-    <MapPinAdd :is_add_pin="is_add_marker" :lnglat="click_marker_lnglat" @addMarker="(e) => new_pin(e)"
-               @close_dialog="this.is_add_marker = false"/>
-    </el-main>
 </template>
 
 <script>
@@ -47,7 +50,7 @@ export default {
             map,
             beihang_center: [
                 116.347313,
-                39.9815
+                39.9817
             ],
             beihang_zoom: [
                 16.2,
@@ -235,7 +238,7 @@ export default {
             // delete_event
             marker.on('rightclick', function (e) {
                 // console.log(e)
-                if (e.target._opts.extData.visibility === 1) {
+                if (e.target._opts.extData.visibility === 1 && that.$cookies.get('user_type') === 0) {
                     that.$message({
                         message: '系统点标记不可删除',
                         type: "warning"
@@ -276,8 +279,8 @@ export default {
             })
         },
         concentrate_pin(pin_id) {
-            // this.map.setCenter(this.markers_info[pin_id].lnglat)
-            // this.map.setZoom(18)
+            this.map.setCenter(this.markers_info[pin_id].lnglat)
+            this.map.setZoom(18)
         }
     },
 }
@@ -286,11 +289,13 @@ export default {
 <style scoped>
 
 .on_div {
+    top: 0;
     position: absolute;
     z-index: 2;
 }
 
 .bottom_div {
+    top: 0;
     position: absolute;
     z-index: 1;
 }
