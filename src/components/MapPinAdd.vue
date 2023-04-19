@@ -38,8 +38,6 @@
 </template>
 
 <script>
-import global from "@/global";
-
 export default {
     props: {
         lnglat: Array,
@@ -79,7 +77,7 @@ export default {
                 phone: that.formData.phone
             }, {
                 headers: {
-                    'token': global.global_token
+                    'token': that.$cookies.get('user_token')
                 }
             })
                 .then(response => {

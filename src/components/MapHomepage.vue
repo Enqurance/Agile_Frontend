@@ -15,7 +15,6 @@
 import AMapLoader from '@amap/amap-jsapi-loader'
 import {shallowRef} from "@vue/reactivity";
 import {ElMessageBox, ElMessage} from "element-plus";
-import global from "@/global";
 import MapPinInfo from "@/components/MapPinInfo.vue";
 import MapPinAdd from "@/components/MapPinAdd.vue";
 import PlaceSearch from "@/components/PlaceSearch.vue";
@@ -97,7 +96,7 @@ export default {
                 this.markers_info = {}
                 that.$axios.get('map/getUserAllBriefPin', {
                     headers: {
-                        'token': global.global_token
+                        'token': that.$cookies.get('user_token')
                     }
                 }).then((res) => {
                     that.markers_info = {}
@@ -241,7 +240,7 @@ export default {
 
                         that.$axios.delete('map/pin/deletePin/' + that.delete_marker_id, {
                             headers: {
-                                'token': global.global_token
+                                'token': that.$cookies.get('user_token')
                             }
                         }).then((res) => {
                             Reflect.deleteProperty(that.markers_info, that.delete_marker_id)

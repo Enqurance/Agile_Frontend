@@ -66,8 +66,6 @@
 </template>
 
 <script>
-import global from '@/global'
-
 export default {
     name: "registerPage",
     data() {
@@ -144,8 +142,6 @@ export default {
             },)
                 .then((res) => {
                     if (res.data.code === 200) {
-                        global.global_user_id = res.data.id
-                        global.global_type = false
                         that.$router.push({path: '/login'})
                     }
                     else {
