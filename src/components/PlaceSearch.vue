@@ -1,10 +1,10 @@
 <template>
-    <div v-if="is_display" style="height: 100%">
-        <el-row style="padding-bottom: 0.5%">
+    <div style="height: 100%" >
+        <el-row style="padding-bottom: 0.5%" >
             <el-col :span="24">
-                <el-input v-model="search_content" placeholder="请输入查找信息" clearable maxlength="24"
-                          @blur="open_sel=false" @click="search_for_content()" @input="search_for_content()"
-                          @keyup.enter="sub_p_id(show_p_id)">
+                <el-input v-model="search_content" placeholder="请输入查找信息" maxlength="24"
+                          @click="search_for_content()" @input="search_for_content()"
+                          @keyup.enter="sub_p_id(show_p_id)" >
                     <template #append>
                         <el-button data-testid="search-button" style="color: #42b983" class="iconfont icon-sousuo"
                                    @click="sub_p_id(show_p_id)"/>
@@ -12,9 +12,31 @@
                 </el-input>
             </el-col>
         </el-row>
+        <div >
+            <div v-if="open_sel && search_result_num > 5" class="result_div">
+                <el-scrollbar style="height: 150px">
+                    <div v-for="item in search_result" :key="item.id"
+                         style="padding: 2% 0"
+                         :class="{result_mouseover: mouseover_p_id === item.id}"
+                         @mouseenter="mouseover_p_id = item.id" @mouseleave="mouseover_p_id = -1"
+                         @click="change_show_id(item.id)">
+                        <div style="float: left; padding-left: 4%">
+                            <span class="iconfont icon-sousuo"> </span>
+                        </div>
 
-        <div v-if="open_sel && search_result_num > 5" class="result_div">
-            <el-scrollbar style="height: 150px">
+                        <div style="float: left; padding-left: 5%;" class="max_length">
+                            <span>{{ item.name }}</span>
+                        </div>
+
+                        <div style="float: left; padding-left: 5%">
+                            <span style="color: cornflowerblue">{{ _get_pin_type(item.type) }}</span>
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                </el-scrollbar>
+                <div style="height: 10px"></div>
+            </div>
+            <div v-else-if="open_sel && search_result_num > 0 && search_result_num <= 5" class="result_div">
                 <div v-for="item in search_result" :key="item.id"
                      style="padding: 2% 0"
                      :class="{result_mouseover: mouseover_p_id === item.id}"
@@ -33,38 +55,18 @@
                     </div>
                     <div style="clear: both"></div>
                 </div>
-            </el-scrollbar>
-        </div>
-        <div v-else-if="open_sel && search_result_num > 0 && search_result_num <= 5" class="result_div">
-            <div v-for="item in search_result" :key="item.id"
-                 style="padding: 2% 0;height: 10px"
-                 :class="{result_mouseover: mouseover_p_id === item.id}"
-                 @mouseenter="mouseover_p_id = item.id" @mouseleave="mouseover_p_id = -1"
-                 @click=" change_show_id(item.id)">
-                {{item.id}}
-<!--                <div style="float: left; padding-left: 4%">-->
-<!--                    <span class="iconfont icon-sousuo"> </span>-->
-<!--                </div>-->
-
-<!--                <div style="float: left; padding-left: 5%;" class="max_length">-->
-<!--                    <span>{{ item.name }}</span>-->
-<!--                </div>-->
-
-<!--                <div style="float: left; padding-left: 5%">-->
-<!--                    <span style="color: cornflowerblue">{{ _get_pin_type(item.type) }}</span>-->
-<!--                </div>-->
-<!--                <div style="clear: both"></div>-->
+                <div style="height: 10px"></div>
+            </div>
+            <div v-else-if="open_sel" class="result_div">
+                <el-row>
+                    <el-col :span="24" style="text-align: center">
+                        <span>无相关地点</span>
+                    </el-col>
+                </el-row>
+                <div style="height: 10px"></div>
             </div>
         </div>
-        <div v-else-if="open_sel" class="result_div">
-            <el-row>
-                <el-col :span="24" style="text-align: center">
-                    <span>无相关地点</span>
-                </el-col>
-            </el-row>
-        </div>
-
-    </div>
+    </div >
 </template>
 
 <script>
@@ -74,11 +76,10 @@ import {ElMessage} from "element-plus";
 
 export default {
     name: "PlaceSearch",
-    emits: ['submit_p_id'],
+    props: ['click_map'],
+    emits: ['submit_p_id', 'search_close'],
     data() {
         return {
-            is_display: true,
-
             open_sel: false,
 
             search_content: "",
@@ -161,6 +162,12 @@ export default {
                 console.log("show_p_id: " + newData)
             }
         },
+        click_map(newData, oldData) {
+            if (newData !== oldData && newData === true) {
+                this.open_sel = false
+                this.$emit('search_close')
+            }
+        }
     }
 }
 </script>

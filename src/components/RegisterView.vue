@@ -109,7 +109,7 @@ export default {
                 //todo: 有问题
                 console.log(error)
                 this.$message({
-                    message: '验证码发送失败，请重试',
+                    message: error.response.data.message === null ? "验证码发送错误" : error.response.data.message,
                     type: 'error'
                 })
             })
