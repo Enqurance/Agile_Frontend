@@ -1,34 +1,33 @@
-import InforPage from '../components/InforPage.vue'
-import login from '../components/login.vue'
-import register from '../components/register.vue'
-import MapHomePage from '../components/MapHomePage.vue'
+import InforPage from "@/components/InforPage.vue";
+import MapHomepage from '../components/MapHomepage.vue'
+import LoginView from "@/components/LoginView.vue";
+import RegisterView from "@/components/RegisterView.vue";
 
 const routes = [
     {
         name: 'home',
         path: '/',
-        component: MapHomePage
+        component: MapHomepage
     },
-    { 
+    {
         name: 'InforPage',
-        path: '/InforPage', 
-        query:{} ,
+        path: '/InforPage',
         component: InforPage,
     },
     {
         name: 'login',
         path: '/login',
-        component: login,
+        component: LoginView,
     },
     {
         name: 'register',
         path: '/register',
-        component: register,
+        component: RegisterView,
     },
     {
         name: 'MapHomePage',
-        path: '/MapHomePage',
-        component: MapHomePage,
+        path: '/home',
+        component: MapHomepage,
     }
 ]
 

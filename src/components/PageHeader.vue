@@ -30,46 +30,56 @@ export default {
 </script>
 
 <template>
-    <div class="boby">
-        <ul style="display:flex">
-            <div class="left">
-            <li  style="padding-left:%5; margin-right:%200">
-                <a v-on:click="clickToMap()">Map</a>
-            </li>
-            <li  style="margin-left:20px; margin-right:30px">
-                <a v-on:click="clickToChoose()">Forum</a>
-            </li>
-            </div>
-            <li>
-                <span style="font-weight:550 ;margin-left:100px; margin-right:100px"></span>
-            </li>
-            <div class="right">
-            <li>
-            </li>
-            <li>
-                <a @click="clickToInfor()" round>Infor</a>
-            </li>
-            </div>
-        </ul>
+    <div id="boby">
+        <el-row :gutter="20">
+            <el-col :span="6">
+                <div class="col">
+                    <span style="font-weight:550 ;margin-left:100px; margin-right:100px">BUAA MapForm</span>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div class="col">
+                    <el-button v-on:click="clickToMap()" class="tag">Map</el-button>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div class="col">
+                    <el-button v-on:click="clickToForum()" class="tag">Forum</el-button>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div class="col">
+                    <el-button v-on:click="clickToInfor()" class="tag">Infor</el-button>
+                </div>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
 <style scoped>
-.body{
+#body{
     margin-top: 10%;
-    font-display: 700;
+    /*font-display: 700;*/
     height: 20px;
     width: 20px;
 }
 .ul{
     margin-top: 10%;
 }
+.col{
+    border: solid;
+    border-width: thin;
+    margin: 0;
+}
+.tag{
+    height: 100%;
+    width: 100%;
+}
 .left{
     display: flex;
     align-items: center;
     flex-shrink: 0;
     margin-left: 2%;
-    margin-right: 20%;
 }
 .right{
     display: flex;
