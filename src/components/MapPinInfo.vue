@@ -8,7 +8,7 @@
                         <el-form-item label="名称">
                             <el-input v-model="formData.name"></el-input>
                         </el-form-item>
-                        <el-form-item label="位置">
+                        <el-form-item label="位置描述">
                             <el-input v-model="formData.position"></el-input>
                         </el-form-item>
                         <el-form-item label="简介">
@@ -133,6 +133,15 @@ export default {
             dialogVisible: false,
 
             formData: {}, // 编辑表单数据
+            formTitle: {
+                id:"id",
+                name: "名称",
+                position: "位置描述",
+                brief: "简介",
+                pin_type: "类别",
+                opening_time: "开放时间",
+                phone: "电话"
+            },
 
             dialogTitle: '编辑信息'
         }
@@ -179,6 +188,18 @@ export default {
 
         // 提交修改
         submitForm() {
+            for (var i in this.formData) {
+                if (this.formTitle[i] === "类别") {
+                    if (this.formData[i] === -1) {
+                        return this.$message.error(this.formTitle[i] + "不能为空")
+                    }
+                } else if (this.formTitle[i] === "id") {
+                    continue
+                } else if (this.formData[i].trim().length == 0) {
+                    return this.$message.error(this.formTitle[i] + "不能为空")
+                }
+            }
+
             let that = this
             that.$axios.post('/map/pin/changePinInfoById', {
                 id: that.id,
