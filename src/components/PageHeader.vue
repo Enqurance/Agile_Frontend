@@ -8,7 +8,7 @@ export default {
     let isVisited = ref(true);
     let token = global.global_token;
     if(token == ''){
-      isVisited = false;
+      isVisited = true;
     }
     let router = useRouter()
     let page = toRaw(router).currentRoute.value.fullPath;
@@ -83,10 +83,10 @@ export default {
       </el-col>
       <el-col :span="6">
         <div v-if="isVisited" class="col">
-          <el-button v-on:click="clickToInfor()" class="tag" text :bg="this.isInfor"><span>Infor</span></el-button>
+          <el-button v-on:click="clickToLogin()" class="tag" text :bg="this.isInfor"><span>Login</span></el-button>
         </div>
         <div v-else class="col">
-          <el-button v-on:click="clickToLogin()" class="tag" text :bg="this.isInfor"><span>Login</span></el-button>
+          <el-button v-on:click="clickToInfor()" class="tag" text :bg="this.isInfor"><span>Infor</span></el-button>
         </div>
       </el-col>
     </el-row>

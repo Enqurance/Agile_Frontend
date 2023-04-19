@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from './routes.js'
 import global from "@/global";
+import VueCookies from 'vue-cookies';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -12,7 +13,7 @@ router.beforeEach((to, from, next) => {
   //from表示原来的路径
   //next()通行
   //验证token,只有存在token的时候，才能跳转到内容页
-  let token = global.global_token;
+  let token = VueCookies.get('user_token');
   console.log("token: ", token);
   if ( token == '' && (to.path === "/InforPage")) {
     next("/login");
