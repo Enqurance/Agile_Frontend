@@ -15,7 +15,7 @@ router.beforeEach((to, from, next) => {
   //验证token,只有存在token的时候，才能跳转到内容页
   let token = VueCookies.get('user_token');
   console.log("token: ", token);
-  if ( token == '' && (to.path === "/InforPage")) {
+  if ( token === null && (to.path === "/InforPage")) {
     next("/login");
   } else {
     next();
