@@ -56,6 +56,7 @@ describe("PlaceSearch.vue", () => {
 
         // 检查搜索结果中的每一项，确认它们都包含 "食堂"
         const searchResults = wrapper.findAll('.max_length span');
+        console.log(searchResults.length);
         searchResults.forEach((result) => {
             expect(result.text()).toContain('食堂');
         });

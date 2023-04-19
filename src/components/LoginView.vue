@@ -1,22 +1,23 @@
 <template>
+
     <div class="login-container">
         <div class="logo-container">
             <img src="https://s2.loli.net/2023/04/11/b8pzQZCJNeoSmyE.jpg" alt="logo" style="width: 100%; height: auto;">
         </div>
         <div class="form-container">
-            <el-form ref="loginForm" :model="loginForm" class="login-form">
-                <el-form-item prop="email">
-                    <el-input v-model="loginForm.email" placeholder="请输入用户邮箱" @keyup.enter="login"></el-input>
+            <el-form ref="loginForm" :model="loginForm" class="login-form" >
+                <el-form-item prop="email" >
+                    <el-input v-model="loginForm.email" placeholder="请输入用户邮箱" @keyup.enter="login" data-testid="email-input"></el-input>
                 </el-form-item>
-                <el-form-item prop="password">
-                    <el-input type="password" v-model="loginForm.password" placeholder="请输入密码"
+                <el-form-item prop="password"  ref="passwordInput">
+                    <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" data-testid="password-input"
                               @keyup.enter="login"></el-input>
                 </el-form-item>
 
                 <el-form-item>
                     <div class="button-container">
                         <el-button @click="goToRegister">注册</el-button>
-                        <el-button type="primary" @click="login">登录</el-button>
+                        <el-button type="primary" @click="login" data-testid="login button">登录</el-button>
                     </div>
                 </el-form-item>
             </el-form>
