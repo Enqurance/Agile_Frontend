@@ -33,3 +33,4 @@ jobs:
           git checkout dev
           npm install
           npm run build
+          sudo cp -r ./dist /var/www
