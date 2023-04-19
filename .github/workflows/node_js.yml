@@ -6,7 +6,7 @@ on:
       - dev
   push:
     branches:
-      - feature/CICD
+      - chore/CICD
 
 jobs:
   deploy:
@@ -15,13 +15,6 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
-    - name: Install dependencies
-      run: |
-        npm install
-    - name: Build project
-      run: |
-        npm run build
-
     - name: Connect to Remote
       uses: appleboy/ssh-action@master
       with:
@@ -29,8 +22,14 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SERVER_KEY }}
         script: |
+          export PATH="$PATH:/home/ubuntu/.nvm/versions/node/v16.13.0/bin"
+          echo "Deploying"
+          which node
+          node -v
           cd Deploy
           rm -rf Agile_Frontend
           git clone git@github.com:Enqurance/Agile_Frontend.git
           cd Agile_Frontend
           git checkout dev
+          npm install
+          npm run build
