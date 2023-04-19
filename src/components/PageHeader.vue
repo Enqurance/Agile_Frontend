@@ -5,11 +5,6 @@ import { useRouter } from 'vue-router';
 
 export default {
   setup(){
-    let isVisited = ref(true);
-    let token = global.global_token;
-    if(token == ''){
-      isVisited = true;
-    }
     let router = useRouter()
     let page = toRaw(router).currentRoute.value.fullPath;
     console.log(page);
@@ -30,7 +25,7 @@ export default {
       isInfor = false;
     }
 
-    return {isMap, isForum, isInfor, isVisited};
+    return {isMap, isForum, isInfor};
   },
   methods: {
     clickToMap(){
@@ -82,7 +77,7 @@ export default {
         </div>
       </el-col>
       <el-col :span="6">
-        <div v-if="isVisited" class="col">
+        <div v-if="this.$cookies.get('user_token') === null" class="col">
           <el-button v-on:click="clickToLogin()" class="tag" text :bg="this.isInfor"><span>Login</span></el-button>
         </div>
         <div v-else class="col">

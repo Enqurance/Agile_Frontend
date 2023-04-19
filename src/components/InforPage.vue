@@ -48,10 +48,10 @@ export default {
   methods: {
     initInfor(){
       let that = this;
-      console.log(global.global_token);
+      console.log(that.$cookies.get('user_token'));
       that.$axios.get('user/getUserByToken', {
         headers: {
-          'token': global.global_token
+          'token': that.$cookies.get('user_token')
         }
       }).then((res) => {
         console.log(res);
@@ -78,7 +78,7 @@ export default {
     },
     updateEdit(){
       console.log(this.user);
-      console.log(global.global_token);
+      console.log(that.$cookies.get('user_token'));
       let that = this;
       that.$axios.post('user/changeUserBasicByToken' ,
           { name: this.user.name,
@@ -87,7 +87,7 @@ export default {
             gender: this.user.gender,
             description: this.user.description,},
           { headers: {
-              'token': global.global_token
+              'token': that.$cookies.get('user_token')
         },
       }).then((res) => {
         console.log(res);
@@ -110,10 +110,10 @@ export default {
     },
 
     changePassword(){
-      that.$axios.post('user/changePasswordByToken' + global_token,
+      that.$axios.post('user/changePasswordByToken',
           {password: this.user.description,},
           { headers: {
-          'token': global.global_token
+          'token': that.$cookies.get('user_token')
         },
       }).then((res) => {
         console.log(res);
