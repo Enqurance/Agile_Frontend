@@ -1,27 +1,32 @@
 // tests/components/Counter.spec.js
 import { mount } from "@vue/test-utils";
 import Counter from "@/components/Counter.vue";
+import ElementPlus, {ElButton} from 'element-plus';
+import 'element-plus/theme-chalk/index.css';
+
+jest.mock('element-plus/theme-chalk/index.css', () => ({
+    __esModule: true,
+    default: '',
+}));
 
 describe("Counter.vue", () => {
-    it("renders count value and buttons", () => {
-        const wrapper = mount(Counter);
-        expect(wrapper.find("span").text()).toBe("0");
-        expect(wrapper.findAll("button").length).toBe(2);
+    let wrapper;
+
+    beforeEach(() => {
+        wrapper = mount(Counter, {
+            global: {
+                plugins: [ElementPlus],
+            },
+        });
     });
 
-    it("increments the count value when + button is clicked", async () => {
-        const wrapper = mount(Counter);
-        const incrementButton = wrapper.find("button:nth-child(1)");
-
-        await incrementButton.trigger("click");
-        expect(wrapper.find("span").text()).toBe("1");
+    afterEach(() => {
+        wrapper.unmount();
     });
 
-    it("decrements the count value when - button is clicked", async () => {
-        const wrapper = mount(Counter);
-        const decrementButton = wrapper.find("button:nth-child(3)");
-
-        await decrementButton.trigger("click");
-        expect(wrapper.find("span").text()).toBe("-1");
+    it('test', async () => {
+        const button = wrapper.findComponent(ElButton);
+        expect(button.exists()).toBe(true);
     });
+
 });

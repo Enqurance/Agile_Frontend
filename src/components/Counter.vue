@@ -1,14 +1,15 @@
 <!-- src/components/Counter.vue -->
 <template>
   <div>
-    <button @click="increment">+</button>
-    <span>{{ count }}</span>
-    <button @click="decrement">-</button>
+    <feedback-button></feedback-button>
+    <el-button></el-button>
   </div>
 </template>
 
 <script>
+import FeedbackButton from "@/components/FeedbackButton";
 export default {
+  components: {FeedbackButton},
   data() {
     return {
       count: 0,
