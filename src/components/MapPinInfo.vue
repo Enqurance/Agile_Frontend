@@ -2,7 +2,7 @@
     <div class="map-pin-info">
         <el-drawer :title="info.name" direction="ltr" v-model="drawer" :with-header="true">
             <div>
-                <el-button type="primary" @click="editInfo">编辑信息</el-button>
+                <el-button type="primary" @click="editInfo" testid="1">编辑信息</el-button>
                 <el-dialog :title="dialogTitle" v-model="dialogVisible">
                     <el-form :model="formData" label-width="100px">
                         <el-form-item label="名称">

@@ -1,9 +1,10 @@
 <!-- src/components/Counter.vue -->
 <template>
   <div>
-    <button @click="increment">+</button>
-    <span>{{ count }}</span>
-    <button @click="decrement">-</button>
+    <el-button testid="123">
+      123
+    </el-button>
+
   </div>
 </template>
 
