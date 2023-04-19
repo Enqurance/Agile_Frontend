@@ -1,4 +1,8 @@
 <template>
+    <el-header height="30px">
+      <PageHeader/>
+    </el-header>
+    <el-main>
     <div class="on_div">
         <PlaceSearch style="width: 100%; height: 30%; margin-top: 30%; margin-left: 30%"
                      @submit_p_id="(e) => concentrate_pin(e)" :click_map="close_search" @search_close="close_search=false" />
@@ -9,6 +13,7 @@
     </div>
     <MapPinAdd :is_add_pin="is_add_marker" :lnglat="click_marker_lnglat" @addMarker="(e) => new_pin(e)"
                @close_dialog="this.is_add_marker = false"/>
+    </el-main>
 </template>
 
 <script>
@@ -18,6 +23,7 @@ import {ElMessageBox, ElMessage} from "element-plus";
 import MapPinInfo from "@/components/MapPinInfo.vue";
 import MapPinAdd from "@/components/MapPinAdd.vue";
 import PlaceSearch from "@/components/PlaceSearch.vue";
+import PageHeader from "@/components/PageHeader";
 
 
 export default {
@@ -26,6 +32,7 @@ export default {
         MapPinInfo,
         MapPinAdd,
         PlaceSearch,
+        PageHeader,
     },
     data() {
         let map = shallowRef(null)
