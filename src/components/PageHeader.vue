@@ -1,111 +1,120 @@
 <script>
+import {ref,  toRaw} from 'vue'
+import global from "@/global";
+import { useRouter } from 'vue-router';
+
 export default {
-    setup(){
-        
+  setup(){
+    let isVisited = ref(true);
+    let token = global.global_token;
+    if(token == ''){
+      isVisited = false;
+    }
+    let router = useRouter()
+    let page = toRaw(router).currentRoute.value.fullPath;
+    console.log(page);
+    let isMap = ref(false);
+    let isForum = ref(false);
+    let isInfor = ref(true);
+    if(page === '/home'){
+      isMap = true;
+      isForum = false;
+      isInfor = false;
+    }else if(page === '/Infor'){
+      isMap = false;
+      isForum = false;
+      isInfor = true;
+    }else if(page === '/forum'){
+      isMap = false;
+      isForum = true;
+      isInfor = false;
+    }
+
+    return {isMap, isForum, isInfor, isVisited};
+  },
+  methods: {
+    clickToMap(){
+      this.$router.push({
+        path: '/home',
+        query: {
+        },
+      });
     },
-    methods: {
-        clickToMap(){
-            this.$router.push({
-                path: '/Map',
-                query: {
-                },
-            });
+    clickToInfor(){
+      this.$router.push({
+        path: '/InforPage',
+        query: {
         },
-        clickToInfor(){
-            this.$router.push({
-                path: '/InforPage',
-                query: {
-                },
-            });
-        },
-        clickToForum(){
-            this.$router.push({
-                path: '/',
-                query: {
-                },
-            });
-        },
+      });
     },
+    clickToForum(){
+      this.$router.push({
+        path: '/',
+        query: {
+        },
+      });
+    },
+    clickToLogin(){
+      this.$router.push({
+        path: '/login',
+        query: {
+        },
+      });
+    },
+  },
 }
 </script>
 
 <template>
-    <div id="boby">
-        <el-row :gutter="20">
-            <el-col :span="6">
-                <div class="col">
-                    <span style="font-weight:550 ;margin-left:100px; margin-right:100px">BUAA MapForm</span>
-                </div>
-            </el-col>
-            <el-col :span="6">
-                <div class="col">
-                    <el-button v-on:click="clickToMap()" class="tag">Map</el-button>
-                </div>
-            </el-col>
-            <el-col :span="6">
-                <div class="col">
-                    <el-button v-on:click="clickToForum()" class="tag">Forum</el-button>
-                </div>
-            </el-col>
-            <el-col :span="6">
-                <div class="col">
-                    <el-button v-on:click="clickToInfor()" class="tag">Infor</el-button>
-                </div>
-            </el-col>
-        </el-row>
-    </div>
+  <div class="boby">
+    <el-row :gutter="20">
+      <el-col :span="6">
+        <div class="col">
+          <span style="font-weight:550 ;margin-left:10%">BUAAMapForum</span>
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <el-button v-on:click="clickToMap()" class="tag" text :bg="this.isMap"><span style="font-weight:500;">Map</span></el-button>
+      </el-col>
+      <el-col :span="6">
+        <div class="col">
+          <el-button v-on:click="clickToForum()" class="tag" text :bg="this.isForum"><span>Forum</span></el-button>
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <div v-if="isVisited" class="col">
+          <el-button v-on:click="clickToInfor()" class="tag" text :bg="this.isInfor"><span>Infor</span></el-button>
+        </div>
+        <div v-else class="col">
+          <el-button v-on:click="clickToLogin()" class="tag" text :bg="this.isInfor"><span>Login</span></el-button>
+        </div>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <style scoped>
-#body{
-    margin-top: 10%;
-    /*font-display: 700;*/
-    height: 20px;
-    width: 20px;
+.class{
+  margin-top: 5%;
 }
-.ul{
-    margin-top: 10%;
+.el-col el-col-6 is-guttered{
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 .col{
-    border: solid;
-    border-width: thin;
-    margin: 0;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+  margin: 0;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 .tag{
-    height: 100%;
-    width: 100%;
-}
-.left{
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-    margin-left: 2%;
-    margin-right: 20%;
-}
-.right{
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-    margin-left: 20%;
-    margin-right: 2%;
-}
-.li{
-    border: 0;
-    font-family: inherit;
-    font-size: 100%;
-    font-weight: 400;
-    font-style: normal;
-    line-height: 1.55;
-    display: list-item;
-    text-align: -webkit-match-parent;
+  height: 100%;
+  width: 100%;
 }
 span{
-    font-size: 120%;
+  font-size: 120%;
 }
 a{
-    font-size: 120%;
-    font-weight: 550;
+  font-size: 120%;
+  font-weight: 550;
 }
 </style>
