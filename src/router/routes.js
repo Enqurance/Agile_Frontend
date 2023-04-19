@@ -10,6 +10,11 @@ const routes = [
         component: MapHomepage
     },
     {
+        name: 'map',
+        path: '/home',
+        component: MapHomepage
+    },
+    {
         name: 'InforPage',
         path: '/InforPage',
         component: InforPage,
@@ -24,11 +29,6 @@ const routes = [
         path: '/register',
         component: RegisterView,
     },
-    {
-        name: 'MapHomePage',
-        path: '/home',
-        component: MapHomepage,
-    }
 ]
 
 export default routes
