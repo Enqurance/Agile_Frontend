@@ -53,8 +53,8 @@ export default {
                 password: that.loginForm.password
             }).then((res) => {
                 if (res.data.code === 200) {
-                    that.$cookies.set('user_token', res.data.data.token, 1200);
-                    that.$cookies.set('user_type', res.data.data.type, 1200);
+                    that.$cookies.set('user_token', res.data.data.token, 3600);
+                    that.$cookies.set('user_type', res.data.data.type, 3600);
                     that.$router.push({path: '/home'})
                 }
                 else {
