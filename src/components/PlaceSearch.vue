@@ -115,7 +115,7 @@ export default {
                 search_content: that.search_content,
             }, {
                 headers: {
-                    'token': global.global_token
+                    'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
                 that.search_result = res.data.data.search_result_list

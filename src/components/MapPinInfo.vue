@@ -153,7 +153,7 @@ export default {
                 id: that.id,
             }, {
                 headers: {
-                    'token': global.global_token
+                    'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
                 console.log(res)
@@ -190,7 +190,7 @@ export default {
                 phone: that.formData.phone
             }, {
                 headers: {
-                    'token': global.global_token
+                    'token': that.$cookies.get('user_token')
                 }
             })
                 .then(response => {

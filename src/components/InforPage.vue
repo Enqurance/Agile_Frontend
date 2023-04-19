@@ -47,9 +47,10 @@ export default {
     methods: {
         initInfor() {
             let that = this;
+            // todo  InfoPage--global_user_id
             that.$axios.post('/user/getUserByToken/' + global.global_user_id, {}, {
                 headers: {
-                    'token': global.global_token
+                    'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
                 console.log(res);
@@ -67,9 +68,10 @@ export default {
         },
         updateEdit() {
             let that = this;
+            // todo  InfoPage--global_user_id
             that.$axios.post('/user/changeUserBasicByToken/' + global.global_user_id, {}, {
                 headers: {
-                    'token': global.global_token
+                    'token': that.$cookies.get('user_token')
                 },
                 body: {
                     name: this.user.name,

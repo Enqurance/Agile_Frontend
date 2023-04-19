@@ -25,8 +25,6 @@
 </template>
 
 <script>
-import global from '@/global'
-
 export default {
     name: "LoginPage",
     data() {
@@ -55,8 +53,8 @@ export default {
                 password: that.loginForm.password
             }).then((res) => {
                 if (res.data.code === 200) {
-                    global.global_token = res.data.data.token
-                    global.global_type = res.data.data.type
+                    that.$cookies.set('user_token', res.data.data.token, 1200);
+                    that.$cookies.set('user_type', res.data.data.type, 1200);
                     that.$router.push({path: '/home'})
                 }
                 else {
