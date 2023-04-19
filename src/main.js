@@ -14,7 +14,6 @@ app.use(router)
 app.use(VueCookies)
 app.use(ElementPlus)
 
-
 app.config.globalProperties.$axios = axiosInstance
 app.config.globalProperties.$router = router
 

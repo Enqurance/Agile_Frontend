@@ -1,11 +1,11 @@
 <template>
     <div class="on_div">
-        <PlaceSearch style="width: 100%; height: 20px; margin-top: 30%; margin-left: 30%"
-                     @submit_p_id="(e) => concentrate_pin(e)"/>
+        <PlaceSearch style="width: 100%; height: 30%; margin-top: 30%; margin-left: 30%"
+                     @submit_p_id="(e) => concentrate_pin(e)" :click_map="close_search" @search_close="close_search=false" />
         <MapPinInfo :id="show_marker_id" @close_drawer="show_marker_id = -1"/>
     </div>
     <div :style="{width: screen_params.screenX+'px', height: screen_params.screenY+'px'}" class="bottom_div">
-        <div id="container" style="width: 100%; height: 100%"></div>
+        <div id="container" style="width: 100%; height: 100%" @click="close_search=true"></div>
     </div>
     <MapPinAdd :is_add_pin="is_add_marker" :lnglat="click_marker_lnglat" @addMarker="(e) => new_pin(e)"
                @close_dialog="this.is_add_marker = false"/>
@@ -30,6 +30,8 @@ export default {
     data() {
         let map = shallowRef(null)
         return {
+            close_search: false,
+
             screen_params: {
                 screenX: 0,
                 screenY: 0
@@ -38,10 +40,10 @@ export default {
             map,
             beihang_center: [
                 116.347313,
-                39.9813
+                39.9815
             ],
             beihang_zoom: [
-                16.5,
+                16.2,
                 20
             ],
 
@@ -84,8 +86,14 @@ export default {
 
                 this.map = new AMap.Map('container', {
                     viewMode: '3D',
-                    zoom: 16.5,
+                    zoom: 16.2,
                     center: that.beihang_center,
+                    // layers: [
+                    //     // 卫星
+                    //     new AMap.TileLayer.Satellite(),
+                    //     // 路网
+                    //     new AMap.TileLayer.RoadNet()
+                    // ],
                     features: ['bg', 'road', 'building']
                 })
                 this.map.setZooms(that.beihang_zoom)
@@ -261,8 +269,8 @@ export default {
             })
         },
         concentrate_pin(pin_id) {
-            this.map.setCenter(this.markers_info[pin_id].lnglat)
-            this.map.setZoom(18)
+            // this.map.setCenter(this.markers_info[pin_id].lnglat)
+            // this.map.setZoom(18)
         }
     },
 }

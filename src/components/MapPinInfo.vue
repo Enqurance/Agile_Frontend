@@ -143,7 +143,6 @@ export default {
             return global.get_pin_type(pin_type_id)
         },
         handleDblClick() {
-            this.drawer = true;
             this.getPinInfoById();
         },
         // 获取地图钉信息
@@ -166,6 +165,7 @@ export default {
 
                 that.photos = res.data.data.photos
                 that.services = res.data.data.services
+                that.drawer = true;
             }).catch((res) => console.log(res))
         },
 
