@@ -116,7 +116,7 @@ export default {
 
             let that = this
             that.$axios.post('map/pin_search', {
-                search_content: that.search_content,
+                searchContext: that.search_content,
             }, {
                 headers: {
                     'token': that.$cookies.get('user_token')
