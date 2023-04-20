@@ -21,7 +21,9 @@
                     @keyup.enter="register"></el-input>
                 </el-form-item>
                 <el-form-item prop="emailCodeBotton" style="flex: 1;">
-                    <el-button type="primary" @click="sendEmailCode" class="button_left">发送验证码</el-button>
+                    <el-button :disabled="countdown > 0" type="primary" @click="sendEmailCode" class="button_left"  style="width: 100px;">
+                        {{ countdown > 0 ? `${countdown}秒后重发` : '发送验证码'}}
+                    </el-button>
                 </el-form-item>
                 </div>
 
@@ -70,6 +72,7 @@ export default {
     name: "registerPage",
     data() {
         return {
+            countdown: 0,
             registerForm: {
                 username: "",
                 email: "",
@@ -105,6 +108,7 @@ export default {
                     message: '验证码发送成功，请查收邮件',
                     type: 'success'
                 })
+                this.startCountdown();
             }).catch((error) => {
                 //todo: 有问题
                 console.log(error)
@@ -115,6 +119,15 @@ export default {
             })
         },
 
+        startCountdown() {
+            this.countdown = 60;
+            const interval = setInterval(() => {
+                this.countdown--;
+                if (this.countdown <= 0) {
+                    clearInterval(interval);
+                }
+            }, 1000);
+        },
 
         register() {
             for (var i in this.registerForm) {
