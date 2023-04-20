@@ -1,15 +1,17 @@
 <template>
     <div class="map-pin-info">
-        <el-drawer :title="info.name" direction="ltr" v-model="drawer" :with-header="true">
+        <el-drawer :title="info.name" direction="ltr" v-model="drawer" 
+        :with-header="true" :append-to-body="true" class="my-drawer">
             <div>
                 <el-button type="primary" @click="editInfo">编辑信息</el-button>
                 <el-dialog :title="dialogTitle" v-model="dialogVisible">
                     <el-form :model="formData" label-width="100px">
                         <el-form-item label="名称">
-                            <el-input v-model="formData.name"></el-input>
+                            <el-input v-model="formData.name" maxlength="20" ></el-input>
                         </el-form-item>
                         <el-form-item label="简介">
-                            <el-input v-model="formData.brief"></el-input>
+                            <el-input v-model="formData.brief" 
+                            type="textarea" autosize maxlength="100"></el-input>
                         </el-form-item>
                         <el-form-item label="类别">
                             <el-radio-group v-model="formData.pin_type">
@@ -23,10 +25,12 @@
                             </el-radio-group>
                         </el-form-item>
                         <el-form-item label="位置描述">
-                            <el-input v-model="formData.position"></el-input>
+                            <el-input v-model="formData.position"
+                            type="textarea" autosize maxlength="100"></el-input>
                         </el-form-item>
                         <el-form-item label="开放时间">
-                            <el-input v-model="formData.opening_time"></el-input>
+                            <el-input v-model="formData.opening_time" 
+                            type="textarea" autosize maxlength="100"></el-input>
                         </el-form-item>
                         <el-form-item label="电话">
                             <el-input v-model="formData.phone"></el-input>
@@ -42,13 +46,13 @@
             <div class="pin-info">
                 <el-card :body-style="{ padding: '10px' }">
                     <h4>Info</h4>
-                    <p>{{ info.name }}</p>
-                    <p>{{ info.position }}</p>
-                    <p>{{ info.brief }}</p>
+                    <!-- <p>{{ info.name }}</p> -->
+                    <p>{{ "位置描述：" + info.position }}</p>
+                    <p>{{ "简介：" + info.brief }}</p>
                     <!-- <p> {{ pin_tag }}</p> -->
-                    <p>{{ _get_pin_type(info.pin_type) }}</p>
-                    <p>{{ info.opening_time }}</p>
-                    <p>{{ info.phone }}</p>
+                    <p>{{ "类型：" + _get_pin_type(info.pin_type) }}</p>
+                    <p>{{ "开放时间：" + info.opening_time }}</p>
+                    <p>{{ "电话：" + info.phone }}</p>
                 </el-card>
             </div>
 
@@ -268,5 +272,5 @@ export default {
     width: 100%;
     height: 100%;
     object-fit: contain;
-}
+} 
 </style>

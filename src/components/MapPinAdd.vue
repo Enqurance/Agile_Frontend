@@ -3,10 +3,11 @@
         <el-dialog :title="dialogTitle" v-model="dialogVisible">
             <el-form :model="formData" label-width="100px">
                 <el-form-item label="名称">
-                    <el-input v-model="formData.name"></el-input>
+                    <el-input v-model="formData.name" maxlength="20"></el-input>
                 </el-form-item>
                 <el-form-item label="简介">
-                    <el-input v-model="formData.brief"></el-input>
+                    <el-input v-model="formData.brief" 
+                    type="textarea" autosize maxlength="100"></el-input>
                 </el-form-item>
                 <el-form-item label="类别">
                     <el-radio-group v-model="formData.pin_type">
@@ -20,10 +21,12 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="位置描述">
-                    <el-input v-model="formData.position"></el-input>
+                    <el-input v-model="formData.position" 
+                    type="textarea" autosize maxlength="100"></el-input>
                 </el-form-item>
                 <el-form-item label="开放时间">
-                    <el-input v-model="formData.opening_time"></el-input>
+                    <el-input v-model="formData.opening_time"
+                    type="textarea" autosize maxlength="100"></el-input>
                 </el-form-item>
                 <el-form-item label="电话">
                     <el-input v-model="formData.phone"></el-input>
