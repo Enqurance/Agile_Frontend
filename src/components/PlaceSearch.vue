@@ -94,6 +94,8 @@ export default {
             mouseover_p_id: -1,
             show_p_id: -1,
 
+            search_lock: false
+
         }
     },
     computed: {
@@ -109,13 +111,14 @@ export default {
     methods: {
         search_for_content() {
             this.show_p_id = -1
+            this.open_sel = false
+            this.mouseover_p_id = -1
             if (this.search_content === "") {
-                this.show_p_id = -1
-                this.open_sel = false
                 return
             }
 
             let that = this
+            this.search_lock = true
             that.$axios.post('map/pin_search', {
                 searchContext: that.search_content,
             }, {
@@ -127,7 +130,14 @@ export default {
                 that.search_result = res.data.data.search_result_list
                 that.show_p_id = res.data.data.max_suit_p_id
                 that.open_sel = true
-            }).catch((res) => console.log(res))
+                that.search_lock = false
+                if (this.search_content === "") {
+                    that.open_sel = false
+                }
+            }).catch((res) => {
+                console.log(res)
+                that.open_sel = false
+            })
         },
         sub_p_id(p_id) {
             if (this.show_p_id === -1) {
@@ -169,7 +179,7 @@ export default {
                 this.open_sel = false
                 this.$emit('search_close')
             }
-        }
+        },
     }
 }
 </script>
