@@ -108,6 +108,7 @@ export default {
     },
     methods: {
         search_for_content() {
+            this.show_p_id = -1
             if (this.search_content === "") {
                 this.show_p_id = -1
                 this.open_sel = false
@@ -122,9 +123,9 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
-                console.log(res)
+                // console.log(res)
                 that.search_result = res.data.data.search_result_list
-                that.show_p_ip = res.data.data.max_suit_p_id
+                that.show_p_id = res.data.data.max_suit_p_id
                 that.open_sel = true
             }).catch((res) => console.log(res))
         },
@@ -143,8 +144,9 @@ export default {
             }
         },
         change_show_id(p_id) {
-            console.log("show_p_id: " + p_id)
+            // console.log("show_p_id: " + p_id)
             this.show_p_id = p_id
+            this.mouseover_p_id = -1
             this.sub_p_id(p_id)
         },
         _get_pin_type(pin_type_id) {
@@ -154,12 +156,12 @@ export default {
     watch: {
         search_content(newData, oldData) {
             if (newData !== oldData) {
-                console.log("search_content: " + newData)
+                // console.log("search_content: " + newData)
             }
         },
         show_p_id(newData, oldData) {
             if (newData !== oldData) {
-                console.log("show_p_id: " + newData)
+                // console.log("show_p_id: " + newData)
             }
         },
         click_map(newData, oldData) {
