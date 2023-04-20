@@ -7,7 +7,7 @@ export default {
   setup(){
     let router = useRouter()
     let page = toRaw(router).currentRoute.value.fullPath;
-    console.log(page);
+    // console.log(page);
     let isMap = ref(false);
     let isForum = ref(false);
     let isInfor = ref(true);
