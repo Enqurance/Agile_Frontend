@@ -98,7 +98,8 @@ export default {
         id: -1
     },
     emits: [
-        'close_drawer'
+        'close_drawer',
+        'update_info'
     ],
     data() {
         return {
@@ -155,7 +156,7 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
-                console.log(res)
+                // console.log(res)
                 that.info.name = res.data.data.pin.name
                 that.info.position = res.data.data.pin.position
                 that.info.brief = res.data.data.pin.brief
@@ -202,7 +203,12 @@ export default {
                 }
             })
                 .then(response => {
-                    console.log(response);
+                    // console.log(response);
+                    that.$emit('update_info', {
+                        id: that.id,
+                        name: that.formData.name,
+                        type: that.formData.pin_type,
+                    })
                     this.dialogVisible = false;
                 })
                 .catch(error => {

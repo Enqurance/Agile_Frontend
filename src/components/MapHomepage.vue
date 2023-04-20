@@ -8,7 +8,7 @@
             <PlaceSearch style="width: 100%; height: 30%; margin-top: 30%; margin-left: 30%"
                          @submit_p_id="(e) => concentrate_pin(e)" :click_map="close_search"
                          @search_close="close_search=false"/>
-            <MapPinInfo :id="show_marker_id" @close_drawer="show_marker_id = -1"/>
+            <MapPinInfo :id="show_marker_id" @close_drawer="show_marker_id = -1" @update_info="update_pin" />
         </div>
         <div :style="{width: screen_params.screenX+'px', height: screen_params.screenY+'px'}" class="bottom_div">
             <div id="container" style="width: 100%; height: 100%" @click="close_search=true"></div>
@@ -72,7 +72,11 @@ export default {
             markers_info: Object,
             delete_marker_id: 0,
 
-            center_pin_id: -1
+            center_pin_id: -1,
+
+            markers: {
+
+            }
         }
     },
     mounted() {
@@ -131,11 +135,12 @@ export default {
                         let info = Object.assign({}, {
                             id: marker_info
                         }, that.markers_info[marker_info])
-                        console.log(marker_info)
+                        // console.log(marker_info)
                         this.add_marker(info)
                     }
 
                     this.init_menu()
+                    // console.log(that.markers)
                 }).catch((res) => {
                     console.log(res)
                 })
@@ -221,6 +226,10 @@ export default {
                 content: info.name,
                 direction: 'top-center',
             })
+            this.markers[info["id"]] = {
+                marker: marker
+            }
+            // console.log(this.markers)
 
             this.markers_info[info.id] = {
                 name: info.name,
@@ -263,6 +272,7 @@ export default {
                         }).then((res) => {
                             Reflect.deleteProperty(that.markers_info, that.delete_marker_id)
                             marker.setMap(null)
+                            delete that.markers_info[marker.id]
                             marker = null
                             ElMessage({
                                 type: 'success',
@@ -281,6 +291,29 @@ export default {
         concentrate_pin(pin_id) {
             this.map.setCenter(this.markers_info[pin_id].lnglat)
             this.map.setZoom(18)
+        },
+        update_pin(e) {
+            // console.log(this.markers_info[e.id])
+            let info = this.markers_info[e.id]
+            if (info.name !== e.name || info.type !== e.type) {
+                console.log(1)
+                this.markers_info[e.id] = {
+                    name: e.name,
+                    type: e.type,    // 决定marker样式
+                    visibility: this.markers_info[e.id].visibility,
+                    lnglat: this.markers_info[e.id].lnglat
+                }
+                let marker = this.markers[e.id].marker
+                // console.log(marker)
+                marker.setLabel({
+                    // eslint-disable-next-line no-undef
+                    offset: new AMap.Pixel(0, -5),
+                    content: this.markers_info[e.id].name,
+                    direction: 'top-center'
+                })
+
+                // console.log(this.markers_info[e.id])
+            }
         }
     },
 }
