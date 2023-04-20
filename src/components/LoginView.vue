@@ -52,15 +52,16 @@ export default {
                 email: that.loginForm.email,
                 password: that.loginForm.password
             }).then((res) => {
-                if (res.data.code === 200) {
-                    that.$cookies.set('user_token', res.data.data.token, 3600);
-                    that.$cookies.set('user_type', res.data.data.type, 3600);
-                    that.$router.push({path: '/home'})
-                }
-                else {
-                    alert(res.data.message)
-                }
-            }).catch((res) => console.log(res))
+                that.$cookies.set('user_token', res.data.data.token, 3600);
+                that.$cookies.set('user_type', res.data.data.type, 3600);
+                that.$router.push({path: '/home'})
+            }).catch((err) => {
+                this.$message({
+                    message: err.response.data.message === null ? "网络错误" : err.response.data.message,
+                    type: 'error'
+                })
+                // console.log(res)
+            })
         },
 
         goToRegister() {

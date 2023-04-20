@@ -109,11 +109,10 @@ export default {
                     type: 'success'
                 })
                 this.startCountdown();
-            }).catch((error) => {
-                //todo: 有问题
-                console.log(error)
+            }).catch((err) => {
+                // console.log(error)
                 this.$message({
-                    message: error.response.data.message === null ? "验证码发送错误" : error.response.data.message,
+                    message: err.response.data.message === null ? "验证码发送错误" : err.response.data.message,
                     type: 'error'
                 })
             })
