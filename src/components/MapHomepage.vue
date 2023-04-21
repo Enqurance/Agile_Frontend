@@ -5,7 +5,7 @@
         <!--        </el-header>-->
         <!--        <el-main style="height: 93%">-->
         <div class="on_div">
-            <PlaceSearch style="width: 100%; height: 30%; margin-top: 30%; margin-left: 30%"
+            <PlaceSearch style="width: 18%; height: 30%; margin-top: 5%; margin-left: 3%"
                          @submit_p_id="(e) => concentrate_pin(e)" :click_map="close_search"
                          @search_close="close_search=false"/>
             <MapPinInfo :id="show_marker_id" @close_drawer="show_marker_id = -1" @update_info="update_pin" />
@@ -324,6 +324,7 @@ export default {
 .on_div {
     top: 0;
     position: absolute;
+    width: 100%;
     z-index: 2;
 }
 
