@@ -5,15 +5,15 @@
         <!--        </el-header>-->
         <!--        <el-main style="height: 93%">-->
         <div class="on_div">
-            <PlaceSearch style="width: 18%; height: 30%; margin-top: 5%; margin-left: 3%; float: left"
+            <PlaceSearch style="width: 18%; height: 30%; margin-top: 5%; margin-left: 3%"
                          @submit_p_id="(e) => concentrate_pin(e)" :click_map="close_search"
                          @search_close="close_search=false"/>
             <MapPinInfo :id="show_marker_id" @close_drawer="show_marker_id = -1" @update_info="update_pin"/>
 
-            <div style="width: 30%; float: right; margin-right: 2%;background: #42b983; margin-top: 4%">
-                <el-checkbox-group v-model="checkedTypes" @change="handleCheckedCitiesChange" style="width: 100%">
+            <div class="type_class">
+                <el-checkbox-group v-model="checkedTypes" style="padding-left: 10%; width: 100px" @change="markers_change">
                     <el-checkbox v-for="type in types" :key="type" :label="type">
-                        <span style="color: black">{{ type }}</span>
+                        <span style="opacity: 1; color: black; font-weight: bolder">{{ type }}</span>
                     </el-checkbox>
                 </el-checkbox-group>
             </div>
@@ -36,6 +36,8 @@ import MapPinInfo from "@/components/MapPinInfo.vue";
 import MapPinAdd from "@/components/MapPinAdd.vue";
 import PlaceSearch from "@/components/PlaceSearch.vue";
 import PageHeader from "@/components/PageHeader";
+import global from "@/global";
+import {last} from "eslint-plugin-vue/lib/utils/indent-utils";
 
 
 export default {
@@ -84,9 +86,24 @@ export default {
             center_pin_id: -1,
 
             markers: {},
+            show_types: {
+                "餐饮": [],
+                "园地": [],
+                "教学": [],
+                "体育": [],
+                "办公": [],
+                "购物": [],
+                "生活服务": [],
+            },
 
             checkedTypes: [
-
+                "餐饮",
+                "园地",
+                "教学",
+                "体育",
+                "办公",
+                "购物",
+                "生活服务",
             ],
             types: [
                 "餐饮",
@@ -96,7 +113,16 @@ export default {
                 "办公",
                 "购物",
                 "生活服务",
-            ]
+            ],
+            last_types: [
+                "餐饮",
+                "园地",
+                "教学",
+                "体育",
+                "办公",
+                "购物",
+                "生活服务",
+            ],
         }
     },
     mounted() {
@@ -203,6 +229,13 @@ export default {
             //右键添加Marker标记
             // eslint-disable-next-line no-unused-vars
             contextMenu.addItem("添加标记", function () {
+                if (!that.$cookies.get('user_token')) {
+                    that.$message({
+                        message: '请先登录!',
+                        type: "warning"
+                    })
+                    that.$router.push({path: '/login'})
+                }
                 that.is_add_marker = true
                 contextMenu.close()
             }, 2);
@@ -249,6 +282,7 @@ export default {
             this.markers[info["id"]] = {
                 marker: marker
             }
+            this.show_types[this._get_pin_type(info.type)].push(marker)
             // console.log(this.markers)
 
             this.markers_info[info.id] = {
@@ -294,7 +328,8 @@ export default {
                         }).then((res) => {
                             Reflect.deleteProperty(that.markers_info, that.delete_marker_id)
                             marker.setMap(null)
-                            delete that.markers_info[marker.id]
+                            // console.log(marker)
+                            delete that.markers_info[that.delete_marker_id]
                             marker = null
                             ElMessage({
                                 type: 'success',
@@ -337,6 +372,42 @@ export default {
                 // console.log(this.markers_info[e.id])
             }
         },
+        markers_change() {
+            let type_name = ""
+            let that = this
+            if (this.checkedTypes.length < this.last_types.length) {
+                for (let i = 0;i < this.last_types.length;i++) {
+                    if (this.checkedTypes.indexOf(that.last_types[i]) === -1) {
+                        type_name = this.last_types[i]
+                        break
+                    }
+                }
+                console.log(type_name)
+                let markers = this.show_types[type_name]
+                for (let marker of markers) {
+                    // console.log(marker)
+                    marker.setMap(null)
+                }
+            }
+            else {
+                for (let i = 0;i < this.checkedTypes.length;i++) {
+                    if (this.last_types.indexOf(that.checkedTypes[i]) === -1) {
+                        type_name = this.checkedTypes[i]
+                        break
+                    }
+                }
+                console.log(type_name)
+                let markers = this.show_types[type_name]
+                for (let marker of markers) {
+                    // console.log(marker)
+                    marker.setMap(this.map)
+                }
+            }
+            this.last_types = this.checkedTypes
+        },
+        _get_pin_type(pin_type_id) {
+            return global.get_pin_type(pin_type_id)
+        }
     },
 }
 </script>
@@ -348,6 +419,18 @@ export default {
     position: absolute;
     width: 100%;
     z-index: 2;
+}
+
+.type_class {
+    position: absolute;
+    right: 2%;
+    top: 10%;
+    /*width: 7%;*/
+    margin-right: 2%;
+    background: #f0ffff;
+    opacity: 0.7;
+    margin-top: 4%;
+    border-radius: 7px
 }
 
 .bottom_div {

@@ -3,7 +3,7 @@
         <el-drawer :title="info.name" direction="ltr" v-model="drawer" 
         :with-header="true" :append-to-body="true" class="my-drawer">
             <div>
-                <el-button v-if="info.pin_type === 0 || this.$cookies.get('user_type') === '1'" type="primary" @click="editInfo">编辑信息</el-button>
+                <el-button v-if="info.visibility === 0 || this.$cookies.get('user_type') === '1'" type="primary" @click="editInfo">编辑信息</el-button>
                 <el-dialog :title="dialogTitle" v-model="dialogVisible">
                     <el-form :model="formData" label-width="100px">
                         <el-form-item label="名称">
@@ -115,6 +115,7 @@ export default {
                 pin_type: 1,
                 opening_time: "24h",
                 phone: "133-3333-3333",
+                visibility: 1
             },
             photos: [
                 "https://s2.loli.net/2023/04/10/LAMxqJCK1aOQeHb.jpg",
@@ -167,6 +168,7 @@ export default {
                 that.info.pin_type = res.data.data.pin.type
                 that.info.opening_time = res.data.data.pin.openTime
                 that.info.phone = res.data.data.pin.phone
+                that.info.visibility = res.data.data.pin.visibility
 
                 that.photos = res.data.data.photos
                 that.services = res.data.data.services
