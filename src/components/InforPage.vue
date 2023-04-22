@@ -113,6 +113,7 @@ export default {
 
         changePassword() {
             // console.log(this.curPassword)
+            let that = this
             this.$axios.post('user/changePasswordByToken',
                 {
                     password: this.curPassword,
@@ -129,6 +130,9 @@ export default {
                             message: "修改成功",
                             type: 'success'
                         })
+                        that.$cookies.remove('user_token')
+                        that.$cookies.remove('user_type')
+                        that.$router.push({path: '/login'})
                     }
                     else {
                         this.$message({

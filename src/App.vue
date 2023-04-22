@@ -1,6 +1,6 @@
 <template>
-  <!-- <router-view /> -->
-  <ManVerify/>
+   <router-view />
+<!--  <ManVerify/>-->
 </template>
 
 <script>
