@@ -326,10 +326,10 @@ export default {
                                 'token': that.$cookies.get('user_token')
                             }
                         }).then((res) => {
+                            delete that.markers_info[that.delete_marker_id]
                             Reflect.deleteProperty(that.markers_info, that.delete_marker_id)
                             marker.setMap(null)
                             // console.log(marker)
-                            delete that.markers_info[that.delete_marker_id]
                             marker = null
                             ElMessage({
                                 type: 'success',
