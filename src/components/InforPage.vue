@@ -115,8 +115,7 @@ export default {
             this.$axios.post('user/changePasswordByToken',
                 {
                     password: this.curPassword,
-                    newpassword: this.newPassword,
-                    temppassword: this.tempPassword
+                    newPassword: this.newPassword,
                 },
                 {
                     headers: {
@@ -139,7 +138,15 @@ export default {
             }).catch((res) => console.log(res))
         },
         chPaConfirm() {
-            this.changePassword();
+            if (this.newPassword !== this.tempPassword) {
+                this.$message({
+                    message: "两次新密码不一致",
+                    type: 'error'
+                })
+            }
+            else {
+                this.changePassword();
+            }
         },
         chPaCancel() {
             this.changePasswordVisible = false;
