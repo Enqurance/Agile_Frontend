@@ -6,27 +6,33 @@
         <div class="form-container">
             <el-form ref="loginForm" :model="loginForm" class="login-form">
                 <el-form-item prop="email">
-                    <el-input v-model="loginForm.email" placeholder="请输入用户邮箱" @keyup.enter="login"></el-input>
+                    <el-input v-model="loginForm.email" placeholder="请输入用户邮箱" @keyup.enter="openVerified"></el-input>
                 </el-form-item>
                 <el-form-item prop="password">
                     <el-input type="password" v-model="loginForm.password" placeholder="请输入密码"
-                              @keyup.enter="login"></el-input>
+                              @keyup.enter="openVerified"></el-input>
                 </el-form-item>
 
                 <el-form-item>
                     <div class="button-container">
                         <el-button @click="goToRegister">注册</el-button>
-                        <el-button type="primary" @click="login">登录</el-button>
+                        <el-button type="primary" @click="openVerified">登录</el-button>
                     </div>
                 </el-form-item>
             </el-form>
         </div>
+
+        <ManVerify :is-show="isShow" @verified="closeVerified"/>
     </div>
+
 </template>
 
 <script>
+import ManVerify from "@/components/ManVerify.vue";
+
 export default {
     name: "LoginPage",
+    components: {ManVerify},
     data() {
         return {
             loginForm: {
@@ -37,16 +43,13 @@ export default {
                 email: "用户邮箱",
                 password: "密码",
             },
+
+            isShow: false
         };
     },
 
     methods: {
         login() {
-            for (var i in this.loginForm) {
-                if (this.loginForm[i].trim().length == 0)
-                    return this.$message.error(this.loginTitle[i] + "不能为空")
-            }
-
             let that = this
             that.$axios.post('/auth/login', {
                 email: that.loginForm.email,
@@ -74,10 +77,21 @@ export default {
                 // console.log(res)
             })
         },
-
         goToRegister() {
             this.$router.push({path: "/register"});
         },
+        openVerified() {
+            for (var i in this.loginForm) {
+                if (this.loginForm[i].trim().length == 0)
+                    return this.$message.error(this.loginTitle[i] + "不能为空")
+            }
+
+            this.isShow = true
+        },
+        closeVerified() {
+            this.isShow = false
+            this.login()
+        }
     },
 };
 </script>

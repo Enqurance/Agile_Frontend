@@ -37,7 +37,6 @@ import MapPinAdd from "@/components/MapPinAdd.vue";
 import PlaceSearch from "@/components/PlaceSearch.vue";
 import PageHeader from "@/components/PageHeader";
 import global from "@/global";
-import {last} from "eslint-plugin-vue/lib/utils/indent-utils";
 
 
 export default {
@@ -325,11 +324,11 @@ export default {
                             headers: {
                                 'token': that.$cookies.get('user_token')
                             }
-                        }).then((res) => {
+                        }).then(() => {
+                            delete that.markers_info[that.delete_marker_id]
                             Reflect.deleteProperty(that.markers_info, that.delete_marker_id)
                             marker.setMap(null)
                             // console.log(marker)
-                            delete that.markers_info[that.delete_marker_id]
                             marker = null
                             ElMessage({
                                 type: 'success',
