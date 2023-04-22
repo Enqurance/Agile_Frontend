@@ -133,7 +133,8 @@ export default {
                     else {
                         this.$message({
                             message: res.data.message,
-                            type: 'error'
+                            type: 'error',
+                            grouping: true
                         })
                     }
                 // console.log(res);
@@ -143,7 +144,8 @@ export default {
             if (this.newPassword !== this.tempPassword) {
                 this.$message({
                     message: "两次新密码不一致",
-                    type: 'error'
+                    type: 'error',
+                    grouping: true
                 })
             }
             else {
