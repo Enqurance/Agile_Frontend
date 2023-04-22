@@ -112,6 +112,7 @@ export default {
         },
 
         changePassword() {
+            // console.log(this.curPassword)
             this.$axios.post('user/changePasswordByToken',
                 {
                     password: this.curPassword,
@@ -119,9 +120,10 @@ export default {
                 },
                 {
                     headers: {
-                        'token': that.$cookies.get('user_token')
+                        'token': this.$cookies.get('user_token')
                     },
                 }).then((res) => {
+                    console.log(res)
                     if (res.data.code === 200) {
                         this.$message({
                             message: "修改成功",
