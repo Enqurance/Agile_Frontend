@@ -11,6 +11,11 @@ export default {
     let isMap = ref(false);
     let isForum = ref(false);
     let isInfor = ref(true);
+    if(page === '/'){
+      isMap = true;
+      isForum = false;
+      isInfor = false;
+    }
     if(page === '/home'){
       isMap = true;
       isForum = false;
@@ -65,7 +70,7 @@ export default {
     <el-row :gutter="20">
       <el-col :span="6">
         <div class="col">
-          <span style="font-weight:550 ;margin-left:10%">BUAAMapForum</span>
+          <span style="font-weight:550 ;margin-left:10%; color:blanchedalmond">BUAAMapForum</span>
         </div>
       </el-col>
       <el-col :span="6">
