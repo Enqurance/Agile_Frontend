@@ -112,9 +112,9 @@ export default {
         },
 
         changePassword() {
-            that.$axios.post('user/changePasswordByToken',
+            this.$axios.post('user/changePasswordByToken',
                 {
-                    password: this.user.description,
+                    password: this.curPassword,
                     newpassword: this.newPassword,
                     temppassword: this.tempPassword
                 },
