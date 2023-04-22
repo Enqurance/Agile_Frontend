@@ -12,9 +12,24 @@ let pin_type_dic = {
     7: "生活服务",
 }
 
+let pin_color_dic = {
+    1: "red",
+    2: "blue",
+    3: "black",
+    4: "yellow",
+    5: "green",
+    6: "orange",
+    7: "purple"
+}
+
 function get_pin_type(pin_type_id) {
     // 如果不存在id，则输出""
     return pin_type_dic[pin_type_id]
 }
 
-export default {global_token, global_type, get_pin_type}
+function get_pin_color(pin_type_id) {
+    // 如果不存在id，则输出""
+    return pin_color_dic[pin_type_id]
+}
+
+export default {global_token, global_type, get_pin_type, get_pin_color}
