@@ -5,10 +5,19 @@
         <!--        </el-header>-->
         <!--        <el-main style="height: 93%">-->
         <div class="on_div">
-            <PlaceSearch style="width: 18%; height: 30%; margin-top: 5%; margin-left: 3%"
+            <PlaceSearch style="width: 18%; height: 30%; margin-top: 5%; margin-left: 3%; float: left"
                          @submit_p_id="(e) => concentrate_pin(e)" :click_map="close_search"
                          @search_close="close_search=false"/>
-            <MapPinInfo :id="show_marker_id" @close_drawer="show_marker_id = -1" @update_info="update_pin" />
+            <MapPinInfo :id="show_marker_id" @close_drawer="show_marker_id = -1" @update_info="update_pin"/>
+
+            <div style="width: 30%; float: right; margin-right: 2%;background: #42b983; margin-top: 4%">
+                <el-checkbox-group v-model="checkedTypes" @change="handleCheckedCitiesChange" style="width: 100%">
+                    <el-checkbox v-for="type in types" :key="type" :label="type">
+                        <span style="color: black">{{ type }}</span>
+                    </el-checkbox>
+                </el-checkbox-group>
+            </div>
+
         </div>
         <div :style="{width: screen_params.screenX+'px', height: screen_params.screenY+'px'}" class="bottom_div">
             <div id="container" style="width: 100%; height: 100%" @click="close_search=true"></div>
@@ -74,9 +83,20 @@ export default {
 
             center_pin_id: -1,
 
-            markers: {
+            markers: {},
 
-            }
+            checkedTypes: [
+
+            ],
+            types: [
+                "餐饮",
+                "园地",
+                "教学",
+                "体育",
+                "办公",
+                "购物",
+                "生活服务",
+            ]
         }
     },
     mounted() {
@@ -316,7 +336,7 @@ export default {
 
                 // console.log(this.markers_info[e.id])
             }
-        }
+        },
     },
 }
 </script>

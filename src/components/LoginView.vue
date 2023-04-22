@@ -52,12 +52,23 @@ export default {
                 email: that.loginForm.email,
                 password: that.loginForm.password
             }).then((res) => {
-                that.$cookies.set('user_token', res.data.data.token, 3600);
-                that.$cookies.set('user_type', res.data.data.type, 3600);
-                that.$router.push({path: '/home'})
+                console.log(res)
+                if (res.data.code === 200) {
+                    that.$cookies.set('user_token', res.data.data.token, 3600);
+                    that.$cookies.set('user_type', res.data.data.type, 3600);
+                    that.$router.push({path: '/home'})
+                }
+                else {
+                    this.$message({
+                        message: res.data.message,
+                        type: 'error'
+                    })
+                }
             }).catch((err) => {
+                console.log(err)
+                console.log(1)
                 this.$message({
-                    message: err.response.data.message === null ? "网络错误" : err.response.data.message,
+                    message: "网络错误",
                     type: 'error'
                 })
                 // console.log(res)
