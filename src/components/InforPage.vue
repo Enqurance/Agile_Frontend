@@ -285,8 +285,8 @@ export default {
                 </el-form-item>
                 <el-form-item label="Gender">
                     <el-radio-group v-model="tempUser.gender">
-                        <el-radio label="男"/>
-                        <el-radio label="女"/>
+                      <el-radio :label="0">男</el-radio>
+                      <el-radio :label="1">女</el-radio>
                     </el-radio-group>
                 </el-form-item>
             </el-form>
