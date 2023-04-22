@@ -3,13 +3,13 @@ let global_token = ''
 let global_type = false
 
 let pin_type_dic = {
-    1: "教室",
-    2: "食堂",
-    3: "宿舍",
-    4: "办公",
-    5: "运动",
-    6: "超市",
-    7: "学习",
+    1: "餐饮",
+    2: "园地",
+    3: "教学",
+    4: "体育",
+    5: "办公",
+    6: "购物",
+    7: "生活服务",
 }
 
 function get_pin_type(pin_type_id) {
