@@ -1,11 +1,14 @@
 <template>
-  <router-view />
+  <!-- <router-view /> -->
+  <ManVerify/>
 </template>
 
 <script>
 
 export default {
   name: 'App',
+  components: {
+    },
 }
 </script>
 
