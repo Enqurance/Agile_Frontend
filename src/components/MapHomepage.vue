@@ -246,8 +246,9 @@ export default {
 
             // delete_event
             marker.on('rightclick', function (e) {
-                // console.log(e)
-                if (e.target._opts.extData.visibility === 1 && that.$cookies.get('user_type') === 0) {
+                // console.log(e.target._opts.extData.visibility)
+                // console.log(that.$cookies.get('user_type') === "0")
+                if (e.target._opts.extData.visibility === 1 && that.$cookies.get('user_type') === "0") {
                     that.$message({
                         message: '系统点标记不可删除',
                         type: "warning"
