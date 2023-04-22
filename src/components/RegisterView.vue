@@ -7,33 +7,33 @@
             <el-form ref="registerForm" :model="registerForm" class="register-form">
                 <el-form-item prop="username">
                     <el-input v-model="registerForm.username" placeholder="请设置用户名"
-                              @keyup.enter="register"></el-input>
+                              @keyup.enter="openVerified"></el-input>
                 </el-form-item>
 
                 <el-form-item prop="email">
                     <el-input v-model="registerForm.email" placeholder="请输入验证邮箱"
-                              @keyup.enter="register"></el-input>
+                              @keyup.enter="openVerified"></el-input>
                 </el-form-item>
 
                 <div style="display:flex;width: 400px;">
-                <el-form-item prop="emailCode" style="width: 330px;padding-right: 110px;">
-                    <el-input v-model="registerForm.emailCode" placeholder="请输入验证码"
-                    @keyup.enter="register"></el-input>
-                </el-form-item>
-                <el-form-item prop="emailCodeBotton" style="flex: 1;">
-                    <el-button :disabled="countdown > 0" type="primary" @click="sendEmailCode" class="button_left"  style="width: 100px;">
-                        {{ countdown > 0 ? `${countdown}秒后重发` : '发送验证码'}}
-                    </el-button>
-                </el-form-item>
+                    <el-form-item prop="emailCode" style="width: 330px;padding-right: 110px;">
+                        <el-input v-model="registerForm.emailCode" placeholder="请输入验证码"
+                                  @keyup.enter="openVerified"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="emailCodeBotton" style="flex: 1;">
+                        <el-button :disabled="countdown > 0" type="primary" @click="sendEmailCode" class="button_left"  style="width: 100px;">
+                            {{ countdown > 0 ? `${countdown}秒后重发` : '发送验证码'}}
+                        </el-button>
+                    </el-form-item>
                 </div>
 
                 <el-form-item prop="password">
                     <el-input type="password" v-model="registerForm.password1" placeholder="请输入密码"
-                              @keyup.enter="register"></el-input>
+                              @keyup.enter="openVerified"></el-input>
                 </el-form-item>
                 <el-form-item prop="confirm">
                     <el-input type="password" v-model="registerForm.password2" placeholder="请确认密码"
-                              @keyup.enter="register"></el-input>
+                              @keyup.enter="openVerified"></el-input>
                 </el-form-item>
 
                 <el-form-item prop="grade">
@@ -59,17 +59,21 @@
                 <el-form-item>
                     <el-button-group class="button_left">
                         <el-button type="primary" @click="goToLogin">返回登录</el-button>
-                        <el-button type="primary" @click="register"> 注册</el-button>
+                        <el-button type="primary" @click="openVerified"> 注册</el-button>
                     </el-button-group>
                 </el-form-item>
             </el-form>
         </div>
+        <ManVerify @verified="closeVerified" :is-show="isShow" />
     </div>
 </template>
 
 <script>
+import ManVerify from "@/components/ManVerify.vue";
+
 export default {
     name: "registerPage",
+    components: {ManVerify},
     data() {
         return {
             countdown: 0,
@@ -83,7 +87,6 @@ export default {
                 campus: "",
                 gender: -1,
             },
-
             registerTitle: {
                 username: "用户名",
                 email: "验证邮箱",
@@ -94,6 +97,8 @@ export default {
                 campus: "校区",
                 gender: "性别",
             },
+
+            isShow: false
         };
     },
 
@@ -129,17 +134,6 @@ export default {
         },
 
         register() {
-            for (var i in this.registerForm) {
-                if (this.registerTitle[i] === "性别" && this.registerForm[i] === -1) {
-                    return this.$message.error(this.registerTitle[i] + "不能为空")
-                }
-                else if (this.registerForm[i].trim().length == 0) {
-                    return this.$message.error(this.registerTitle[i] + "不能为空")
-                }
-            }
-            if (this.registerForm.password1 !== this.registerForm.password2) {
-                return this.$message.error('请重新检查，两次输入的密码不一致！')
-            }
 
             let that = this
 
@@ -165,6 +159,26 @@ export default {
         goToLogin() {
             this.$router.push({path: "/login"});
         },
+
+        openVerified() {
+            for (var i in this.registerForm) {
+                if (this.registerTitle[i] === "性别" && this.registerForm[i] === -1) {
+                    return this.$message.error(this.registerTitle[i] + "不能为空")
+                }
+                else if (this.registerForm[i].trim().length == 0) {
+                    return this.$message.error(this.registerTitle[i] + "不能为空")
+                }
+            }
+            if (this.registerForm.password1 !== this.registerForm.password2) {
+                return this.$message.error('请重新检查，两次输入的密码不一致！')
+            }
+
+            this.isShow=true
+        },
+        closeVerified() {
+            this.isShow = false
+            this.register()
+        }
     },
 };
 </script>
