@@ -11,13 +11,13 @@
                 </el-form-item>
                 <el-form-item label="类别">
                     <el-radio-group v-model="formData.pin_type">
-                        <el-radio :label="1">教室</el-radio>
-                        <el-radio :label="2">食堂</el-radio>
-                        <el-radio :label="3">宿舍</el-radio>
-                        <el-radio :label="4">办公</el-radio>
-                        <el-radio :label="5">运动</el-radio>
-                        <el-radio :label="6">超市</el-radio>
-                        <el-radio :label="7">学习</el-radio>
+                        <el-radio :label="1">餐饮</el-radio>
+                        <el-radio :label="2">园地</el-radio>
+                        <el-radio :label="3">教学</el-radio>
+                        <el-radio :label="4">体育</el-radio>
+                        <el-radio :label="5">办公</el-radio>
+                        <el-radio :label="6">购物</el-radio>
+                        <el-radio :label="7">生活服务</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="位置描述">

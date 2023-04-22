@@ -144,6 +144,7 @@ export default {
                 ElMessage({
                     message: "无相关地点",
                     showClose: true,
+                    grouping: true,
                     center: true,
                     duration: 1000
                 })

@@ -250,6 +250,7 @@ export default {
                 // console.log(that.$cookies.get('user_type') === "0")
                 if (e.target._opts.extData.visibility === 1 && that.$cookies.get('user_type') === "0") {
                     that.$message({
+                        grouping: true,
                         message: '系统点标记不可删除',
                         type: "warning"
                     })
