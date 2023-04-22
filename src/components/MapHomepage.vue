@@ -382,7 +382,7 @@ export default {
                         break
                     }
                 }
-                console.log(type_name)
+                // console.log(type_name)
                 let markers = this.show_types[type_name]
                 for (let marker of markers) {
                     // console.log(marker)
@@ -396,7 +396,7 @@ export default {
                         break
                     }
                 }
-                console.log(type_name)
+                // console.log(type_name)
                 let markers = this.show_types[type_name]
                 for (let marker of markers) {
                     // console.log(marker)
