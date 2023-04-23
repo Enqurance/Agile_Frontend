@@ -13,13 +13,13 @@ let pin_type_dic = {
 }
 
 let pin_color_dic = {
-    1: "red",
-    2: "blue",
-    3: "black",
+    1: "orange",
+    2: "green",
+    3: "red",
     4: "yellow",
-    5: "green",
-    6: "orange",
-    7: "purple"
+    5: "grey",
+    6: "blue",
+    7: "pink"
 }
 
 function get_pin_type(pin_type_id) {

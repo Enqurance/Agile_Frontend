@@ -263,11 +263,12 @@ export default {
         },
         add_marker(info) {
             // eslint-disable-next-line no-undef
+            let marker_content = '<div style=\"color:' + this._get_pin_color(info.type) + '\"><span class="iconfont icon-location-full icon_class" ></span></div>'
             let marker = new AMap.Marker({
                 map: this.map,
                 position: info.lnglat,
                 anchor: 'bottom-center',
-                // content: '<div :style=/"{color:/"' + this._get_pin_color(info.type) + '/"}/"><span class="iconfont icon-location-full icon_class" ></span></div>',
+                content: marker_content,
                 extData: {
                     id: info.id,
                     visibility: info.visibility
