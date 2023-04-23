@@ -37,6 +37,7 @@ import MapPinAdd from "@/components/MapPinAdd.vue";
 import PlaceSearch from "@/components/PlaceSearch.vue";
 import PageHeader from "@/components/PageHeader";
 import global from "@/global";
+import '../assets/PinIcon/font2/iconfont.css'
 
 
 export default {
@@ -139,7 +140,7 @@ export default {
             AMapLoader.load({
                 key: '159f00b0e9d69324ced6b97a73f6883b',
                 version: '2.0',
-                plugins: ['AMap.DistrictSearch', 'AMap.Polyline', 'AMap.Marker', 'AMap.ContextMenu', 'AMap.Pixel']
+                plugins: ['AMap.DistrictSearch', 'AMap.Polyline', 'AMap.Marker', 'AMap.ContextMenu', 'AMap.Pixel', 'AMap.Icon', ' AMap.Size']
             }).then((AMap) => {
                 let that = this
 
@@ -262,10 +263,12 @@ export default {
         },
         add_marker(info) {
             // eslint-disable-next-line no-undef
+            let marker_content = '<div style=\"color:' + this._get_pin_color(info.type) + '\"><span class="iconfont icon-location-full icon_class" ></span></div>'
             let marker = new AMap.Marker({
                 map: this.map,
                 position: info.lnglat,
                 anchor: 'bottom-center',
+                content: marker_content,
                 extData: {
                     id: info.id,
                     visibility: info.visibility
@@ -281,6 +284,7 @@ export default {
             this.markers[info["id"]] = {
                 marker: marker
             }
+            // console.log(info)
             this.show_types[this._get_pin_type(info.type)].push(marker)
             // console.log(this.markers)
 
@@ -406,6 +410,9 @@ export default {
         },
         _get_pin_type(pin_type_id) {
             return global.get_pin_type(pin_type_id)
+        },
+        _get_pin_color(pin_type_id) {
+            return global.get_pin_color(pin_type_id)
         }
     },
 }
@@ -436,6 +443,10 @@ export default {
     top: 0;
     position: absolute;
     z-index: 1;
+}
+
+.icon_class {
+
 }
 
 

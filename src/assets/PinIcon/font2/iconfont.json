@@ -1,0 +1,23 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "18170936",
+      "name": "标记,定位,标点",
+      "font_class": "location-full",
+      "unicode": "e9f1",
+      "unicode_decimal": 59889
+    },
+    {
+      "icon_id": "18170937",
+      "name": "标记,定位,标点",
+      "font_class": "location",
+      "unicode": "e9f2",
+      "unicode_decimal": 59890
+    }
+  ]
+}
