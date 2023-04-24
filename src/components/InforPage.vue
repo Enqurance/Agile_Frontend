@@ -39,7 +39,7 @@ export default {
         return {
             user, tempUser,
             curPassword, newPassword, tempPassword,
-            editVisible, changePasswordVisible, imageUrl
+            editVisible, changePasswordVisible, imageUrl,
         };
     },
     mounted() {
@@ -161,6 +161,7 @@ export default {
         },
 
         beforeAvatarUpload(file) {
+            console.log("in beforeAvatarUpload!");
             const isJPG = file.type === 'image/jpeg';
             const isLt2M = file.size / 1024 / 1024 < 2;
 
@@ -170,13 +171,25 @@ export default {
             if (!isLt2M) {
                 console.log('上传头像图片大小不能超过 2MB!');
             }
-            return isJPG && isLt2M;
-
+            let formData = new FormData()
+            formData.append('pic', file)
+            let that = this;
+            console.log("before axio!");
+            that.$axios.post('photo/uploadUserIcon',
+                {
+                    formData
+                },
+                {
+                    headers: {
+                        'token': that.$cookies.get('user_token')
+                    },
+                }).then((res) => {
+                // console.log(res);
+            }).catch((res) => console.log(res))
         },
 
         handleAvatarSuccess(res, file) {
-            this.imageUrl = URL.createObjectURL(file.raw);
-            // console.log(file)
+            console.log(file)
         },
     },
     data() {
@@ -194,15 +207,16 @@ export default {
             <el-header height="30%">
                 <div class="headPart">
                     <div>
-                        <el-avatar size='large' class="avatar" src="../assets/ava.png"/>
+                        <el-avatar size='large' class="avatar" src="https://s2.loli.net/2023/04/24/FSTIwHVaPsYi1tl.jpg"/>
+                        <span style="margin-left: 15%">{{this.user.name}}</span>
                     </div>
                     <div class="buttonArea">
                         <div style="padding-top: 20%"></div>
-                        <el-button round @click="editVisible = true">Edit</el-button>
+                        <el-button round @click="editVisible = true">编辑</el-button>
                         <el-button round>
                             <el-dropdown>
               <span class="el-dropdown-link">
-                Settings
+                设置
                 <el-icon class="el-icon--right">
                   <arrow-down/>
                 </el-icon>
@@ -210,12 +224,11 @@ export default {
                                 <template #dropdown>
                                     <el-dropdown-menu>
                                         <el-dropdown-item>
-                                            <el-button @click="changePasswordVisible = true">changePassword</el-button>
+                                            <el-button @click="changePasswordVisible = true">修改密码</el-button>
                                         </el-dropdown-item>
-                                        <el-dropdown-item>1</el-dropdown-item>
-                                        <el-dropdown-item>Action 3</el-dropdown-item>
-                                        <el-dropdown-item disabled>Action 4</el-dropdown-item>
-                                        <el-dropdown-item divided>Action 5</el-dropdown-item>
+                                        <el-dropdown-item>
+                                            <el-button>登出</el-button>
+                                        </el-dropdown-item>
                                     </el-dropdown-menu>
                                 </template>
                             </el-dropdown>
@@ -225,32 +238,35 @@ export default {
                 <el-divider/>
             </el-header>
             <el-container>
-                <el-aside width="30%">
+                <el-aside width="30%" >
                     <div class="LeftPart">
                         <el-row class="firstRow">
                             <p style="padding-bottom: 5%; font-size:1.5em">{{ user.description }}</p>
                             <el-descriptions column=1>
-                                <el-descriptions-item label="campus:">{{ user.campus }}</el-descriptions-item>
-                                <el-descriptions-item label="grade:">{{ user.grade }}</el-descriptions-item>
+                                <el-descriptions-item label="校区:">{{ user.campus }}</el-descriptions-item>
+                                <el-descriptions-item label="年级:">{{ user.grade }}</el-descriptions-item>
+                                <el-descriptions-item label="性别:">
+                                    <span v-if="user.gender == 0">男</span>
+                                    <span v-if="user.gender == 1">女</span>    
+                                </el-descriptions-item>
                             </el-descriptions>
                         </el-row>
                         <el-row class="secondRow">
-                            <el-divider content-position="left">Achievements</el-divider>
+                            <el-divider content-position="left">成就</el-divider>
                             <el-scrollbar>
                                 <div class="scrollbar-flex-content">
                                     <p v-for="item in 10" :key="item" class="scrollbar-demo-item">
-                                        {{ item }}
+                                        <a href="https://smms.app/image/ROAPa7U2NqCz3o8" target="_blank"><img class="achImg" src="https://s2.loli.net/2023/04/24/ROAPa7U2NqCz3o8.png" alt="238827fc25b9feb5c544964b6737d91.png"></a>
                                     </p>
                                 </div>
                             </el-scrollbar>
                         </el-row>
                         <el-row class="thirdRow">
-                            <el-divider content-position="left">Tags</el-divider>
+                            <el-divider content-position="left">标签</el-divider>
                             <el-tag>Tag 1</el-tag>
                             <el-tag class="ml-2" type="success">Tag 2</el-tag>
                             <el-tag class="ml-2" type="info">Tag 3</el-tag>
                             <el-tag class="ml-2" type="warning">Tag 4</el-tag>
-                            <el-tag class="ml-2" type="danger">Tag 5</el-tag>
                         </el-row>
                     </div>
                 </el-aside>
@@ -258,8 +274,8 @@ export default {
                     <div>
                         <el-upload
                                 class="avatar-uploader"
-                                action="http://43.143.148.116:8080/user/uploadIcon"
-                                :show-file-list="false"
+                                action="/api/photp/uploadUserIcon"
+                                :show-file-list="true"
                                 :on-success="handleAvatarSuccess"
                                 :before-upload="beforeAvatarUpload"
                         >
@@ -275,23 +291,23 @@ export default {
         <!--edit Dialog-->
         <el-dialog
                 v-model="editVisible"
-                title="EditInformation"
+                title="请编辑你的信息"
                 width="50%"
         >
             <el-form :model="user" label-width="120px">
-                <el-form-item label="Name">
+                <el-form-item label="用户名">
                     <el-input v-model="tempUser.name"/>
                 </el-form-item>
-                <el-form-item label="Campus">
+                <el-form-item label="校区">
                     <el-input v-model="tempUser.campus"/>
                 </el-form-item>
-                <el-form-item label="Grade">
+                <el-form-item label="年级">
                     <el-input v-model="tempUser.grade"/>
                 </el-form-item>
-                <el-form-item label="Description">
+                <el-form-item label="个人描述">
                     <el-input v-model="tempUser.description"/>
                 </el-form-item>
-                <el-form-item label="Gender">
+                <el-form-item label="性别">
                     <el-radio-group v-model="tempUser.gender">
                       <el-radio :label="0">男</el-radio>
                       <el-radio :label="1">女</el-radio>
@@ -300,9 +316,9 @@ export default {
             </el-form>
             <template #footer>
         <span class="dialog-footer">
-          <el-button @click="editCancel">Cancel</el-button>
+          <el-button @click="editCancel">取消</el-button>
           <el-button type="primary" @click="editConfirm">
-            Confirm
+            确认
           </el-button>
         </span>
             </template>
@@ -310,7 +326,7 @@ export default {
         <!--changePassword Dialog-->
         <el-dialog
                 v-model="changePasswordVisible"
-                title="Change Password"
+                title="修改密码"
                 width="30%"
         >
             <el-form :model="user" label-width="120px">
@@ -326,9 +342,9 @@ export default {
             </el-form>
             <template #footer>
         <span class="dialog-footer">
-          <el-button @click="chPaCancel">Cancel</el-button>
+          <el-button @click="chPaCancel">取消</el-button>
           <el-button type="primary" @click="chPaConfirm">
-            Confirm
+            确认
           </el-button>
         </span>
             </template>
@@ -356,6 +372,7 @@ export default {
     padding-top: 3%;
     flex-direction: row;
     margin-right: 2%;
+    background-image: url('https://s2.loli.net/2023/04/24/TmzbRhHcDe2x5FP.png');
 }
 
 .headPart > div {
@@ -418,6 +435,11 @@ export default {
     border-radius: 4px;
     background: var(--el-color-danger-light-9);
     color: var(--el-color-danger);
+}
+
+.achImg{
+    height: 100%;
+    width: 100%;
 }
 
 .example-showcase .el-dropdown-link {
