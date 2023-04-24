@@ -356,7 +356,7 @@ export default {
             // console.log(this.markers_info[e.id])
             let info = this.markers_info[e.id]
             if (info.name !== e.name || info.type !== e.type) {
-                console.log(1)
+                // console.log(1)
                 this.markers_info[e.id] = {
                     name: e.name,
                     type: e.type,    // 决定marker样式

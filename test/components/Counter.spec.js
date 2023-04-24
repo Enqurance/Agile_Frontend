@@ -1,6 +1,6 @@
 // tests/components/Counter.spec.js
 import { mount } from "@vue/test-utils";
-import Counter from "@/components/Counter.vue";
+import Counter from "./Counter.vue";
 
 describe("Counter.vue", () => {
     it("renders count value and buttons", () => {

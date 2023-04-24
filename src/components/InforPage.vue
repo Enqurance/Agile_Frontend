@@ -124,7 +124,7 @@ export default {
                         'token': this.$cookies.get('user_token')
                     },
                 }).then((res) => {
-                    console.log(res)
+                    // console.log(res)
                     if (res.data.code === 200) {
                         this.$message({
                             message: "修改成功",
@@ -161,20 +161,26 @@ export default {
         },
 
         beforeAvatarUpload(file) {
-            console.log("in beforeAvatarUpload!");
+            // console.log("in beforeAvatarUpload!");
             const isJPG = file.type === 'image/jpeg';
             const isLt2M = file.size / 1024 / 1024 < 2;
 
             if (!isJPG) {
-                console.log('上传头像图片只能是 JPG 格式!');
+                this.$message({
+                    message: "上传头像图片只能是 JPG 格式!",
+                    type: "error"
+                })
             }
             if (!isLt2M) {
-                console.log('上传头像图片大小不能超过 2MB!');
+                this.$message({
+                    message: "上传头像图片大小不能超过 2MB!",
+                    type: "error"
+                })
             }
             let formData = new FormData()
             formData.append('pic', file)
             let that = this;
-            console.log("before axio!");
+            // console.log("before axio!");
             that.$axios.post('photo/uploadUserIcon',
                 {
                     formData
@@ -189,7 +195,7 @@ export default {
         },
 
         handleAvatarSuccess(res, file) {
-            console.log(file)
+            // console.log(file)
         },
     },
     data() {
