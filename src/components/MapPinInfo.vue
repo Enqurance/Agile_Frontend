@@ -1,6 +1,6 @@
 <template>
     <div class="map-pin-info">
-        <el-drawer :title="info.name" direction="ltr" v-model="drawer" 
+        <el-drawer :title="info.name" direction="ltr" v-model="drawer"
         :with-header="true" :append-to-body="true" class="my-drawer">
             <div>
                 <el-button v-if="info.visibility === 0 || this.$cookies.get('user_type') === '1'" type="primary" @click="editInfo">编辑信息</el-button>
@@ -10,7 +10,7 @@
                             <el-input v-model="formData.name" maxlength="20" ></el-input>
                         </el-form-item>
                         <el-form-item label="简介">
-                            <el-input v-model="formData.brief" 
+                            <el-input v-model="formData.brief"
                             type="textarea" autosize maxlength="100"></el-input>
                         </el-form-item>
                         <el-form-item label="类别">
@@ -64,6 +64,11 @@
                             <img :src="photoUrl"  class="photo"/>
                         </el-carousel-item>
                     </el-carousel>
+
+                    <el-upload class="avatar-uploader" action="http://43.143.148.116:8080/photo/uploadPinPhoto"
+                        :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                        <el-button size="small" type="primary">上传图片</el-button>
+                    </el-upload>
                 </el-card>
             </div>
 
@@ -187,9 +192,9 @@ export default {
         // 提交修改
         submitForm() {
             if (this.formData.name === '') {
-               return this.$message.error("名称不能为空")
+                return this.$message.error("名称不能为空")
             } else if (this.formData.brief === '') {
-               return this.$message.error("简介不能为空")
+                return this.$message.error("简介不能为空")
             } else if (this.formData.pin_type === -1) {
                 return this.$message.error("类别不能为空")
             }
@@ -222,7 +227,50 @@ export default {
                 });
             Object.assign(this.info, this.formData) // 通过 Object.assign 方法更新 info 数据
             this.dialogVisible = false
-        }
+        },
+
+        beforeAvatarUpload(file) {
+            console.log("in beforeAvatarUpload!");
+            const isJPG = file.type === 'image/jpeg';
+            const isLt2M = file.size / 1024 / 1024 < 2;
+            if (!isJPG) {
+                console.log('上传地点图片只能是 JPG Png 格式!');
+            }
+            if (!isLt2M) {
+                console.log('上传地点图片大小不能超过 2MB!');
+            }
+
+            let that = this;
+            let formData = new FormData()
+            formData.append('pin_id', that.id)
+            formData.append('pic', file)
+
+            console.log("before axio!");
+
+            var option = ({
+                url: 'photo/uploadPinPhoto',
+                method: 'post',
+                data: formData,
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                },
+                transformRequest: [function (data, headers) {
+                    console.log(headers)
+                    delete headers['Content-Type']
+                    return data
+                }],
+            })
+
+            console.log(that.photos.length)
+            that.$axios(option).then((res) => {
+                this.handleDblClick()
+            }).catch((error) => console.log(error));
+
+        },
+
+        handleAvatarSuccess(res, file) {
+            console.log(file)
+        },
     },
     watch: {
         id(newData, oldData) {
@@ -274,5 +322,28 @@ export default {
     width: 100%;
     height: 100%;
     object-fit: contain;
-} 
+}
+
+.avatar-uploader .el-upload {
+    border: 1px dashed var(--el-border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: var(--el-transition-duration-fast);
+}
+
+.avatar {
+    margin-top: 10%;
+    margin-bottom: 2%;
+    margin-left: 5%;
+}
+
+avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    text-align: center;
+}
 </style>
