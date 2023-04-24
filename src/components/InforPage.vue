@@ -12,7 +12,7 @@ export default {
             email: 'initial' + "@buaa.edu.cn",
             type: 0,
             password: 'initial',
-            icon: "../assets/ava.png",
+            icon: "",
             campus: "initial",
             grade: "initial",
             gender: 0,
@@ -20,7 +20,7 @@ export default {
         });
         const tempUser = reactive({
             name: "initial",
-            icon: "../assets/ava.png",
+            icon: "",
             campus: "initial",
             grade: "initial",
             gender: 0,
@@ -36,10 +36,14 @@ export default {
         const changePasswordVisible = ref(false);
         const imageUrl = ref('');
 
+        const contactUsVisible = ref(false);
+        const suggestion = ref('');
+
         return {
-            user, tempUser,
-            curPassword, newPassword, tempPassword,
-            editVisible, changePasswordVisible, imageUrl,
+            editVisible, user, tempUser,
+            changePasswordVisible, curPassword, newPassword, tempPassword,
+            imageUrl,
+            contactUsVisible, suggestion,
         };
     },
     mounted() {
@@ -160,6 +164,14 @@ export default {
             this.changePasswordVisible = false;
         },
 
+        coUsConfirm(){
+
+            this.contactUsVisible = false;
+        },
+        coUsCancel(){
+            this.contactUsVisible = false;
+        },
+
         beforeAvatarUpload(file) {
             // console.log("in beforeAvatarUpload!");
             const isJPG = file.type === 'image/jpeg';
@@ -181,22 +193,52 @@ export default {
             formData.append('pic', file)
             let that = this;
             // console.log("before axio!");
-            that.$axios.post('photo/uploadUserIcon',
+            
+            var option = ({
+                url: 'photo/uploadUserIcon',
+                method: 'post',
+                data: formData,
+                headers:{
+                    'token': that.$cookies.get('user_token')
+                },
+                transformRequest: [function(data, headers){
+                    console.log(headers)
+                    delete headers['Content-Type']
+                    return data
+                }],
+            })
+            that.$axios(option).then((res)=>(console.log(res)));
+            /*that.$axios.post('photo/uploadUserIcon',
                 {
                     formData
                 },
                 {
                     headers: {
+                        'Content-Type': 'multipart/form-data',
                         'token': that.$cookies.get('user_token')
                     },
                 }).then((res) => {
+                    console.log("res:");
+                    console.log(res);
                 // console.log(res);
-            }).catch((res) => console.log(res))
+            }).catch((res) => console.log(res))*/
         },
 
         handleAvatarSuccess(res, file) {
             // console.log(file)
         },
+
+        getIcon(){
+
+        },
+
+        logOut(){
+            let that = this;
+            that.$cookies.remove('user_token');
+            that.$cookies.remove('user_type');
+            this.$router.replace({path: '/'});
+        },
+
     },
     data() {
         return {}
@@ -207,13 +249,14 @@ export default {
 <template>
     <div class="InforPage">
         <div class="header">
-            <PageHeader/>
+            <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.3"/>
         </div>
         <el-container class="MainPart">
             <el-header height="30%">
                 <div class="headPart">
                     <div>
-                        <el-avatar size='large' class="avatar" src="https://s2.loli.net/2023/04/24/FSTIwHVaPsYi1tl.jpg"/>
+                        <el-avatar size='large' class="avatar" 
+                            src="https://s2.loli.net/2023/04/24/FSTIwHVaPsYi1tl.jpg"/>
                         <span style="margin-left: 15%">{{this.user.name}}</span>
                     </div>
                     <div class="buttonArea">
@@ -223,9 +266,6 @@ export default {
                             <el-dropdown>
               <span class="el-dropdown-link">
                 设置
-                <el-icon class="el-icon--right">
-                  <arrow-down/>
-                </el-icon>
               </span>
                                 <template #dropdown>
                                     <el-dropdown-menu>
@@ -233,7 +273,10 @@ export default {
                                             <el-button @click="changePasswordVisible = true">修改密码</el-button>
                                         </el-dropdown-item>
                                         <el-dropdown-item>
-                                            <el-button>登出</el-button>
+                                            <el-button @click="contactUsVisible = true">联系我们</el-button>
+                                        </el-dropdown-item>
+                                        <el-dropdown-item>
+                                            <el-button @click="logOut()">登出</el-button>
                                         </el-dropdown-item>
                                     </el-dropdown-menu>
                                 </template>
@@ -257,6 +300,7 @@ export default {
                                 </el-descriptions-item>
                             </el-descriptions>
                         </el-row>
+                        <!--
                         <el-row class="secondRow">
                             <el-divider content-position="left">成就</el-divider>
                             <el-scrollbar>
@@ -267,6 +311,7 @@ export default {
                                 </div>
                             </el-scrollbar>
                         </el-row>
+                        -->
                         <el-row class="thirdRow">
                             <el-divider content-position="left">标签</el-divider>
                             <el-tag>Tag 1</el-tag>
@@ -280,7 +325,7 @@ export default {
                     <div>
                         <el-upload
                                 class="avatar-uploader"
-                                action="/api/photp/uploadUserIcon"
+                                action="http://43.143.148.116:8080/photo/uploadUserIcon"
                                 :show-file-list="true"
                                 :on-success="handleAvatarSuccess"
                                 :before-upload="beforeAvatarUpload"
@@ -355,6 +400,27 @@ export default {
         </span>
             </template>
         </el-dialog>
+        <!--contactUs Dialog-->
+        <el-dialog
+                v-model="contactUsVisible"
+                title="联系我们"
+                width="30%"
+        >
+        <el-input
+            v-model="suggestion"
+            :autosize="{ minRows: 2, maxRows: 4 }"
+            type="textarea"
+            placeholder="Please input"
+        />
+            <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="coUsCancel">取消</el-button>
+          <el-button type="primary" @click="coUsConfirm">
+            确认
+          </el-button>
+        </span>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
@@ -362,7 +428,6 @@ export default {
 .InforPage {
     width: 100%;
     height: 100%;
-    padding-left: 2%;
     padding-right: 2%;
     display: block;
 }
@@ -375,9 +440,7 @@ export default {
 .headPart {
     width: 100%;
     display: flex;
-    padding-top: 3%;
     flex-direction: row;
-    margin-right: 2%;
     background-image: url('https://s2.loli.net/2023/04/24/TmzbRhHcDe2x5FP.png');
 }
 
