@@ -300,6 +300,7 @@ export default {
                                 </el-descriptions-item>
                             </el-descriptions>
                         </el-row>
+                        <!--
                         <el-row class="secondRow">
                             <el-divider content-position="left">成就</el-divider>
                             <el-scrollbar>
@@ -310,6 +311,7 @@ export default {
                                 </div>
                             </el-scrollbar>
                         </el-row>
+                        -->
                         <el-row class="thirdRow">
                             <el-divider content-position="left">标签</el-divider>
                             <el-tag>Tag 1</el-tag>
