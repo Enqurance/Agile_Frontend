@@ -249,7 +249,7 @@ export default {
 <template>
     <div class="InforPage">
         <div class="header">
-            <PageHeader/>
+            <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.3"/>
         </div>
         <el-container class="MainPart">
             <el-header height="30%">
@@ -426,7 +426,6 @@ export default {
 .InforPage {
     width: 100%;
     height: 100%;
-    padding-left: 2%;
     padding-right: 2%;
     display: block;
 }
@@ -439,9 +438,7 @@ export default {
 .headPart {
     width: 100%;
     display: flex;
-    padding-top: 3%;
     flex-direction: row;
-    margin-right: 2%;
     background-image: url('https://s2.loli.net/2023/04/24/TmzbRhHcDe2x5FP.png');
 }
 
