@@ -55,7 +55,7 @@ export default {
                 email: that.loginForm.email,
                 password: that.loginForm.password
             }).then((res) => {
-                console.log(res)
+                // console.log(res)
                 if (res.data.code === 200) {
                     that.$cookies.set('user_token', res.data.data.token, 3600);
                     that.$cookies.set('user_type', res.data.data.type, 3600);
@@ -68,8 +68,8 @@ export default {
                     })
                 }
             }).catch((err) => {
-                console.log(err)
-                console.log(1)
+                // console.log(err)
+                // console.log(1)
                 this.$message({
                     message: "网络错误",
                     type: 'error'

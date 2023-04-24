@@ -1,7 +1,3 @@
-let global_token = ''
-// true : 管理员
-let global_type = false
-
 let pin_type_dic = {
     1: "餐饮",
     2: "园地",
@@ -32,4 +28,4 @@ function get_pin_color(pin_type_id) {
     return pin_color_dic[pin_type_id]
 }
 
-export default {global_token, global_type, get_pin_type, get_pin_color}
+export default {get_pin_type, get_pin_color}
