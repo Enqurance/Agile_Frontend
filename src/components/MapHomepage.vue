@@ -1,10 +1,13 @@
 <template>
     <div>
+        <!--        <el-header height="7%">-->
         <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.3"/>
-        <div class="on_div">
-            <PlaceSearch style="width: 18%; height: 30%; margin-top: 5%; margin-left: 3%"
-                         @submit_p_id="(e) => concentrate_pin(e)" :click_map="close_search"
-                         @search_close="close_search=false"/>
+        <!--        </el-header>-->
+        <!--        <el-main style="height: 93%">-->
+        <PlaceSearch class="on_div" style="width: 18%; height: 30%; margin-top: 5%; margin-left: 3%"
+                     @submit_p_id="(e) => concentrate_pin(e)" :click_map="close_search"
+                     @search_close="close_search=false"/>
+        <div class="on_div" style="width: 100%;" >
             <MapPinInfo :id="show_marker_id" @close_drawer="show_marker_id = -1" @update_info="update_pin"/>
 
             <div class="type_class">
@@ -420,7 +423,6 @@ export default {
 .on_div {
     top: 0;
     position: absolute;
-    width: 100%;
     z-index: 2;
 }
 
