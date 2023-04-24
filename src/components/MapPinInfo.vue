@@ -1,9 +1,12 @@
 <template>
     <div class="map-pin-info">
-        <el-drawer :title="info.name" direction="ltr" v-model="drawer"
+        <el-drawer direction="ltr" v-model="drawer"
         :with-header="true" :append-to-body="true" class="my-drawer">
+            <div style="margin-top: 0px;margin-bottom: 0px;">
+                <h1 style="margin-left: 10px;margin-top: 0px;padding: 0px">{{ info.name }}</h1>
+            </div>
+
             <div>
-                <el-button v-if="info.visibility === 0 || this.$cookies.get('user_type') === '1'" type="primary" @click="editInfo">编辑信息</el-button>
                 <el-dialog :title="dialogTitle" v-model="dialogVisible">
                     <el-form :model="formData" label-width="100px">
                         <el-form-item label="名称">
@@ -37,44 +40,51 @@
                         </el-form-item>
                     </el-form>
                     <div>
-                        <el-button @click="dialogVisible = false">取消</el-button>
-                        <el-button type="primary" @click="submitForm">确认</el-button>
+                        <el-button @click="dialogVisible = false">取消  <CloseOutlined /></el-button>
+                        <el-button type="primary" @click="submitForm">确认  <CheckOutlined /></el-button> 
                     </div>
                 </el-dialog>
             </div>
 
             <div class="pin-info">
                 <el-card :body-style="{ padding: '10px' }">
-                    <h4>Info</h4>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0px;">
+                        <h4 style="margin-bottom: 0px;">信息</h4>
+                        <a-button type="link" v-if="info.visibility === 0 || this.$cookies.get('user_type') === '1'" @click="editInfo" >
+                        <EditOutlined />
+                        </a-button>
+                    </div> 
+                    
                     <!-- <p>{{ info.name }}</p> -->
-                    <p>{{ "位置描述：" + info.position }}</p>
-                    <p>{{ "简介：" + info.brief }}</p>
+                    <p v-if="info.position">位置描述：{{ info.position }}</p>
+                    <p v-if="info.brief">简介：{{ info.brief }}</p>
                     <!-- <p> {{ pin_tag }}</p> -->
-                    <p>{{ "类型：" + _get_pin_type(info.pin_type) }}</p>
-                    <p>{{ "开放时间：" + info.opening_time }}</p>
-                    <p>{{ "电话：" + info.phone }}</p>
+                    <p v-if="_get_pin_type(info.pin_type)">类型：{{ _get_pin_type(info.pin_type) }}</p>
+                    <p v-if="info.opening_time">开放时间：{{ info.opening_time }}</p>
+                    <p v-if="info.phone">电话：{{ info.phone }}</p>
                 </el-card>
             </div>
 
             <div class="pin-photo">
                 <el-card :body-style="{ padding: '10px' }">
-                    <h4>Photos</h4>
+                    <h4>图片</h4>
                     <el-carousel trigger="click" height="150">
                         <el-carousel-item v-for="photoUrl in photos" :key="photoUrl">
                             <img :src="photoUrl"  class="photo"/>
                         </el-carousel-item>
                     </el-carousel>
 
-                    <el-upload class="avatar-uploader" action="http://43.143.148.116:8080/photo/uploadPinPhoto"
+                    <el-upload v-if="info.visibility === 0 || this.$cookies.get('user_type') === '1'" 
+                    class="avatar-uploader" action="http://43.143.148.116:8080/photo/uploadPinPhoto"
                         :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                        <el-button size="small" type="primary">上传图片</el-button>
+                        <el-button size="small" type="primary" plain>上传图片</el-button>
                     </el-upload>
                 </el-card>
             </div>
 
-            <div class="pin-service">
+            <div v-if="services && services.length" class="pin-service">
                 <el-card :body-style="{ padding: '10px' }">
-                    <h4>Services</h4>
+                    <h4>服务</h4>
                     <el-collapse>
                         <el-collapse-item v-for="(service, index) in services" :key="index" :title="service.name">
                             <el-card :body-style="{ padding: '10px' }">
@@ -89,19 +99,20 @@
                 </el-card>
             </div>
 
-            <div class="pin-forum">
+            <!-- <div class="pin-forum">
                 <el-card :body-style="{ padding: '10px' }">
                     <h4>Forum</h4>
                     <p>此处预留跳转链接</p>
                 </el-card>
-            </div>
+            </div> -->
         </el-drawer>
     </div>
 </template>
 
 <script>
 import global from '@/global'
-
+import { EditOutlined, CheckOutlined, CloseOutlined} from '@ant-design/icons-vue'; 
+ 
 export default {
     props: {
         id: -1
@@ -147,6 +158,12 @@ export default {
 
             dialogTitle: '编辑信息'
         }
+    },
+
+    components: {
+        EditOutlined,
+        CheckOutlined,
+        CloseOutlined,
     },
 
     methods: {
@@ -345,5 +362,9 @@ avatar-uploader-icon {
     width: 178px;
     height: 178px;
     text-align: center;
+}
+
+p {
+    margin-left: 10px;
 }
 </style>
