@@ -78,7 +78,7 @@ export default {
     <div class="boby">
         <el-row :gutter="20">
             <el-col :span="6">
-                <div class="col">
+                <div class="col" style="padding-top: 1%; text-align: center">
                     <span style="font-weight:550 ;margin-left:10%; color:blanchedalmond">BUAAMapForum</span>
                 </div>
             </el-col>
