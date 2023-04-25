@@ -70,7 +70,7 @@
                     <h4>图片</h4>
                     <el-carousel trigger="click" height="150">
                         <el-carousel-item v-for="photoUrl in photos" :key="photoUrl">
-                            <img :src="photoUrl"  class="photo"/>
+                            <img :src="photoUrl" class="photo" @contextmenu.prevent="deletePhoto(photoUrl)"/>
                         </el-carousel-item>
                     </el-carousel>
 
@@ -112,6 +112,7 @@
 <script>
 import global from '@/global'
 import { EditOutlined, CheckOutlined, CloseOutlined} from '@ant-design/icons-vue'; 
+import {ElMessageBox, ElMessage} from "element-plus";
  
 export default {
     props: {
@@ -287,6 +288,43 @@ export default {
 
         handleAvatarSuccess(res, file) {
             console.log(file)
+        },
+
+        deletePhoto(photoUrl) {
+            let that = this;
+            const index = that.photos.indexOf(photoUrl);
+            console.log("url "+photoUrl)
+            console.log("index "+index)
+
+            if (that.info.visibility === 1 && that.$cookies.get('user_type') === "0") {
+                return this.$message.error("系统点图片不可删除")
+            } else {
+                ElMessageBox.confirm(
+                    '确认删除该图片？',
+                    'Warning',
+                    {
+                        confirmButtonText: '确认',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }
+                ).then(() => {
+                    that.$axios.post('/photo/deletePinPhoto', {
+                        pin_id: that.id,
+                        url:photoUrl
+                    }, {
+                        headers: {
+                            'token': that.$cookies.get('user_token')
+                        }
+                    }).then((res) => {
+                        this.handleDblClick()
+                    }).catch((res) => console.log(res))
+                }).catch(() => {
+                    ElMessage({
+                        type: 'info',
+                        message: '取消删除',
+                    })
+                })
+            }
         },
     },
     watch: {
