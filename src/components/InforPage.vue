@@ -131,8 +131,8 @@ export default {
                     // console.log(res);
                 }).catch((res) => console.log(res))
 
-            console.log("reload");
-            this.$router.go(0);
+            // console.log("reload");
+            // this.$router.go(0);
         },
         editConfirm() {
             // console.log("in confirm!");
@@ -210,7 +210,7 @@ export default {
                         'token': that.$cookies.get('user_token')
                     },
                 }).then((res) => {
-                    console.log(res);
+                    // console.log(res);
                 }).catch((res) => console.log(res))
             this.suggestions = '';
             this.contactUsVisible = false;
@@ -244,7 +244,7 @@ export default {
                     'token': that.$cookies.get('user_token')
                 },
                 transformRequest: [function (data, headers) {
-                    console.log(headers)
+                    // console.log(headers)
                     delete headers['Content-Type']
                     return data
                 }],
@@ -370,10 +370,10 @@ export default {
                             -->
                         <el-row class="thirdRow">
                             <el-divider content-position="left">标签</el-divider>
-                            <el-tag v-for="tag in tags" :key="tag.name" class="mx-1" closable :type="tag.type"
-                                style="margin-right: 8px">
-                                {{ tag.name }}
-                            </el-tag>
+<!--                            <el-tag v-for="tag in tags" :key="tag.name" class="mx-1" closable :type="tag.type"-->
+<!--                                style="margin-right: 8px">-->
+<!--                                {{ tag.name }}-->
+<!--                            </el-tag>-->
                         </el-row>
                     </div>
                 </el-aside>
