@@ -295,9 +295,18 @@ export default {
             <el-header height="35%">
                 <div class="headPart">
                     <div v-if="isReload">
-                        <img size='small' class="avatar" 
-                            :src="this.imageUrl" />
-                        <span style="margin-left: 10%;font-size: 36px;">{{this.user.name}}</span>
+                        <div class="pic-container">
+                            <el-upload
+                                class="avatar-uploader"
+                                action="http://43.143.148.116:8080/photo/uploadUserIcon"
+                                :show-file-list="false"
+                                :on-success="handleAvatarSuccess"
+                                :before-upload="beforeAvatarUpload">
+                                    <img :src="this.imageUrl">
+                                    <p style = "text-align: center;">点击更换头像</p>
+                            </el-upload>
+                        </div>
+                        <span style="margin-left: 5%;font-size: 30px;">{{this.user.name}}</span>
                     </div>
                     <div class="buttonArea">
                         <div style="padding-top: 40%"></div>
@@ -378,24 +387,18 @@ export default {
             </el-container>
         </el-container>
         <!--edit Dialog-->
-        <el-dialog
+
+
+
+
+
+
+        <el-dialog                 
                 v-model="editVisible"
                 title="请编辑你的信息"
                 width="50%"
         >
-            <el-upload
-                class="avatar-uploader"
-                action="http://43.143.148.116:8080/photo/uploadUserIcon"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatarUp"/>
-                    <el-icon v-else class="avatar-uploader-icon">
-                        <Plus/>
-                    </el-icon>
-            </el-upload>
-            <span style="text-align:center; padding-left: 38%">点击更换头像</span>
-            <el-form :model="user" label-width="120px" style="padding-top: 10%">
+            <el-form :model="user" label-width="100px">
                 <el-form-item label="用户名">
                     <el-input v-model="tempUser.name"/>
                 </el-form-item>
@@ -404,6 +407,8 @@ export default {
                         <el-option label="学院路校区" value="1"></el-option>
                         <el-option label="沙河校区" value="2"></el-option>
                     </el-select>
+                </el-form-item>
+
                 <el-form-item label="年级">
                     <el-select v-model="tempUser.grade" placeholder="请选择年级" class="el-select">
                         <el-option label="本科" value="1"></el-option>
@@ -411,10 +416,11 @@ export default {
                         <el-option label="博士" value="3"></el-option>
                     </el-select>
                 </el-form-item>
-                </el-form-item>
+
                 <el-form-item label="个人描述">
                     <el-input v-model="tempUser.description"/>
                 </el-form-item>
+
                 <el-form-item label="性别">
                     <el-radio-group v-model="tempUser.gender">
                       <el-radio :label="0">男</el-radio>
@@ -423,15 +429,15 @@ export default {
                 </el-form-item>
             </el-form>
             <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="editCancel">取消</el-button>
-          <el-button type="primary" @click="editConfirm">
-            确认
-          </el-button>
-        </span>
+                <span class="dialog-footer">
+                <el-button @click="editCancel">取消</el-button>
+                <el-button type="primary" @click="editConfirm">
+                    确认
+                </el-button>
+                </span>
             </template>
         </el-dialog>
-        <!--changePassword Dialog-->
+
         <el-dialog
                 v-model="changePasswordVisible"
                 title="修改密码"
@@ -656,5 +662,26 @@ span {
 a {
     font-size: 120%;
     font-weight: 550;
+}
+
+.pic-container {
+    aspect-ratio: 1/1;
+    height: 40%;
+    border-radius: 50%; /* 设置圆角半径为容器宽高的一半 */
+    overflow: hidden; /* 超出容器的部分隐藏 */
+    margin-top: 15%;
+    margin-left:3%;
+    margin-bottom:3% ;
+}
+
+.pic-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 图片不拉伸，并保持完整显示 */
+}
+
+.el-form-item {
+    width: 100%;
+    text-align: center;
 }
 </style>
