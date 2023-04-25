@@ -224,11 +224,20 @@ export default {
             // console.log("in beforeAvatarUpload!");
             const isLt2M = file.size / 1024 / 1024 < 2;
 
+            if(file.type != 'image/jpeg' || file.type != 'image/png'){
+                this.$message({
+                    message: "上传头像格式只支持png jpg!",
+                    type: "error"
+                })
+                return;
+            }
+
             if (!isLt2M) {
                 this.$message({
                     message: "上传头像图片大小不能超过 2MB!",
                     type: "error"
                 })
+                return;
             }
             let formData = new FormData()
             formData.append('pic', file)
