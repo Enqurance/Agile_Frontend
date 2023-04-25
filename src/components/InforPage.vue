@@ -221,24 +221,16 @@ export default {
         },
 
         beforeAvatarUpload(file) {
-            // console.log("in beforeAvatarUpload!");
-            const isLt2M = file.size / 1024 / 1024 < 2;
-
-            if(file.type != 'image/jpeg' || file.type != 'image/png'){
-                this.$message({
-                    message: "上传头像格式只支持png jpg!",
-                    type: "error"
-                })
-                return;
+            
+            const isPic = file.type === 'image/jpeg'|| file.type === 'image/png';
+            const isLt5M = file.size / 1024 / 1024 < 5;
+            if (!isPic) {
+                return this.$message.error('上传地点图片只能是 Jpg 或 Png 格式!')
+            }
+            if (!isLt5M) {
+                return this.$message.error('上传地点图片大小不能超过 5MB!')
             }
 
-            if (!isLt2M) {
-                this.$message({
-                    message: "上传头像图片大小不能超过 2MB!",
-                    type: "error"
-                })
-                return;
-            }
             let formData = new FormData()
             formData.append('pic', file)
             let that = this;
@@ -394,7 +386,7 @@ export default {
             <el-upload
                 class="avatar-uploader"
                 action="http://43.143.148.116:8080/photo/uploadUserIcon"
-                :show-file-list="true"
+                :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
                     <img v-if="imageUrl" :src="imageUrl" class="avatarUp"/>
