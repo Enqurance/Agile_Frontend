@@ -305,14 +305,14 @@ export default {
                     <div v-if="isReload">
                         <img size='small' class="avatar" 
                             :src="this.imageUrl" />
-                        <span style="margin-left: 10%">{{this.user.name}}</span>
+                        <span style="margin-left: 10%;font-size: 36px;">{{this.user.name}}</span>
                     </div>
                     <div class="buttonArea">
                         <div style="padding-top: 40%"></div>
-                        <el-button round @click="editVisible = true">编辑</el-button>
+                        <el-button round style="font-size: 20px;" @click="editVisible = true">编辑</el-button>
                         <el-button round>
                             <el-dropdown>
-                        <span class="el-dropdown-link">
+                        <span class="el-dropdown-link" style="font-size: 20px;">
                             设置
                         </span>
                                 <template #dropdown>
@@ -338,13 +338,17 @@ export default {
                 <el-aside width="30%" >
                     <div class="LeftPart">
                         <el-row class="firstRow">
-                            <p style="padding-bottom: 5%; font-size:1.5em">{{ user.description }}</p>
+                            <p style="padding-bottom: 5%; font-size:1em">{{ user.description }}</p>
                             <el-descriptions column=1>
-                                <el-descriptions-item label="校区:">{{ user.campus }}</el-descriptions-item>
-                                <el-descriptions-item label="年级:">{{ user.grade }}</el-descriptions-item>
+                                <el-descriptions-item label="校区:">
+                                    <span style="font-size: 14px;">{{ user.campus == '1' ? '学院路校区' : '沙河校区' }}</span>
+                                </el-descriptions-item>
+                                <el-descriptions-item label="年级:">
+                                    <span style="font-size: 14px;">{{ user.grade == '1' ? '本科' : user.grade == '2' ? '硕士' : '博士' }}</span>
+                                </el-descriptions-item>
                                 <el-descriptions-item label="性别:">
-                                    <span v-if="user.gender == 0">男</span>
-                                    <span v-if="user.gender == 1">女</span>    
+                                    <span v-if="user.gender == 0"  style="font-size: 14px;">男</span>
+                                    <span v-if="user.gender == 1"  style="font-size: 14px;">女</span>    
                                 </el-descriptions-item>
                             </el-descriptions>
                         </el-row>
@@ -404,10 +408,17 @@ export default {
                     <el-input v-model="tempUser.name"/>
                 </el-form-item>
                 <el-form-item label="校区">
-                    <el-input v-model="tempUser.campus"/>
-                </el-form-item>
+                    <el-select v-model="tempUser.campus" placeholder="请选择校区" class="el-select">
+                        <el-option label="学院路校区" value="1"></el-option>
+                        <el-option label="沙河校区" value="2"></el-option>
+                    </el-select>
                 <el-form-item label="年级">
-                    <el-input v-model="tempUser.grade"/>
+                    <el-select v-model="tempUser.grade" placeholder="请选择年级" class="el-select">
+                        <el-option label="本科" value="1"></el-option>
+                        <el-option label="硕士" value="2"></el-option>
+                        <el-option label="博士" value="3"></el-option>
+                    </el-select>
+                </el-form-item>
                 </el-form-item>
                 <el-form-item label="个人描述">
                     <el-input v-model="tempUser.description"/>
