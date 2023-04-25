@@ -12,7 +12,7 @@ export default {
             email: 'initial' + "@buaa.edu.cn",
             type: 0,
             password: 'initial',
-            icon: "",
+            icon: '',
             campus: "initial",
             grade: "initial",
             gender: 0,
@@ -20,7 +20,7 @@ export default {
         });
         const tempUser = reactive({
             name: "initial",
-            icon: "",
+            icon: '',
             campus: "initial",
             grade: "initial",
             gender: 0,
@@ -39,10 +39,17 @@ export default {
         const contactUsVisible = ref(false);
         const suggestion = ref('');
 
+        const tags = ref([
+            { name: '绿园', type: '' },
+            { name: '美食', type: 'success' },
+            { name: 'Tag 3', type: 'info' },
+            { name: 'Tag 4', type: 'warning' },
+        ]);
+
         return {
             editVisible, user, tempUser,
             changePasswordVisible, curPassword, newPassword, tempPassword,
-            imageUrl,
+            imageUrl, tags,
             contactUsVisible, suggestion,
         };
     },
@@ -50,6 +57,21 @@ export default {
         this.initInfor();
     },
     methods: {
+        getIcon(){
+            let that = this;
+            that.$axios.get('user/getIcon',
+                {
+                    headers: {
+                        'token': that.$cookies.get('user_token')
+                    },
+                }).then((res) => {
+                 console.log(res);
+                 this.user.icon = res.data.data ;
+                 this.imageUrl = res.data.data;
+                 console.log(this.user.icon);
+            }).catch((res) => console.log(res))
+        },
+
         initInfor() {
             let that = this;
             // console.log(that.$cookies.get('user_token'));
@@ -72,6 +94,8 @@ export default {
                 // console.log(this.user);
                 this.refreshTempUser();
             }).catch((res) => console.log(res));
+            this.getIcon();
+            console.log(this.imageUrl);
         },
         refreshTempUser() {
             this.tempUser.name = this.user.name;
@@ -164,11 +188,24 @@ export default {
             this.changePasswordVisible = false;
         },
 
-        coUsConfirm(){
-
+        coUsConfirm(){         
+            let that = this;
+            that.$axios.post('user/suggestByToken',
+                {
+                    suggestion: this.suggestion
+                },
+                {
+                    headers: {
+                        'token': that.$cookies.get('user_token')
+                    },
+                }).then((res) => {
+                 console.log(res);
+            }).catch((res) => console.log(res))
+            this.suggestions = '';
             this.contactUsVisible = false;
         },
         coUsCancel(){
+            this.suggestion = '';
             this.contactUsVisible = false;
         },
 
@@ -228,9 +265,7 @@ export default {
             // console.log(file)
         },
 
-        getIcon(){
-
-        },
+        
 
         logOut(){
             let that = this;
@@ -252,21 +287,21 @@ export default {
             <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.3"/>
         </div>
         <el-container class="MainPart">
-            <el-header height="30%">
+            <el-header height="35%">
                 <div class="headPart">
                     <div>
-                        <el-avatar size='large' class="avatar" 
-                            src="https://s2.loli.net/2023/04/24/FSTIwHVaPsYi1tl.jpg"/>
-                        <span style="margin-left: 15%">{{this.user.name}}</span>
+                        <img size='small' class="avatar" 
+                            :src="this.imageUrl" />
+                        <span style="margin-left: 10%">{{this.user.name}}</span>
                     </div>
                     <div class="buttonArea">
-                        <div style="padding-top: 20%"></div>
+                        <div style="padding-top: 40%"></div>
                         <el-button round @click="editVisible = true">编辑</el-button>
                         <el-button round>
                             <el-dropdown>
-              <span class="el-dropdown-link">
-                设置
-              </span>
+                        <span class="el-dropdown-link">
+                            设置
+                        </span>
                                 <template #dropdown>
                                     <el-dropdown-menu>
                                         <el-dropdown-item>
@@ -314,27 +349,21 @@ export default {
                         -->
                         <el-row class="thirdRow">
                             <el-divider content-position="left">标签</el-divider>
-                            <el-tag>Tag 1</el-tag>
-                            <el-tag class="ml-2" type="success">Tag 2</el-tag>
-                            <el-tag class="ml-2" type="info">Tag 3</el-tag>
-                            <el-tag class="ml-2" type="warning">Tag 4</el-tag>
+                            <el-tag
+                                v-for="tag in tags"
+                                :key="tag.name"
+                                class="mx-1"
+                                closable
+                                :type="tag.type"
+                                style = "margin-right: 8px"
+                            >
+                                {{ tag.name }}
+                            </el-tag>
                         </el-row>
                     </div>
                 </el-aside>
                 <el-main>
                     <div>
-                        <el-upload
-                                class="avatar-uploader"
-                                action="http://43.143.148.116:8080/photo/uploadUserIcon"
-                                :show-file-list="true"
-                                :on-success="handleAvatarSuccess"
-                                :before-upload="beforeAvatarUpload"
-                        >
-                            <img v-if="imageUrl" :src="imageUrl" class="avatar"/>
-                            <el-icon v-else class="avatar-uploader-icon">
-                                <Plus/>
-                            </el-icon>
-                        </el-upload>
                     </div>
                 </el-main>
             </el-container>
@@ -365,6 +394,19 @@ export default {
                     </el-radio-group>
                 </el-form-item>
             </el-form>
+            <el-upload
+                                class="avatar-uploader"
+                                action="http://43.143.148.116:8080/photo/uploadUserIcon"
+                                :show-file-list="true"
+                                :on-success="handleAvatarSuccess"
+                                :before-upload="beforeAvatarUpload"
+                        >
+                            <img v-if="imageUrl" :src="imageUrl" class="avatar"/>
+                            <el-icon v-else class="avatar-uploader-icon">
+                                <Plus/>
+                            </el-icon>
+                        </el-upload>
+                        <span style="text-align:center; padding-left: 38%">点击更换头像</span>
             <template #footer>
         <span class="dialog-footer">
           <el-button @click="editCancel">取消</el-button>
@@ -433,15 +475,16 @@ export default {
 }
 
 .header {
-    height: 7%;
+    height: 8%;
     display: block;
 }
 
 .headPart {
     width: 100%;
+    height: 90%;
     display: flex;
     flex-direction: row;
-    background-image: url('https://s2.loli.net/2023/04/24/TmzbRhHcDe2x5FP.png');
+    background-image: url('https://s2.loli.net/2023/04/24/DCIWskBJ31mH8ZK.png');
 }
 
 .headPart > div {
@@ -467,9 +510,10 @@ export default {
 }
 
 .avatar {
-    margin-top: 10%;
+    margin-top: 25%;
     margin-bottom: 2%;
     margin-left: 5%;
+    width: 20%;
 }
 
 .firstRow {
@@ -534,8 +578,8 @@ export default {
 .el-icon.avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 178px;
-    height: 178px;
+    width: 30%;
+    height: 30%;
     text-align: center;
 }
 
@@ -548,7 +592,7 @@ p.desc {
 }
 
 #body {
-    margin-top: 10%;
+    margin-top: 5%;
     height: 20px;
     width: 20px;
 }
