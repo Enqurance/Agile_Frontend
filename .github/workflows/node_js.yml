@@ -1,0 +1,39 @@
+name: Deploy to Remote Server
+
+on:
+  pull_request:
+    branches:
+      - release
+  pull_request:
+    branches:
+      - dev
+  push:
+    branches:
+      - chore/CICD
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Connect to Remote
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SERVER_KEY }}
+        script: |
+          export PATH="$PATH:/home/ubuntu/.nvm/versions/node/v16.13.0/bin"
+          echo "Deploying"
+          which node
+          node -v
+          cd Deploy
+          rm -rf Agile_Frontend
+          git clone git@github.com:Enqurance/Agile_Frontend.git
+          cd Agile_Frontend
+          git checkout dev
+          npm install
+          npm run build
+          sudo cp -r ./dist /var/www
