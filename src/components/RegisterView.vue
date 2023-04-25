@@ -5,18 +5,18 @@
         </div>
         <div class="form-container">
             <el-form ref="registerForm" :model="registerForm" class="register-form">
-                <el-form-item prop="username">
+                <el-form-item prop="username" :rules="usernameRules"> 
                     <el-input v-model="registerForm.username" placeholder="请设置用户名"
                               @keyup.enter="openVerified"></el-input>
                 </el-form-item>
 
-                <el-form-item prop="email">
+                <el-form-item prop="email" :rules="emailRules">
                     <el-input v-model="registerForm.email" placeholder="请输入验证邮箱"
                               @keyup.enter="openVerified"></el-input>
                 </el-form-item>
 
                 <div style="display:flex;width: 400px;">
-                    <el-form-item prop="emailCode" style="width: 330px;padding-right: 110px;">
+                    <el-form-item prop="emailCode" style="width: 330px;padding-right: 110px;" :rules="emailCodeRules">
                         <el-input v-model="registerForm.emailCode" placeholder="请输入验证码"
                                   @keyup.enter="openVerified"></el-input>
                     </el-form-item>
@@ -27,16 +27,16 @@
                     </el-form-item>
                 </div>
 
-                <el-form-item prop="password">
+                <el-form-item prop="password1" :rules="passwordRules">
                     <el-input type="password" v-model="registerForm.password1" placeholder="请输入密码"
                               @keyup.enter="openVerified"></el-input>
                 </el-form-item>
-                <el-form-item prop="confirm">
+                <el-form-item prop="password2" :rules="password2Rules">
                     <el-input type="password" v-model="registerForm.password2" placeholder="请确认密码"
                               @keyup.enter="openVerified"></el-input>
                 </el-form-item>
 
-                <el-form-item prop="grade">
+                <el-form-item prop="grade" :rules="gradeRules">
                     <el-select v-model="registerForm.grade" placeholder="请选择年级" class="el-select">
                         <el-option label="本科" value="1"></el-option>
                         <el-option label="硕士" value="2"></el-option>
@@ -44,14 +44,14 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item prop="campus">
+                <el-form-item prop="campus" :rules="campusRules">
                     <el-select v-model="registerForm.campus" placeholder="请选择校区" class="el-select">
                         <el-option label="学院路校区" value="1"></el-option>
                         <el-option label="沙河校区" value="2"></el-option>
                     </el-select>
                 </el-form-item>
 
-                <el-form-item>
+                <el-form-item prop="gender" :rules="genderRules">
                     <el-radio v-model="registerForm.gender" label=0>男</el-radio>
                     <el-radio v-model="registerForm.gender" label=1>女</el-radio>
                 </el-form-item>
@@ -87,40 +87,86 @@ export default {
                 campus: "",
                 gender: -1,
             },
-            registerTitle: {
-                username: "用户名",
-                email: "验证邮箱",
-                emailCode: "邮箱验证码",
-                password1: "密码",
-                password2: "确认密码",
-                grade: "年级",
-                campus: "校区",
-                gender: "性别",
-            },
 
-            isShow: false
+            isShow: false,
+
+            usernameRules: [
+                { required: true, message: '用户名不能为空', trigger: ['blur', 'change'] },
+                { min: 8, max: 20, message: '用户名长度为8-20位', trigger: ['blur', 'change'] }
+            ],
+        
+            emailRules: [
+                { required: true, message: '邮箱不能为空', trigger: ['blur', 'change'] },
+                { type: 'email', message: '请输入正确的邮箱格式', trigger: ['blur', 'change'] }
+            ],
+
+            emailCodeRules: [
+                { required: true, message: '验证码不能为空', trigger: ['blur', 'change'] },
+                { pattern: /^\d{6}$/, message: '验证码必须为6位数字', trigger: ['blur', 'change'] }
+            ],
+        
+            passwordRules: [
+                { required: true, message: '密码不能为空', trigger: ['blur', 'change'] },
+                { min: 8, max: 20, message: '密码长度为8-20位', trigger: ['blur', 'change'] },
+                { pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/, message: '密码必须包含大写字母、小写字母和数字，且仅含有字母和数字', trigger: ['blur', 'change'] }
+            ],
+
+            password2Rules:[
+                { required: true, message: '请再次输入密码', trigger: ['blur', 'change'] },
+                { validator: (rule, value, callback) => {
+                    if (value !== this.registerForm.password1) {
+                        callback(new Error('两次输入的密码不一致！'))
+                    } else {
+                        callback()
+                    }
+                }, trigger: ['blur', 'change'] }
+            ],
+            gradeRules:[{ required: true, message: '请选择年级', trigger: 'change' }],
+            campusRules:[{ required: true, message: '请选择校区', trigger: 'change' }],
+            genderRules:[
+                {validator: (rule, value, callback) => {
+                    if (value === -1) {
+                        callback(new Error('请选择性别'));
+                    } else {
+                    callback();
+                    }
+                },trigger: 'change'}
+            ],  
         };
     },
 
     methods: {
         sendEmailCode() {
-            this.$axios.get('/auth/email', {
-                params: {
-                    email: this.registerForm.email
+            this.$refs.registerForm.validateField('email', error => {
+                if (!this.registerForm.email) {
+                    this.$message.error('请先输入邮箱');
+                    return;
                 }
-            }).then(() => {
-                this.$message({
-                    message: '验证码发送成功，请查收邮件',
-                    type: 'success'
+
+                if (!error) {
+                    this.$message.error('请输入正确的邮箱地址');
+                    return;
+                }
+
+                console.log("发送")
+                this.$axios.get('/auth/email', {
+                    params: {
+                        email: this.registerForm.email
+                    }
+                }).then(() => {
+                    this.$message({
+                        message: '验证码发送成功，请查收邮件',
+                        type: 'success'
+                    })
+                    this.startCountdown();
+                }).catch((err) => {
+                    // console.log(error)
+                    this.$message({
+                        message: err.response.data.message === null ? "验证码发送错误" : err.response.data.message,
+                        type: 'error'
+                    })
                 })
-                this.startCountdown();
-            }).catch((err) => {
-                // console.log(error)
-                this.$message({
-                    message: err.response.data.message === null ? "验证码发送错误" : err.response.data.message,
-                    type: 'error'
-                })
-            })
+            });
         },
 
         startCountdown() {
@@ -161,19 +207,11 @@ export default {
         },
 
         openVerified() {
-            for (var i in this.registerForm) {
-                if (this.registerTitle[i] === "性别" && this.registerForm[i] === -1) {
-                    return this.$message.error(this.registerTitle[i] + "不能为空")
+            this.$refs.registerForm.validate((valid) => {
+                if (valid) { 
+                    this.isShow = true
                 }
-                else if (this.registerForm[i].trim().length == 0) {
-                    return this.$message.error(this.registerTitle[i] + "不能为空")
-                }
-            }
-            if (this.registerForm.password1 !== this.registerForm.password2) {
-                return this.$message.error('请重新检查，两次输入的密码不一致！')
-            }
-
-            this.isShow=true
+            })
         },
         closeVerified() {
             this.isShow = false
