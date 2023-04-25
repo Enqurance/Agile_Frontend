@@ -4,6 +4,7 @@ import {ref, reactive} from 'vue'
 
 export default {
     components: {PageHeader},
+    inject:['reload'],
     setup() {
         // information:
         const user = reactive({
@@ -65,11 +66,19 @@ export default {
                         'token': that.$cookies.get('user_token')
                     },
                 }).then((res) => {
-                 console.log(res);
+                 //console.log(res);
                  this.user.icon = res.data.data ;
                  this.imageUrl = res.data.data;
-                 console.log(this.user.icon);
+                 //console.log(this.user.icon);
             }).catch((res) => console.log(res))
+
+            this.refreshIcon();
+        },
+        refreshIcon(){
+            this.isReload = false;
+            this.$nextTick(() => {
+                this.isReload = true;
+            })
         },
 
         initInfor() {
@@ -95,7 +104,6 @@ export default {
                 this.refreshTempUser();
             }).catch((res) => console.log(res));
             this.getIcon();
-            console.log(this.imageUrl);
         },
         refreshTempUser() {
             this.tempUser.name = this.user.name;
@@ -122,6 +130,9 @@ export default {
                 }).then((res) => {
                 // console.log(res);
             }).catch((res) => console.log(res))
+
+            console.log("reload");
+            this.$router.go(0);
         },
         editConfirm() {
             // console.log("in confirm!");
@@ -211,15 +222,8 @@ export default {
 
         beforeAvatarUpload(file) {
             // console.log("in beforeAvatarUpload!");
-            const isJPG = file.type === 'image/jpeg';
             const isLt2M = file.size / 1024 / 1024 < 2;
 
-            if (!isJPG) {
-                this.$message({
-                    message: "上传头像图片只能是 JPG 格式!",
-                    type: "error"
-                })
-            }
             if (!isLt2M) {
                 this.$message({
                     message: "上传头像图片大小不能超过 2MB!",
@@ -245,6 +249,7 @@ export default {
                 }],
             })
             that.$axios(option).then((res)=>(console.log(res)));
+            this.getIcon();
             /*that.$axios.post('photo/uploadUserIcon',
                 {
                     formData
@@ -263,9 +268,8 @@ export default {
 
         handleAvatarSuccess(res, file) {
             // console.log(file)
+            this.getIcon();
         },
-
-        
 
         logOut(){
             let that = this;
@@ -276,7 +280,7 @@ export default {
 
     },
     data() {
-        return {}
+        return {isReload: true,}
     }
 }
 </script>
@@ -289,7 +293,7 @@ export default {
         <el-container class="MainPart">
             <el-header height="35%">
                 <div class="headPart">
-                    <div>
+                    <div v-if="isReload">
                         <img size='small' class="avatar" 
                             :src="this.imageUrl" />
                         <span style="margin-left: 10%">{{this.user.name}}</span>
@@ -374,7 +378,19 @@ export default {
                 title="请编辑你的信息"
                 width="50%"
         >
-            <el-form :model="user" label-width="120px">
+            <el-upload
+                class="avatar-uploader"
+                action="http://43.143.148.116:8080/photo/uploadUserIcon"
+                :show-file-list="true"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload">
+                    <img v-if="imageUrl" :src="imageUrl" class="avatarUp"/>
+                    <el-icon v-else class="avatar-uploader-icon">
+                        <Plus/>
+                    </el-icon>
+            </el-upload>
+            <span style="text-align:center; padding-left: 38%">点击更换头像</span>
+            <el-form :model="user" label-width="120px" style="padding-top: 10%">
                 <el-form-item label="用户名">
                     <el-input v-model="tempUser.name"/>
                 </el-form-item>
@@ -394,19 +410,6 @@ export default {
                     </el-radio-group>
                 </el-form-item>
             </el-form>
-            <el-upload
-                                class="avatar-uploader"
-                                action="http://43.143.148.116:8080/photo/uploadUserIcon"
-                                :show-file-list="true"
-                                :on-success="handleAvatarSuccess"
-                                :before-upload="beforeAvatarUpload"
-                        >
-                            <img v-if="imageUrl" :src="imageUrl" class="avatar"/>
-                            <el-icon v-else class="avatar-uploader-icon">
-                                <Plus/>
-                            </el-icon>
-                        </el-upload>
-                        <span style="text-align:center; padding-left: 38%">点击更换头像</span>
             <template #footer>
         <span class="dialog-footer">
           <el-button @click="editCancel">取消</el-button>
@@ -484,7 +487,7 @@ export default {
     height: 90%;
     display: flex;
     flex-direction: row;
-    background-image: url('https://s2.loli.net/2023/04/24/DCIWskBJ31mH8ZK.png');
+    background-image: url('https://s2.loli.net/2023/04/25/VbTDNRqLr8UMZlB.png');
 }
 
 .headPart > div {
@@ -511,6 +514,12 @@ export default {
 
 .avatar {
     margin-top: 25%;
+    margin-bottom: 2%;
+    margin-left: 5%;
+    width: 20%;
+}
+.avatarUp {
+    margin-top: 10%;
     margin-bottom: 2%;
     margin-left: 5%;
     width: 20%;
