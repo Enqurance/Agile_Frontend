@@ -32,5 +32,6 @@ jobs:
           cd Agile_Frontend
           git checkout dev
           npm install
+          npm install @ant-design/icons-vue --save
           npm run build
           sudo cp -r ./dist /var/www
