@@ -295,17 +295,19 @@ export default {
             <el-header height="35%">
                 <div class="headPart">
                     <div v-if="isReload">
-                        <div class="pic-container">
-                            <el-upload
-                                class="avatar-uploader"
-                                action="http://43.143.148.116:8080/photo/uploadUserIcon"
-                                :show-file-list="false"
-                                :on-success="handleAvatarSuccess"
-                                :before-upload="beforeAvatarUpload">
-                                    <img :src="this.imageUrl">
-                                    <p style = "text-align: center;">点击更换头像</p>
-                            </el-upload>
-                        </div>
+                        <el-tooltip class="item" effect="dark" content="点击更换头像" placement="right">
+                            <div class="pic-container">
+                                <el-upload
+                                    class="avatar-uploader"
+                                    action="http://43.143.148.116:8080/photo/uploadUserIcon"
+                                    :show-file-list="false"
+                                    :on-success="handleAvatarSuccess"
+                                    :before-upload="beforeAvatarUpload">
+                                        <img :src="this.imageUrl">
+                                </el-upload>
+                            </div>
+                        </el-tooltip>
+                        <!-- <p style = "text-align: center;">点击更换头像</p> -->
                         <span style="margin-left: 5%;font-size: 30px;">{{this.user.name}}</span>
                     </div>
                     <div class="buttonArea">
