@@ -249,13 +249,13 @@ export default {
 
         beforeAvatarUpload(file) {
             console.log("in beforeAvatarUpload!");
-            const isJPG = file.type === 'image/jpeg';
-            const isLt2M = file.size / 1024 / 1024 < 2;
-            if (!isJPG) {
-                console.log('上传地点图片只能是 JPG Png 格式!');
+            const isPic = file.type === 'image/jpeg'|| file.type === 'image/png';
+            const isLt5M = file.size / 1024 / 1024 < 5;
+            if (!isPic) {
+                return this.$message.error('上传地点图片只能是 Jpg 或 Png 格式!')
             }
-            if (!isLt2M) {
-                console.log('上传地点图片大小不能超过 2MB!');
+            if (!isLt5M) {
+                return this.$message.error('上传地点图片大小不能超过 5MB!')
             }
 
             let that = this;

@@ -61,10 +61,10 @@ export default {
             map,
             beihang_center: [
                 116.347313,
-                39.9817
+                39.9820
             ],
             beihang_zoom: [
-                16.2,
+                16,
                 20
             ],
 
@@ -146,7 +146,7 @@ export default {
 
                 this.map = new AMap.Map('container', {
                     viewMode: '3D',
-                    zoom: 16.2,
+                    zoom: 16,
                     center: that.beihang_center,
                     // layers: [
                     //     // 卫星
