@@ -3,6 +3,9 @@ name: Deploy to Remote Server
 on:
   pull_request:
     branches:
+      - release
+  pull_request:
+    branches:
       - dev
   push:
     branches:
