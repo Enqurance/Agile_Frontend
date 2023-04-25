@@ -132,7 +132,7 @@ export default {
             }).catch((res) => console.log(res))
 
             console.log("reload");
-            this.$router.replace('/InforPage');
+            this.$router.go(0);
         },
         editConfirm() {
             // console.log("in confirm!");
