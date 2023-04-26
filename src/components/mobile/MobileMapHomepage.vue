@@ -1,7 +1,7 @@
 <template>
     <div>
         <!--        <el-header height="7%">-->
-/*        <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.3"/>*/
+<!--        <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.3"/>-->
         <!--        </el-header>-->
         <!--        <el-main style="height: 93%">-->
         <PlaceSearch class="on_div" style="width: 50%; height: 30%; margin-top: 15%; margin-left: 3%"
@@ -208,17 +208,17 @@ export default {
 
             //右键添加Marker标记
             // eslint-disable-next-line no-unused-vars
-            contextMenu.addItem("添加标记", function () {
-                if (!that.$cookies.get('user_token')) {
-                    that.$message({
-                        message: '请先登录!',
-                        type: "warning"
-                    })
-                    that.$router.push({path: '/login'})
-                }
-                that.is_add_marker = true
-                contextMenu.close()
-            }, 2);
+            // contextMenu.addItem("添加标记", function () {
+            //     if (!that.$cookies.get('user_token')) {
+            //         that.$message({
+            //             message: '请先登录!',
+            //             type: "warning"
+            //         })
+            //         that.$router.push({path: '/login'})
+            //     }
+            //     that.is_add_marker = true
+            //     contextMenu.close()
+            // }, 2);
 
             //地图绑定鼠标右击事件——弹出右键菜单
             this.map.on('rightclick', function (e) {
