@@ -292,6 +292,14 @@ export default {
 
         deletePhoto(photoUrl) {
             let that = this;
+            if (!that.$cookies.get('user_token')) {
+                that.$message({
+                    message: '请先登录!',
+                    type: "warning"
+                })
+                that.$router.push({path: '/login'})
+                return
+            }
             const index = that.photos.indexOf(photoUrl);
             console.log("url "+photoUrl)
             console.log("index "+index)
