@@ -16,5 +16,9 @@ app.use(ElementPlus)
 
 app.config.globalProperties.$axios = axiosInstance
 app.config.globalProperties.$router = router
+app.config.globalProperties.$device = navigator.userAgent.match(
+    /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+) ? "mobile" : "pc"
+
 
 app.mount('#app')

@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import '../assets/PlaceSearch/font1/iconfont.css'
+import '../../assets/PlaceSearch/font1/iconfont.css'
 import global from '@/global'
 import {ElMessage} from "element-plus";
 
