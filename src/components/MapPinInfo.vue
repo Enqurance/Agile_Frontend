@@ -50,9 +50,9 @@
                 <el-card :body-style="{ padding: '10px' }">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0px;">
                         <h4 style="margin-bottom: 0px;">信息</h4>
-                        <a-button type="link" v-if="info.visibility === 0 || this.$cookies.get('user_type') === '1'" @click="editInfo" >
+                        <el-button type="link" v-if="info.visibility === 0 || this.$cookies.get('user_type') === '1'" @click="editInfo" >
                         <EditOutlined />
-                        </a-button>
+                        </el-button>
                     </div> 
                     
                     <!-- <p>{{ info.name }}</p> -->
