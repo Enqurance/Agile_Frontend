@@ -1,7 +1,6 @@
-import global from "@/global";
 import axios from "axios";
 //请求拦截器
-axios.defaults.baseURL = 'http://43.143.148.116:8080'//这是项目的base地址
+axios.defaults.baseURL = 'https://buaamapforum.cn:8443'//这是项目的base地址
 axios.defaults.timeout = 10000//超时时间
 axios.interceptors.request.use((config) => {
 //这里不添加请求头是因为我们发送的数据不一定都是json格式
