@@ -75,7 +75,7 @@
                     </el-carousel>
 
                     <el-upload v-if="info.visibility === 0 || this.$cookies.get('user_type') === '1'" 
-                    class="avatar-uploader" action="http://43.143.148.116:8080/photo/uploadPinPhoto"
+                    class="avatar-uploader" action="https://buaamapforum.cn:8443/photo/uploadPinPhoto"
                         :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                         <el-button size="small" type="primary" plain>上传图片</el-button>
                     </el-upload>
