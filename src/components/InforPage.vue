@@ -300,7 +300,7 @@ export default {
                     <div v-if="isReload">
                         <el-tooltip class="item" effect="dark" content="点击更换头像" placement="right">
                             <div class="pic-container">
-                                <el-upload class="avatar-uploader" action="https://43.143.148.116:8443/photo/uploadUserIcon"
+                                <el-upload class="avatar-uploader" action="https://buaamapforum.cn:8443/photo/uploadUserIcon"
                                     :show-file-list="false" :on-success="handleAvatarSuccess"
                                     :before-upload="beforeAvatarUpload">
                                     <img :src="this.imageUrl">

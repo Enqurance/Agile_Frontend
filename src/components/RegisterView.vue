@@ -1,7 +1,7 @@
 <template>
     <div class="register-container">
         <div class="logo-container">
-            <img src="https://s2.loli.net/2023/04/11/b8pzQZCJNeoSmyE.jpg" alt="logo" style="width: 100%; height: auto;">
+            <img src="/img/logo.png" alt="logo" style="width: 100%; height: auto;">
         </div>
         <div class="form-container">
             <el-form ref="registerForm" :model="registerForm" class="register-form">
@@ -228,21 +228,51 @@ export default {
     justify-content: center;
     align-items: center;
     height: 100vh;
+
+    /* 设置背景图片 */
+    background-image: url(/public/img/background.png);
+    /* 设置背景大小 */
+    background-size: cover;
+    /* 设置背景重复方式 */
+    background-repeat: no-repeat;
+    /* 设置背景位置 */
+    background-position: center center;
+    /* 设置背景固定方式 */
+    background-attachment: fixed;
 }
 
 .logo-container {
-    width: 100px;
-    height: 100px;
-    background: #ccc;
-    margin-bottom: 20px; /* 添加20像素的下边距 */
+    width: 180px;
+    height: 180px;
+    background: rgba(255, 255, 255, 0);
+    margin-top: 0px;
+    margin-bottom: 0px;
     text-align: center;
 }
 
 .form-container {
-    display: flex; /* 添加Flex属性 */
+    display: flex;
+    /* 添加Flex属性 */
     justify-content: center;
     align-items: center;
-    width: 400px; /* 设置固定宽度为 400px */
+    position: relative;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 15px;
+    padding-bottom: 0;
+    z-index: 1;
+}
+
+.form-container:before {
+    content: "";
+    position: absolute;
+    top: -10px; /* 向上移动一点 */
+    bottom: -10px; /* 向下移动一点 */
+    left: -10px; /* 向左移动一点 */
+    right: -10px; /* 向右移动一点 */
+    z-index: -1;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 20px; /* 圆角边框 */
 }
 
 .register-form {
