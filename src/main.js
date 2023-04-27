@@ -17,4 +17,9 @@ app.use(ElementPlus)
 app.config.globalProperties.$axios = axiosInstance
 app.config.globalProperties.$router = router
 
+// 设置网站图标
+app.config.globalProperties.$metaInfo = {
+    link: [{ rel: 'icon', href: '/favicon.ico' }]
+}
+
 app.mount('#app')
