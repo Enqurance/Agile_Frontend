@@ -153,12 +153,19 @@ export default {
                     params: {
                         email: this.registerForm.email
                     }
-                }).then(() => {
-                    this.$message({
-                        message: '验证码发送成功，请查收邮件',
-                        type: 'success'
-                    })
-                    this.startCountdown();
+                }).then((res) => {
+                    if (res.data.code === 200) {
+                        this.$message({
+                            message: '验证码发送成功，请查收邮件',
+                            type: 'success'
+                        })
+                        this.startCountdown();
+                    } else {
+                        this.$message({
+                            message: res.data.message,
+                            type: 'error'
+                        })
+                    }
                 }).catch((err) => {
                     // console.log(error)
                     this.$message({
