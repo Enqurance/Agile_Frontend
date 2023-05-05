@@ -1,5 +1,5 @@
 import {mount} from "@vue/test-utils";
-import MapPinInfo from "@/components/MapPinInfo";
+import MapPinInfo from "@/components/sub_components/MapPinInfo.vue";
 
 
 describe("MapPinInfo.vue", () => {

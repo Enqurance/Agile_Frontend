@@ -1,6 +1,6 @@
 // tests/components/Counter.spec.js
 import { mount } from "@vue/test-utils";
-import PlaceSearch  from "@/components/PlaceSearch.vue";
+import PlaceSearch  from "@/components/sub_components/PlaceSearch.vue";
 
 describe("PlaceSearch.vue", () => {
     let wrapper;

@@ -1,7 +1,7 @@
 import InforPage from "@/components/InforPage.vue";
 import MapHomepage from '../components/MapHomepage.vue'
-import LoginView from "@/components/LoginView.vue";
-import RegisterView from "@/components/RegisterView.vue";
+import LoginPage from "@/components/LoginPage.vue";
+import RegisterPage from "@/components/RegisterPage.vue";
 
 const routes = [
     {
@@ -22,12 +22,12 @@ const routes = [
     {
         name: 'login',
         path: '/login',
-        component: LoginView,
+        component: LoginPage,
     },
     {
         name: 'register',
         path: '/register',
-        component: RegisterView,
+        component: RegisterPage,
     },
 ]
 
