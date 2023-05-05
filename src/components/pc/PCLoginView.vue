@@ -28,10 +28,10 @@
 </template>
 
 <script>
-import ManVerify from "@/components/ManVerify.vue";
+import ManVerify from "@/components/sub_components/ManVerify.vue";
 
 export default {
-    name: "LoginPage",
+    name: "PCLoginPage",
     components: {ManVerify},
     data() {
         return {
