@@ -50,7 +50,7 @@
                 <el-card :body-style="{ padding: '10px' }">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0px;">
                         <h4 style="margin-bottom: 0px;">信息</h4>
-                        <el-button type="link" v-if="info.visibility === 0 || this.$cookies.get('user_type') === '1'" @click="editInfo" >
+                        <el-button type="link" v-if="(info.visibility === 0 || this.$cookies.get('user_type') === '1') && is_examine===false" @click="editInfo" >
                         <EditOutlined />
                         </el-button>
                     </div> 
@@ -74,7 +74,7 @@
                         </el-carousel-item>
                     </el-carousel>
 
-                    <el-upload v-if="info.visibility === 0 || this.$cookies.get('user_type') === '1'" 
+                    <el-upload v-if="(info.visibility === 0 || this.$cookies.get('user_type') === '1') && is_examine===false"
                     class="avatar-uploader" action="https://buaamapforum.cn:8443/photo/uploadPinPhoto"
                         :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                         <el-button size="small" type="primary" plain>上传图片</el-button>
@@ -116,7 +116,8 @@ import {ElMessageBox, ElMessage} from "element-plus";
  
 export default {
     props: {
-        id: -1
+        id: Number,
+        is_examine: Boolean
     },
     emits: [
         'close_drawer',
