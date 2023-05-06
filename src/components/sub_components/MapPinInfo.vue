@@ -111,7 +111,7 @@
 
 <script>
 import global from '@/global'
-import { EditOutlined, CheckOutlined, CloseOutlined} from '@ant-design/icons-vue'; 
+import { EditOutlined, CheckOutlined, CloseOutlined} from '@ant-design/icons-vue';
 import {ElMessageBox, ElMessage} from "element-plus";
  
 export default {
