@@ -8,7 +8,7 @@
                      @submit_p_id="(e) => concentrate_pin(e)" :click_map="close_search"
                      @search_close="close_search=false"/>
         <div class="on_div" style="width: 100%;" >
-            <MapPinInfo :id="show_marker_id" @close_drawer="show_marker_id = -1" @update_info="update_pin"/>
+            <MapPinInfo :id="show_marker_id" :is_examine="false" @close_drawer="show_marker_id = -1" @update_info="update_pin"/>
 
             <div class="type_class">
                 <el-checkbox-group v-model="checkedTypes" style="padding-left: 10%; width: 100px" @change="markers_change">
