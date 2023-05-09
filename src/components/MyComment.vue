@@ -122,7 +122,7 @@ export default {
         // console.log(res)
         if (res.data.code === 200) {
           console.log("get comment success")
-          this.comments = res.data.comments_info
+          this.comments = res.data
         } else {
           this.$message({
             message: res.data.message,

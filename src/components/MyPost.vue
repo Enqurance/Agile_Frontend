@@ -129,7 +129,7 @@ export default {
         // console.log(res)
         if (res.data.code === 200) {
           console.log("get post success")
-          this.posts = res.data.posts_info
+          this.posts = res.data
         } else {
           this.$message({
             message: res.data.message,
