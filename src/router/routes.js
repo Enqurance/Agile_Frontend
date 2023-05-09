@@ -3,6 +3,7 @@ import MapHomepage from '../components/MapHomepage.vue'
 import LoginPage from "@/components/LoginPage.vue";
 import RegisterPage from "@/components/RegisterPage.vue";
 import MyPost from "@/components/MyPost";
+import MyComment from "@/components/MyComment";
 
 const routes = [
     {
@@ -34,6 +35,11 @@ const routes = [
         name: 'myPost',
         path: '/InforPage/myPost',
         component: MyPost,
+    },
+    {
+        name: 'myPost',
+        path: '/InforPage/myComment',
+        component: MyComment,
     },
 ]
 
