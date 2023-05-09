@@ -14,7 +14,7 @@
       </div>
       <div v-for="post in posts" :key="post.id"
            style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 600px;height: 150px ">
-        <el-button style="float: right;" type="danger" @click="post.deleteDialog=true">
+        <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger" @click="post.deleteDialog=true">
           删除
         </el-button>
         <el-dialog v-model="post.deleteDialog" title="删除帖子" width="30%" center>
