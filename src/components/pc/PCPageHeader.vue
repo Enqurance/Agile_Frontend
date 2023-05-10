@@ -8,7 +8,7 @@ export default {
         let router = useRouter()
         let page = toRaw(router).currentRoute.value.fullPath;
         // console.log(page);
-        const Index = ref('1');
+        let Index = ref('4');
 
         let isMap = ref(false);
         let isForum = ref(false);
@@ -17,21 +17,25 @@ export default {
             isMap = true;
             isForum = false;
             isInfor = false;
+            Index = '1';
         }
         if (page === '/home') {
             isMap = true;
             isForum = false;
             isInfor = false;
+            Index = '2';
         }
         else if (page === '/Infor') {
             isMap = false;
             isForum = false;
             isInfor = true;
+            Index = '4';
         }
         else if (page === '/forum') {
             isMap = false;
             isForum = true;
             isInfor = false;
+            Index = '3';
         }
 
         const user = reactive({
@@ -174,7 +178,7 @@ export default {
                     <img class="ava" :src="this.imageUrl">
                     <p>{{ this.user.name }}</p>
                 </template>
-                <el-menu-item index="2-1">item one</el-menu-item>
+                <el-menu-item index="2-1">登出</el-menu-item>
             </el-sub-menu>
         </div>
         
