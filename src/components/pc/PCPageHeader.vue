@@ -74,22 +74,12 @@ export default {
             });
         },
         clickToForum() {
-            // this.$router.push({
-            //   path: '/',
-            //   query: {
-            //   },
-            // });
-            console.log(this.isForum)
-            this.isForum = false
-            console.log(this.isForum)
-            this.$message({
-                message: "论坛功能，敬请期待！",
-                type: "info",
-                center: true,
-                grouping: true,
-                duration: 1000,
-                showClose: true
-            })
+            this.Index = '3';
+            this.$router.push({
+              path: '/Forum',
+              query: {
+              },
+            });
         },
         clickToLogin() {
             this.$router.push({
@@ -163,7 +153,7 @@ export default {
         <el-menu-item v-on:click="clickToMap()" index="2">
             <template #title>Map</template>
         </el-menu-item>
-        <el-menu-item v-on:click.stop.prevent="clickToForum()" index="3">
+        <el-menu-item v-on:click="clickToForum()" index="3">
             <template #title>Forum</template>
         </el-menu-item>
         <div class="flex-grow" />
