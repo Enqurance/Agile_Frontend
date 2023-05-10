@@ -42,7 +42,7 @@
           {{ post.content }}
         </p>
         <div style="padding: 0 20px;">
-          <el-icon :size="size" :color="color">
+          <el-icon >
             <ChatRound/>
           </el-icon>
           {{ post.floor_num }}
@@ -129,7 +129,7 @@ export default {
         // console.log(res)
         if (res.data.code === 200) {
           console.log("get post success")
-          this.posts = res.data
+          this.posts = res.data.data
         } else {
           this.$message({
             message: res.data.message,

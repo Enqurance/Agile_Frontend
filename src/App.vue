@@ -1,12 +1,14 @@
 <template>
-    <router-view/>
+<!--    <router-view/>-->
+  <MyMessage></MyMessage>
 </template>
 
 <script>
 
+import MyMessage from "@/components/MyMessage";
 export default {
     name: 'App',
-    components: {},
+    components: {MyMessage},
     provide() {
         return {
             reload: this.reload

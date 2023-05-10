@@ -21,8 +21,8 @@
         </span>
           <template #footer>
             <span class="dialog-footer">
-              <el-button @click="post.deleteDialog = false">取消</el-button>
-              <el-button type="primary" @click="deletePost(comment)">
+              <el-button @click="comment.deleteDialog = false">取消</el-button>
+              <el-button type="primary" @click="deleteComment(comment)">
                 确认
               </el-button>
             </span>
@@ -90,11 +90,11 @@ export default {
     }
   },
   methods: {
-    deletePost(comment) {
+    deleteComment(comment) {
       comment.deleteDialog = false
       let that = this
       that.$axios.post('/InfoPage/deleteCommentById', {
-        post_id: post.id
+        comment_id: comment.id
       }, {
         headers: {
           'token': that.$cookies.get('user_token')
@@ -111,7 +111,7 @@ export default {
         }
       })
     },
-    queryAllPost() {
+    queryAllComment() {
       let that = this
       that.$axios.get('/InfoPage/getMyAllComment', {
         headers: {
@@ -122,7 +122,7 @@ export default {
         // console.log(res)
         if (res.data.code === 200) {
           console.log("get comment success")
-          this.comments = res.data
+          this.comments = res.data.data
         } else {
           this.$message({
             message: res.data.message,
@@ -138,9 +138,10 @@ export default {
 
   },
   mounted() {
-    this.queryAllPost()
+    this.queryAllComment()
 
-  }
+  },
+
 }
 </script>
 
