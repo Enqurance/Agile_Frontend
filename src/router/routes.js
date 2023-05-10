@@ -4,6 +4,7 @@ import LoginPage from "@/components/LoginPage.vue";
 import RegisterPage from "@/components/RegisterPage.vue";
 import MyPost from "@/components/MyPost";
 import MyComment from "@/components/MyComment";
+import ForumPage from "@/components/ForumPage.vue";
 
 const routes = [
     {
@@ -37,9 +38,14 @@ const routes = [
         component: MyPost,
     },
     {
-        name: 'myPost',
+        name: 'myComment',
         path: '/InforPage/myComment',
         component: MyComment,
+    },
+    {
+        name: 'forum',
+        path: '/Forum',
+        component: ForumPage,
     },
 ]
 
