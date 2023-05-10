@@ -2,10 +2,14 @@ import InforPage from "@/components/InforPage.vue";
 import MapHomepage from '../components/MapHomepage.vue'
 import LoginPage from "@/components/LoginPage.vue";
 import RegisterPage from "@/components/RegisterPage.vue";
+<<<<<<< HEAD
 import MyPost from "@/components/MyPost";
 import MyComment from "@/components/MyComment";
 import ForumPage from "@/components/ForumPage.vue";
 import MyMessage from "@/components/MyMessage";
+=======
+import ForumPage from "@/components/ForumPage.vue";
+>>>>>>> 6dc169b ([feat]():init forumPage)
 
 const routes = [
     {
@@ -34,6 +38,7 @@ const routes = [
         component: RegisterPage,
     },
     {
+<<<<<<< HEAD
         name: 'myPost',
         path: '/InforPage/myPost',
         component: MyPost,
@@ -49,6 +54,8 @@ const routes = [
         component: MyMessage,
     },
     {
+=======
+>>>>>>> 6dc169b ([feat]():init forumPage)
         name: 'forum',
         path: '/Forum',
         component: ForumPage,

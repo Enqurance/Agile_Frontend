@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
     <el-container>
         <el-header>
             <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.3" />
@@ -28,19 +29,31 @@
             </div>
         </el-main>
     </el-container>
+=======
+    <div>
+        <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.3" />
+        <p>这是论坛页面</p>
+    </div>
+
+>>>>>>> 6dc169b ([feat]():init forumPage)
 </template>
 
 
 <script>
+<<<<<<< HEAD
 import { ref } from 'vue'
 import PageHeader from "@/components/pc/PCPageHeader.vue";
 import NewPost from "../sub_components/NewPost.vue";
+=======
+import PageHeader from "@/components/pc/PCPageHeader.vue";
+>>>>>>> 6dc169b ([feat]():init forumPage)
 
 export default {
     name: "PCMapHomepage",
 
     components: {
         PageHeader,
+<<<<<<< HEAD
         NewPost,
     },
 
@@ -183,3 +196,9 @@ export default {
     font-weight: bold;
 }
 </style>
+=======
+    },
+
+}  
+</script>
+>>>>>>> 6dc169b ([feat]():init forumPage)
