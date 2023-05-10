@@ -1,53 +1,19 @@
 <template>
-  <div class="post-add">
-    <el-dialog :title="dialogTitle" v-model="dialogVisible">
-      <el-form :model="formData" label-width="100px">
-        <el-form-item label="标题">
-          <el-input v-model="formData.post_title" maxlength="20"></el-input>
-        </el-form-item>
-        <el-form-item label="正文">
-          <el-input v-model="formData.post_body" type="textarea" :rows="6" maxlength="200"></el-input>
-        </el-form-item>
-        <el-form-item label="类别">
-          <el-radio-group v-model="formData.pin_type">
-            <el-radio :label="1">餐饮</el-radio>
-            <el-radio :label="2">园地</el-radio>
-            <el-radio :label="3">教学</el-radio>
-            <el-radio :label="4">体育</el-radio>
-            <el-radio :label="5">办公</el-radio>
-            <el-radio :label="6">购物</el-radio>
-            <el-radio :label="7">生活服务</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="关联钉子">
-        </el-form-item>
-      </el-form>
-
-      <div>
-        <el-button @click="dialogVisible = false">取消
-          <CloseOutlined/>
-        </el-button>
-        <el-button type="primary" @click="submitForm">确认
-          <CheckOutlined/>
-        </el-button>
-      </div>
-    </el-dialog>
-  </div>
   <div
-      style="padding: 5% 30% 11% 27%;background: rgb(246,246,246); word-wrap: break-word; word-break: normal">
-    <div style="margin-bottom: 5%;font-size: 20px;display: flex">
+      style="padding: 120px 400px 60px 400px;background: rgb(246,246,246); min-height: 557px; word-wrap: break-word; word-break: normal">
+    <div style="margin-bottom: 30px;font-size: 20px">
       我的帖子
-      <el-button style="margin-left: 70%" size="large" type="primary" @click="showNewPostDialog">
+      <el-button style="margin-left: 400px" size="large" type="primary">
         创建
       </el-button>
     </div>
 
-    <ul class="infinite-list" style="overflow: auto">
+    <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
       <div v-if="posts.length === 0">
         <el-empty description="暂时还没有贴子"/>
       </div>
       <div v-for="post in posts" :key="post.id"
-           style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 150px ">
+           style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 600px;height: 150px ">
         <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
                    @click="post.deleteDialog=true">
           删除
@@ -76,7 +42,7 @@
           {{ post.content }}
         </p>
         <div style="padding: 0 20px;">
-          <el-icon>
+          <el-icon >
             <ChatRound/>
           </el-icon>
           {{ post.floor_num }}
@@ -127,13 +93,7 @@ export default {
           floor_num: 5,
         },
       ],
-      dialogVisible: false, // 对话框可见性
-      formData: {
-        post_title: "",
-        post_body: "",
-        pin_type: -1,
-      },   // 表单数据
-      dialogTitle: '新建帖子'
+
     }
   },
   methods: {
@@ -179,12 +139,10 @@ export default {
       })
     },
     browsePost(id) {
-      //记得改
-      this.$router.push({path: '/xxx/' + id})
-    },
-    showNewPostDialog() {
-      this.dialogVisible = true
-    },
+      // 记得改
+      this.$router.push({path:'/xxx/'+id})
+    }
+
   },
   mounted() {
     this.queryAllPost()
