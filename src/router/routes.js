@@ -2,6 +2,8 @@ import InforPage from "@/components/InforPage.vue";
 import MapHomepage from '../components/MapHomepage.vue'
 import LoginPage from "@/components/LoginPage.vue";
 import RegisterPage from "@/components/RegisterPage.vue";
+import MyPost from "@/components/MyPost";
+import MyComment from "@/components/MyComment";
 import ForumPage from "@/components/ForumPage.vue";
 
 const routes = [
@@ -29,6 +31,16 @@ const routes = [
         name: 'register',
         path: '/register',
         component: RegisterPage,
+    },
+    {
+        name: 'myPost',
+        path: '/InforPage/myPost',
+        component: MyPost,
+    },
+    {
+        name: 'myPost',
+        path: '/InforPage/myComment',
+        component: MyComment,
     },
     {
         name: 'forum',
