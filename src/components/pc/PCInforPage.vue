@@ -293,7 +293,7 @@ export default {
 <template>
     <div class="InforPage">
         <div class="header">
-            <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.3" />
+            <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.8" />
         </div>
         <el-container class="MainPart">
             <el-header height="35%">
