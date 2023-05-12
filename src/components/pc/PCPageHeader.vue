@@ -1,5 +1,6 @@
 <script>
 import {ref, toRaw} from 'vue'
+import { reactive } from 'vue'
 import {useRouter} from 'vue-router';
 
 export default {
@@ -7,6 +8,8 @@ export default {
         let router = useRouter()
         let page = toRaw(router).currentRoute.value.fullPath;
         // console.log(page);
+        let Index = ref('4');
+
         let isMap = ref(false);
         let isForum = ref(false);
         let isInfor = ref(true);
@@ -14,55 +17,69 @@ export default {
             isMap = true;
             isForum = false;
             isInfor = false;
+            Index = '1';
         }
         if (page === '/home') {
             isMap = true;
             isForum = false;
             isInfor = false;
+            Index = '2';
         }
         else if (page === '/Infor') {
             isMap = false;
             isForum = false;
             isInfor = true;
+            Index = '4';
         }
         else if (page === '/forum') {
             isMap = false;
             isForum = true;
             isInfor = false;
+            Index = '3';
         }
 
-        return {isMap, isForum, isInfor};
+        const user = reactive({
+            id: 0,
+            name: "initial",
+            email: 'initial' + "@buaa.edu.cn",
+            type: 0,
+            password: 'initial',
+            icon: '',
+            campus: "initial",
+            grade: "initial",
+            gender: 0,
+            description: "tell you later .",
+        });
+        const imageUrl = ref('');
+
+        return {Index, isMap, isForum, isInfor,
+                user, imageUrl};
+    },
+    mounted() {
+        this.initInfor();
     },
     methods: {
         clickToMap() {
+            this.Index = '2';
             this.$router.push({
                 path: '/home',
                 query: {},
             });
         },
         clickToInfor() {
+            this.Index = '4';
             this.$router.push({
                 path: '/InforPage',
                 query: {},
             });
         },
         clickToForum() {
-            // this.$router.push({
-            //   path: '/',
-            //   query: {
-            //   },
-            // });
-            console.log(this.isForum)
-            this.isForum = false
-            console.log(this.isForum)
-            this.$message({
-                message: "论坛功能，敬请期待！",
-                type: "info",
-                center: true,
-                grouping: true,
-                duration: 1000,
-                showClose: true
-            })
+            this.Index = '3';
+            this.$router.push({
+              path: '/Forum',
+              query: {
+              },
+            });
         },
         clickToLogin() {
             this.$router.push({
@@ -70,12 +87,93 @@ export default {
                 query: {},
             });
         },
+
+        getIcon() {
+            let that = this;
+            that.$axios.get('user/getIcon',
+                {
+                    headers: {
+                        'token': that.$cookies.get('user_token')
+                    },
+                }).then((res) => {
+                    //console.log(res);
+                    this.user.icon = res.data.data;
+                    this.imageUrl = res.data.data;
+                    //console.log(this.user.icon);
+                }).catch((res) => console.log(res))
+
+            this.refreshIcon();
+        },
+        refreshIcon() {
+            this.isReload = false;
+            this.$nextTick(() => {
+                this.isReload = true;
+            })
+        },
+
+        initInfor() {
+            let that = this;
+            // console.log(that.$cookies.get('user_token'));
+            that.$axios.get('user/getUserByToken', {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then((res) => {
+                // console.log(res);
+                this.user.id = res.data.data.id;
+                this.user.name = res.data.data.name;
+                this.user.email = res.data.data.email;
+                this.user.type = res.data.data.type;
+                this.user.password = res.data.data.password;
+                this.user.icon = res.data.data.icon;
+                this.user.campus = res.data.data.campus;
+                this.user.grade = res.data.data.grade;
+                this.user.gender = res.data.data.gender;
+                this.user.description = res.data.data.description;
+                // console.log(this.user);
+            }).catch((res) => console.log(res));
+            this.getIcon();
+        },
     },
 }
 </script>
 
 <template>
     <div class="boby">
+    <el-menu
+        :default-active="Index"
+        class="el-menu-demo"
+        mode="horizontal"
+        :ellipsis="false"
+        @select="handleSelect"
+    >
+        <el-menu-item v-on:click="clickToMap()" index="1">
+            <template #title>BUAAMapForum</template>
+        </el-menu-item>
+        <el-menu-item v-on:click="clickToMap()" index="2">
+            <template #title>Map</template>
+        </el-menu-item>
+        <el-menu-item v-on:click="clickToForum()" index="3">
+            <template #title>Forum</template>
+        </el-menu-item>
+        <div class="flex-grow" />
+        <div v-if="this.$cookies.get('user_token') === null" class="last">
+            <el-menu-item v-on:click="clickToLogin()" index="4">
+            <template #title>Login</template>
+            </el-menu-item>
+        </div>
+        <div v-else>
+            <el-sub-menu index="4" v-on:click="clickToInfor()" class="last">
+                <template #title>
+                    <img class="ava" :src="this.imageUrl">
+                    <p>{{ this.user.name }}</p>
+                </template>
+                <el-menu-item index="2-1">登出</el-menu-item>
+            </el-sub-menu>
+        </div>
+        
+    </el-menu>
+    <!--
         <el-row :gutter="20">
             <el-col :span="6">
                 <div class="col" style="padding-top: 1%; text-align: center">
@@ -103,6 +201,7 @@ export default {
                 </div>
             </el-col>
         </el-row>
+        -->
     </div>
 </template>
 
@@ -122,9 +221,21 @@ export default {
     padding-right: 0 !important;
 }
 
+.last{
+    margin-left: 65%;
+}
+.ava{
+    width:30%;
+    padding-right:15%;
+    align-self: end;
+}
+
 .tag {
     height: 100%;
     width: 100%;
+}
+.flex-grow {
+  flex-grow: 10;
 }
 
 span {

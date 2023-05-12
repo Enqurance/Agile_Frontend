@@ -1,14 +1,14 @@
 <template>
     <div>
         <!--        <el-header height="7%">-->
-        <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.3"/>
+        <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.7"/>
         <!--        </el-header>-->
         <!--        <el-main style="height: 93%">-->
         <PlaceSearch class="on_div" style="width: 18%; height: 30%; margin-top: 5%; margin-left: 3%"
                      @submit_p_id="(e) => concentrate_pin(e)" :click_map="close_search"
                      @search_close="close_search=false"/>
         <div class="on_div" style="width: 100%;" >
-            <MapPinInfo :id="show_marker_id" @close_drawer="show_marker_id = -1" @update_info="update_pin"/>
+            <MapPinInfo :id="show_marker_id" :is_examine="false" @close_drawer="show_marker_id = -1" @update_info="update_pin"/>
 
             <div class="type_class">
                 <el-checkbox-group v-model="checkedTypes" style="padding-left: 10%; width: 100px" @change="markers_change">
@@ -77,7 +77,6 @@ export default {
                 visibility: 0
             },
 
-            is_show_marker: false,
             show_marker_id: -1,
 
             markers_info: Object,
@@ -443,10 +442,5 @@ export default {
     position: absolute;
     z-index: 1;
 }
-
-.icon_class {
-
-}
-
 
 </style>

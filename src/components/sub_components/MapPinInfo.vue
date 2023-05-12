@@ -3,6 +3,7 @@
         <el-drawer direction="ltr" v-model="drawer"
         :with-header="true" :append-to-body="true" class="my-drawer">
             <div style="margin-top: 0px;margin-bottom: 0px;">
+                <el-button v-if="info.visibility===0" class="float_right" size="large" :style="{background: _get_pin_color_state(pin_state)}" @click="apply_public">{{ _get_pin_state(pin_state) }}</el-button>
                 <h1 style="margin-left: 10px;margin-top: 0px;padding: 0px">{{ info.name }}</h1>
             </div>
 
@@ -50,7 +51,7 @@
                 <el-card :body-style="{ padding: '10px' }">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0px;">
                         <h4 style="margin-bottom: 0px;">信息</h4>
-                        <el-button type="link" v-if="info.visibility === 0 || this.$cookies.get('user_type') === '1'" @click="editInfo" >
+                        <el-button type="link" v-if="(info.visibility === 0 || this.$cookies.get('user_type') === '1') && is_examine===false && pin_state===0" @click="editInfo" >
                         <EditOutlined />
                         </el-button>
                     </div> 
@@ -74,7 +75,7 @@
                         </el-carousel-item>
                     </el-carousel>
 
-                    <el-upload v-if="info.visibility === 0 || this.$cookies.get('user_type') === '1'" 
+                    <el-upload v-if="(info.visibility === 0 || this.$cookies.get('user_type') === '1') && is_examine===false && pin_state===0"
                     class="avatar-uploader" action="https://buaamapforum.cn:8443/photo/uploadPinPhoto"
                         :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                         <el-button size="small" type="primary" plain>上传图片</el-button>
@@ -116,7 +117,8 @@ import {ElMessageBox, ElMessage} from "element-plus";
  
 export default {
     props: {
-        id: -1
+        id: Number,
+        is_examine: Boolean
     },
     emits: [
         'close_drawer',
@@ -132,7 +134,7 @@ export default {
                 pin_type: 1,
                 opening_time: "24h",
                 phone: "133-3333-3333",
-                visibility: 1
+                visibility: 1,
             },
             photos: [
                 "https://s2.loli.net/2023/04/10/LAMxqJCK1aOQeHb.jpg",
@@ -150,6 +152,8 @@ export default {
                     photo: "https://s2.loli.net/2023/04/10/RMqIaFuidyXotWf.jpg",
                 }
             ],
+            pin_state: 0,
+
             // 信息栏是否展开
             drawer: false,
             // 对话框可见性
@@ -170,6 +174,12 @@ export default {
     methods: {
         _get_pin_type(pin_type_id) {
             return global.get_pin_type(pin_type_id)
+        },
+        _get_pin_state(pin_state_id) {
+            return global.get_pin_state(pin_state_id)
+        },
+        _get_pin_color_state(pin_state_id) {
+            return global.get_pin_state_color(pin_state_id)
         },
         handleDblClick() {
             this.getPinInfoById();
@@ -196,6 +206,16 @@ export default {
                 that.photos = res.data.data.photos
                 that.services = res.data.data.services
                 that.drawer = true;
+
+                that.$axios.get('/examine/get_pin_state/' + that.id, {
+                    headers: {
+                        'token': that.$cookies.get('user_token')
+                    }
+                }).then((res) => {
+                    that.pin_state = res.data.data
+                }).catch((error) => {
+                    console.log(error)
+                })
             }).catch((res) => console.log(res))
         },
 
@@ -334,6 +354,58 @@ export default {
                 })
             }
         },
+
+        apply_public() {
+            if (this.pin_state === 1) {
+                this.$message({
+                    type: 'warning',
+                    message: '已申请，管理员将尽快审批！',
+                    showClose: true,
+                    grouping: true
+                })
+                return
+            }
+            else {
+                let that = this
+
+                ElMessageBox.confirm(
+                    '确认申请为公共钉？',
+                    'Warning',
+                    {
+                        confirmButtonText: '确认',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }
+                ).then(() => {
+                    that.$axios.get('/examine/apply_for_public/' + that.id, {
+                        headers: {
+                            'token': that.$cookies.get('user_token')
+                        }
+                    }).then(() => {
+                        that.pin_state = 1
+                        that.$message({
+                            type: 'success',
+                            message: '申请成功，管理员将尽快审批！',
+                            showClose: true
+                        })
+                    }).catch((error) => {
+                        console.log(error)
+                        that.$message({
+                            type: 'error',
+                            message: '申请失败！！',
+                            showClose: true
+                        })
+                    })
+                }).catch(() => {
+                    ElMessage({
+                        type: 'info',
+                        message: '取消删除',
+                        grouping: true,
+                        showClose: true
+                    })
+                })
+            }
+        }
     },
     watch: {
         id(newData, oldData) {
@@ -413,4 +485,9 @@ avatar-uploader-icon {
 p {
     margin-left: 10px;
 }
+
+.float_right {
+    float: right;
+}
+
 </style>
