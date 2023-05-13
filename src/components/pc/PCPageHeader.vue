@@ -17,7 +17,7 @@ export default {
             isMap = true;
             isForum = false;
             isInfor = false;
-            Index = '1';
+            Index = '2';
         }
         if (page === '/home') {
             isMap = true;
@@ -25,13 +25,13 @@ export default {
             isInfor = false;
             Index = '2';
         }
-        else if (page === '/Infor') {
+        if (page === '/InforPage') {
             isMap = false;
             isForum = false;
             isInfor = true;
             Index = '4';
         }
-        else if (page === '/forum') {
+        if (page === '/Forum') {
             isMap = false;
             isForum = true;
             isInfor = false;
@@ -147,7 +147,7 @@ export default {
         :ellipsis="false"
         @select="handleSelect"
     >
-        <el-menu-item v-on:click="clickToMap()" index="1">
+        <el-menu-item v-on:click="clickToMap()" index="1" >
             <template #title>BUAAMapForum</template>
         </el-menu-item>
         <el-menu-item v-on:click="clickToMap()" index="2">
@@ -165,7 +165,8 @@ export default {
         <div v-else>
             <el-sub-menu index="4" v-on:click="clickToInfor()" class="last">
                 <template #title>
-                    <img class="ava" :src="this.imageUrl">
+                    <img class="ava" :src="this.imageUrl" alt="头像">
+                    <!--<div class="imgBox"><el-avatar class="ava" :src="this.imageUrl"/></div>-->
                     <p>{{ this.user.name }}</p>
                 </template>
                 <el-menu-item index="2-1">登出</el-menu-item>
@@ -224,10 +225,16 @@ export default {
 .last{
     margin-left: 65%;
 }
+.imgBox{
+    width: 30%;
+    height: 30%;
+    padding-right:15%;
+}
 .ava{
     width:30%;
-    padding-right:15%;
-    align-self: end;
+
+    max-width: 30%;
+    object-fit: cover;
 }
 
 .tag {
