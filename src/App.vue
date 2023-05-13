@@ -1,14 +1,16 @@
 <template>
 <!--    <router-view/>-->
-  <MyMessage></MyMessage>
+  <MyPost></MyPost>
 </template>
 
 <script>
 
 import MyMessage from "@/components/MyMessage";
+import MyPost from "@/components/MyPost";
+import MyComment from "@/components/MyComment";
 export default {
     name: 'App',
-    components: {MyMessage},
+    components: {MyPost},
     provide() {
         return {
             reload: this.reload

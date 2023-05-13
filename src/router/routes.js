@@ -5,6 +5,7 @@ import RegisterPage from "@/components/RegisterPage.vue";
 import MyPost from "@/components/MyPost";
 import MyComment from "@/components/MyComment";
 import ForumPage from "@/components/ForumPage.vue";
+import MyMessage from "@/components/MyMessage";
 
 const routes = [
     {
@@ -41,6 +42,11 @@ const routes = [
         name: 'myComment',
         path: '/InforPage/myComment',
         component: MyComment,
+    },
+    {
+        name: 'myComment',
+        path: '/InforPage/myMessage',
+        component: MyMessage,
     },
     {
         name: 'forum',

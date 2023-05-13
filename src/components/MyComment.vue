@@ -1,7 +1,7 @@
 <template>
   <div
-      style="padding: 120px 400px 60px 400px;background: rgb(246,246,246); min-height: 557px; word-wrap: break-word; word-break: normal">
-    <div style="margin-bottom: 30px;font-size: 20px">
+      style="padding: 5% 30% 11% 27%;background: rgb(246,246,246); word-wrap: break-word; word-break: normal">
+    <div style="margin-bottom: 5%;font-size: 20px">
       我的回复
     </div>
 
@@ -10,7 +10,7 @@
         <el-empty description="暂时还没有回复"/>
       </div>
       <div v-for="comment in comments" :key="comment.id"
-           style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 600px;height: 150px ">
+           style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 150px ">
         <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
                    @click="comment.deleteDialog=true">
           删除
