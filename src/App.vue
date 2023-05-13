@@ -1,6 +1,5 @@
 <template>
-<!--    <router-view/>-->
-  <MyPost></MyPost>
+   <router-view/>
 </template>
 
 <script>
@@ -10,7 +9,7 @@ import MyPost from "@/components/MyPost";
 import MyComment from "@/components/MyComment";
 export default {
     name: 'App',
-    components: {MyPost},
+    components: {},
     provide() {
         return {
             reload: this.reload
