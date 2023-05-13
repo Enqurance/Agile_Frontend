@@ -7,9 +7,13 @@ import MyPost from "@/components/MyPost";
 import MyComment from "@/components/MyComment";
 import ForumPage from "@/components/ForumPage.vue";
 import MyMessage from "@/components/MyMessage";
+<<<<<<< HEAD
 =======
 import ForumPage from "@/components/ForumPage.vue";
 >>>>>>> 6dc169b ([feat]():init forumPage)
+=======
+import AdministratorPage from "@/components/AdministratorPage.vue";
+>>>>>>> e38372b ([feat](Administrator): 钉子审核)
 
 const routes = [
     {
@@ -59,6 +63,11 @@ const routes = [
         name: 'forum',
         path: '/Forum',
         component: ForumPage,
+    },
+    {
+        name: 'Administrator',
+        path: '/Administrator',
+        component: AdministratorPage,
     },
 ]
 
