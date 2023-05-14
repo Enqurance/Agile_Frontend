@@ -25,6 +25,7 @@
         <MapPinAdd :is_add_pin="is_add_marker" :lnglat="click_marker_lnglat" @addMarker="(e) => new_pin(e)"
                    @close_dialog="this.is_add_marker = false"/>
         <!--        </el-main>-->
+        <SwitchPos :is_switch="is_switch" @close_dialog="this.is_switch = false"/>
     </div>
 </template>
 
@@ -36,6 +37,7 @@ import MapPinInfo from "@/components/sub_components/MapPinInfo.vue";
 import MapPinAdd from "@/components/sub_components/MapPinAdd.vue";
 import PlaceSearch from "@/components/sub_components/PlaceSearch.vue";
 import PageHeader from "@/components/pc/PCPageHeader.vue";
+import SwitchPos from "@/components/SwitchPos.vue"
 import global from "@/global";
 import '../../assets/PinIcon/font2/iconfont.css'
 
@@ -47,6 +49,7 @@ export default {
         MapPinAdd,
         PlaceSearch,
         PageHeader,
+        SwitchPos,
     },
     data() {
         let map = shallowRef(null)
@@ -69,6 +72,7 @@ export default {
             ],
 
             is_add_marker: false,
+            is_switch: false,
             click_marker_lnglat: [],
             click_marker_simple_info: {
                 id: 0,
@@ -236,6 +240,18 @@ export default {
                     that.$router.push({path: '/login'})
                 }
                 that.is_add_marker = true
+                contextMenu.close()
+            }, 2);
+
+            contextMenu.addItem("移动钉子", function () {
+                if (!that.$cookies.get('user_token')) {
+                    that.$message({
+                        message: '请先登录!',
+                        type: "warning"
+                    })
+                    that.$router.push({path: '/login'})
+                }
+                that.is_switch = true
                 contextMenu.close()
             }, 2);
 

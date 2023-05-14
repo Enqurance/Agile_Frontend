@@ -4,12 +4,9 @@
 
 <script>
 
-import MyMessage from "@/components/MyMessage";
-import MyPost from "@/components/MyPost";
-import MyComment from "@/components/MyComment";
 export default {
     name: 'App',
-    components: {},
+    components: { },
     provide() {
         return {
             reload: this.reload
