@@ -1,9 +1,9 @@
 <template>
   <div
-      style="padding: 120px 400px 60px 400px;background: rgb(246,246,246); min-height: 557px; word-wrap: break-word; word-break: normal">
-    <div style="margin-bottom: 30px;font-size: 20px">
+      style="padding: 5% 30% 11% 27%;background: rgb(246,246,246); word-wrap: break-word; word-break: normal">
+    <div style="margin-bottom: 5%;font-size: 20px;display: flex">
       我的帖子
-      <el-button style="margin-left: 400px" size="large" type="primary">
+      <el-button style="margin-left: 70%" size="large" type="primary">
         创建
       </el-button>
     </div>
@@ -13,7 +13,7 @@
         <el-empty description="暂时还没有贴子"/>
       </div>
       <div v-for="post in posts" :key="post.id"
-           style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 600px;height: 150px ">
+           style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 150px ">
         <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
                    @click="post.deleteDialog=true">
           删除
@@ -42,7 +42,7 @@
           {{ post.content }}
         </p>
         <div style="padding: 0 20px;">
-          <el-icon >
+          <el-icon>
             <ChatRound/>
           </el-icon>
           {{ post.floor_num }}
@@ -140,7 +140,7 @@ export default {
     },
     browsePost(id) {
       // 记得改
-      this.$router.push({path:'/xxx/'+id})
+      this.$router.push({path: '/xxx/' + id})
     }
 
   },

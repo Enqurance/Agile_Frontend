@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-header>
-            <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3;" />
+            <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.3" />
         </el-header>
         <el-main>
             <div class="main">
