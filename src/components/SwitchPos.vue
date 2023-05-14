@@ -13,7 +13,7 @@
                     v-model="value"
                     :options="options"
                     placeholder="请选择Tag"
-                    @change="handle_change">
+                    :show-all-levels="false">
                 </el-cascader>
                 </div>
             </el-col>
@@ -43,7 +43,6 @@ export default {
         CloseOutlined,
     },
     emits: [
-        'switch_pin',
         'close_dialog'
     ],
     data() {
@@ -54,30 +53,56 @@ export default {
             options: [
             {
                 value: "yuandi",
-                label: "园地"
+                label: "餐饮",
+                children: [
+
+                ]
+            }, 
+            {
+                value: "yuandi",
+                label: "园地",
+                children: [
+
+                ]
             }, {
                 value: "jiaoxue",
-                label: "教学"
+                label: "教学",
+                children: [
+
+                ]
             }, {
                 value: "tiyu",
-                label: "体育"
+                label: "体育",
+                children: [
+
+                ]
             }, {
                 value: "bangong",
-                label: "办公"
+                label: "办公",
+                children: [
+
+                ]
             }, {
                 value: "gouwu",
-                label: "购物"
+                label: "购物",
+                children: [
+
+                ]
             }, {
                 value: "shenghuofuwu",
-                label: "生活服务"
+                label: "生活服务",
+                children: [
+
+                ]
             }]
         };
     },
     methods: {
         open_dialog() {
             this.dialogVisible = true
+            this.get_pin()
         },
-        switch_pin() {
+        get_pin() {
             let that = this
             that.dialogVisible = true
             this.markers_info = {}
@@ -95,21 +120,24 @@ export default {
                     'lnglat': pin["lnglat"]
                     }
                 }
-
+                let pins = []
                 for (let marker_info in that.markers_info) {
                     let info = Object.assign({}, {
                         id: marker_info
                     }, that.markers_info[marker_info])
-                    this.add_marker(info)
+                    pins.push(info)
                 }
-                this.init_menu()
-                    // console.log(that.markers)
-                }).catch((res) => {
-                    console.log(res)
-                })
-        },
-        handle_change() {
-
+                for(let seq in pins) {
+                    let pin = pins[seq]
+                    this.options[pin.type - 1].children.push({
+                        valne: pin.id, 
+                        label: pin.name
+                        })
+                }
+                // console.log(that.markers)
+            }).catch((res) => {
+                console.log(res)
+            })
         },
         submit() {
 
