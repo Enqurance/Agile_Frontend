@@ -277,7 +277,7 @@ export default {
             // show_event
             let that = this
             marker.on('click', function (e) {
-                that.show_marker_id = e.target._opts.extData.id
+                that.show_marker_id = parseInt(e.target._opts.extData.id)
             })
 
             // delete_event

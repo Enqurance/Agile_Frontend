@@ -24,6 +24,12 @@ let pin_state_dic = {
     2: "申请冷却",
 }
 
+let pin_public_state_dic = {
+    0: "反馈",
+    1: "待审批",
+    2: "申请冷却",
+}
+
 let pin_state_color_dic = {
     0: "springGreen",
     1: "yellow",
@@ -45,9 +51,14 @@ function get_pin_state(pin_state_id) {
     return pin_state_dic[pin_state_id]
 }
 
+function get_public_pin_state(pin_state_id) {
+    // 如果不存在id，则输出""
+    return pin_public_state_dic[pin_state_id]
+}
+
 function get_pin_state_color(pin_state_id) {
     // 如果不存在id，则输出""
     return pin_state_color_dic[pin_state_id]
 }
 
-export default {get_pin_type, get_pin_color, get_pin_state, get_pin_state_color}
+export default {get_pin_type, get_pin_color, get_pin_state, get_public_pin_state, get_pin_state_color}

@@ -20,7 +20,7 @@ export default defineComponent({
         let map = shallowRef(null)
 
         return {
-            examine_list: ['审核钉子申请', '审核帖子整改', '审核举报信息'],
+            examine_list: ['审核钉子申请 | 反馈', '审核帖子整改', '审核举报信息'],
             report_list: ['帖子', '回复'],
 
             show_info: 1,
@@ -28,21 +28,37 @@ export default defineComponent({
             map,
             beihang_center: [
                 116.347313,
-                39.9820
+                39.9815
             ],
             beihang_zoom: [
                 16,
                 20
             ],
             markers_info: Object,
+            markers: Object,
             show_marker_id: -1,
-            examine_1_dialog_show: false,
-            examine_pin_feedback: {
+            examine_1_1_dialog_show: false,
+            now_examine: true,
+            pin_apply_public_result: {
                 id: -1,
                 result: 'false',
                 info: ''
-            }
+            },
 
+            feedback_list: [
+                {
+                    feedback_id: null,
+                    title: null,
+                    feedback: null
+                }
+            ],
+            feedback_id_list: [],
+            examine_1_2_dialog_show: false,
+            pin_feedback_result: {
+                pin_id: null,
+                feedback_id_list: [],
+                info: ''
+            }
         }
     },
     mounted() {
@@ -56,6 +72,7 @@ export default defineComponent({
     methods: {
         init_map() {
             let that = this
+
             function add_marker(info) {
                 // eslint-disable-next-line no-undef
                 let marker_content = '<div style=\"color:' + that._get_pin_color(info.type) + '\"><span class="iconfont icon-location-full icon_class" ></span></div>'
@@ -68,6 +85,7 @@ export default defineComponent({
                         id: info.id,
                     }
                 })
+                that.markers[info.id] = marker
 
                 marker.setLabel({
                     // eslint-disable-next-line no-undef
@@ -79,16 +97,25 @@ export default defineComponent({
                 that.markers_info[info.id] = {
                     name: info.name,
                     type: info.type,
-                    lnglat: info.lnglat
+                    lnglat: info.lnglat,
+                    visibility: info.visibility
                 }
 
                 marker.on('click', function (e) {
-                    that.show_marker_id = e.target._opts.extData.id
+                    that.now_examine = that.markers_info[parseInt(e.target._opts.extData.id)].visibility === 0
+                    that.show_marker_id = parseInt(e.target._opts.extData.id)
                 })
 
                 marker.on('rightclick', function (e) {
-                    that.examine_pin_feedback.id = e.target._opts.extData.id
-                    that.examine_1_dialog_show = true
+                    that.feedback_id_list = []
+                    that.pin_feedback_result.info = ''
+                    that.pin_apply_public_result.result = 'false'
+                    that.pin_apply_public_result.info = ''
+
+                    that.pin_apply_public_result.id = e.target._opts.extData.id
+                    that.pin_feedback_result.id = e.target._opts.extData.id
+                    // console.log(that.markers_info[parseInt(e.target._opts.extData.id)].visibility)
+                    that.markers_info[parseInt(e.target._opts.extData.id)].visibility === 0 ? that.examine_1_1_dialog_show = true : that.get_pin_feedback_list()
                 })
 
                 marker.setMap(that.map)
@@ -129,7 +156,8 @@ export default defineComponent({
                         that.markers_info[pin["id"]] = {
                             'name': pin["name"],
                             'type': pin["type"],
-                            'lnglat': pin["lnglat"]
+                            'lnglat': pin["lnglat"],
+                            'visibility': pin["visibility"]
                         }
                     }
                     for (let marker_info in that.markers_info) {
@@ -155,7 +183,7 @@ export default defineComponent({
             return global.get_pin_color(pin_type_id)
         },
         examine_pin_submit() {
-            if (this.examine_pin_feedback.result === 'false' && this.examine_pin_feedback.info.length === 0) {
+            if (this.pin_apply_public_result.result === 'false' && this.pin_apply_public_result.info.length === 0) {
                 this.$message({
                     type: 'warning',
                     message: '请说明拒绝原因！',
@@ -166,17 +194,24 @@ export default defineComponent({
             }
 
             let that = this
-            that.$axios.post('examine/result_of_pin/' + that.examine_pin_feedback.id, {
-                result: JSON.parse(that.examine_pin_feedback.result),
-                info: that.examine_pin_feedback.info
+            that.$axios.post('examine/result_of_pin/' + that.pin_apply_public_result.id, {
+                result: JSON.parse(that.pin_apply_public_result.result),
+                info: that.pin_apply_public_result.info
             }, {
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
             }).then(() => {
-                // console.log(that.examine_pin_feedback)
-                that.examine_1_dialog_show = false
-                that.examine_pin_feedback = {
+                // console.log(that.pin_apply_public_result)
+                that.examine_1_1_dialog_show = false
+
+                delete that.markers_info[that.pin_apply_public_result.id]
+                Reflect.deleteProperty(that.markers_info, that.pin_apply_public_result.id)
+                let marker = that.markers[that.pin_apply_public_result.id]
+                marker.setMap(null)
+                marker = null
+
+                that.pin_apply_public_result = {
                     id: -1,
                     result: 'false',
                     info: ''
@@ -194,6 +229,77 @@ export default defineComponent({
                 })
                 console.log(error)
             })
+        },
+
+        get_pin_feedback_list() {
+            let that = this
+            that.$axios.get('examine/get_feedback/' + that.pin_feedback_result.id, {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then((res) => {
+                that.feedback_list = res.data
+                that.examine_1_1_dialog_show = true
+            }).catch((error) => {
+                console.log(error)
+            })
+        },
+        examine_pin_feedback_submit() {
+            if (this.pin_feedback_result.info === '' || this.pin_feedback_result.feedback_id_list === []) {
+                this.$message({
+                    type: 'warning',
+                    message: '请说明拒绝反馈与原因！',
+                    showClose: true,
+                    grouping: true
+                })
+                return
+            }
+
+            let that = this
+            that.$axios.post('examine/result_of_feedback/' + that.pin_feedback_result.id, {
+                feedback_id_list: that.pin_feedback_result.feedback_id_list,
+                info: that.pin_feedback_result.info
+            }, {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then(() => {
+                // console.log(that.pin_apply_public_result)
+                that.examine_1_2_dialog_show = false
+
+                that.feedback_list = that.feedback_list.filter(item => !that.feedback_id_list.includes(item.feedback_id))
+
+                if (that.feedback_list.length === 0) {
+                    delete that.markers_info[that.pin_feedback_result.id]
+                    Reflect.deleteProperty(that.markers_info, that.pin_feedback_result.id)
+                    let marker = that.markers[that.pin_feedback_result.id]
+                    marker.setMap(null)
+                    marker = null
+                }
+
+                that.$message({
+                    type: 'success',
+                    message: 'pin审核结果成功提交后端！',
+                    showClose: true
+                })
+            }).catch((error) => {
+                that.$message({
+                    type: 'error',
+                    message: '提交后端失败！！',
+                    showClose: true
+                })
+                console.log(error)
+            })
+
+            that.examine_1_2_dialog_show = false
+        }
+    },
+    watch: {
+        feedback_id_list(newData) {
+            // console.log(newData)
+        },
+        feedback_list(newData) {
+            // console.log(newData)
         }
     }
 
@@ -238,25 +344,47 @@ export default defineComponent({
                 <el-main style="height: 100%">
                     <div v-if="show_info===1" style="height: 100%">
                         <div id="container" style="width: 100%; height: 100%"></div>
-                        <el-dialog v-model="examine_1_dialog_show" :show-close="true">
-                            <el-form :model="examine_pin_feedback" label-width="120px">
+                        <el-dialog v-model="examine_1_1_dialog_show" :show-close="true" title="公共pin申请">
+                            <el-form :model="pin_apply_public_result" label-width="120px">
                                 <el-form-item label="feedback result">
-                                    <el-radio-group v-model="examine_pin_feedback.result">
+                                    <el-radio-group v-model="pin_apply_public_result.result">
                                         <el-radio label="true">同意</el-radio>
                                         <el-radio label="false">拒绝</el-radio>
                                     </el-radio-group>
                                 </el-form-item>
                                 <el-form-item label="feedback info">
-<!--                                    <el-radio-group v-model="examine_pin_feedback.result">-->
-<!--                                        <el-radio label="pin较为小众">pin较为小众</el-radio>-->
-<!--                                        <el-radio label="内容违反法律">内容违反法律</el-radio>-->
-<!--                                        <el-radio label="内容违反法律"><el-input v-model="examine_pin_feedback.info" type="textarea" maxlength="100" ></el-input></el-radio>-->
-<!--                                    </el-radio-group>-->
-                                    <el-input v-model="examine_pin_feedback.info" type="textarea" maxlength="100" ></el-input>
+                                    <!--                                    <el-radio-group v-model="pin_apply_public_result.result">-->
+                                    <!--                                        <el-radio label="pin较为小众">pin较为小众</el-radio>-->
+                                    <!--                                        <el-radio label="内容违反法律">内容违反法律</el-radio>-->
+                                    <!--                                        <el-radio label="内容违反法律"><el-input v-model="pin_apply_public_result.info" type="textarea" maxlength="100" ></el-input></el-radio>-->
+                                    <!--                                    </el-radio-group>-->
+                                    <el-input v-model="pin_apply_public_result.info" type="textarea"
+                                              maxlength="100"></el-input>
                                 </el-form-item>
                                 <el-form-item>
                                     <el-button type="primary" @click="examine_pin_submit">确定</el-button>
-                                    <el-button @click="examine_1_dialog_show=false">取消</el-button>
+                                    <el-button @click="examine_1_1_dialog_show=false">取消</el-button>
+                                </el-form-item>
+                            </el-form>
+                        </el-dialog>
+                        <el-dialog v-model="examine_1_2_dialog_show" :show-close="true" title="公共pin反馈">
+                            <el-form :model="pin_feedback_result" label-width="120px">
+                                <el-form-item label="全部反馈">
+                                    <el-select v-model="feedback_id_list" multiple placeholder="请选择审核反馈">
+                                        <el-popover v-for="item in feedback_list" :key="item.feedback_id" :content="item.feedback" placement="right" width="20%">
+                                            <template #reference>
+                                                <el-option  :label="item.title" :value="item.feedback_id" :key="item.feedback_id" />
+                                            </template>
+                                        </el-popover>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="处理结果">
+                                    <el-input v-model="pin_feedback_result.info" type="textarea"
+                                              maxlength="100"></el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="primary" @click="examine_pin_feedback_submit">确定</el-button>
+                                    <el-button @click="() => {examine_1_2_dialog_show=false}">取消</el-button>
                                 </el-form-item>
                             </el-form>
                         </el-dialog>
@@ -265,10 +393,11 @@ export default defineComponent({
             </el-container>
         </el-container>
 
-        <MapPinInfo :id="show_marker_id" :is_examine="true" @close_drawer="show_marker_id = -1" />
+        <MapPinInfo :id="show_marker_id" :is_examine="now_examine" @close_drawer="show_marker_id = -1"/>
     </div>
 </template>
 
 <style scoped>
+
 
 </style>
