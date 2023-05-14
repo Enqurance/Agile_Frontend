@@ -4,12 +4,15 @@
         :with-header="true" :append-to-body="true" class="my-drawer">
             <div style="margin-top: 0px;margin-bottom: 0px;">
                 <el-button v-if="info.visibility===0 && this.$cookies.get('user_type')==='0'" class="float_right" size="large" :style="{background: _get_pin_color_state(pin_state)}" @click="apply_public">{{ _get_pin_state(pin_state) }}</el-button>
-                <el-button v-if="info.visibility===1 && this.$cookies.get('user_type')==='0'" class="float_right" size="large" :style="{background: _get_pin_color_state(pin_state)}" @click="show_feedback=true">{{ _get_public_pin_state(pin_state) }}</el-button>
+                <el-button v-if="info.visibility===1 && this.$cookies.get('user_type')==='0'" class="float_right" size="large" :style="{background: _get_pin_color_state(pin_state)}" @click="() => {show_feedback=true; this.feedback.title='';this.feedback.reason=''}">{{ _get_public_pin_state(pin_state) }}</el-button>
 
                 <el-dialog v-model="show_feedback" style="height: 250px;width: 40%">
                     <el-form>
+                        <el-form-item label="标题：">
+                            <el-input type="text" maxlength="10" v-model="feedback.title" autocomplete="off" />
+                        </el-form-item>
                         <el-form-item label="内容：">
-                            <el-input type="textarea" clearable rows="3" v-model="reason" autocomplete="off" />
+                            <el-input type="textarea" clearable rows="3" v-model="feedback.reason" autocomplete="off" />
                         </el-form-item>
                     </el-form>
                     <div style="position: absolute;bottom: 10px; right: 20px">
@@ -168,7 +171,10 @@ export default {
             ],
             pin_state: 0,
             show_feedback: false,
-            reason: '',
+            feedback: {
+                title: '',
+                reason: ''
+            },
 
             // 信息栏是否展开
             drawer: false,
@@ -437,7 +443,7 @@ export default {
                 return
             }
             else {
-                if (this.reason === '') {
+                if (this.feedback.reason === '' || this.feedback.title === '') {
                     this.$message({
                         type: 'warning',
                         grouping: true,
@@ -459,8 +465,8 @@ export default {
                     }
                 ).then(() => {
                     that.$axios.post('/examine/apply_for_feedback/' + that.id, {
-                        // todo
-                        'reason': that.reason
+                        'title': that.feedback.title,
+                        'reason': that.feedback.reason
                         }, {
                         headers: {
                             'token': that.$cookies.get('user_token')

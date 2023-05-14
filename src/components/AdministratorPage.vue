@@ -47,16 +47,17 @@ export default defineComponent({
 
             feedback_list: [
                 {
-                    feedback_id: Number,
-                    feedback: String
+                    feedback_id: null,
+                    title: null,
+                    feedback: null
                 }
             ],
             feedback_id_list: [],
             examine_1_2_dialog_show: false,
             pin_feedback_result: {
-                pin_id: Number,
+                pin_id: null,
                 feedback_id_list: [],
-                info: String
+                info: ''
             }
         }
     },
@@ -106,8 +107,11 @@ export default defineComponent({
                 })
 
                 marker.on('rightclick', function (e) {
-                    that.feedback_id_list = null
+                    that.feedback_id_list = []
+                    that.pin_feedback_result.info = ''
                     that.pin_apply_public_result.result = 'false'
+                    that.pin_apply_public_result.info = ''
+
                     that.pin_apply_public_result.id = e.target._opts.extData.id
                     that.pin_feedback_result.id = e.target._opts.extData.id
                     // console.log(that.markers_info[parseInt(e.target._opts.extData.id)].visibility)
@@ -148,20 +152,13 @@ export default defineComponent({
                     }
                 }).then((res) => {
                     that.markers_info = {}
-                    //todo
-                    // for (let pin of res.data.data) {
-                    //     that.markers_info[pin["id"]] = {
-                    //         'name': pin["name"],
-                    //         'type': pin["type"],
-                    //         'lnglat': pin["lnglat"],
-                    //         'visibility': pin["visibility"]
-                    //     }
-                    // }
-                    that.markers_info[res.data.data[0]["id"]] = {
-                        'name': '1',
-                        'type': res.data.data[0]["type"],
-                        'lnglat': res.data.data[0]["lnglat"],
-                        'visibility': 1
+                    for (let pin of res.data.data) {
+                        that.markers_info[pin["id"]] = {
+                            'name': pin["name"],
+                            'type': pin["type"],
+                            'lnglat': pin["lnglat"],
+                            'visibility': pin["visibility"]
+                        }
                     }
                     for (let marker_info in that.markers_info) {
                         let info = Object.assign({}, {
@@ -236,37 +233,72 @@ export default defineComponent({
 
         get_pin_feedback_list() {
             let that = this
-            that.feedback_list = [{
-                'feedback_id': 1,
-                'feedback': '12'
-            }, {
-                'feedback_id': 2,
-                'feedback': '34'
-            }, {
-                'feedback_id': 2,
-                'feedback': '322222222222222222222222222222222222222222222222222222222222222222222222222222222222222222224'
-            },
-            ]
-            that.examine_1_2_dialog_show = true
-            // that.$axios.get('examine/get_feedback/' + that.pin_feedback_result.id, {
-            //     headers: {
-            //         'token': that.$cookies.get('user_token')
-            //     }
-            // }).then((res) => {
-            //todo
-            //     that.feedback_list = res.data
-            //     that.examine_1_1_dialog_show = true
-            // }).catch((error) => {
-            //     console.log(error)
-            // })
+            that.$axios.get('examine/get_feedback/' + that.pin_feedback_result.id, {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then((res) => {
+                that.feedback_list = res.data
+                that.examine_1_1_dialog_show = true
+            }).catch((error) => {
+                console.log(error)
+            })
         },
         examine_pin_feedback_submit() {
+            if (this.pin_feedback_result.info === '' || this.pin_feedback_result.feedback_id_list === []) {
+                this.$message({
+                    type: 'warning',
+                    message: '请说明拒绝反馈与原因！',
+                    showClose: true,
+                    grouping: true
+                })
+                return
+            }
+
             let that = this
+            that.$axios.post('examine/result_of_feedback/' + that.pin_feedback_result.id, {
+                feedback_id_list: that.pin_feedback_result.feedback_id_list,
+                info: that.pin_feedback_result.info
+            }, {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then(() => {
+                // console.log(that.pin_apply_public_result)
+                that.examine_1_2_dialog_show = false
+
+                that.feedback_list = that.feedback_list.filter(item => !that.feedback_id_list.includes(item.feedback_id))
+
+                if (that.feedback_list.length === 0) {
+                    delete that.markers_info[that.pin_feedback_result.id]
+                    Reflect.deleteProperty(that.markers_info, that.pin_feedback_result.id)
+                    let marker = that.markers[that.pin_feedback_result.id]
+                    marker.setMap(null)
+                    marker = null
+                }
+
+                that.$message({
+                    type: 'success',
+                    message: 'pin审核结果成功提交后端！',
+                    showClose: true
+                })
+            }).catch((error) => {
+                that.$message({
+                    type: 'error',
+                    message: '提交后端失败！！',
+                    showClose: true
+                })
+                console.log(error)
+            })
+
             that.examine_1_2_dialog_show = false
         }
     },
     watch: {
         feedback_id_list(newData) {
+            // console.log(newData)
+        },
+        feedback_list(newData) {
             // console.log(newData)
         }
     }
@@ -339,8 +371,11 @@ export default defineComponent({
                             <el-form :model="pin_feedback_result" label-width="120px">
                                 <el-form-item label="全部反馈">
                                     <el-select v-model="feedback_id_list" multiple placeholder="请选择审核反馈">
-                                        <el-option v-for="item in feedback_list" :label="item.feedback"
-                                                   :value="item.feedback_id" :key="item.feedback_id"/>
+                                        <el-popover v-for="item in feedback_list" :key="item.feedback_id" :content="item.feedback" placement="right" width="20%">
+                                            <template #reference>
+                                                <el-option  :label="item.title" :value="item.feedback_id" :key="item.feedback_id" />
+                                            </template>
+                                        </el-popover>
                                     </el-select>
                                 </el-form-item>
                                 <el-form-item label="处理结果">
