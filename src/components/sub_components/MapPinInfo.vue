@@ -3,7 +3,21 @@
         <el-drawer direction="ltr" v-model="drawer"
         :with-header="true" :append-to-body="true" class="my-drawer">
             <div style="margin-top: 0px;margin-bottom: 0px;">
-                <el-button v-if="info.visibility===0" class="float_right" size="large" :style="{background: _get_pin_color_state(pin_state)}" @click="apply_public">{{ _get_pin_state(pin_state) }}</el-button>
+                <el-button v-if="info.visibility===0 && this.$cookies.get('user_type')==='0'" class="float_right" size="large" :style="{background: _get_pin_color_state(pin_state)}" @click="apply_public">{{ _get_pin_state(pin_state) }}</el-button>
+                <el-button v-if="info.visibility===1 && this.$cookies.get('user_type')==='0'" class="float_right" size="large" :style="{background: _get_pin_color_state(pin_state)}" @click="show_feedback=true">{{ _get_public_pin_state(pin_state) }}</el-button>
+
+                <el-dialog v-model="show_feedback" style="height: 250px;width: 40%">
+                    <el-form>
+                        <el-form-item label="内容：">
+                            <el-input type="textarea" clearable rows="3" v-model="reason" autocomplete="off" />
+                        </el-form-item>
+                    </el-form>
+                    <div style="position: absolute;bottom: 10px; right: 20px">
+                        <el-button @click="show_feedback = false">取消</el-button>
+                        <el-button type="primary" @click="apply_feedback">确定</el-button>
+                    </div>
+                </el-dialog>
+
                 <h1 style="margin-left: 10px;margin-top: 0px;padding: 0px">{{ info.name }}</h1>
             </div>
 
@@ -153,6 +167,8 @@ export default {
                 }
             ],
             pin_state: 0,
+            show_feedback: false,
+            reason: '',
 
             // 信息栏是否展开
             drawer: false,
@@ -177,6 +193,9 @@ export default {
         },
         _get_pin_state(pin_state_id) {
             return global.get_pin_state(pin_state_id)
+        },
+        _get_public_pin_state(pin_state_id) {
+            return global.get_public_pin_state(pin_state_id)
         },
         _get_pin_color_state(pin_state_id) {
             return global.get_pin_state_color(pin_state_id)
@@ -207,7 +226,7 @@ export default {
                 that.services = res.data.data.services
                 that.drawer = true;
 
-                that.$axios.get('/examine/get_pin_state/' + that.id, {
+                that.$axios.get('/examine/' + (res.data.data.pin.visibility === 0 ? 'get_pin_state/' : 'get_public_pin_state_of_user/') + that.id, {
                     headers: {
                         'token': that.$cookies.get('user_token')
                     }
@@ -393,6 +412,72 @@ export default {
                         that.$message({
                             type: 'error',
                             message: '申请失败！！',
+                            showClose: true
+                        })
+                    })
+                }).catch(() => {
+                    ElMessage({
+                        type: 'info',
+                        message: '取消删除',
+                        grouping: true,
+                        showClose: true
+                    })
+                })
+            }
+        },
+
+        apply_feedback() {
+            if (this.pin_state === 1) {
+                this.$message({
+                    type: 'warning',
+                    message: '已申请，管理员将尽快审批！',
+                    showClose: true,
+                    grouping: true
+                })
+                return
+            }
+            else {
+                if (this.reason === '') {
+                    this.$message({
+                        type: 'warning',
+                        grouping: true,
+                        showClose: true,
+                        message: '请输入理由'
+                    })
+                    return;
+                }
+
+                let that = this
+
+                ElMessageBox.confirm(
+                    '确认反馈内容？',
+                    'Warning',
+                    {
+                        confirmButtonText: '确认',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }
+                ).then(() => {
+                    that.$axios.post('/examine/apply_for_feedback/' + that.id, {
+                        // todo
+                        'reason': that.reason
+                        }, {
+                        headers: {
+                            'token': that.$cookies.get('user_token')
+                        }
+                    }).then(() => {
+                        that.show_feedback = false
+                        that.pin_state = 1
+                        that.$message({
+                            type: 'success',
+                            message: '反馈成功，管理员将尽快审批！',
+                            showClose: true
+                        })
+                    }).catch((error) => {
+                        console.log(error)
+                        that.$message({
+                            type: 'error',
+                            message: '反馈失败！！',
                             showClose: true
                         })
                     })
