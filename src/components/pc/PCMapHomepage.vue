@@ -320,7 +320,7 @@ export default {
             marker.on('rightclick', function (e) {
                 // console.log(e.target._opts.extData.visibility)
                 // console.log(that.$cookies.get('user_type') === "0")
-                if (e.target._opts.extData.visibility === 1 && that.$cookies.get('user_type') === "0") {
+                if ((e.target._opts.extData.visibility === 1 && that.$cookies.get('user_type') === "0") || that.$cookies.get('user_type') === null) {
                     that.$message({
                         grouping: true,
                         message: '系统点标记不可删除',
