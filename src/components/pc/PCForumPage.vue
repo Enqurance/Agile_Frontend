@@ -37,7 +37,7 @@ import PageHeader from "@/components/pc/PCPageHeader.vue";
 import NewPost from "../sub_components/NewPost.vue";
 
 export default {
-    name: "PCMapHomepage",
+    name: "PCForumpage",
 
     components: {
         PageHeader,
@@ -147,7 +147,6 @@ export default {
 .main {
     display: flex;
     justify-content: space-between;
-    top: 100px;
     margin: 0, 15%;
 }
 
