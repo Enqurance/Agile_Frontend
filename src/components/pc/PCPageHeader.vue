@@ -134,6 +134,14 @@ export default {
             }).catch((res) => console.log(res));
             this.getIcon();
         },
+
+        LogOut(){
+            this.$cookies.remove('user_token');
+            this.$router.push({
+                path: '/',
+                query: {},
+            });
+        },
     },
 }
 </script>
@@ -169,7 +177,7 @@ export default {
                     <!--<div class="imgBox"><el-avatar class="ava" :src="this.imageUrl"/></div>-->
                     <p>{{ this.user.name }}</p>
                 </template>
-                <el-menu-item index="2-1">登出</el-menu-item>
+                <el-menu-item index="2-1"><el-button v-on:click="LogOut()">登出</el-button></el-menu-item>
             </el-sub-menu>
         </div>
         

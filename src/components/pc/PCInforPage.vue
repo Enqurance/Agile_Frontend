@@ -61,7 +61,7 @@ export default {
                 </el-menu-item>
             </el-menu>
         </el-aside>
-        <el-aside width="20%" v-else>
+        <el-aside width="12%" v-else>
             <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
                 <el-radio-button :label="false">展开</el-radio-button>
                 <el-radio-button :label="true">省略</el-radio-button>
