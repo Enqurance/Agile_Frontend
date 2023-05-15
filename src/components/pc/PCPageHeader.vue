@@ -243,6 +243,8 @@ export default {
 
     max-width: 30%;
     object-fit: cover;
+
+    padding-right: 8%;
 }
 
 .tag {
