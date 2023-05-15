@@ -22,10 +22,17 @@
         <div :style="{width: screen_params.screenX+'px', height: screen_params.screenY+'px'}" class="bottom_div">
             <div id="container" style="width: 100%; height: 100%" @click="close_search=true"></div>
         </div>
-        <MapPinAdd :is_add_pin="is_add_marker" :lnglat="click_marker_lnglat" @addMarker="(e) => new_pin(e)"
-                   @close_dialog="this.is_add_marker = false"/>
+        <MapPinAdd 
+            :is_add_pin="is_add_marker" 
+            :lnglat="click_marker_lnglat"
+            @addMarker="(e) => new_pin(e)"
+            @close_dialog="this.is_add_marker = false"/>
         <!--        </el-main>-->
-        <SwitchPos :is_switch="is_switch" @close_dialog="this.is_switch = false"/>
+        <SwitchPos 
+            :is_switch="is_switch" 
+            :lnglat="click_marker_lnglat" 
+            @close_dialog="this.is_switch = false"
+            @switch_pos="switch_pos"/>
     </div>
 </template>
 
@@ -196,6 +203,13 @@ export default {
             }).catch(e => {
                 console.log(e)
             })
+        },
+        switch_pos (info) {
+            // this.markers[info["id"]].setPosition
+            // console.log(this.marker["lnglat"])
+            let latLng = info["lnglat"]
+            // marker.setPosition(info["lnglat"])
+            // marker.setPosition()
         },
         init_menu() {
             //创建右键菜单
