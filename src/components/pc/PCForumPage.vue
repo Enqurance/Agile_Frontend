@@ -17,10 +17,12 @@
                     </div>
                     <div class="bottom">
                         <div v-for="post in posts" :key="post.id" style="padding: 10px;">
-                            <el-card style="padding: 10px;">
-                                <div class="card-header">{{ post.title }}</div>
-                                <div class="card-content">{{ post.content }}</div>
-                            </el-card>
+                            <router-link :to="`/Forum/${post.id}`"  class="custom-link">
+                                <el-card style="padding: 10px;">
+                                    <div class="card-header">{{ post.title }}</div>
+                                    <div class="card-content">{{ post.content }}</div>
+                                </el-card>
+                            </router-link>
                         </div>
                     </div>
                 </div>
@@ -180,5 +182,9 @@ export default {
 .card-header {
     font-size: 18px;
     font-weight: bold;
+}
+
+.custom-link {
+  text-decoration: none;
 }
 </style>
