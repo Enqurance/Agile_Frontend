@@ -82,9 +82,9 @@ export default {
         // 提交修改
         submitForm() {
             if (this.formData.name === '') {
-               return this.$message.error("名称不能为空")
+                return this.$message.error("名称不能为空")
             } else if (this.formData.brief === '') {
-               return this.$message.error("简介不能为空")
+                return this.$message.error("简介不能为空")
             } else if (this.formData.pin_type === -1) {
                 return this.$message.error("类别不能为空")
             }
