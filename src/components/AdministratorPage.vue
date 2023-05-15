@@ -151,6 +151,7 @@ export default defineComponent({
                         'token': that.$cookies.get('user_token')
                     }
                 }).then((res) => {
+                    // console.log(res.data)
                     that.markers_info = {}
                     for (let pin of res.data.data) {
                         that.markers_info[pin["id"]] = {
@@ -233,18 +234,20 @@ export default defineComponent({
 
         get_pin_feedback_list() {
             let that = this
+            // console.log(that.pin_feedback_result.id)
             that.$axios.get('examine/get_feedback/' + that.pin_feedback_result.id, {
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
-                that.feedback_list = res.data
-                that.examine_1_1_dialog_show = true
+                that.feedback_list = res.data.data
+                that.examine_1_2_dialog_show = true
             }).catch((error) => {
                 console.log(error)
             })
         },
         examine_pin_feedback_submit() {
+            this.pin_feedback_result.feedback_id_list = this.feedback_id_list
             if (this.pin_feedback_result.info === '' || this.pin_feedback_result.feedback_id_list === []) {
                 this.$message({
                     type: 'warning',
@@ -256,6 +259,7 @@ export default defineComponent({
             }
 
             let that = this
+            // console.log(that.pin_feedback_result.feedback_id_list)
             that.$axios.post('examine/result_of_feedback/' + that.pin_feedback_result.id, {
                 feedback_id_list: that.pin_feedback_result.feedback_id_list,
                 info: that.pin_feedback_result.info
@@ -264,7 +268,7 @@ export default defineComponent({
                     'token': that.$cookies.get('user_token')
                 }
             }).then(() => {
-                // console.log(that.pin_apply_public_result)
+                // console.log(res)
                 that.examine_1_2_dialog_show = false
 
                 that.feedback_list = that.feedback_list.filter(item => !that.feedback_id_list.includes(item.feedback_id))
@@ -290,8 +294,6 @@ export default defineComponent({
                 })
                 console.log(error)
             })
-
-            that.examine_1_2_dialog_show = false
         }
     },
     watch: {
@@ -346,13 +348,13 @@ export default defineComponent({
                         <div id="container" style="width: 100%; height: 100%"></div>
                         <el-dialog v-model="examine_1_1_dialog_show" :show-close="true" title="公共pin申请">
                             <el-form :model="pin_apply_public_result" label-width="120px">
-                                <el-form-item label="feedback result">
+                                <el-form-item label="申请结果">
                                     <el-radio-group v-model="pin_apply_public_result.result">
                                         <el-radio label="true">同意</el-radio>
                                         <el-radio label="false">拒绝</el-radio>
                                     </el-radio-group>
                                 </el-form-item>
-                                <el-form-item label="feedback info">
+                                <el-form-item label="理由">
                                     <!--                                    <el-radio-group v-model="pin_apply_public_result.result">-->
                                     <!--                                        <el-radio label="pin较为小众">pin较为小众</el-radio>-->
                                     <!--                                        <el-radio label="内容违反法律">内容违反法律</el-radio>-->

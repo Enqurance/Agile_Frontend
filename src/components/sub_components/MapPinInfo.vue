@@ -1,18 +1,37 @@
 <template>
     <div class="map-pin-info">
         <el-drawer direction="ltr" v-model="drawer"
-        :with-header="true" :append-to-body="true" class="my-drawer">
+                   :with-header="true" :append-to-body="true" class="my-drawer">
             <div style="margin-top: 0px;margin-bottom: 0px;">
-                <el-button v-if="info.visibility===0 && this.$cookies.get('user_type')==='0'" class="float_right" size="large" :style="{background: _get_pin_color_state(pin_state)}" @click="apply_public">{{ _get_pin_state(pin_state) }}</el-button>
-                <el-button v-if="info.visibility===1 && this.$cookies.get('user_type')==='0'" class="float_right" size="large" :style="{background: _get_pin_color_state(pin_state)}" @click="() => {show_feedback=true; this.feedback.title='';this.feedback.reason=''}">{{ _get_public_pin_state(pin_state) }}</el-button>
+                <el-button v-if="info.visibility===0 && this.$cookies.get('user_type')==='0'" class="float_right"
+                           size="large" :style="{background: _get_pin_color_state(pin_state)}" @click="apply_public">
+                    {{ _get_pin_state(pin_state) }}
+                </el-button>
+                <el-button v-if="info.visibility===1 && this.$cookies.get('user_type')==='0'" class="float_right"
+                           size="large" :style="{background: _get_pin_color_state(pin_state)}" @click="() => {
+                    if (this.pin_state === 1) {
+                this.$message({
+                    type: 'warning',
+                    message: '已申请，管理员将尽快审批！',
+                    showClose: true,
+                    grouping: true
+                })
+                return
+            }
+            else {
+                    show_feedback=true; this.feedback.title=''
+                    this.feedback.reason=''
+                    }
+                }">{{ _get_public_pin_state(pin_state) }}
+                </el-button>
 
                 <el-dialog v-model="show_feedback" style="height: 250px;width: 40%">
                     <el-form>
                         <el-form-item label="标题：">
-                            <el-input type="text" maxlength="10" v-model="feedback.title" autocomplete="off" />
+                            <el-input type="text" maxlength="10" v-model="feedback.title" autocomplete="off"/>
                         </el-form-item>
                         <el-form-item label="内容：">
-                            <el-input type="textarea" clearable rows="3" v-model="feedback.reason" autocomplete="off" />
+                            <el-input type="textarea" clearable rows="3" v-model="feedback.reason" autocomplete="off"/>
                         </el-form-item>
                     </el-form>
                     <div style="position: absolute;bottom: 10px; right: 20px">
@@ -28,11 +47,11 @@
                 <el-dialog :title="dialogTitle" v-model="dialogVisible">
                     <el-form :model="formData" label-width="100px">
                         <el-form-item label="名称">
-                            <el-input v-model="formData.name" maxlength="20" ></el-input>
+                            <el-input v-model="formData.name" maxlength="20"></el-input>
                         </el-form-item>
                         <el-form-item label="简介">
                             <el-input v-model="formData.brief"
-                            type="textarea" autosize maxlength="100"></el-input>
+                                      type="textarea" autosize maxlength="100"></el-input>
                         </el-form-item>
                         <el-form-item label="类别">
                             <el-radio-group v-model="formData.pin_type">
@@ -47,19 +66,23 @@
                         </el-form-item>
                         <el-form-item label="位置描述">
                             <el-input v-model="formData.position"
-                            type="textarea" autosize maxlength="100"></el-input>
+                                      type="textarea" autosize maxlength="100"></el-input>
                         </el-form-item>
                         <el-form-item label="开放时间">
-                            <el-input v-model="formData.opening_time" 
-                            type="textarea" autosize maxlength="100"></el-input>
+                            <el-input v-model="formData.opening_time"
+                                      type="textarea" autosize maxlength="100"></el-input>
                         </el-form-item>
                         <el-form-item label="电话">
                             <el-input v-model="formData.phone"></el-input>
                         </el-form-item>
                     </el-form>
                     <div>
-                        <el-button @click="dialogVisible = false">取消  <CloseOutlined /></el-button>
-                        <el-button type="primary" @click="submitForm">确认  <CheckOutlined /></el-button> 
+                        <el-button @click="dialogVisible = false">取消
+                            <CloseOutlined/>
+                        </el-button>
+                        <el-button type="primary" @click="submitForm">确认
+                            <CheckOutlined/>
+                        </el-button>
                     </div>
                 </el-dialog>
             </div>
@@ -68,11 +91,13 @@
                 <el-card :body-style="{ padding: '10px' }">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0px;">
                         <h4 style="margin-bottom: 0px;">信息</h4>
-                        <el-button type="link" v-if="(info.visibility === 0 || this.$cookies.get('user_type') === '1') && is_examine===false && pin_state===0" @click="editInfo" >
-                        <EditOutlined />
+                        <el-button type="link"
+                                   v-if="(info.visibility === 0 || this.$cookies.get('user_type') === '1') && is_examine===false && pin_state===0"
+                                   @click="editInfo">
+                            <EditOutlined/>
                         </el-button>
-                    </div> 
-                    
+                    </div>
+
                     <!-- <p>{{ info.name }}</p> -->
                     <p v-if="info.position">位置描述：{{ info.position }}</p>
                     <p v-if="info.brief">简介：{{ info.brief }}</p>
@@ -92,9 +117,11 @@
                         </el-carousel-item>
                     </el-carousel>
 
-                    <el-upload v-if="(info.visibility === 0 || this.$cookies.get('user_type') === '1') && is_examine===false && pin_state===0"
-                    class="avatar-uploader" action="https://buaamapforum.cn:8443/photo/uploadPinPhoto"
-                        :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                    <el-upload
+                            v-if="(info.visibility === 0 || this.$cookies.get('user_type') === '1') && is_examine===false && pin_state===0"
+                            class="avatar-uploader" action="https://buaamapforum.cn:8443/photo/uploadPinPhoto"
+                            :show-file-list="false" :on-success="handleAvatarSuccess"
+                            :before-upload="beforeAvatarUpload">
                         <el-button size="small" type="primary" plain>上传图片</el-button>
                     </el-upload>
                 </el-card>
@@ -129,9 +156,9 @@
 
 <script>
 import global from '@/global'
-import { EditOutlined, CheckOutlined, CloseOutlined} from '@ant-design/icons-vue';
+import {EditOutlined, CheckOutlined, CloseOutlined} from '@ant-design/icons-vue';
 import {ElMessageBox, ElMessage} from "element-plus";
- 
+
 export default {
     props: {
         id: Number,
@@ -231,12 +258,13 @@ export default {
                 that.photos = res.data.data.photos
                 that.services = res.data.data.services
                 that.drawer = true;
-
-                that.$axios.get('/examine/' + (res.data.data.pin.visibility === 0 ? 'get_pin_state/' : 'get_public_pin_state_of_user/') + that.id, {
+                // console.log(that.id)
+                that.$axios.get('/examine/' + (res.data.data.pin.visibility === 0 ? 'get_pin_state/' : 'get_public_pin_state/') + that.id, {
                     headers: {
                         'token': that.$cookies.get('user_token')
                     }
                 }).then((res) => {
+                    // console.log(res)
                     that.pin_state = res.data.data
                 }).catch((error) => {
                     console.log(error)
@@ -256,9 +284,11 @@ export default {
         submitForm() {
             if (this.formData.name === '') {
                 return this.$message.error("名称不能为空")
-            } else if (this.formData.brief === '') {
+            }
+            else if (this.formData.brief === '') {
                 return this.$message.error("简介不能为空")
-            } else if (this.formData.pin_type === -1) {
+            }
+            else if (this.formData.pin_type === -1) {
                 return this.$message.error("类别不能为空")
             }
 
@@ -293,8 +323,8 @@ export default {
         },
 
         beforeAvatarUpload(file) {
-            console.log("in beforeAvatarUpload!");
-            const isPic = file.type === 'image/jpeg'|| file.type === 'image/png';
+            // console.log("in beforeAvatarUpload!");
+            const isPic = file.type === 'image/jpeg' || file.type === 'image/png';
             const isLt5M = file.size / 1024 / 1024 < 5;
             if (!isPic) {
                 return this.$message.error('上传地点图片只能是 Jpg 或 Png 格式!')
@@ -308,7 +338,7 @@ export default {
             formData.append('pin_id', that.id)
             formData.append('pic', file)
 
-            console.log("before axio!");
+            // console.log("before axio!");
 
             var option = ({
                 url: 'photo/uploadPinPhoto',
@@ -318,13 +348,13 @@ export default {
                     'token': that.$cookies.get('user_token')
                 },
                 transformRequest: [function (data, headers) {
-                    console.log(headers)
+                    // console.log(headers)
                     delete headers['Content-Type']
                     return data
                 }],
             })
 
-            console.log(that.photos.length)
+            // console.log(that.photos.length)
             that.$axios(option).then((res) => {
                 this.handleDblClick()
             }).catch((error) => console.log(error));
@@ -332,7 +362,7 @@ export default {
         },
 
         handleAvatarSuccess(res, file) {
-            console.log(file)
+            // console.log(file)
         },
 
         deletePhoto(photoUrl) {
@@ -346,12 +376,13 @@ export default {
                 return
             }
             const index = that.photos.indexOf(photoUrl);
-            console.log("url "+photoUrl)
-            console.log("index "+index)
+            // console.log("url " + photoUrl)
+            // console.log("index " + index)
 
             if (that.info.visibility === 1 && that.$cookies.get('user_type') === "0") {
                 return this.$message.error("系统点图片不可删除")
-            } else {
+            }
+            else {
                 ElMessageBox.confirm(
                     '确认删除该图片？',
                     'Warning',
@@ -363,7 +394,7 @@ export default {
                 ).then(() => {
                     that.$axios.post('/photo/deletePinPhoto', {
                         pin_id: that.id,
-                        url:photoUrl
+                        url: photoUrl
                     }, {
                         headers: {
                             'token': that.$cookies.get('user_token')
@@ -433,69 +464,59 @@ export default {
         },
 
         apply_feedback() {
-            if (this.pin_state === 1) {
+            if (this.feedback.reason === '' || this.feedback.title === '') {
                 this.$message({
                     type: 'warning',
-                    message: '已申请，管理员将尽快审批！',
+                    grouping: true,
                     showClose: true,
-                    grouping: true
+                    message: '请输入理由'
                 })
-                return
+                return;
             }
-            else {
-                if (this.feedback.reason === '' || this.feedback.title === '') {
-                    this.$message({
-                        type: 'warning',
-                        grouping: true,
-                        showClose: true,
-                        message: '请输入理由'
-                    })
-                    return;
+
+            let that = this
+
+            ElMessageBox.confirm(
+                '确认反馈内容？',
+                'Warning',
+                {
+                    confirmButtonText: '确认',
+                    cancelButtonText: '取消',
+                    type: 'warning',
                 }
-
-                let that = this
-
-                ElMessageBox.confirm(
-                    '确认反馈内容？',
-                    'Warning',
-                    {
-                        confirmButtonText: '确认',
-                        cancelButtonText: '取消',
-                        type: 'warning',
+            ).then(() => {
+                that.$axios.post('/examine/apply_for_feedback/' + that.id, {
+                    'title': that.feedback.title,
+                    'content': that.feedback.reason
+                }, {
+                    headers: {
+                        'token': that.$cookies.get('user_token')
                     }
-                ).then(() => {
-                    that.$axios.post('/examine/apply_for_feedback/' + that.id, {
-                        'title': that.feedback.title,
-                        'reason': that.feedback.reason
-                        }, {
-                        headers: {
-                            'token': that.$cookies.get('user_token')
-                        }
-                    }).then(() => {
-                        that.show_feedback = false
-                        that.pin_state = 1
-                        that.$message({
-                            type: 'success',
-                            message: '反馈成功，管理员将尽快审批！',
-                            showClose: true
-                        })
-                    }).catch((error) => {
-                        console.log(error)
-                        that.$message({
-                            type: 'error',
-                            message: '反馈失败！！',
-                            showClose: true
-                        })
+                }).then(() => {
+                    // console.log(res)
+                    that.show_feedback = false
+                    that.pin_state = 1
+                    that.$message({
+                        type: 'success',
+                        message: '反馈成功，管理员将尽快审批！',
+                        showClose: true
                     })
-                }).catch(() => {
-                    ElMessage({
-                        type: 'info',
-                        message: '取消删除',
-                        grouping: true,
+                }).catch((error) => {
+                    console.log(error)
+                    that.$message({
+                        type: 'error',
+                        message: '反馈失败！！',
                         showClose: true
                     })
                 })
-            }
+            }).catch(() => {
+                ElMessage({
+                    type: 'info',
+                    message: '取消删除',
+                    grouping: true,
+                    showClose: true
+                })
+            })
         }
     },
     watch: {

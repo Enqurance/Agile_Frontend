@@ -81,6 +81,14 @@ export default {
               },
             });
         },
+        clickToAdministrator() {
+            this.Index = '4';
+            this.$router.push({
+                path: '/Administrator',
+                query: {
+                },
+            });
+        },
         clickToLogin() {
             this.$router.push({
                 path: '/login',
@@ -163,6 +171,9 @@ export default {
         </el-menu-item>
         <el-menu-item v-on:click="clickToForum()" index="3">
             <template #title>Forum</template>
+        </el-menu-item>
+        <el-menu-item v-if="this.$cookies.get('user_type')==='1'" v-on:click="clickToAdministrator()" index="4">
+            <template #title>Administrator</template>
         </el-menu-item>
         <div class="flex-grow" />
         <div v-if="this.$cookies.get('user_token') === null" class="last">
