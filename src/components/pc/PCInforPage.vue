@@ -16,7 +16,10 @@ export default {
         const isCollapse = ref(true);
         let Index = ref('1');
         return {isCollapse, Index,}
-    }
+    },
+    methods: {
+
+    },
 }
 </script>
 
@@ -26,10 +29,42 @@ export default {
             <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.8" />
         </div>
         <el-container class="MainPart">
-        <el-aside width="20%">
+        <el-aside width="5%" v-if="this.isCollapse">
             <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
-                <el-radio-button :label="false">expand</el-radio-button>
-                <el-radio-button :label="true">collapse</el-radio-button>
+                <el-radio-button :label="false">展开</el-radio-button>
+                <el-radio-button :label="true">省略</el-radio-button>
+            </el-radio-group>
+            <el-menu
+                :default-active="Index"
+                class="el-menu-vertical-demo"
+                :collapse="isCollapse"
+                @open="handleOpen"
+                @close="handleClose"
+            >
+                <el-menu-item index="1">
+                    <el-icon><User /></el-icon>
+                    <template #title>
+                        <span>个人信息</span>
+                    </template>
+                </el-menu-item>
+                <el-menu-item index="2">
+                    <el-icon><Reading /></el-icon>
+                    <template #title>我的帖子</template>
+                </el-menu-item>
+                <el-menu-item index="3">
+                    <el-icon><ChatLineSquare /></el-icon>
+                    <template #title>我的回复</template>
+                </el-menu-item>
+                <el-menu-item index="4">
+                    <el-icon><ChatRound /></el-icon>
+                    <template #title>我的消息</template>
+                </el-menu-item>
+            </el-menu>
+        </el-aside>
+        <el-aside width="20%" v-else>
+            <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
+                <el-radio-button :label="false">展开</el-radio-button>
+                <el-radio-button :label="true">省略</el-radio-button>
             </el-radio-group>
             <el-menu
                 :default-active="Index"
@@ -76,6 +111,8 @@ export default {
     height: 8%;
     display: block;
 }
-
+.MainPart{
+    height: 100%;
+}
 
 </style>
