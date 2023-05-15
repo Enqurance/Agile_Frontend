@@ -81,6 +81,14 @@ export default {
               },
             });
         },
+        clickToAdministrator() {
+            this.Index = '4';
+            this.$router.push({
+                path: '/Administrator',
+                query: {
+                },
+            });
+        },
         clickToLogin() {
             this.$router.push({
                 path: '/login',
@@ -134,6 +142,14 @@ export default {
             }).catch((res) => console.log(res));
             this.getIcon();
         },
+
+        LogOut(){
+            this.$cookies.remove('user_token');
+            this.$router.push({
+                path: '/',
+                query: {},
+            });
+        },
     },
 }
 </script>
@@ -156,6 +172,9 @@ export default {
         <el-menu-item v-on:click="clickToForum()" index="3">
             <template #title>Forum</template>
         </el-menu-item>
+        <el-menu-item v-if="this.$cookies.get('user_type')==='1'" v-on:click="clickToAdministrator()" index="4">
+            <template #title>Administrator</template>
+        </el-menu-item>
         <div class="flex-grow" />
         <div v-if="this.$cookies.get('user_token') === null" class="last">
             <el-menu-item v-on:click="clickToLogin()" index="4">
@@ -169,7 +188,7 @@ export default {
                     <!--<div class="imgBox"><el-avatar class="ava" :src="this.imageUrl"/></div>-->
                     <p>{{ this.user.name }}</p>
                 </template>
-                <el-menu-item index="2-1">登出</el-menu-item>
+                <el-menu-item index="2-1"><el-button v-on:click="LogOut()">登出</el-button></el-menu-item>
             </el-sub-menu>
         </div>
         
@@ -235,6 +254,8 @@ export default {
 
     max-width: 30%;
     object-fit: cover;
+
+    padding-right: 8%;
 }
 
 .tag {

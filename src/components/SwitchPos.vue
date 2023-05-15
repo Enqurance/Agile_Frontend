@@ -11,6 +11,7 @@
                 <div>
                 <el-cascader
                     v-model="value"
+                    ref="cascader"
                     :options="options"
                     placeholder="请选择Tag"
                     :show-all-levels="false">
@@ -37,22 +38,27 @@ import { CheckOutlined, CloseOutlined} from '@ant-design/icons-vue';
 export default {
     props: {
         is_switch: Boolean,
+        lnglat: Array,
     },
     components: {
         CheckOutlined,
         CloseOutlined,
     },
     emits: [
-        'close_dialog'
+        'close_dialog',
+        'get_value',
+        'switch_pos'
     ],
     data() {
         return {
             dialogVisible: false,
             dialogTitle: "移动钉子",
+            selectedValues: [],
             value: [],
+            formData: {},
             options: [
             {
-                value: "yuandi",
+                value: "canyi",
                 label: "餐饮",
                 children: [
 
@@ -130,7 +136,7 @@ export default {
                 for(let seq in pins) {
                     let pin = pins[seq]
                     this.options[pin.type - 1].children.push({
-                        valne: pin.id, 
+                        value: pin.id, 
                         label: pin.name
                         })
                 }
@@ -140,8 +146,34 @@ export default {
             })
         },
         submit() {
+            let that = this
+            if (this.$refs.cascader.getCheckedNodes().length === 0) {
+                return this.$message.error("请选择一个Pin")
+            }
+            const pinId = this.$refs.cascader.getCheckedNodes()[0].value
+            const lnglatString = that.lnglat.join(';')
 
-        }
+            that.$axios.post('/map/switchPos', {
+                id: pinId,
+                lnglat: lnglatString,
+            }, {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then(response => {
+                    this.dialogVisible = false;
+                    const marker_info = {
+                        response: response.data.data,
+                        id: pinId,
+                        lnglat: lnglatString,
+                        visibility: true
+                    }
+                    this.$emit('switch_pos', marker_info)
+            }).catch(error => {
+                    console.error(error);
+            });
+            this.dialogVisible = false
+        },
     },
     watch: {
         is_switch(newData) {
