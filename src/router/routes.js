@@ -7,6 +7,7 @@ import MyComment from "@/components/MyComment";
 import ForumPage from "@/components/ForumPage.vue";
 import MyMessage from "@/components/MyMessage";
 import AdministratorPage from "@/components/AdministratorPage.vue";
+import PostPage from "@/components/PostPage.vue";
 
 const routes = [
     {
@@ -53,6 +54,11 @@ const routes = [
         name: 'forum',
         path: '/Forum',
         component: ForumPage,
+    },
+    {
+        name: 'post',
+        path: '/Forum/:postID',
+        component: PostPage,
     },
     {
         name: 'Administrator',
