@@ -1,11 +1,11 @@
 <template>
   <div
-      style="padding: 5% 10% 11% 10%;background: rgb(246,246,246); min-height: 557px; word-wrap: break-word; word-break: normal">
-    <div style="margin-bottom: 30px;font-size: 20px">
+      style="padding: 5% 20% 9% 20%;background: rgb(246,246,246);word-wrap: break-word; word-break: normal">
+    <div style="margin-bottom: 5%;font-size: 20px">
       我的帖子
-      <el-button style="margin-left: 400px" size="large" type="primary">
-        创建
-      </el-button>
+<!--      <el-button style="margin-left: 40%" size="large" type="primary">-->
+<!--        创建-->
+<!--      </el-button>-->
     </div>
 
     <ul class="infinite-list" style="overflow: auto">
@@ -13,7 +13,7 @@
         <el-empty description="暂时还没有贴子"/>
       </div>
       <div v-for="post in posts" :key="post.id"
-           style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 600px;height: 150px ">
+           style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 98%;height: 150px ">
         <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
                    @click="post.deleteDialog=true">
           删除
@@ -100,7 +100,7 @@ export default {
     deletePost(post) {
       post.deleteDialog = false
       let that = this
-      that.$axios.post('/InfoPage/deletePostById', {
+      that.$axios.post('/InfoPage/MyPost/deletePostById', {
         post_id: post.id
       }, {
         headers: {
@@ -120,7 +120,7 @@ export default {
     },
     queryAllPost() {
       let that = this
-      that.$axios.get('/InfoPage/getMyAllPost', {
+      that.$axios.get('/InfoPage/MyPost/getMyAllPost', {
         headers: {
           'token': that.$cookies.get('user_token')
         }
