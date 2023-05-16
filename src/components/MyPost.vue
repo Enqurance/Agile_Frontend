@@ -140,7 +140,7 @@ export default {
     },
     browsePost(id) {
       // 记得改
-      this.$router.push({path:'/xxx/'+id})
+      this.$router.push({path:'/Forum/'+id})
     }
 
   },
