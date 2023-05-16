@@ -5,7 +5,7 @@
       我的回复
     </div>
 
-    <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
+    <ul class="infinite-list" style="overflow: auto">
       <div v-if="comments.length === 0">
         <el-empty description="暂时还没有回复"/>
       </div>

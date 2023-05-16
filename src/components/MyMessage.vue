@@ -6,7 +6,7 @@
         我收到的
       </div>
 
-      <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto;display: inline-block">
+      <ul class="infinite-list" style="overflow: auto;display: inline-block">
         <div v-if="revs.length === 0">
           <el-empty description="暂时还没有消息"/>
         </div>
@@ -46,7 +46,7 @@
         我发起的
       </div>
 
-      <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto;display: inline-block">
+      <ul class="infinite-list" style="overflow: auto;display: inline-block">
         <div v-if="snds.length === 0">
           <el-empty description="暂时还没有消息"/>
         </div>
@@ -103,8 +103,8 @@ export default {
           time: "2023-5-9 22:07",
           read: false,
           post_id: null,
-          floor_id:null,
-          examine_id:null,
+          floor_id: null,
+          examine_id: null,
         },
         {
           id: 12,
@@ -113,8 +113,8 @@ export default {
           time: "2023-5-10 10:06",
           read: true,
           post_id: null,
-          floor_id:null,
-          examine_id:null,
+          floor_id: null,
+          examine_id: null,
         },
         {
           id: 1,
@@ -123,8 +123,8 @@ export default {
           time: "2023-5-10 10:06",
           read: true,
           post_id: null,
-          floor_id:null,
-          examine_id:1,
+          floor_id: null,
+          examine_id: 1,
         },
         {
           id: 2,
@@ -133,8 +133,8 @@ export default {
           time: "2023-5-10 10:06",
           read: true,
           post_id: 3,
-          floor_id:null,
-          examine_id:null,
+          floor_id: null,
+          examine_id: null,
         },
         {
           id: 3,
@@ -143,8 +143,8 @@ export default {
           time: "2023-5-10 10:06",
           read: true,
           post_id: 3,
-          floor_id:2,
-          examine_id:null,
+          floor_id: 2,
+          examine_id: null,
         },
       ],
       snds: [
@@ -155,7 +155,7 @@ export default {
           time: "2023-5-9 22:07",
           read: false,
           post_id: null,
-          floor_id:null,
+          floor_id: null,
         },
         {
           id: 1233,
@@ -164,7 +164,7 @@ export default {
           time: "2023-5-10 10:06",
           read: true,
           post_id: null,
-          floor_id:null,
+          floor_id: null,
         },
         {
           id: 233,
@@ -173,7 +173,7 @@ export default {
           time: "2023-5-10 10:06",
           read: true,
           post_id: 3,
-          floor_id:null,
+          floor_id: null,
         },
         {
           id: 333,
@@ -182,36 +182,32 @@ export default {
           time: "2023-5-10 10:06",
           read: true,
           post_id: 3,
-          floor_id:2,
+          floor_id: 2,
         },
       ],
     }
   },
   methods: {
     clickMsg(msg) {
+      console.log(msg);
       this.readMsg(msg);
-      if(msg.examine_id!=null)
-      {
-        this.$router.push('shenghe');
-      }
-      else if(msg.post_id!=null)
-      {
-        if(msg.floor_id!=null)
-        {
+      if (msg.examine_id != null) {
+        this.$router.push('/Administrator');
+      } else if (msg.post_id != null) {
+        if (msg.floor_id != null) {
           this.$router.push('louceng');
-        }
-        else {
+        } else {
           this.$router.push('tiezi');
         }
-      }
-      else {
+      } else {
         msg.detail = true;
       }
     },
     readMsg(msg) {
       let that = this;
+
       that.$axios.post('/InfoPage/MyMessage/readMessageById', {
-        msg_id: msg.id
+        m_id: msg.id
       }, {
         headers: {
           'token': that.$cookies.get('user_token')
@@ -220,6 +216,7 @@ export default {
         // console.log(res)
         if (res.data.code === 200) {
           console.log("read success")
+          msg.read = true;
         } else {
           this.$message({
             message: res.data.message,
@@ -236,7 +233,7 @@ export default {
         }
 
       }).then((res) => {
-        // console.log(res)
+        //console.log(res)
         if (res.data.code === 200) {
           console.log("get rev success")
           this.revs = res.data.data
