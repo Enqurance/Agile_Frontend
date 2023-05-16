@@ -4,8 +4,8 @@ import LoginPage from "@/components/LoginPage.vue";
 import RegisterPage from "@/components/RegisterPage.vue";
 import MyPost from "@/components/MyPost";
 import MyComment from "@/components/MyComment";
-import ForumPage from "@/components/ForumPage.vue";
 import MyMessage from "@/components/MyMessage";
+import ForumPage from "@/components/ForumPage.vue";
 import AdministratorPage from "@/components/AdministratorPage.vue";
 import PostPage from "@/components/PostPage.vue";
 

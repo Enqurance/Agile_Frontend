@@ -1,19 +1,19 @@
 <template>
   <div
-      style="padding: 5% 30% 11% 27%;background: rgb(246,246,246); word-wrap: break-word; word-break: normal">
-    <div style="margin-bottom: 5%;font-size: 20px;display: flex">
+      style="padding: 5% 20% 9% 20%;background: rgb(246,246,246);word-wrap: break-word; word-break: normal">
+    <div style="margin-bottom: 5%;font-size: 20px">
       我的帖子
-      <el-button style="margin-left: 70%" size="large" type="primary">
-        创建
-      </el-button>
+<!--      <el-button style="margin-left: 40%" size="large" type="primary">-->
+<!--        创建-->
+<!--      </el-button>-->
     </div>
 
-    <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
+    <ul class="infinite-list" style="overflow: auto">
       <div v-if="posts.length === 0">
         <el-empty description="暂时还没有贴子"/>
       </div>
       <div v-for="post in posts" :key="post.id"
-           style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 150px ">
+           style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 98%;height: 150px ">
         <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
                    @click="post.deleteDialog=true">
           删除
@@ -42,7 +42,7 @@
           {{ post.content }}
         </p>
         <div style="padding: 0 20px;">
-          <el-icon>
+          <el-icon >
             <ChatRound/>
           </el-icon>
           {{ post.floor_num }}
@@ -100,7 +100,7 @@ export default {
     deletePost(post) {
       post.deleteDialog = false
       let that = this
-      that.$axios.post('/InfoPage/deletePostById', {
+      that.$axios.post('/InfoPage/MyPost/deletePostById', {
         post_id: post.id
       }, {
         headers: {
@@ -120,7 +120,7 @@ export default {
     },
     queryAllPost() {
       let that = this
-      that.$axios.get('/InfoPage/getMyAllPost', {
+      that.$axios.get('/InfoPage/MyPost/getMyAllPost', {
         headers: {
           'token': that.$cookies.get('user_token')
         }
@@ -140,7 +140,7 @@ export default {
     },
     browsePost(id) {
       // 记得改
-      this.$router.push({path: '/xxx/' + id})
+      this.$router.push({path:'/Forum/'+id})
     }
 
   },
