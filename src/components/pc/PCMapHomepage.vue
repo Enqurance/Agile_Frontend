@@ -4,7 +4,7 @@
         <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.7"/>
         <!--        </el-header>-->
         <!--        <el-main style="height: 93%">-->
-        <PlaceSearch class="on_div" style="width: 18%; height: 30%; margin-top: 5%; margin-left: 3%"
+        <PlaceSearch class="on_div place_search" :style="{}"
                      @submit_p_id="(e) => concentrate_pin(e)" :click_map="close_search"
                      @search_close="close_search=false"/>
         <div class="on_div" style="width: 100%;" >
@@ -473,6 +473,12 @@ export default {
     top: 0;
     position: absolute;
     z-index: 1;
+}
+
+.place_search {
+    width: 18%;
+    margin-top: 7%;
+    margin-left: 3%
 }
 
 </style>
