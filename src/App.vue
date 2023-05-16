@@ -1,17 +1,17 @@
 <template>
-  <router-view/>
+   <router-view/>
 </template>
 
 <script>
 
 export default {
-  name: 'App',
-  components: { },
-  provide() {
-    return {
-      reload: this.reload
-    }
-  },
+    name: 'App',
+    components: { },
+    provide() {
+        return {
+            reload: this.reload
+        }
+    },
 
   data() {
     return {
