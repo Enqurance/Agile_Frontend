@@ -133,7 +133,7 @@ export default {
           floor: 5,
         },
       ],
-      floors:[{
+      floors: [{
         id: 123,
         title: "这是一个标题",
         content: "这是楼层",
@@ -251,11 +251,11 @@ export default {
     },
     browseComment(id) {
       // 记得改
-      this.$router.push({path: '/xxx/' + id})
+      this.$router.push({path: '/Forum/' + id})
     },
     browseFloor(id) {
       // 记得改
-      this.$router.push({path: '/xxx/' + id})
+      this.$router.push({path: '/Forum/' + id})
     },
 
   },

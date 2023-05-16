@@ -192,16 +192,16 @@ export default {
       // this.readMsg(msg);
       if(msg.examine_id!=null)
       {
-        this.$router.push('shenghe');
+        this.$router.push('/Administrator');
       }
       else if(msg.post_id!=null)
       {
         if(msg.floor_id!=null)
         {
-          this.$router.push('louceng');
+          this.$router.push({path: '/Forum/' + msg.post_id});
         }
         else {
-          this.$router.push('tiezi');
+          this.$router.push({path: '/Forum/' + msg.post_id});
         }
       }
       else {
