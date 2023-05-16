@@ -6,7 +6,7 @@
         我收到的
       </div>
 
-      <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto;display: inline-block">
+      <ul class="infinite-list" style="overflow: auto;display: inline-block">
         <div v-if="revs.length === 0">
           <el-empty description="暂时还没有消息"/>
         </div>
@@ -46,7 +46,7 @@
         我发起的
       </div>
 
-      <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto;display: inline-block">
+      <ul class="infinite-list" style="overflow: auto;display: inline-block">
         <div v-if="snds.length === 0">
           <el-empty description="暂时还没有消息"/>
         </div>

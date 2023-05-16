@@ -1,6 +1,6 @@
 <template>
   <div
-      style="padding: 120px 400px 60px 400px;background: rgb(246,246,246); min-height: 557px; word-wrap: break-word; word-break: normal">
+      style="padding: 5% 10% 11% 10%;background: rgb(246,246,246); min-height: 557px; word-wrap: break-word; word-break: normal">
     <div style="margin-bottom: 30px;font-size: 20px">
       我的帖子
       <el-button style="margin-left: 400px" size="large" type="primary">
@@ -8,7 +8,7 @@
       </el-button>
     </div>
 
-    <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
+    <ul class="infinite-list" style="overflow: auto">
       <div v-if="posts.length === 0">
         <el-empty description="暂时还没有贴子"/>
       </div>
