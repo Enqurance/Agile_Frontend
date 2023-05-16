@@ -207,8 +207,10 @@ export default {
         switch_pos (info) {
             // this.markers[info["id"]].setPosition
             // console.log(this.marker["lnglat"])
-            let latLng = info["lnglat"]
-            // marker.setPosition(info["lnglat"])
+            let marker = this.markers[info["id"]].marker
+            let latLng = info["lnglat"].split(";")
+            marker.setPosition(latLng)
+            marker.setMap(this.map)
             // marker.setPosition()
         },
         init_menu() {
