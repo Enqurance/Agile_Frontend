@@ -145,7 +145,6 @@ export default {
         class="el-menu-demo"
         mode="horizontal"
         :ellipsis="false"
-        @select="handleSelect"
     >
         <el-menu-item v-on:click="clickToMap()" index="1" >
             <template #title>BUAAMapForum</template>

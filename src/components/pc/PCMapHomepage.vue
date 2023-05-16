@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { toRaw } from 'vue'
 import AMapLoader from '@amap/amap-jsapi-loader'
 import {shallowRef} from "@vue/reactivity";
 import {ElMessageBox, ElMessage} from "element-plus";
@@ -169,7 +170,7 @@ export default {
                 this.map.setZooms(that.beihang_zoom)
 
                 let bounds = this.map.getBounds();
-                this.map.setLimitBounds(bounds);
+                // this.map.setLimitBounds(bounds);
 
                 this.markers_info = {}
                 that.$axios.get('map/getUserAllBriefPin', {
@@ -207,7 +208,12 @@ export default {
         switch_pos (info) {
             // this.markers[info["id"]].setPosition
             // console.log(this.marker["lnglat"])
-            let latLng = info["lnglat"]
+            let lnglat = info["lnglat"].split(";")
+            let markerProxy = toRaw(this.markers[info["id"]].marker)
+            markerProxy.setPosition(lnglat)
+            console.log(markerProxy._position)
+            console.log(markerProxy.getMap() !== null);
+            markerProxy.setMap(this.map)
             // marker.setPosition(info["lnglat"])
             // marker.setPosition()
         },
