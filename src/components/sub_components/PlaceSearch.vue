@@ -1,6 +1,6 @@
 <template>
-    <div style="height: 100%" >
-        <el-row style="padding-bottom: 0.5%" >
+    <div>
+        <el-row style="margin-bottom: 0">
             <el-col :span="24">
                 <el-input v-model="search_content" placeholder="请输入查找信息" maxlength="24"
                           @click="search_for_content()" @input="search_for_content()"
@@ -12,7 +12,7 @@
                 </el-input>
             </el-col>
         </el-row>
-        <div >
+        <div :style="{'margin-top': (open_sel ? '5' : '1') + 'px'}">
             <div v-if="open_sel && search_result_num > 5" class="result_div">
                 <el-scrollbar style="height: 150px">
                     <div v-for="item in search_result" :key="item.id"
