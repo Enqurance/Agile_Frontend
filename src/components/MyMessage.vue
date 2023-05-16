@@ -1,12 +1,12 @@
 <template>
   <div
-      style="padding: 5% 10% 15% 20%;background: rgb(246,246,246); word-wrap: break-word; word-break: normal">
-    <div style="padding-left: 5%;font-size: 20px;width:400px;display: inline-block">
+      style="padding: 120px 200px 160px 300px;background: rgb(246,246,246); min-height: 467px; word-wrap: break-word; word-break: normal">
+    <div style="padding-left: 30px;font-size: 20px;width:400px;display: inline-block">
       <div style="height: 80px">
         我收到的
       </div>
 
-      <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto;display: inline-block">
+      <ul class="infinite-list" style="overflow: auto;display: inline-block">
         <div v-if="revs.length === 0">
           <el-empty description="暂时还没有消息"/>
         </div>
@@ -41,12 +41,12 @@
 
 
     </div>
-    <div style="padding-left: 5%;font-size: 20px;width:400px;display: inline-block">
+    <div style="padding-left: 90px;font-size: 20px;width:400px;display: inline-block">
       <div style="height: 80px">
         我发起的
       </div>
 
-      <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto;display: inline-block">
+      <ul class="infinite-list" style="overflow: auto;display: inline-block">
         <div v-if="snds.length === 0">
           <el-empty description="暂时还没有消息"/>
         </div>
@@ -189,7 +189,7 @@ export default {
   },
   methods: {
     clickMsg(msg) {
-      this.readMsg(msg);
+      // this.readMsg(msg);
       if(msg.examine_id!=null)
       {
         this.$router.push('shenghe');
