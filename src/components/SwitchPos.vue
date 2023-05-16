@@ -53,7 +53,6 @@ export default {
         return {
             dialogVisible: false,
             dialogTitle: "移动钉子",
-            selectedValues: [],
             value: [],
             formData: {},
             options: [
@@ -109,6 +108,9 @@ export default {
             this.get_pin()
         },
         get_pin() {
+            this.options.forEach(item => item.children = [])
+            this.value = []
+
             let that = this
             that.dialogVisible = true
             this.markers_info = {}
@@ -118,14 +120,18 @@ export default {
                 }
             }).then((res) => {
                 that.markers_info = {}
+                // console.log(res.data.data)
                 for (let pin of res.data.data) {
-                    that.markers_info[pin["id"]] = {
-                    'name': pin["name"],
-                    'type': pin["type"],
-                    'visibility': pin["visibility"],
-                    'lnglat': pin["lnglat"]
+                    if (parseInt(this.$cookies.get('user_type')) === pin["visibility"] ) {
+                        that.markers_info[pin["id"]] = {
+                            'name': pin["name"],
+                            'type': pin["type"],
+                            'visibility': pin["visibility"],
+                            'lnglat': pin["lnglat"]
+                        }
                     }
                 }
+                // console.log(that.markers_info)
                 let pins = []
                 for (let marker_info in that.markers_info) {
                     let info = Object.assign({}, {
@@ -140,16 +146,17 @@ export default {
                         label: pin.name
                         })
                 }
-                // console.log(that.markers)
+                // this.options = this.options.filter(item => item.children.length !== 0);
             }).catch((res) => {
                 console.log(res)
             })
         },
         submit() {
             let that = this
-            if (this.$refs.cascader.getCheckedNodes().length === 0) {
+            if (this.$refs.cascader.getCheckedNodes().length === 0 || this.$refs.cascader.getCheckedNodes()[0].level === 1) {
                 return this.$message.error("请选择一个Pin")
             }
+            // console.log(this.$refs.cascader.getCheckedNodes())
             const pinId = this.$refs.cascader.getCheckedNodes()[0].value
             const lnglatString = that.lnglat.join(';')
 
