@@ -41,10 +41,10 @@ import AMapLoader from '@amap/amap-jsapi-loader'
 import {shallowRef} from "@vue/reactivity";
 import {ElMessageBox, ElMessage} from "element-plus";
 import MapPinInfo from "@/components/sub_components/MapPinInfo.vue";
-import MapPinAdd from "@/components/sub_components/MapPinAdd.vue";
-import PlaceSearch from "@/components/sub_components/PlaceSearch.vue";
+import MapPinAdd from "@/components/sub_components/mappage_sub_components/MapPinAdd.vue";
+import PlaceSearch from "@/components/sub_components/mappage_sub_components/PlaceSearch.vue";
 import PageHeader from "@/components/pc/PCPageHeader.vue";
-import SwitchPos from "@/components/SwitchPos.vue"
+import SwitchPos from "@/components/sub_components/mappage_sub_components/SwitchPos.vue"
 import global from "@/global";
 import '../../assets/PinIcon/font2/iconfont.css'
 

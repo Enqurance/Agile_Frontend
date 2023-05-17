@@ -1,6 +1,9 @@
 <script>
 import PageHeader from './PCPageHeader.vue'
-import MyInfo from '../MyInfo.vue'
+import MyInfo from '../sub_components/infopage_sub_components/MyInfo.vue'
+import MyComment from "@/components/sub_components/infopage_sub_components/MyComment.vue";
+import MyMessage from "@/components/sub_components/infopage_sub_components/MyMessage.vue";
+import MyPost from "@/components/sub_components/infopage_sub_components/MyPost.vue";
 import { ref, reactive } from 'vue'
 import {
   User,
@@ -11,7 +14,7 @@ import {
 
 export default {
     name: "PCInfoPage",
-    components: { PageHeader, User, Reading, ChatLineSquare, ChatRound, MyInfo },
+    components: { PageHeader, User, Reading, ChatLineSquare, ChatRound, MyInfo, MyMessage, MyPost, MyComment },
     setup(){
         const isCollapse = ref(true);
         let Index = ref('1');
@@ -38,24 +41,22 @@ export default {
                 :default-active="Index"
                 class="el-menu-vertical-demo"
                 :collapse="isCollapse"
-                @open="handleOpen"
-                @close="handleClose"
             >
-                <el-menu-item index="1">
+                <el-menu-item index="1" @click="Index='1'">
                     <el-icon><User /></el-icon>
                     <template #title>
                         <span>个人信息</span>
                     </template>
                 </el-menu-item>
-                <el-menu-item index="2">
+                <el-menu-item index="2" @click="Index='2'">
                     <el-icon><Reading /></el-icon>
                     <template #title>我的帖子</template>
                 </el-menu-item>
-                <el-menu-item index="3">
+                <el-menu-item index="3" @click="Index='3'">
                     <el-icon><ChatLineSquare /></el-icon>
                     <template #title>我的回复</template>
                 </el-menu-item>
-                <el-menu-item index="4">
+                <el-menu-item index="4" @click="Index='4'">
                     <el-icon><ChatRound /></el-icon>
                     <template #title>我的消息</template>
                 </el-menu-item>
@@ -70,24 +71,22 @@ export default {
                 :default-active="Index"
                 class="el-menu-vertical-demo"
                 :collapse="isCollapse"
-                @open="handleOpen"
-                @close="handleClose"
             >
-                <el-menu-item index="1">
+                <el-menu-item index="1" @click="Index='1'">
                     <el-icon><User /></el-icon>
                     <template #title>
                         <span>个人信息</span>
                     </template>
                 </el-menu-item>
-                <el-menu-item index="2">
+                <el-menu-item index="2" @click="Index='2'">
                     <el-icon><Reading /></el-icon>
                     <template #title>我的帖子</template>
                 </el-menu-item>
-                <el-menu-item index="3">
+                <el-menu-item index="3" @click="Index='3'">
                     <el-icon><ChatLineSquare /></el-icon>
                     <template #title>我的回复</template>
                 </el-menu-item>
-                <el-menu-item index="4">
+                <el-menu-item index="4" @click="Index='4'">
                     <el-icon><ChatRound /></el-icon>
                     <template #title>我的消息</template>
                 </el-menu-item>
@@ -95,6 +94,9 @@ export default {
         </el-aside>
         <el-main>
             <div v-if="this.Index === '1'"><MyInfo></MyInfo></div>
+            <div v-if="this.Index === '2'"><MyPost /></div>
+            <div v-if="this.Index === '3'"><MyComment /></div>
+            <div v-if="this.Index === '4'"><MyMessage /></div>
         </el-main>
         </el-container>
     </div>
