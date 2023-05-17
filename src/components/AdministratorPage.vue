@@ -58,7 +58,47 @@ export default defineComponent({
                 pin_id: null,
                 feedback_id_list: [],
                 info: ''
+            },
+
+
+            report_posts: [
+                {
+                    id: -1,
+                    title: "title",
+                    content: "content",
+                    reasons: [
+                        "reason1",
+                        "reason2"
+                    ]
             }
+            ],
+            report_post_result: {
+                id: -1,
+                result: false,
+                suggest: '并未有不符情况'
+            },
+            examine_3_1_dialog_show: false,
+
+            report_replies: [
+                {
+                    id: -1,
+                    content: "content",
+                    type: 0,    // 0 -> floor, 1 -> comment
+                    layer: 20,
+                    post_id: -1,
+                    reasons: [
+                        "reason1",
+                        "reason2"
+                    ]
+                }
+            ],
+            report_reply_result: {
+                id: -1,
+                type: 0,
+                result: false,
+                basis: '并未有不符情况'
+            },
+            examine_3_2_dialog_show: false,
         }
     },
     mounted() {
@@ -67,7 +107,7 @@ export default defineComponent({
         }
 
         this.init_map()
-
+        this.init_report()
     },
     methods: {
         init_map() {
@@ -294,7 +334,142 @@ export default defineComponent({
                 })
                 console.log(error)
             })
-        }
+        },
+
+
+        init_report() {
+            let that = this
+            function init_report_posts() {
+                that.$axios.get('examine/report/get_posts', {
+                    headers: {
+                        'token': that.$cookies.get('user_token')
+                    }
+                }).then((res) => {
+                    // console.log(res)
+                    that.report_posts = res.data.data
+                    if (res.data.code === 401) {
+                        that.report_posts = []
+                    }
+                }).catch((error) => {
+                    console.log(error)
+                })
+            }
+
+            function init_report_replies() {
+                that.$axios.get('examine/report/get_replies', {
+                    headers: {
+                        'token': that.$cookies.get('user_token')
+                    }
+                }).then((res) => {
+                    // console.log(res)
+                    that.report_replies = res.data.data
+                    if (res.data.code === 401) {
+                        that.report_replies = []
+                    }
+                }).catch((error) => {
+                    console.log(error)
+                })
+            }
+
+            init_report_posts()
+            init_report_replies()
+        },
+
+        show_dialog_3_1(id) {
+            this.report_post_result.id = id
+            this.report_post_result.result = 'false'
+            this.report_post_result.suggest = ''
+            this.examine_3_1_dialog_show = true
+        },
+        examine_post_report_submit() {
+            if (this.report_post_result.result === 'true' && this.report_post_result.suggest.length === 0) {
+                this.$message({
+                    type: 'warning',
+                    message: '请说明原因！',
+                    showClose: true,
+                    grouping: true
+                })
+                return
+            }
+
+            let that = this
+            that.$axios.post('examine/report/result_of_report_post/' + that.report_post_result.id, {
+                result: JSON.parse(that.report_post_result.result),
+                suggest: that.report_post_result.suggest
+            }, {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then(() => {
+                that.report_posts = that.report_posts.filter(post => post.id !== that.report_post_result.id)
+                that.examine_3_1_dialog_show = false
+
+                that.$message({
+                    type: 'success',
+                    message: '举报帖子审核结果成功提交后端！',
+                    showClose: true
+                })
+            }).catch((error) => {
+                that.$message({
+                    type: 'error',
+                    message: '提交后端失败！！',
+                    showClose: true
+                })
+                console.log(error)
+            })
+        },
+        browsePost(id) {
+            this.$router.push({path:'/Forum/'+id})
+        },
+
+        show_dialog_3_2(id, type) {
+            this.report_reply_result.id = id
+            this.report_reply_result.type = type
+            this.report_reply_result.result = 'false'
+            this.report_reply_result.basis = ''
+            this.examine_3_2_dialog_show = true
+        },
+        examine_reply_report_submit() {
+            if (this.report_reply_result.result === 'true' && this.report_reply_result.basis.length === 0) {
+                this.$message({
+                    type: 'warning',
+                    message: '请说明原因！',
+                    showClose: true,
+                    grouping: true
+                })
+                return
+            }
+
+            let that = this
+            that.$axios.post('examine/report/result_of_reply_post/' + that.report_reply_result.type + '/' + that.report_reply_result.id, {
+                result: JSON.parse(that.report_reply_result.result),
+                basis: that.report_reply_result.basis
+            }, {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then(() => {
+                that.report_replies = that.report_replies.filter(reply => reply.id !== that.report_reply_result.id || reply.type !== that.report_reply_result.type)
+                that.examine_3_2_dialog_show = false
+
+                that.$message({
+                    type: 'success',
+                    message: '举报回复审核结果成功提交后端！',
+                    showClose: true
+                })
+            }).catch((error) => {
+                that.$message({
+                    type: 'error',
+                    message: '提交后端失败！！',
+                    showClose: true
+                })
+                console.log(error)
+            })
+        },
+        browseReply(id, layer) {
+            this.$router.push({path:'/Forum/'+id})
+        },
+
     },
     watch: {
         feedback_id_list(newData) {
@@ -314,7 +489,7 @@ export default defineComponent({
             <el-header>
                 <PCPageHeader/>
             </el-header>
-            <el-container style="height: 100%">
+            <el-container style="height: 80%">
                 <el-aside style="width: 20%">
                     <el-menu :default-openeds="['3']" style="height: 100%" default-active="1">
                         <el-menu-item index="1" @click="() => {show_info=1;this.init_map();}">
@@ -391,6 +566,98 @@ export default defineComponent({
                             </el-form>
                         </el-dialog>
                     </div>
+                    <div v-else-if="show_info===2">
+
+                    </div>
+                    <div v-else-if="show_info===3">
+                        <div v-if="report_posts.length === 0">
+                            <el-empty description="没有被举报的贴子"/>
+                        </div>
+                        <div v-for="post in report_posts" :key="post.id" style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 98%; margin-bottom: 20px" @click.right="show_dialog_3_1(post.id)">
+                            <el-popconfirm title="确定跳转到帖子？" :hide-icon=true :hide-after=0 width="200" confirm-button-text="确定" cancel-button-text="取消" @confirm="browsePost(post.id)">
+                                <template #reference>
+                                    <h3 class="link_hover" style="padding: 0 20px; height:28px;overflow: hidden; width: 300px">
+                                        {{ post.title }}
+                                    </h3>
+                                </template>
+                            </el-popconfirm>
+
+                            <h4 style="padding: 0 20px;overflow: hidden;margin: 5px 0">内容：</h4>
+                            <p style="padding: 0 20px;margin-bottom: 15px; margin-top: 0;overflow: hidden;">
+                                {{ post.content }}
+                            </p>
+                            <h4 style="padding: 0 20px;overflow: hidden;margin: 5px 0">举报理由：</h4>
+                            <div style="margin-bottom: 10px">
+                                <el-text tag="i" v-for="index in Array.from({length: post.reasons.length}, (_, index) => index)" :key="index" style="padding: 0 40px;overflow: hidden;white-space: pre-line">
+                                    {{ (index + 1) + ': ' + post.reasons[index] + '\n' }}
+                                </el-text>
+                            </div>
+                        </div >
+                        <el-dialog v-model="examine_3_1_dialog_show" :show-close="true" title="帖子审核">
+                            <el-form :model="report_post_result" label-width="120px">
+                                <el-form-item label="举报结果">
+                                    <el-radio-group v-model="report_post_result.result">
+                                        <el-radio label="true">举报成功</el-radio>
+                                        <el-radio label="false">举报失败</el-radio>
+                                    </el-radio-group>
+                                </el-form-item>
+                                <el-form-item v-if="report_post_result.result==='true'" label="整改建议">
+                                    <el-input v-model="report_post_result.suggest" type="textarea"
+                                              maxlength="100"></el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="primary" @click="examine_post_report_submit">确定</el-button>
+                                    <el-button @click="examine_3_1_dialog_show=false">取消</el-button>
+                                </el-form-item>
+                            </el-form>
+                        </el-dialog>
+                    </div>
+                    <div v-else-if="show_info===4">
+                        <div v-if="report_replies.length === 0">
+                            <el-empty description="没有被举报的回复"/>
+                        </div>
+                        <div v-for="reply in report_replies" :key="reply.id" style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 98%; margin-bottom: 20px" @click.right="show_dialog_3_2(reply.id, reply.type)">
+                            <el-popconfirm title="确定跳转到回复？" :hide-icon=true :hide-after=0 width="200" confirm-button-text="确定" cancel-button-text="取消" @confirm="browseReply(reply.id, reply.layer)">
+                                <template #reference>
+                                    <h3 class="link_hover" style="padding: 0 20px;margin-bottom: 5px; height:28px;overflow: hidden; width: 300px">
+                                        {{ (reply.type===0 ? 'Floor: ' : 'Comment: 回复') + reply.layer + '楼'}}
+                                    </h3>
+                                </template>
+                            </el-popconfirm>
+
+                            <h4 style="padding: 0 20px;overflow: hidden;margin: 5px 0">内容：</h4>
+                            <p style="padding: 0 20px;margin-bottom: 15px; margin-top: 0;overflow: hidden;">
+                                {{ reply.content }}
+                            </p>
+                            <h4 style="padding: 0 20px;overflow: hidden;margin: 5px 0">举报理由：</h4>
+                            <div style="margin-bottom: 10px">
+                                <el-text tag="i" v-for="index in Array.from({length: reply.reasons.length}, (_, index) => index)" :key="index" style="padding: 0 40px;overflow: hidden;white-space: pre-line">
+                                    {{ (index + 1) + ': ' + reply.reasons[index] + '\n' }}
+                                </el-text>
+                            </div>
+                        </div >
+                        <el-dialog v-model="examine_3_2_dialog_show" :show-close="true" title="回复审核">
+                            <el-form :model="report_reply_result" label-width="120px">
+                                <el-form-item label="举报结果">
+                                    <el-radio-group v-model="report_reply_result.result">
+                                        <el-radio label="true">举报成功</el-radio>
+                                        <el-radio label="false">举报失败</el-radio>
+                                    </el-radio-group>
+                                </el-form-item>
+                                <el-form-item v-if="report_reply_result.result==='true'" label="理由">
+                                    <el-input v-model="report_reply_result.basis" type="textarea"
+                                              maxlength="100"></el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="primary" @click="examine_reply_report_submit">确定</el-button>
+                                    <el-button @click="examine_3_2_dialog_show=false">取消</el-button>
+                                </el-form-item>
+                            </el-form>
+                        </el-dialog>
+                    </div>
+                    <div v-else>
+                        error，出现意料外的菜单跳转！
+                    </div>
                 </el-main>
             </el-container>
         </el-container>
@@ -401,5 +668,8 @@ export default defineComponent({
 
 <style scoped>
 
+.link_hover {
+    cursor: pointer;
+}
 
 </style>
