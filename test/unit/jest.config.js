@@ -7,6 +7,7 @@ module.exports = {
     },
     transform: {
         "^.+\\.vue$": "@vue/vue3-jest",
+        "^.+\\.jsx?$": "babel-jest",
     },
-    testMatch: ["**/test/**/*.spec.[jt]s?(x)", "**/__tests__/*.[jt]s?(x)"],
+    testMatch: ["**/test/components/*.spec.[jt]s?(x)", "**/__tests__/*.[jt]s?(x)"],
 };

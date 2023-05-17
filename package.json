@@ -7,7 +7,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "jest": "jest src --watch",
-    "test": "jest"
+    "test": "jest",
+    "unit": "jest --config --coverage"
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
