@@ -1,6 +1,6 @@
 <template>
   <div
-      style="padding: 5% 10% 10% 10%;;background: rgb(246,246,246); min-height: 467px; word-wrap: break-word; word-break: normal">
+      style="padding: 5% 10% 10% 10%;background: rgb(246,246,246); min-height: 467px; word-wrap: break-word; word-break: normal">
     <div style="padding-left: 5%;font-size: 20px;width:400px;display: inline-block">
       <div style="height: 80px">
         我收到的
