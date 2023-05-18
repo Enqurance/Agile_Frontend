@@ -74,8 +74,8 @@ export default defineComponent({
             ],
             report_post_result: {
                 id: -1,
-                result: false,
-                suggest: '并未有不符情况'
+                result: '',
+                basis: '并未有不符情况'
             },
             examine_3_1_dialog_show: false,
 
@@ -377,12 +377,13 @@ export default defineComponent({
 
         show_dialog_3_1(id) {
             this.report_post_result.id = id
-            this.report_post_result.result = 'false'
-            this.report_post_result.suggest = ''
+            this.report_post_result.result = ''
+            this.report_post_result.basis = ''
             this.examine_3_1_dialog_show = true
         },
         examine_post_report_submit() {
-            if (this.report_post_result.result === 'true' && this.report_post_result.suggest.length === 0) {
+            if (this.report_post_result.result === '' || ((
+                this.report_post_result.result === '1' || this.report_post_result.result === '2') && this.report_post_result.basis.length === 0)) {
                 this.$message({
                     type: 'warning',
                     message: '请说明原因！',
@@ -394,8 +395,8 @@ export default defineComponent({
 
             let that = this
             that.$axios.post('examine/report/result_of_report_post/' + that.report_post_result.id, {
-                result: JSON.parse(that.report_post_result.result),
-                suggest: that.report_post_result.suggest
+                result: parseInt(that.report_post_result.result),
+                basis: that.report_post_result.basis
             }, {
                 headers: {
                     'token': that.$cookies.get('user_token')
@@ -597,12 +598,13 @@ export default defineComponent({
                             <el-form :model="report_post_result" label-width="120px">
                                 <el-form-item label="举报结果">
                                     <el-radio-group v-model="report_post_result.result">
-                                        <el-radio label="true">举报成功</el-radio>
-                                        <el-radio label="false">举报失败</el-radio>
+                                        <el-radio label="0">举报失败</el-radio>
+                                        <el-radio label="1">举报成功、帖子整改</el-radio>
+                                        <el-radio label="2">举报成功、帖子删除</el-radio>
                                     </el-radio-group>
                                 </el-form-item>
-                                <el-form-item v-if="report_post_result.result==='true'" label="整改建议">
-                                    <el-input v-model="report_post_result.suggest" type="textarea"
+                                <el-form-item v-if="report_post_result.result==='1'||report_post_result.result==='2'" label="整改建议">
+                                    <el-input v-model="report_post_result.basis" type="textarea"
                                               maxlength="100"></el-input>
                                 </el-form-item>
                                 <el-form-item>
