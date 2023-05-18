@@ -261,7 +261,7 @@ export default {
   },
   mounted() {
     this.queryAllComment()
-
+    this.queryAllFloor()
   },
 
 }

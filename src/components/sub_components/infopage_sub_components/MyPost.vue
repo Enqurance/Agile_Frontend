@@ -1,81 +1,136 @@
 <template>
   <div
-      style="padding: 5% 20% 9% 20%;background: rgb(246,246,246);word-wrap: break-word; word-break: normal">
-    <div style="margin-bottom: 5%;font-size: 20px">
+      style="padding: 1% 20% 9% 20%;background: rgb(246,246,246);">
+    <div style="margin-bottom: 3%;font-size: 20px">
       我的帖子
       <!--      <el-button style="margin-left: 40%" size="large" type="primary">-->
       <!--        创建-->
       <!--      </el-button>-->
     </div>
+    <el-menu
+        :default-active="activeIndex"
+        class="el-menu-demo"
+        mode="horizontal"
+    >
+      <el-menu-item index="1" @click="Index='1'">所有帖子</el-menu-item>
+      <div class="flex-grow"/>
+      <el-menu-item index="2" @click="Index='2'">待整改帖子</el-menu-item>
+    </el-menu>
+    <div v-if="this.Index==='1'">
+      <ul class="infinite-list" style="overflow: auto">
+        <div v-if="posts.length === 0">
+          <el-empty description="暂时还没有贴子"/>
+        </div>
+        <div v-for="post in posts" :key="post.id"
+             style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 98%;height: 150px ">
+          <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
+                     @click="post.deleteDialog=true">
+            删除
+          </el-button>
 
-    <ul class="infinite-list" style="overflow: auto">
-      <div v-if="posts.length === 0">
-        <el-empty description="暂时还没有贴子"/>
-      </div>
-      <div v-for="post in posts" :key="post.id"
-           style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 98%;height: 150px ">
-        <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
-                   @click="post.deleteDialog=true">
-          删除
-        </el-button>
-        <el-button v-if="post.need_change===true" style="float: right; margin-top: 20px;margin-right: 20px"
-                   type="primary"
-                   @click="post.changeDialog=true">
-          整改
-        </el-button>
-        <el-dialog v-model="post.changeDialog" title="整改帖子" width="30%" center>
-          <el-input
-              v-model="post.new_title"
-              type="textarea"
-              placeholder="Please input"
-          />
-          <div style="margin: 20px 0"/>
-          <el-input
-              v-model="post.new_content"
-              type="textarea"
-              placeholder="Please input"
-          />
-          <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="post.changeDialog = false">取消</el-button>
-              <el-button type="primary" @click="changePost(post)">
-                确认
-              </el-button>
-            </span>
-          </template>
-        </el-dialog>
-
-        <el-dialog v-model="post.deleteDialog" title="删除帖子" width="30%" center>
+          <el-dialog v-model="post.deleteDialog" title="删除帖子" width="30%" center>
         <span style="text-align: center">
           你确定要删除这个帖子吗？相关的评论也将被删除。
         </span>
-          <template #footer>
+            <template #footer>
             <span class="dialog-footer">
               <el-button @click="post.deleteDialog = false">取消</el-button>
               <el-button type="primary" @click="deletePost(post)">
                 确认
               </el-button>
             </span>
-          </template>
-        </el-dialog>
-        <h3 class="hover"
-            style="padding: 0 20px; height:28px;overflow: hidden"
-            @click="browsePost(post.id)">
-          {{ post.title }}
+            </template>
+          </el-dialog>
+          <h3 class="hover"
+              style="padding: 0 20px; height:28px;overflow: hidden"
+              @click="browsePost(post.id)">
+            {{ post.title }}
 
-        </h3>
+          </h3>
 
-        <p style="padding: 0 20px;height:40px;overflow: hidden;">
-          {{ post.content }}
-        </p>
-        <div style="padding: 0 20px;">
-          <el-icon>
-            <ChatRound/>
-          </el-icon>
-          {{ post.floor_num }}
+          <p style="padding: 0 20px;height:40px;overflow: hidden;">
+            {{ post.content }}
+          </p>
+          <div style="padding: 0 20px;">
+            <el-icon>
+              <ChatRound/>
+            </el-icon>
+            {{ post.floor_num }}
+          </div>
         </div>
-      </div>
-    </ul>
+      </ul>
+    </div>
+
+    <div v-if="this.Index==='2'">
+      <ul class="infinite-list" style="overflow: auto">
+        <div v-if="posts.length === 0">
+          <el-empty description="暂时还没有贴子"/>
+        </div>
+        <div v-for="post in bad_posts" :key="post.id"
+             style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 98%;height: 150px ">
+          <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
+                     @click="post.deleteDialog=true">
+            删除
+          </el-button>
+          <el-button style="float: right; margin-top: 20px;margin-right: 20px"
+                     type="primary"
+                     @click="post.changeDialog=true">
+            整改
+          </el-button>
+          <el-dialog v-model="post.changeDialog" title="整改帖子" width="30%" center>
+            <el-input
+                v-model="post.new_title"
+                type="textarea"
+                placeholder="Please input"
+            />
+            <div style="margin: 20px 0"/>
+            <el-input
+                v-model="post.new_content"
+                type="textarea"
+                placeholder="Please input"
+            />
+            <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="post.changeDialog = false">取消</el-button>
+              <el-button type="primary" @click="changePost(post)">
+                确认
+              </el-button>
+            </span>
+            </template>
+          </el-dialog>
+
+          <el-dialog v-model="post.deleteDialog" title="删除帖子" width="30%" center>
+        <span style="text-align: center">
+          你确定要删除这个帖子吗？相关的评论也将被删除。
+        </span>
+            <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="post.deleteDialog = false">取消</el-button>
+              <el-button type="primary" @click="deletePost(post)">
+                确认
+              </el-button>
+            </span>
+            </template>
+          </el-dialog>
+          <h3 class="hover"
+              style="padding: 0 20px; height:28px;overflow: hidden"
+          >
+            {{ post.title }}
+
+          </h3>
+
+          <p style="padding: 0 20px;height:40px;overflow: hidden;">
+            {{ post.content }}
+          </p>
+          <div style="padding: 0 20px;">
+            <el-icon>
+              <ChatRound/>
+            </el-icon>
+            {{ post.floor_num }}
+          </div>
+        </div>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -88,13 +143,6 @@ export default {
   data() {
     return {
       posts: [
-        {
-          id: 123,
-          title: "这是一个标题",
-          content: "这是内容",
-          need_change: true,
-          floor_num: 44,
-        },
         {
           title: "标题点一下可以跳转",
           content: "点内容不能跳转",
@@ -126,7 +174,17 @@ export default {
           need_change: false,
         },
       ],
-
+      bad_posts: [
+        {
+          id: 123,
+          title: "这是一个标题",
+          content: "这是内容",
+          need_change: true,
+          floor_num: 44,
+        },
+      ],
+      activeIndex: '1',
+      Index: '1',
     }
   },
   methods: {
