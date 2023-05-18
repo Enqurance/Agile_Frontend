@@ -29,6 +29,7 @@
 
 <script>
 import ManVerify from "@/components/sub_components/ManVerify.vue";
+import global from "@/global";
 
 export default {
     name: "PCLoginPage",
@@ -58,8 +59,14 @@ export default {
                 // console.log(res)
                 if (res.data.code === 200) {
                     that.$cookies.set('user_token', res.data.data.token, 3600);
-                    that.$cookies.set('user_type', res.data.data.type, 3600);
-                    that.$router.push({path: '/home'})
+                    if (res.data.data.type === 0) {
+                          that.$cookies.set('user_type', '0', 3600);
+                        }
+                        else {
+                            that.$cookies.set('user_type', global.user_type_administrator, 3600);
+                        }
+
+                      that.$router.push({path: '/home'})
                 }
                 else {
                     this.$message({
