@@ -3,9 +3,9 @@
       style="padding: 5% 20% 9% 20%;background: rgb(246,246,246);word-wrap: break-word; word-break: normal">
     <div style="margin-bottom: 5%;font-size: 20px">
       我的帖子
-<!--      <el-button style="margin-left: 40%" size="large" type="primary">-->
-<!--        创建-->
-<!--      </el-button>-->
+      <!--      <el-button style="margin-left: 40%" size="large" type="primary">-->
+      <!--        创建-->
+      <!--      </el-button>-->
     </div>
 
     <ul class="infinite-list" style="overflow: auto">
@@ -18,6 +18,33 @@
                    @click="post.deleteDialog=true">
           删除
         </el-button>
+        <el-button v-if="post.need_change===true" style="float: right; margin-top: 20px;margin-right: 20px"
+                   type="primary"
+                   @click="post.changeDialog=true">
+          整改
+        </el-button>
+        <el-dialog v-model="post.changeDialog" title="整改帖子" width="30%" center>
+          <el-input
+              v-model="post.new_title"
+              type="textarea"
+              placeholder="Please input"
+          />
+          <div style="margin: 20px 0"/>
+          <el-input
+              v-model="post.new_content"
+              type="textarea"
+              placeholder="Please input"
+          />
+          <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="post.changeDialog = false">取消</el-button>
+              <el-button type="primary" @click="changePost(post)">
+                确认
+              </el-button>
+            </span>
+          </template>
+        </el-dialog>
+
         <el-dialog v-model="post.deleteDialog" title="删除帖子" width="30%" center>
         <span style="text-align: center">
           你确定要删除这个帖子吗？相关的评论也将被删除。
@@ -42,7 +69,7 @@
           {{ post.content }}
         </p>
         <div style="padding: 0 20px;">
-          <el-icon >
+          <el-icon>
             <ChatRound/>
           </el-icon>
           {{ post.floor_num }}
@@ -65,32 +92,38 @@ export default {
           id: 123,
           title: "这是一个标题",
           content: "这是内容",
+          need_change: true,
           floor_num: 44,
         },
         {
           title: "标题点一下可以跳转",
           content: "点内容不能跳转",
+          need_change: false,
           floor_num: 44,
         },
         {
           title: "合一楼的XXX真好吃",
           content: "真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃",
           floor_num: 0,
+          need_change: false,
         },
         {
           title: "这是一个很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的标题",
           content: "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈这是一个很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的标题这是一个很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的标题",
           floor_num: 222,
+          need_change: false,
         },
         {
           title: "再弄几个试试滚动条",
           content: "随便写点东西",
           floor_num: 433234,
+          need_change: false,
         },
         {
           title: "就这样吧",
           content: "ok",
           floor_num: 5,
+          need_change: false,
         },
       ],
 
@@ -140,9 +173,31 @@ export default {
     },
     browsePost(id) {
       // 记得改
-      this.$router.push({path:'/Forum/'+id})
-    }
-
+      this.$router.push({path: '/Forum/' + id})
+    },
+    changePost(post) {
+      post.changeDialog = false;
+      let that = this
+      that.$axios.post('/InfoPage/MyPost/changePostById', {
+        post_id: post.id,
+        new_title: post.new_title,
+        new_content: post.new_content,
+      }, {
+        headers: {
+          'token': that.$cookies.get('user_token')
+        }
+      }).then((res) => {
+        // console.log(res)
+        if (res.data.code === 200) {
+          console.log("change success")
+        } else {
+          this.$message({
+            message: res.data.message,
+            type: 'error'
+          })
+        }
+      })
+    },
   },
   mounted() {
     this.queryAllPost()
