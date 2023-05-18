@@ -92,7 +92,7 @@
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0px;">
                         <h4 style="margin-bottom: 0px;">信息</h4>
                         <el-button type="link"
-                                   v-if="(info.visibility === 0 || this.$cookies.get('user_type') === '1') && is_examine===false && pin_state===0"
+                                   v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine===false && pin_state===0"
                                    @click="editInfo">
                             <EditOutlined/>
                         </el-button>
@@ -118,7 +118,7 @@
                     </el-carousel>
 
                     <el-upload
-                            v-if="(info.visibility === 0 || this.$cookies.get('user_type') === '1') && is_examine===false && pin_state===0"
+                            v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine===false && pin_state===0"
                             class="avatar-uploader" action="https://buaamapforum.cn:8443/photo/uploadPinPhoto"
                             :show-file-list="false" :on-success="handleAvatarSuccess"
                             :before-upload="beforeAvatarUpload">
@@ -232,6 +232,9 @@ export default {
         },
         _get_pin_color_state(pin_state_id) {
             return global.get_pin_state_color(pin_state_id)
+        },
+        get_user_type_administrator() {
+          return global.user_type_administrator
         },
         handleDblClick() {
             this.getPinInfoById();

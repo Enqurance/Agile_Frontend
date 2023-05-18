@@ -2,6 +2,7 @@
 import {ref, toRaw} from 'vue'
 import {reactive} from 'vue'
 import {useRouter} from 'vue-router';
+import global from "@/global";
 
 export default {
     setup() {
@@ -48,6 +49,9 @@ export default {
         this.initInfor();
     },
     methods: {
+        get_user_type_administrator() {
+            return global.user_type_administrator
+        },
         clickToMap() {
             this.Index = '2';
             this.$router.push({
@@ -159,7 +163,7 @@ export default {
             <el-menu-item v-on:click="clickToForum()" index="3">
                 <template #title>Forum</template>
             </el-menu-item>
-            <el-menu-item v-if="this.$cookies.get('user_type')==='1'" v-on:click="clickToAdministrator()" index="4">
+            <el-menu-item v-if="this.$cookies.get('user_type')===get_user_type_administrator()" v-on:click="clickToAdministrator()" index="4">
                 <template #title>Administrator</template>
             </el-menu-item>
             <div class="flex-grow"/>
