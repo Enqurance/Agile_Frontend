@@ -103,8 +103,8 @@ export default {
           time: "2023-5-9 22:07",
           read: false,
           post_id: null,
-          floor_id:null,
-          examine_id:null,
+          floor_id: null,
+          examine_id: null,
         },
         {
           id: 12,
@@ -113,8 +113,8 @@ export default {
           time: "2023-5-10 10:06",
           read: true,
           post_id: null,
-          floor_id:null,
-          examine_id:null,
+          floor_id: null,
+          examine_id: null,
         },
         {
           id: 1,
@@ -123,8 +123,8 @@ export default {
           time: "2023-5-10 10:06",
           read: true,
           post_id: null,
-          floor_id:null,
-          examine_id:1,
+          floor_id: null,
+          examine_id: 1,
         },
         {
           id: 2,
@@ -133,8 +133,8 @@ export default {
           time: "2023-5-10 10:06",
           read: true,
           post_id: 3,
-          floor_id:null,
-          examine_id:null,
+          floor_id: null,
+          examine_id: null,
         },
         {
           id: 3,
@@ -143,8 +143,8 @@ export default {
           time: "2023-5-10 10:06",
           read: true,
           post_id: 3,
-          floor_id:2,
-          examine_id:null,
+          floor_id: 2,
+          examine_id: null,
         },
       ],
       snds: [
@@ -155,7 +155,7 @@ export default {
           time: "2023-5-9 22:07",
           read: false,
           post_id: null,
-          floor_id:null,
+          floor_id: null,
         },
         {
           id: 1233,
@@ -164,7 +164,7 @@ export default {
           time: "2023-5-10 10:06",
           read: true,
           post_id: null,
-          floor_id:null,
+          floor_id: null,
         },
         {
           id: 233,
@@ -173,7 +173,7 @@ export default {
           time: "2023-5-10 10:06",
           read: true,
           post_id: 3,
-          floor_id:null,
+          floor_id: null,
         },
         {
           id: 333,
@@ -182,43 +182,42 @@ export default {
           time: "2023-5-10 10:06",
           read: true,
           post_id: 3,
-          floor_id:2,
+          floor_id: 2,
         },
       ],
     }
   },
   methods: {
     clickMsg(msg) {
-      // this.readMsg(msg);
-      if(msg.examine_id!=null)
-      {
+      this.readMsg(msg);
+      if (msg.examine_id !== 0) {
         this.$router.push('/Administrator');
-      }
-      else if(msg.post_id!=null)
-      {
-        if(msg.floor_id!=null)
-        {
+      } else if (msg.post_id !== 0) {
+        if (msg.floor_id !== 0) {
+          this.$router.push({path: '/Forum/' + msg.post_id});
+        } else {
           this.$router.push({path: '/Forum/' + msg.post_id});
         }
-        else {
-          this.$router.push({path: '/Forum/' + msg.post_id});
+      } else {
+        if (msg.content === null) {
+          msg.content = msg.title;
         }
-      }
-      else {
         msg.detail = true;
       }
     },
     readMsg(msg) {
       let that = this;
+      console.log(msg);
       that.$axios.post('/InfoPage/MyMessage/readMessageById', {
-        msg_id: msg.id
+        m_id: msg.id
       }, {
         headers: {
           'token': that.$cookies.get('user_token')
         }
       }).then((res) => {
-        // console.log(res)
+        //console.log(res)
         if (res.data.code === 200) {
+          msg.read = true;
           console.log("read success")
         } else {
           this.$message({
