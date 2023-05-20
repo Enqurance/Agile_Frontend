@@ -1,9 +1,9 @@
 <script>
 import PageHeader from './PCPageHeader.vue'
-import MyInfo from '../sub_components/infopage_sub_components/MyInfo.vue'
-import MyComment from "@/components/sub_components/infopage_sub_components/MyComment.vue";
-import MyMessage from "@/components/sub_components/infopage_sub_components/MyMessage.vue";
-import MyPost from "@/components/sub_components/infopage_sub_components/MyPost.vue";
+import MyInfo from '@/components/pc/sub_components/infopage_sub_components/MyInfo.vue'
+import MyComment from "@/components/pc/sub_components/infopage_sub_components/MyComment.vue";
+import MyMessage from "@/components/pc/sub_components/infopage_sub_components/MyMessage.vue";
+import MyPost from "@/components/pc/sub_components/infopage_sub_components/MyPost.vue";
 import { ref, reactive } from 'vue'
 import {
   User,
