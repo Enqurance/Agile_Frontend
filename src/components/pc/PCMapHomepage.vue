@@ -208,8 +208,10 @@ export default {
             // this.markers[info["id"]].setPosition
             // console.log(this.marker["lnglat"])
             let marker = this.markers[info["id"]].marker
-            let latLng = info["lnglat"].split(";")
-            marker.setPosition(latLng)
+            let lnglat = info["lnglat"].split(";")
+            // console.log(lnglat.map(Number))
+            this.markers_info[info["id"]].lnglat = lnglat.map(Number)
+            marker.setPosition(lnglat)
             marker.setMap(this.map)
             // marker.setPosition()
         },
