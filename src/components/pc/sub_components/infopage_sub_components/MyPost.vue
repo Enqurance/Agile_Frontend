@@ -266,7 +266,7 @@ export default {
 
 <style scoped>
 .infinite-list {
-  height: 450px;
+  height: 460px;
   padding: 0;
   margin: 0;
   list-style: none;

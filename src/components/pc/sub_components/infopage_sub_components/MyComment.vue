@@ -1,7 +1,7 @@
 <template>
   <div
       style="padding: 5% 10% 11% 10%;background: rgb(246,246,246); word-wrap: break-word; word-break: normal">
-    <div style="padding-left: 5%;font-size: 20px;width:45%;display: inline-block">
+    <div style="padding-left: 2%;font-size: 20px;width:45%;display: inline-block">
       <div style="margin-bottom: 5%;font-size: 20px">
         我的楼层
       </div>
@@ -269,7 +269,7 @@ export default {
 
 <style scoped>
 .infinite-list {
-  height: 450px;
+  height: 460px;
   padding: 0;
   margin: 0;
   list-style: none;
