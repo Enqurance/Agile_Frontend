@@ -13,6 +13,7 @@
                         <div class="post_tags">{{ post.tags }}</div>
                         <div class="post_stars">收藏数量：{{ post.stars }}</div>
                         <el-button type="danger" @click="showDeletePost">删除post</el-button>
+                        <el-button type="danger" @click="showReportPostPrompt">举报post</el-button>
                         <el-button @click="editPost">编辑post</el-button>
                     </div>
                     <div class="post_body">{{ post.body }}</div>
@@ -52,6 +53,7 @@
                             <div class="post_floor-body">{{ floor.body }}</div>
 
                             <el-button type="danger" @click="showDeleteFloor(index)">删除floor</el-button>
+                            <el-button type="danger" @click="showReportReplyPrompt(0)">举报floor</el-button>
                             <div v-if="floor.comments.length > 0">
                                 <div class="post_floor-comments-preview"
                                     v-for="(comment, index) in floor.comments.slice(0, 2)" :key="index">
@@ -66,6 +68,7 @@
                             <el-dialog v-model="floor.commentsDialogVisible" title="全部评论" width="50%">
                                 <div class="post_floor-comments" v-for="comment in floor.comments" :key="comment.id">
                                     <el-button type="danger" @click="showDeleteComment(comment.id)">删除comment</el-button>
+                                    <el-button type="danger" @click="showReportReplyPrompt(1)">举报comment</el-button>
                                     <div class="post_floor-comment-header">{{ comment.user }} 评论于 {{ comment.time }}</div>
                                     <div class="post_floor-comment-body">{{ comment.body }}</div>
                                 </div>
@@ -360,7 +363,82 @@ export default {
             this.postDialogVisible = true
         },
         submitEditForm() {
-            
+
+        },
+
+
+
+
+        showReportPostPrompt() {
+            this.$prompt('请输入举报理由', '举报帖子', {
+                confirmButtonText: '确认',
+                cancelButtonText: '取消',
+                inputPlaceholder: '请输入举报理由',
+                inputValidator: (value) => {
+                    if (!value) {
+                        return '举报理由不能为空';
+                    }
+                },
+            }).then(({ value }) => {
+                this.reportPost(value);
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '取消举报',
+                });
+            });
+        },
+        reportPost(reason) {// 执行举报post的逻辑
+            let that = this
+            that.$axios.post('/forum/report/reportPost', {
+                id: that.post.id,
+                reason: reason,
+            }, {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then(response => {
+                console.log(response);
+            }).catch(error => {
+                console.error(error);
+            });
+        },
+
+        showReportReplyPrompt(type) {
+            this.$prompt('请输入举报理由', '举报reply', {
+                confirmButtonText: '确认',
+                cancelButtonText: '取消',
+                inputPlaceholder: '请输入举报理由',
+                inputValidator: (value) => {
+                    if (!value) {
+                        return '举报理由不能为空';
+                    }
+                },
+            }).then(({ value }) => {
+                this.reportReply(value, type);
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '取消举报',
+                });
+            });
+        },
+        reportReply(reason, type) {// 执行举报reply的逻辑
+            console.log('举报reply type= ' + type + '，理由为：' + reason);
+            let that = this
+            that.$axios.post('/forum/report/reportReply', {
+                id: that.post.id,
+                reason: reason,
+                type: type
+            }, {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then(response => {
+                console.log(response);
+            }).catch(error => {
+                console.error(error);
+            });
         },
     },
 
