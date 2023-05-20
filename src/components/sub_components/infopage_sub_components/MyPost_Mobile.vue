@@ -78,7 +78,7 @@
                        @click="post.changeDialog=true">
               整改
             </el-button>
-            <el-dialog v-model="post.changeDialog" title="整改帖子" width="30%" center>
+            <el-dialog v-model="post.changeDialog" title="整改帖子" width="80%" center>
               <el-input
                   v-model="post.new_title"
                   type="textarea"
