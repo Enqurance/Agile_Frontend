@@ -24,6 +24,11 @@
         </div>
         <MapPinAdd :is_add_pin="is_add_marker" :lnglat="click_marker_lnglat" @addMarker="(e) => new_pin(e)"
                    @close_dialog="this.is_add_marker = false"/>
+        <SwitchPos
+            :is_switch="is_switch"
+            :lnglat="click_marker_lnglat"
+            @close_dialog="this.is_switch = false"
+            @switch_pos="switch_pos"/>
         <!--        </el-main>-->
     </div>
 </template>
@@ -37,6 +42,7 @@ import MapPinAdd from "@/components/sub_components/mappage_sub_components/MapPin
 import PlaceSearch from "@/components/sub_components/mappage_sub_components/PlaceSearch.vue";
 import global from "@/global";
 import '../../assets/PinIcon/font2/iconfont.css'
+import SwitchPos from "@/components/sub_components/mappage_sub_components/SwitchPos.vue";
 
 
 export default {
@@ -45,6 +51,7 @@ export default {
         MapPinInfo,
         MapPinAdd,
         PlaceSearch,
+        SwitchPos
         // PageHeader,
     },
     data() {
@@ -68,6 +75,7 @@ export default {
             ],
 
             is_add_marker: false,
+            is_switch: false,
             click_marker_lnglat: [],
             click_marker_simple_info: {
                 id: 0,
@@ -193,6 +201,17 @@ export default {
                 console.log(e)
             })
         },
+        switch_pos (info) {
+            // this.markers[info["id"]].setPosition
+            // console.log(this.marker["lnglat"])
+            let marker = this.markers[info["id"]].marker
+            let lnglat = info["lnglat"].split(";")
+            // console.log(lnglat.map(Number))
+            this.markers_info[info["id"]].lnglat = lnglat.map(Number)
+            marker.setPosition(lnglat)
+            marker.setMap(this.map)
+            // marker.setPosition()
+        },
         init_menu() {
             //创建右键菜单
             // eslint-disable-next-line no-undef
@@ -204,6 +223,18 @@ export default {
                 this.map.setZoom(that.beihang_zoom[0])
                 contextMenu.close()
             }, 1);
+
+            contextMenu.addItem("移动钉子", function () {
+                if (!that.$cookies.get('user_token')) {
+                    that.$message({
+                        message: '请先登录!',
+                        type: "warning"
+                    })
+                    that.$router.push({path: '/login'})
+                }
+                that.is_switch = true
+                contextMenu.close()
+            }, 2);
 
             //右键添加Marker标记
             // eslint-disable-next-line no-unused-vars
