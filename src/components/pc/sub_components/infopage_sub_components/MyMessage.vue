@@ -41,7 +41,7 @@
 
 
     </div>
-    <div style="padding-left: 90px;font-size: 20px;width:400px;display: inline-block">
+    <div style="padding-left: 5%;font-size: 20px;width:400px;display: inline-block">
       <div style="height: 80px">
         我发起的
       </div>
