@@ -74,7 +74,7 @@
           </el-button>
           <el-button style="float: right; margin-top: 20px;margin-right: 20px"
                      type="primary"
-                     @click="post.changeDialog=true">
+                     @click="editInfo(post)">
             整改
           </el-button>
           <el-dialog v-model="post.changeDialog" title="整改帖子" width="30%" center>
@@ -208,6 +208,11 @@ export default {
           })
         }
       })
+    },
+    editInfo(post) {
+      post.changeDialog = true;
+      post.new_title = post.title;
+      post.new_content = post.content;
     },
     queryAllPost() {
       let that = this

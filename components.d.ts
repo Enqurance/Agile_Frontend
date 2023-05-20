@@ -18,6 +18,7 @@ declare module '@vue/runtime-core' {
     MapPinAdd: typeof import('./src/components/sub_components/mappage_sub_components/MapPinAdd.vue')['default']
     MapPinInfo: typeof import('./src/components/sub_components/MapPinInfo.vue')['default']
     MobileMapHomepage: typeof import('./src/components/mobile/MobileMapHomepage.vue')['default']
+    MobileNavigator: typeof import('./src/components/mobile/MobileNavigator.vue')['default']
     MyComment: typeof import('./src/components/pc/sub_components/infopage_sub_components/MyComment.vue')['default']
     MyComment_Mobile: typeof import('./src/components/mobile/sub_components/infopage_sub_components/MyComment_Mobile.vue')['default']
     MyInfo: typeof import('./src/components/pc/sub_components/infopage_sub_components/MyInfo.vue')['default']
