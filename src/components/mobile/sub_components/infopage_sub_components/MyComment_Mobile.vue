@@ -116,47 +116,53 @@ export default {
     }
   },
   methods: {
-    deleteComment(comment) {
-      comment.deleteDialog = false
+    deleteComment(comment) {// 执行删除评论的逻辑
       let that = this
-      that.$axios.post('/InfoPage/MyComment/deleteCommentById', {
-        comment_id: comment.id
-      }, {
+      comment.deleteDialog = false;
+      that.$axios.delete('/forum/comment/deleteComment/' + comment.id, {
         headers: {
           'token': that.$cookies.get('user_token')
         }
       }).then((res) => {
-        // console.log(res)
         if (res.data.code === 200) {
-          console.log("delete success")
+          console.log("删除的comment的id为：" + comment.id)
+          this.$message({
+            type: 'info',
+            message: '删除成功',
+          });
+          this.queryAllComment()
         } else {
           this.$message({
             message: res.data.message,
             type: 'error'
           })
         }
-      })
+      }).catch((res) => console.log(res))
+      console.log('删除评论ID为' + comment.id);
     },
     deleteFloor(floor) {
-      floor.deleteDialog = false
       let that = this
-      that.$axios.post('/InfoPage/MyFloor/deleteFloorById', {
-        comment_id: floor.id
-      }, {
+      floor.deleteDialog = false;
+      that.$axios.delete('/forum/floor/deleteFloor/' + floor.id, {
         headers: {
           'token': that.$cookies.get('user_token')
         }
       }).then((res) => {
-        // console.log(res)
+        console.log(res)
         if (res.data.code === 200) {
-          console.log("delete success")
+          console.log("删除的floor的id为：" + floor.id)
+          this.$message({
+            type: 'info',
+            message: '删除成功',
+          });
+          this.queryAllFloor()
         } else {
           this.$message({
             message: res.data.message,
             type: 'error'
           })
         }
-      })
+      }).catch((res) => console.log(res))
     },
     queryAllComment() {
       let that = this
