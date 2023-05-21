@@ -65,13 +65,20 @@ export default {
 </script>
 
 <template>
-    <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
+    <ul class="infinite-list" style="overflow: auto">
         <li v-for="i in count" :key="i" class="infinite-list-item">
             <el-card class="pinCard">
-                <div  class="text item">
-                    <span>名字: {{ pins[0].name }}</span>
-                    <span>位置： {{ pins[0].position }}</span>
-                    <span>简介：{{ pins[0].brief }}</span>
+                <div class="textItem">
+                    <el-container>
+                    <el-aside width="83%">
+                        <p>名字: {{ pins[0].name }}</p>
+                        <span style="padding-left: 5%; padding-right: 10%">位置： {{ pins[0].position }}</span>
+                        <span>简介：{{ pins[0].brief }}</span>
+                    </el-aside>
+                    <el-main>
+                        <el-button @click="deletePin(this.pins[i])" type="danger">Delete</el-button>
+                    </el-main>
+                    </el-container>
                 </div>
             </el-card>
         </li>
@@ -80,7 +87,8 @@ export default {
 
 <style scoped>
 .infinite-list {
-  height: 300px;
+  height: 400px;
+  width: 80%;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -89,12 +97,21 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 50px;
+  height: 120px;
   background: var(--el-color-primary-light-9);
   margin: 10px;
   color: var(--el-color-primary);
 }
 .infinite-list .infinite-list-item + .list-item {
-  margin-top: 10px;
+  margin-top: 5px;
+}
+
+.pinCard{
+    width: 100%;
+    height: 100%;
+}
+.textItem{
+    width: 100%;
+    height: 100%;
 }
 </style>
