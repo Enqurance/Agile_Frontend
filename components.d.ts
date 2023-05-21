@@ -46,3 +46,4 @@ declare module '@vue/runtime-core' {
     VanTabbarItem: typeof import('vant/es')['TabbarItem']
   }
 }
+
