@@ -23,7 +23,7 @@
             <template #footer>
               <span class="dialog-footer">
                 <el-button @click="floor.deleteDialog = false">取消</el-button>
-                <el-button type="primary" @click="deleteFloor(floor)">
+                <el-button type="primary" @click="deleteFloor(floor.id)">
                   确认
                 </el-button>
               </span>
@@ -100,70 +100,8 @@ export default {
   components: {},
   data() {
     return {
-      comments: [
-        {
-          id: 123,
-          title: "这是一个标题",
-          content: "这是内容",
-          floor: 44,
-        },
-        {
-          title: "标题点一下可以跳转",
-          content: "点内容不能跳转",
-          floor: 44,
-        },
-        {
-          title: "合一楼的XXX真好吃",
-          content: "真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃",
-          floor: 0,
-        },
-        {
-          title: "这是一个很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的标题",
-          content: "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈这是一个很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的标题这是一个很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的标题",
-          floor: 222,
-        },
-        {
-          title: "再弄几个试试滚动条",
-          content: "随便写点东西",
-          floor: 433234,
-        },
-        {
-          title: "就这样吧",
-          content: "ok",
-          floor: 5,
-        },
-      ],
-      floors: [{
-        id: 123,
-        title: "这是一个标题",
-        content: "这是楼层",
-        floor: 23,
-      },
-        {
-          title: "跟旁边不一样",
-          content: "不一样",
-          floor: 1,
-        },
-        {
-          title: "合一楼的XXX真好吃",
-          content: "真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃",
-          floor: 6,
-        },
-        {
-          title: "这是一个很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的标题",
-          content: "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈这是一个很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的标题这是一个很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的标题",
-          floor: 88,
-        },
-        {
-          title: "再弄几个试试滚动条",
-          content: "随便写点东西",
-          floor: 433234,
-        },
-        {
-          title: "就这样吧",
-          content: "ok",
-          floor: 5,
-        },],
+      comments: [],
+      floors: [],
     }
   },
   methods: {
@@ -188,26 +126,28 @@ export default {
         }
       })
     },
-    deleteFloor(floor) {
-      floor.deleteDialog = false
+    deleteFloor(floorId) {
       let that = this
-      that.$axios.post('/InfoPage/MyFloor/deleteFloorById', {
-        comment_id: floor.id
-      }, {
+      that.$axios.delete('/forum/floor/deleteFloor/' + floorId, {
         headers: {
           'token': that.$cookies.get('user_token')
         }
       }).then((res) => {
-        // console.log(res)
+        console.log(res)
         if (res.data.code === 200) {
-          console.log("delete success")
-        } else {
+          console.log("删除的floor的id为：" + floorId)
+          this.$message({
+            type: 'info',
+            message: '删除成功',
+          });
+        }
+        else {
           this.$message({
             message: res.data.message,
             type: 'error'
           })
         }
-      })
+      }).catch((res) => console.log(res))
     },
     queryAllComment() {
       let that = this
