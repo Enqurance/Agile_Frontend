@@ -27,22 +27,28 @@ export default {
             ]
         }
     },
+    mounted() {
+        this.init();
+    },
     methods: {
         init(){
-            let that = this
-            that.$axios.get('/InfoPage/MyPin/getMyAllPin', 
-                { headers: { 'token': that.$cookies.get('user_token')}}
-            ).then((res) => {
-                // console.log(res)
-                if (res.data.code === 200) {
-                    this.pins= res.data.pins;
-                    console.log("init success")
-                } else {
-                    this.$message({
-                    message: res.data.message,
-                    type: 'error'
-                    })}
-            })
+            console.log("init method!!!!!!!");
+            let that = this;
+            console.log(that.$cookies.get('user_token'))
+            that.$axios.get('InfoPage/MyPin/getMyAllPin', 
+                { 
+                    headers: { 
+                        'token': that.$cookies.get('user_token')
+                    },
+                }).then((res) => {
+                    console.log(res);
+                    if (res.data.code === 200) {
+                        this.pins= res.data.pins;
+                        console.log("init success")
+                    } else {
+                        console.log(res);
+                    }
+                })
         },
         deletePin(pid){
             let that = this
