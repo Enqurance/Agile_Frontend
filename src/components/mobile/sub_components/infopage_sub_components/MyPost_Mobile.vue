@@ -161,25 +161,32 @@ export default {
   },
   methods: {
     deletePost(post) {
-      post.deleteDialog = false
       let that = this
-      that.$axios.post('/InfoPage/MyPost/deletePostById', {
-        post_id: post.id
-      }, {
+      post.deleteDialog = false;
+      console.log(post);
+      that.$axios.delete('/forum/post/deletePost/' + post.id, {
         headers: {
           'token': that.$cookies.get('user_token')
         }
       }).then((res) => {
-        // console.log(res)
         if (res.data.code === 200) {
-          console.log("delete success")
+          console.log("删除的帖子id为：" + post.id)
+          this.$message({
+            type: 'info',
+            message: '删除成功',
+          });
         } else {
           this.$message({
             message: res.data.message,
             type: 'error'
           })
         }
-      })
+      }).catch((res) => console.log(res))
+    },
+    editInfo(post) {
+      post.changeDialog = true;
+      post.new_title = post.title;
+      post.new_content = post.content;
     },
     queryAllPost() {
       let that = this
@@ -189,7 +196,7 @@ export default {
         }
 
       }).then((res) => {
-        // console.log(res)
+        console.log(res)
         if (res.data.code === 200) {
           console.log("get post success")
           this.posts = res.data.data
@@ -200,15 +207,6 @@ export default {
           })
         }
       })
-    },
-    editInfo(post) {
-      post.changeDialog = true;
-      post.new_title = post.title;
-      post.new_content = post.content;
-    },
-    browsePost(id) {
-      // 记得改
-      this.$router.push({path: '/Forum/' + id})
     },
     queryBadPost() {
       let that = this
@@ -230,6 +228,10 @@ export default {
         }
       })
     },
+    browsePost(id) {
+      // 记得改
+      this.$router.push({path: '/Forum/' + id})
+    },
     changePost(post) {
       post.changeDialog = false;
       let that = this
@@ -245,6 +247,10 @@ export default {
         // console.log(res)
         if (res.data.code === 200) {
           console.log("change success")
+          this.$message({
+            message: "已提交整改，请耐心等待",
+            type: 'success'
+          })
         } else {
           this.$message({
             message: res.data.message,
