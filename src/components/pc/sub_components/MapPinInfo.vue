@@ -91,8 +91,7 @@
                 <el-card :body-style="{ padding: '10px' }">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0px;">
                         <h4 style="margin-bottom: 0px;">信息</h4>
-                        <el-button type="link"
-                                   v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine===false && pin_state===0"
+                        <el-button v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine===false && pin_state===0"
                                    @click="editInfo">
                             <EditOutlined/>
                         </el-button>
@@ -458,7 +457,7 @@ export default {
                 }).catch(() => {
                     ElMessage({
                         type: 'info',
-                        message: '取消删除',
+                        message: '取消申请',
                         grouping: true,
                         showClose: true
                     })
