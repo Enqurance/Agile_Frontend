@@ -151,45 +151,8 @@ export default {
   data() {
     return {
       posts: [
-        {
-          title: "标题点一下可以跳转",
-          content: "点内容不能跳转",
-          need_change: false,
-          floor_num: 44,
-        },
-        {
-          title: "合一楼的XXX真好吃",
-          content: "真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃",
-          floor_num: 0,
-          need_change: false,
-        },
-        {
-          title: "这是一个很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的标题",
-          content: "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈这是一个很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的标题这是一个很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的标题",
-          floor_num: 222,
-          need_change: false,
-        },
-        {
-          title: "再弄几个试试滚动条",
-          content: "随便写点东西",
-          floor_num: 433234,
-          need_change: false,
-        },
-        {
-          title: "就这样吧",
-          content: "ok",
-          floor_num: 5,
-          need_change: false,
-        },
       ],
       bad_posts: [
-        {
-          id: 123,
-          title: "这是一个标题",
-          content: "这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容",
-          need_change: true,
-          reason:"太离谱了！！！"
-        },
       ],
       activeIndex: '1',
       Index: '1',
@@ -197,25 +160,28 @@ export default {
   },
   methods: {
     deletePost(post) {
-      post.deleteDialog = false
       let that = this
-      that.$axios.post('/InfoPage/MyPost/deletePostById', {
-        post_id: post.id
-      }, {
+      console.log(post);
+      that.$axios.delete('/forum/post/deletePost/' + post.id, {
         headers: {
           'token': that.$cookies.get('user_token')
         }
       }).then((res) => {
-        // console.log(res)
         if (res.data.code === 200) {
-          console.log("delete success")
-        } else {
+          console.log("删除的帖子id为：" + post.id)
+          this.$message({
+            type: 'info',
+            message: '删除成功',
+          });
+          that.$router.push({ path: '/Forum' })
+        }
+        else {
           this.$message({
             message: res.data.message,
             type: 'error'
           })
         }
-      })
+      }).catch((res) => console.log(res))
     },
     editInfo(post) {
       post.changeDialog = true;
