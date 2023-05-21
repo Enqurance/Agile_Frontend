@@ -1,12 +1,12 @@
 <template>
   <div
-      style="padding: 5% 10% 11% 10%;background: rgb(246,246,246); word-wrap: break-word; word-break: normal">
+      style="padding: 1% 5% 5% 1%;background: rgb(246,246,246);width: 90%;height: 80%">
     <div style="padding-left: 5%;font-size: 20px;width:45%;display: inline-block">
       <div style="margin-bottom: 5%;font-size: 20px">
         我的楼层
       </div>
 
-      <ul class="infinite-list" style="overflow: auto;display: inline-block">
+      <ul class="infinite-list" style="overflow: auto;display: inline-block;width: 100%">
         <div v-if="floors.length === 0">
           <el-empty description="暂时还没有楼层"/>
         </div>
@@ -51,7 +51,7 @@
         我的评论
       </div>
 
-      <ul class="infinite-list" style="overflow: auto;display: inline-block">
+      <ul class="infinite-list" style="overflow: auto;display: inline-block;width: 100%">
         <div v-if="comments.length === 0">
           <el-empty description="暂时还没有评论"/>
         </div>
@@ -62,9 +62,9 @@
             删除
           </el-button>
           <el-dialog v-model="comment.deleteDialog" title="删除评论" width="30%" center>
-        <span style="text-align: center">
-          你确定要删除这个评论吗？
-        </span>
+            <span style="text-align: center">
+              你确定要删除这个评论吗？
+            </span>
             <template #footer>
             <span class="dialog-footer">
               <el-button @click="comment.deleteDialog = false">取消</el-button>
@@ -100,114 +100,58 @@ export default {
   components: {},
   data() {
     return {
-      comments: [
-        {
-          id: 123,
-          title: "这是一个标题",
-          content: "这是内容",
-          floor: 44,
-        },
-        {
-          title: "标题点一下可以跳转",
-          content: "点内容不能跳转",
-          floor: 44,
-        },
-        {
-          title: "合一楼的XXX真好吃",
-          content: "真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃",
-          floor: 0,
-        },
-        {
-          title: "这是一个很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的标题",
-          content: "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈这是一个很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的标题这是一个很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的标题",
-          floor: 222,
-        },
-        {
-          title: "再弄几个试试滚动条",
-          content: "随便写点东西",
-          floor: 433234,
-        },
-        {
-          title: "就这样吧",
-          content: "ok",
-          floor: 5,
-        },
-      ],
-      floors: [{
-        id: 123,
-        title: "这是一个标题",
-        content: "这是楼层",
-        floor: 23,
-      },
-        {
-          title: "跟旁边不一样",
-          content: "不一样",
-          floor: 1,
-        },
-        {
-          title: "合一楼的XXX真好吃",
-          content: "真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃真好吃",
-          floor: 6,
-        },
-        {
-          title: "这是一个很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的标题",
-          content: "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈这是一个很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的标题这是一个很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的很长的标题",
-          floor: 88,
-        },
-        {
-          title: "再弄几个试试滚动条",
-          content: "随便写点东西",
-          floor: 433234,
-        },
-        {
-          title: "就这样吧",
-          content: "ok",
-          floor: 5,
-        },],
+      comments: [],
+      floors: [],
     }
   },
   methods: {
-    deleteComment(comment) {
-      comment.deleteDialog = false
+    deleteComment(comment) {// 执行删除评论的逻辑
       let that = this
-      that.$axios.post('/InfoPage/MyComment/deleteCommentById', {
-        comment_id: comment.id
-      }, {
+      comment.deleteDialog = false;
+      that.$axios.delete('/forum/comment/deleteComment/' + comment.id, {
         headers: {
           'token': that.$cookies.get('user_token')
         }
       }).then((res) => {
-        // console.log(res)
         if (res.data.code === 200) {
-          console.log("delete success")
+          console.log("删除的comment的id为：" + comment.id)
+          this.$message({
+            type: 'info',
+            message: '删除成功',
+          });
+          this.queryAllComment()
         } else {
           this.$message({
             message: res.data.message,
             type: 'error'
           })
         }
-      })
+      }).catch((res) => console.log(res))
+      console.log('删除评论ID为' + comment.id);
     },
     deleteFloor(floor) {
-      floor.deleteDialog = false
       let that = this
-      that.$axios.post('/InfoPage/MyFloor/deleteFloorById', {
-        comment_id: floor.id
-      }, {
+      floor.deleteDialog = false;
+      that.$axios.delete('/forum/floor/deleteFloor/' + floor.id, {
         headers: {
           'token': that.$cookies.get('user_token')
         }
       }).then((res) => {
-        // console.log(res)
+        console.log(res)
         if (res.data.code === 200) {
-          console.log("delete success")
+          console.log("删除的floor的id为：" + floor.id)
+          this.$message({
+            type: 'info',
+            message: '删除成功',
+          });
+          this.queryAllFloor()
         } else {
           this.$message({
             message: res.data.message,
             type: 'error'
           })
         }
-      })
+      }).catch((res) => console.log(res))
     },
     queryAllComment() {
       let that = this
@@ -261,7 +205,7 @@ export default {
   },
   mounted() {
     this.queryAllComment()
-
+    this.queryAllFloor()
   },
 
 }
@@ -269,7 +213,7 @@ export default {
 
 <style scoped>
 .infinite-list {
-  height: 450px;
+  height: 460px;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -281,7 +225,7 @@ export default {
   justify-content: center;
   height: 50px;
   background: var(--el-color-primary-light-9);
-  margin: 10px;
+  margin: 8px;
   color: var(--el-color-primary);
 }
 </style>

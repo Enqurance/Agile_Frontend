@@ -61,4 +61,6 @@ function get_pin_state_color(pin_state_id) {
     return pin_state_color_dic[pin_state_id]
 }
 
-export default {get_pin_type, get_pin_color, get_pin_state, get_public_pin_state, get_pin_state_color}
+let user_type_administrator = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OSwiZXhwIjoxNjg0NDIwMDA4LCJpYXQiOjE2ODQ0MTY0MDh9.1vyPE06rkFosfXzwCJbWmkFJHhZ8w3l1zBMmFY8aMUo'
+
+export default {get_pin_type, get_pin_color, get_pin_state, get_public_pin_state, get_pin_state_color, user_type_administrator}

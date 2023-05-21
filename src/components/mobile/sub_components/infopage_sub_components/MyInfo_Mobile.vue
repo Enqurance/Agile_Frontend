@@ -1,9 +1,10 @@
 <script>
 import { ref, reactive } from 'vue'
+import MyPin_Mobile from './MyPin_Mobile.vue'
 
 export default {
-    name: "MyInfo",
-    components: {  },
+    name: "MyInfo_Mobile",
+    components: { MyPin_Mobile },
     inject: ['reload'],
     setup() {
         // information:
@@ -40,6 +41,11 @@ export default {
         const contactUsVisible = ref(false);
         const suggestion = ref('');
 
+        const show = ref(false);
+        const showLeft = () => {
+            show.value = true;
+        };
+
         const tags = ref([
             { name: '绿园', type: '' },
             { name: '美食', type: 'success' },
@@ -52,6 +58,7 @@ export default {
             changePasswordVisible, curPassword, newPassword, tempPassword,
             imageUrl, tags,
             contactUsVisible, suggestion,
+            show, showLeft,
         };
     },
     mounted() {
@@ -292,27 +299,65 @@ export default {
 <template>
     <div class="InforPage">
         <el-container class="MainPart">
-            <el-header height="35%">
+            <el-header height="20%">
                 <div class="headPart">
-                    <div v-if="isReload">
-                        <el-tooltip class="item" effect="dark" content="点击更换头像" placement="right">
-                            <div class="pic-container">
-                                <el-upload class="avatar-uploader" action="http://43.143.148.116:8080/photo/uploadUserIcon"
-                                    :show-file-list="false" :on-success="handleAvatarSuccess"
-                                    :before-upload="beforeAvatarUpload">
-                                    <img :src="this.imageUrl">
-                                </el-upload>
+                    <div v-if="isReload" style="padding-top: 15%;">
+                        <div @click="showLeft">
+                            <van-row gutter="25">
+                            <van-col span="12">
+                                <div class="pic-container"><img :src="this.imageUrl"></div>
+                            </van-col>
+                            <van-col span="10" style="padding-top: 10%">
+                                <p style="margin-left: 5%;font-size: 21px;">{{ this.user.name }}</p>
+                            </van-col>
+                            </van-row>
+                        </div>
+                        <van-popup 
+                            v-model:show="show" 
+                            position="left"
+                            :style="{ width: '60%', height: '100%' }">
+                            <div class="LeftPart" style="padding-left: 5%;">
+                                <div v-if="isReload" style="padding-top: 25%; 
+                                    height: 40%; width: 40%; ">
+                                    <el-tooltip class="item" effect="dark" content="点击更换头像" placement="right">
+                                    <div class="pic-container">
+                                        <el-upload class="avatar-uploader" action="http://43.143.148.116:8080/photo/uploadUserIcon"
+                                            :show-file-list="false" :on-success="handleAvatarSuccess"
+                                            :before-upload="beforeAvatarUpload">
+                                        <img :src="this.imageUrl">
+                                        </el-upload>
+                                    </div>
+                                    </el-tooltip>
+                                    <p style="margin-left: 5%;font-size: 21px;">{{ this.user.name }}</p>
+                                </div>
+                                <el-row class="firstRow">
+                                        <p style="padding-top: 8%; padding-bottom: 5%; font-size:1.2em">{{ user.description }}</p>
+                                <el-descriptions column=1>
+                                    <el-descriptions-item label="校区:">
+                                        <span style="font-size: 14px;">{{ user.campus == '1' ? '学院路校区' : '沙河校区' }}</span>
+                                    </el-descriptions-item>
+                                    <el-descriptions-item label="年级:">
+                                        <span style="font-size: 14px;">{{ user.grade == '1' ? '本科' : user.grade == '2' ? '硕士' :
+                                            '博士' }}</span>
+                                    </el-descriptions-item>
+                                    <el-descriptions-item label="性别:">
+                                        <span v-if="user.gender == 0" style="font-size: 14px;">男</span>
+                                        <span v-if="user.gender == 1" style="font-size: 14px;">女</span>
+                                    </el-descriptions-item>
+                                </el-descriptions>
+                                </el-row>
+                                <el-row class="thirdRow">
+                                    <div style="padding-top:70%;"></div>
+                                </el-row>
                             </div>
-                        </el-tooltip>
-                        <!-- <p style = "text-align: center;">点击更换头像</p> -->
-                        <span style="margin-left: 5%;font-size: 30px;">{{ this.user.name }}</span>
+                        </van-popup>
                     </div>
                     <div class="buttonArea">
-                        <div style="padding-top: 40%"></div>
-                        <el-button round style="font-size: 20px;" @click="editVisible = true">编辑</el-button>
+                        <div style="padding-top: 50%;"></div>
+                        <el-button round style="font-size: 15px;" @click="editVisible = true">编辑</el-button>
                         <el-button round>
                             <el-dropdown>
-                                <span class="el-dropdown-link" style="font-size: 20px;">
+                                <span class="el-dropdown-link" style="font-size: 15px;">
                                     设置
                                 </span>
                                 <template #dropdown>
@@ -334,58 +379,14 @@ export default {
                 </div>
                 <el-divider />
             </el-header>
-            <el-container>
-                <el-aside width="30%">
-                    <div class="LeftPart">
-                        <el-row class="firstRow">
-                            <p style="padding-bottom: 5%; font-size:1em">{{ user.description }}</p>
-                            <el-descriptions column=1>
-                                <el-descriptions-item label="校区:">
-                                    <span style="font-size: 14px;">{{ user.campus == '1' ? '学院路校区' : '沙河校区' }}</span>
-                                </el-descriptions-item>
-                                <el-descriptions-item label="年级:">
-                                    <span style="font-size: 14px;">{{ user.grade == '1' ? '本科' : user.grade == '2' ? '硕士' :
-                                        '博士' }}</span>
-                                </el-descriptions-item>
-                                <el-descriptions-item label="性别:">
-                                    <span v-if="user.gender == 0" style="font-size: 14px;">男</span>
-                                    <span v-if="user.gender == 1" style="font-size: 14px;">女</span>
-                                </el-descriptions-item>
-                            </el-descriptions>
-                        </el-row>
-                        <!--
-                            <el-row class="secondRow">
-                                <el-divider content-position="left">成就</el-divider>
-                                <el-scrollbar>
-                                    <div class="scrollbar-flex-content">
-                                        <p v-for="item in 10" :key="item" class="scrollbar-demo-item">
-                                            <a href="https://smms.app/image/ROAPa7U2NqCz3o8" target="_blank"><img class="achImg" src="https://s2.loli.net/2023/04/24/ROAPa7U2NqCz3o8.png" alt="238827fc25b9feb5c544964b6737d91.png"></a>
-                                        </p>
-                                    </div>
-                                </el-scrollbar>
-                            </el-row>
-                            -->
-                        <el-row class="thirdRow">
-                            <el-divider content-position="left">标签</el-divider>
-<!--                            <el-tag v-for="tag in tags" :key="tag.name" class="mx-1" closable :type="tag.type"-->
-<!--                                style="margin-right: 8px">-->
-<!--                                {{ tag.name }}-->
-<!--                            </el-tag>-->
-                        </el-row>
-                    </div>
-                </el-aside>
-                <el-main>
-                    <div>
-                    </div>
-                </el-main>
-            </el-container>
+            <el-main>
+                <div>
+                    <p>我的钉子</p>
+                    <MyPin_Mobile></MyPin_Mobile>
+                </div>
+            </el-main>
         </el-container>
         <!--edit Dialog-->
-
-
-
-
-
 
         <el-dialog v-model="editVisible" title="请编辑你的信息" width="50%">
             <el-form :model="user" label-width="100px">
@@ -477,7 +478,7 @@ export default {
     height: 90%;
     display: flex;
     flex-direction: row;
-    background-image: url('https://s2.loli.net/2023/04/25/VbTDNRqLr8UMZlB.png');
+    /*background-image: url('https://s2.loli.net/2023/04/25/VbTDNRqLr8UMZlB.png');*/
 }
 
 .headPart>div {
@@ -486,7 +487,7 @@ export default {
 }
 
 .buttonArea {
-    margin-left: 30%;
+    margin-left: 15%;
 }
 
 .MainPart {
@@ -500,20 +501,6 @@ export default {
     border-right-width: thin;
     border-right-style: double;
     border-right-color: gainsboro;
-}
-
-.avatar {
-    margin-top: 25%;
-    margin-bottom: 2%;
-    margin-left: 5%;
-    width: 20%;
-}
-
-.avatarUp {
-    margin-top: 10%;
-    margin-bottom: 2%;
-    margin-left: 5%;
-    width: 20%;
 }
 
 .firstRow {
@@ -639,12 +626,12 @@ a {
 
 .pic-container {
     aspect-ratio: 1/1;
-    height: 40%;
+    height: 80%;
     border-radius: 50%;
     /* 设置圆角半径为容器宽高的一半 */
     overflow: hidden;
     /* 超出容器的部分隐藏 */
-    margin-top: 15%;
+    margin-top: 5%;
     margin-left: 3%;
     margin-bottom: 3%;
 }

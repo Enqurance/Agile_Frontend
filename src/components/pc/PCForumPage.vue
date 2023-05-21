@@ -17,12 +17,13 @@
           </div>
           <div class="bottom">
             <div v-for="post in posts" :key="post.id" style="padding: 10px;">
-              <router-link :to="`/Forum/${post.id}`"  class="custom-link">
+              <router-link :to="`/Forum/${post.id}`" class="custom-link">
                 <el-card style="padding: 10px;">
                   <div class="card-header">{{ post.title }}</div>
                   <div class="card-content">{{ post.content }}</div>
                 </el-card>
               </router-link>
+              <div v-if="isLoading">加载中...</div>
             </div>
           </div>
         </div>
@@ -34,7 +35,7 @@
 
 
 <script>
-import { ref } from 'vue'
+import { ref, onMounted, getCurrentInstance } from 'vue'
 import PageHeader from "@/components/pc/PCPageHeader.vue";
 import NewPost from "../sub_components/NewPost.vue";
 
@@ -48,50 +49,55 @@ export default {
 
   data() {
     return {
-      posts: [
-        {
-          id: 1,
-          title: 'Post 1',
-          content: 'Post 1 body',
-        },
-        {
-          id: 2,
-          title: 'Post 2',
-          content: 'Post 2 body',
-        },
-        {
-          id: 3,
-          title: 'Post 3',
-          content: 'Post 3 body',
-        },
-        {
-          id: 4,
-          title: 'Post 4',
-          content: 'Post 4 body',
-        },
-        {
-          id: 5,
-          title: 'Post 5',
-          content: 'Post 4 body',
-        },
-        {
-          id: 6,
-          title: 'Post 6',
-          content: 'Post 6 body',
-        },
-        {
-          id: 7,
-          title: 'Post 7',
-          content: 'Post 7 body这是一个换行\n\rvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv-----------------------------------------------------------',
-        },
-      ],
+      searchText: '',
+      searchPosts: [],
+      selectedPost: null,
+      // posts: [
+      // ],
 
     };
   },
 
   setup() {
+    const { proxy } = getCurrentInstance();
     const imageUrl = ref('');
-    return { imageUrl };
+    const posts = ref([]); // 存储帖子列表
+    const isLoading = ref(false); // 是否正在加载中
+    const offset = ref(0); // 跳过的帖子数量
+    const limit = 5; // 每页显示的帖子数量
+
+    const loadPosts = (offset) => {
+      console.log(offset.value)
+      isLoading.value = true;
+      proxy.$axios.post('/forum/post/getPosts', null, {
+        params: {
+          offset: parseInt(offset.value),
+          limit: parseInt(limit)
+        },
+        headers: {
+          'token': proxy.$cookies.get('user_token')
+        }
+      }).then((res) => {
+        posts.value = [...posts.value, ...res.data.data];
+        isLoading.value = false;
+      }).catch((error) => {
+        console.log(error);
+        isLoading.value = false;
+      });
+    };
+
+    onMounted(() => {
+      loadPosts(offset);
+    });
+
+    window.addEventListener('scroll', () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        offset.value += limit;
+        loadPosts(offset);
+      }
+    });
+
+    return { imageUrl, posts, isLoading, };
   },
 
   methods: {
@@ -107,13 +113,13 @@ export default {
     getIcon() {
       let that = this;
       that.$axios.get('user/getIcon',
-          {
-            headers: {
-              'token': that.$cookies.get('user_token')
-            },
-          }).then((res) => {
-        this.imageUrl = res.data.data;
-      }).catch((res) => console.log(res))
+        {
+          headers: {
+            'token': that.$cookies.get('user_token')
+          },
+        }).then((res) => {
+          this.imageUrl = res.data.data;
+        }).catch((res) => console.log(res))
 
       this.refreshIcon();
     },
@@ -123,6 +129,32 @@ export default {
         this.isReload = true;
       })
     },
+
+
+    search() {
+      console.log('搜索内容：', this.searchText);
+      if (this.searchText === '') {
+        return this.$message.error("搜索内容不能为空")
+      }
+
+      let that = this
+      that.$axios.post('/forum/post/searchPosts', {
+        searchContext: that.searchText,
+      }, {
+        headers: {
+          'token': that.$cookies.get('user_token')
+        }
+      }).then((response) => {
+        that.searchPosts = response.data.posts
+      })
+    },
+
+    handleSelection() {
+      if (this.selectedPost) {
+        const postId = this.selectedPost.post_id;
+        this.$router.push(`/Forum/${postId}`);
+      }
+    }
   },
 
   mounted() {

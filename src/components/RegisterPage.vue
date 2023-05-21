@@ -7,7 +7,7 @@ import PCRegisterPage from "@/components/pc/PCRegisterView.vue";
 
 export default {
     name: "RegisterPage",
-    components: {PCRegisterPage}
+    components: {PCRegisterPage},
 }
 </script>
 

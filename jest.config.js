@@ -1,12 +1,16 @@
-const path = require("path");
-
 module.exports = {
-    preset: "@vue/cli-plugin-unit-jest",
-    moduleNameMapper: {
-        "^@/(.*)$": path.join(__dirname, "src/$1"),
-    },
+    moduleFileExtensions: [
+        'js',
+        'jsx',
+        'json',
+        'vue',
+    ],
     transform: {
         "^.+\\.vue$": "@vue/vue3-jest",
     },
-    testMatch: ["**/test/**/*.spec.[jt]s?(x)", "**/__tests__/*.[jt]s?(x)"],
-};
+    preset: '@vue/cli-plugin-unit-jest',
+    setupFilesAfterEnv: ['./tests/setup.js'],
+    moduleNameMapper: {
+        '\\.(css|less)$': 'jest-css-modules'
+    }
+}

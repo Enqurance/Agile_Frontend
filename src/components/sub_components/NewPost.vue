@@ -19,20 +19,24 @@
                         <el-radio :label="7">生活服务</el-radio>
                     </el-radio-group>
                 </el-form-item>
-                <el-form-item label="关联钉子">
-                </el-form-item>
+                <!-- <el-form-item label="关联钉子">
+                </el-form-item> -->
             </el-form>
 
             <div>
-                <el-button @click="dialogVisible = false">取消  <CloseOutlined /></el-button>
-                <el-button type="primary" @click="submitForm">确认  <CheckOutlined /></el-button> 
+                <el-button @click="dialogVisible = false">取消
+                    <CloseOutlined />
+                </el-button>
+                <el-button type="primary" @click="submitForm">确认
+                    <CheckOutlined />
+                </el-button>
             </div>
         </el-dialog>
     </div>
 </template>
 
 <script>
-import {CheckOutlined, CloseOutlined} from '@ant-design/icons-vue';
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons-vue';
 export default {
     data() {
         return {
@@ -65,20 +69,20 @@ export default {
             let that = this
             //const pins = that.lnglat.join(';');
 
-            that.$axios.post('/forum/addPost', {
-                type: that.formData.pin_type,
-                post_title: that.formData.post_title,
-                post_body: that.formData.post_body,
-            }, {
+            that.$axios.post('/forum/post/addPost', null, {
+                params: {
+                    tag: that.formData.pin_type,
+                    pinIdStr: "76;77;78",
+                    title: that.formData.post_title,
+                    content: that.formData.post_body,
+                },
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
+            }).then((response) => {
+                // todo
+                this.$emit('帖子id', response.data.data.id)
             })
-                .then(response => {
-                    that.dialogVisible = false;
-                    // todo
-                    this.$emit('帖子id', response.data.id)
-                })
             that.dialogVisible = false
         },
     },

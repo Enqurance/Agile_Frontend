@@ -34,6 +34,7 @@
 
 <script>
 import { CheckOutlined, CloseOutlined} from '@ant-design/icons-vue';
+import global from "@/global";
 
 export default {
     props: {
@@ -122,7 +123,8 @@ export default {
                 that.markers_info = {}
                 // console.log(res.data.data)
                 for (let pin of res.data.data) {
-                    if (parseInt(this.$cookies.get('user_type')) === pin["visibility"] ) {
+                    if (this.$cookies.get('user_type') === '0' && pin["visibility"] === 0 ||
+                        this.$cookies.get('user_type') === global.user_type_administrator && pin["visibility"] === 1) {
                         that.markers_info[pin["id"]] = {
                             'name': pin["name"],
                             'type': pin["type"],
