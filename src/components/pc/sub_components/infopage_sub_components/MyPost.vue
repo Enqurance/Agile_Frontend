@@ -280,7 +280,7 @@ export default {
   justify-content: center;
   height: 50px;
   background: var(--el-color-primary-light-9);
-  margin: 10px;
+  margin: 8px;
   color: var(--el-color-primary);
 }
 </style>

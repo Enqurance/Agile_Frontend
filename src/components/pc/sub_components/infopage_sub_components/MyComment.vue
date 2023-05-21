@@ -23,7 +23,7 @@
             <template #footer>
               <span class="dialog-footer">
                 <el-button @click="floor.deleteDialog = false">取消</el-button>
-                <el-button type="primary" @click="deleteFloor(floor.id)">
+                <el-button type="primary" @click="deleteFloor(floor)">
                   确认
                 </el-button>
               </span>
@@ -51,7 +51,7 @@
         我的评论
       </div>
 
-      <ul class="infinite-list" style="overflow: auto;display: inline-block;width: 100%" >
+      <ul class="infinite-list" style="overflow: auto;display: inline-block;width: 100%">
         <div v-if="comments.length === 0">
           <el-empty description="暂时还没有评论"/>
         </div>
@@ -126,22 +126,22 @@ export default {
         }
       })
     },
-    deleteFloor(floorId) {
+    deleteFloor(floor) {
       let that = this
-      that.$axios.delete('/forum/floor/deleteFloor/' + floorId, {
+      floor.deleteDialog = false;
+      that.$axios.delete('/forum/floor/deleteFloor/' + floor.id, {
         headers: {
           'token': that.$cookies.get('user_token')
         }
       }).then((res) => {
         console.log(res)
         if (res.data.code === 200) {
-          console.log("删除的floor的id为：" + floorId)
+          console.log("删除的floor的id为：" + floor.id)
           this.$message({
             type: 'info',
             message: '删除成功',
           });
-        }
-        else {
+        } else {
           this.$message({
             message: res.data.message,
             type: 'error'
@@ -221,7 +221,7 @@ export default {
   justify-content: center;
   height: 50px;
   background: var(--el-color-primary-light-9);
-  margin: 10px;
+  margin: 8px;
   color: var(--el-color-primary);
 }
 </style>
