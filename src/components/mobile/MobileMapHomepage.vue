@@ -24,6 +24,17 @@
             :lnglat="click_marker_lnglat"
             @close_dialog="this.is_switch = false"
             @switch_pos="switch_pos"/>
+        <el-menu v-if="menu_isopen" class="on_div" :style="{left: menu_xy[0]+'px', top: menu_xy[1]+'px'}">
+            <el-menu-item index="1" @click="menu_1_click">
+                聚焦北航
+            </el-menu-item>
+            <el-menu-item index="2" @click="menu_2_click">
+                移动钉子
+            </el-menu-item>
+            <el-menu-item index="3" @click="menu_3_click">
+                添加标记
+            </el-menu-item>
+        </el-menu>
     </div>
 </template>
 
@@ -132,6 +143,10 @@ export default {
                 "购物",
                 "生活服务",
             ],
+
+
+            menu_xy: [],
+            menu_isopen: false,
         }
     },
     mounted() {
@@ -215,55 +230,16 @@ export default {
             // marker.setPosition()
         },
         init_menu() {
-            //创建右键菜单
-            // eslint-disable-next-line no-undef
-            let contextMenu = new AMap.ContextMenu();
             let that = this
-
-            contextMenu.addItem("聚焦北航", function () {
-                that.map.setCenter(that.beihang_center)
-                that.map.setZoom(that.beihang_zoom[0])
-                contextMenu.close()
-            }, 1);
-
-            contextMenu.addItem("移动钉子", function () {
-                if (!that.$cookies.get('user_token')) {
-                    that.$message({
-                        message: '请先登录!',
-                        type: "warning"
-                    })
-                    that.$router.push({path: '/login'})
-                }
-                that.is_switch = true
-                contextMenu.close()
-            }, 2);
-
-            // 监听右键菜单的touch事件
-            AMap.Event.addListener(contextMenu, 'touchend', (e) => {
-                // const menuItemList = contextMenu._container.getElementsByTagName('ul')[0].children
-                console.log(contextMenu._menuEl)
-                contextMenu.Zy[0].fn();
-            });
-
-            //右键添加Marker标记
-            // eslint-disable-next-line no-unused-vars
-            // contextMenu.addItem("添加标记", function () {
-            //     if (!that.$cookies.get('user_token')) {
-            //         that.$message({
-            //             message: '请先登录!',
-            //             type: "warning"
-            //         })
-            //         that.$router.push({path: '/login'})
-            //     }
-            //     that.is_add_marker = true
-            //     contextMenu.close()
-            // }, 2);
 
             //地图绑定鼠标右击事件——弹出右键菜单
             this.map.on('touchstart', (e) => {
+                that.menu_isopen = false
                 that.timeout = window.setTimeout(() => {
                     that.click_marker_lnglat = [e.lnglat.lng, e.lnglat.lat]
-                    contextMenu.open(that.map, e.lnglat);
+                    that.menu_xy = [e.pixel.x, e.pixel.y]
+                    that.menu_isopen = true
+
                 }, 1000);
             })
 
@@ -275,8 +251,35 @@ export default {
                 clearTimeout(that.timeout);
             })
 
-
         },
+        menu_1_click() {
+            this.menu_isopen = false
+            this.map.setCenter(this.beihang_center)
+            this.map.setZoom(this.beihang_zoom[0])
+        },
+        menu_2_click() {
+            this.menu_isopen = false
+            if (!this.$cookies.get('user_token')) {
+                this.$message({
+                    message: '请先登录!',
+                    type: "warning"
+                })
+                this.$router.push({path: '/login'})
+            }
+            this.is_switch = true
+        },
+        menu_3_click() {
+            this.menu_isopen = false
+            if (!this.$cookies.get('user_token')) {
+                this.$message({
+                    message: '请先登录!',
+                    type: "warning"
+                })
+                this.$router.push({path: '/login'})
+            }
+            this.is_add_marker = true
+        },
+
         new_pin(e) {
             this.is_add_marker = false
 
@@ -329,6 +332,7 @@ export default {
             let that = this
 
             marker.on('touchstart', (e) => {
+                that.menu_isopen = false
                 that.start_touch_time = Date.now()
                 that.timeout = window.setTimeout(() => {
                     if ((e.target._opts.extData.visibility === 1 && that.$cookies.get('user_type') === "0") || that.$cookies.get('user_type') === null) {
@@ -487,6 +491,11 @@ export default {
     width: 50%;
     margin-top: 15%;
     margin-left: 3%
+}
+
+el-menu {
+    position: relative;
+    width: 20%
 }
 
 </style>
