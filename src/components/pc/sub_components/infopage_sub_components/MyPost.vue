@@ -1,6 +1,6 @@
 <template>
   <div
-      style="padding: 1% 20% 9% 20%;background: rgb(246,246,246);">
+      style="padding: 1% 15% 3% 15%;background: rgb(246,246,246);width: 70%;height: 80%">
     <div style="margin-bottom: 3%;font-size: 20px">
       我的帖子
       <!--      <el-button style="margin-left: 40%" size="large" type="primary">-->
