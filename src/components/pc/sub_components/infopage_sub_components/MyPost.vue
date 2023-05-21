@@ -100,9 +100,9 @@
           </el-dialog>
 
           <el-dialog v-model="post.deleteDialog" title="删除帖子" width="30%" center>
-        <span style="text-align: center">
-          你确定要删除这个帖子吗？相关的评论也将被删除。
-        </span>
+            <span style="text-align: center">
+              你确定要删除这个帖子吗？相关的评论也将被删除。
+            </span>
             <template #footer>
             <span class="dialog-footer">
               <el-button @click="post.deleteDialog = false">取消</el-button>
@@ -122,12 +122,20 @@
           <p style="padding: 0 20px;height:40px;overflow: hidden;">
             {{ post.content }}
           </p>
+
           <div style="padding: 0 20px;">
-            <el-icon>
-              <ChatRound/>
-            </el-icon>
-            {{ post.floor_num }}
+            <el-button @click="post.reasonDialog=true" size="small"> 查看原因</el-button>
           </div>
+          <el-dialog v-model="post.reasonDialog" title="整改原因" width="30%" center>
+            <span style="text-align: center">
+              {{ post.reason }}
+            </span>
+            <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="post.reasonDialog = false">关闭</el-button>
+            </span>
+            </template>
+          </el-dialog>
         </div>
       </ul>
     </div>
@@ -178,9 +186,9 @@ export default {
         {
           id: 123,
           title: "这是一个标题",
-          content: "这是内容",
+          content: "这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容",
           need_change: true,
-          floor_num: 44,
+          reason:"太离谱了！！！"
         },
       ],
       activeIndex: '1',
@@ -234,6 +242,26 @@ export default {
         }
       })
     },
+    queryBadPost() {
+      let that = this
+      that.$axios.get('/InfoPage/MyPost/getMyBadPost', {
+        headers: {
+          'token': that.$cookies.get('user_token')
+        }
+
+      }).then((res) => {
+        // console.log(res)
+        if (res.data.code === 200) {
+          console.log("get bad post success")
+          this.bad_posts = res.data.data
+        } else {
+          this.$message({
+            message: res.data.message,
+            type: 'error'
+          })
+        }
+      })
+    },
     browsePost(id) {
       // 记得改
       this.$router.push({path: '/Forum/' + id})
@@ -253,6 +281,10 @@ export default {
         // console.log(res)
         if (res.data.code === 200) {
           console.log("change success")
+          this.$message({
+            message: "已提交整改，请耐心等待",
+            type: 'success'
+          })
         } else {
           this.$message({
             message: res.data.message,
@@ -264,7 +296,7 @@ export default {
   },
   mounted() {
     this.queryAllPost()
-
+    this.queryBadPost()
   }
 }
 </script>

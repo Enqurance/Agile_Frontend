@@ -124,11 +124,18 @@
               {{ post.content }}
             </p>
             <div style="padding: 0 20px;">
-              <el-icon>
-                <ChatRound/>
-              </el-icon>
-              {{ post.floor_num }}
+              <el-button @click="post.reasonDialog=true" size="small"> 查看原因</el-button>
             </div>
+            <el-dialog v-model="post.reasonDialog" title="整改原因" width="30%" center>
+            <span style="text-align: center">
+              {{ post.reason }}
+            </span>
+              <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="post.reasonDialog = false">关闭</el-button>
+            </span>
+              </template>
+            </el-dialog>
           </div>
         </ul>
       </div>
