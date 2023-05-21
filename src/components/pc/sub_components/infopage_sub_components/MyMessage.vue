@@ -1,7 +1,7 @@
 <template>
   <div
       style="padding: 1% 15% 9% 15%;background: rgb(246,246,246);width: 70%;height: 80%">
-    <div style="padding-left: 5%;font-size: 20px;width:400px;display: inline-block">
+    <div style="padding-left: 5%;font-size: 20px;width:45%;display: inline-block">
       <div style="height: 80px">
         我收到的
       </div>
@@ -41,7 +41,7 @@
 
 
     </div>
-    <div style="padding-left: 5%;font-size: 20px;width:400px;display: inline-block">
+    <div style="padding-left: 5%;font-size: 20px;width:45%;display: inline-block">
       <div style="height: 80px">
         我发起的
       </div>
@@ -96,94 +96,8 @@ export default {
   data() {
     return {
       revs: [
-        {
-          id: 123,
-          title: "[消息]这个消息不能跳转，点击查看详情",
-          content: "这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容",
-          time: "2023-5-9 22:07",
-          read: false,
-          post_id: null,
-          floor_id: null,
-          examine_id: null,
-        },
-        {
-          id: 12,
-          title: "[消息]这是一个已读消息，点击查看详情",
-          content: "看过了看过了看过了看过了看过了看过了看过了看过了看过了看过了看过了看过了看过了",
-          time: "2023-5-10 10:06",
-          read: true,
-          post_id: null,
-          floor_id: null,
-          examine_id: null,
-        },
-        {
-          id: 1,
-          title: "[消息]这个消息跳转到审核界面",
-          content: "这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容",
-          time: "2023-5-10 10:06",
-          read: true,
-          post_id: null,
-          floor_id: null,
-          examine_id: 1,
-        },
-        {
-          id: 2,
-          title: "[消息]这个消息跳转到帖子",
-          content: "这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容",
-          time: "2023-5-10 10:06",
-          read: true,
-          post_id: 3,
-          floor_id: null,
-          examine_id: null,
-        },
-        {
-          id: 3,
-          title: "[消息]这个消息跳转到楼层",
-          content: "这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容",
-          time: "2023-5-10 10:06",
-          read: true,
-          post_id: 3,
-          floor_id: 2,
-          examine_id: null,
-        },
       ],
       snds: [
-        {
-          id: 2123,
-          title: "[消息]这个消息不能跳转，点击查看详情",
-          content: "这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容",
-          time: "2023-5-9 22:07",
-          read: false,
-          post_id: null,
-          floor_id: null,
-        },
-        {
-          id: 1233,
-          title: "[消息]这是一个已读消息，点击查看详情",
-          content: "看过了看过了看过了看过了看过了看过了看过了看过了看过了看过了看过了",
-          time: "2023-5-10 10:06",
-          read: true,
-          post_id: null,
-          floor_id: null,
-        },
-        {
-          id: 233,
-          title: "[消息]这个消息跳转到帖子",
-          content: "这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容",
-          time: "2023-5-10 10:06",
-          read: true,
-          post_id: 3,
-          floor_id: null,
-        },
-        {
-          id: 333,
-          title: "[消息]这个消息跳转到楼层",
-          content: "这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容",
-          time: "2023-5-10 10:06",
-          read: true,
-          post_id: 3,
-          floor_id: 2,
-        },
       ],
     }
   },
