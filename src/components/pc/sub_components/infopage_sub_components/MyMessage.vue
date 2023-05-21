@@ -18,11 +18,11 @@
             </el-icon>
           </div>
 
-          <h3 style="padding: 0 20px;font-size:20px;height:50px;width:300px;overflow: hidden;"
+          <h3 style="padding: 0 20px;font-size:20px;height:50px;width:90%;overflow: hidden;"
               @click="clickMsg(rev)">
             {{ rev.title }}
           </h3>
-          <p style="padding: 0 20px;font-size:16px;height:20px;width:300px;overflow: hidden;">
+          <p style="padding: 0 20px;font-size:16px;height:20px;width:90%;overflow: hidden;">
             {{ rev.time }}
           </p>
           <el-dialog v-model="rev.detail" title="消息详情" width="30%" center>
@@ -58,11 +58,11 @@
             </el-icon>
           </div>
 
-          <h3 style="padding: 0 20px;font-size:20px;height:50px;width:300px;overflow: hidden;"
+          <h3 style="padding: 0 20px;font-size:20px;height:50px;width:90%;overflow: hidden;"
               @click="clickMsg(snd)">
             {{ snd.title }}
           </h3>
-          <p style="padding: 0 20px;font-size:16px;height:20px;width:300px;overflow: hidden;">
+          <p style="padding: 0 20px;font-size:16px;height:20px;width:90%;overflow: hidden;">
             {{ snd.time }}
           </p>
           <el-dialog v-model="snd.detail" title="消息详情" width="30%" center>
