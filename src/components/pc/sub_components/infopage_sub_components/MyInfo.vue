@@ -339,7 +339,7 @@ export default {
                 <el-aside width="30%">
                     <div class="LeftPart">
                         <el-row class="firstRow">
-                            <p style="padding-bottom: 5%; font-size:1em">{{ user.description }}</p>
+                            <p style="padding-top: 8%; padding-bottom: 5%; font-size:1.2em">{{ user.description }}</p>
                             <el-descriptions column=1>
                                 <el-descriptions-item label="校区:">
                                     <span style="font-size: 14px;">{{ user.campus == '1' ? '学院路校区' : '沙河校区' }}</span>
@@ -367,11 +367,12 @@ export default {
                             </el-row>
                             -->
                         <el-row class="thirdRow">
-                            <el-divider content-position="left">标签</el-divider>
-<!--                            <el-tag v-for="tag in tags" :key="tag.name" class="mx-1" closable :type="tag.type"-->
-<!--                                style="margin-right: 8px">-->
-<!--                                {{ tag.name }}-->
-<!--                            </el-tag>-->
+                            <div style="padding-top:70%;"></div>
+                        <!--    <el-divider content-position="left">标签</el-divider>  -->
+                        <!--    <el-tag v-for="tag in tags" :key="tag.name" class="mx-1" closable :type="tag.type"-->
+                        <!--        style="margin-right: 8px">-->
+                        <!--        {{ tag.name }}-->
+                        <!--    </el-tag>-->
                         </el-row>
                     </div>
                 </el-aside>
