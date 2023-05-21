@@ -1,14 +1,14 @@
 <template>
-    <div class="map-pin-info">
-        <el-drawer direction="ltr" v-model="drawer"
-                   :with-header="true" :append-to-body="true" class="my-drawer">
+    <div>
+        <van-dialog v-model:show="drawer" :z-index="1000" style="height: 80%; overflow-y: auto; padding: 3% 0"
+                    confirm-button-text="关闭" @confirm="() => {drawer=false; this.$emit('close_drawer')}">
             <div style="margin-top: 0px;margin-bottom: 0px;">
                 <el-button v-if="info.visibility===0 && this.$cookies.get('user_type')==='0'" class="float_right"
-                           size="large" :style="{background: _get_pin_color_state(pin_state)}" @click="apply_public">
+                           size="large" :style="{background: _get_pin_color_state(pin_state)}" @touchend="apply_public">
                     {{ _get_pin_state(pin_state) }}
                 </el-button>
                 <el-button v-if="info.visibility===1 && this.$cookies.get('user_type')==='0'" class="float_right"
-                           size="large" :style="{background: _get_pin_color_state(pin_state)}" @click="() => {
+                           size="large" :style="{background: _get_pin_color_state(pin_state)}" @touchend="() => {
                     if (this.pin_state === 1) {
                 this.$message({
                     type: 'warning',
@@ -16,7 +16,6 @@
                     showClose: true,
                     grouping: true
                 })
-                return
             }
             else {
                     show_feedback=true; this.feedback.title=''
@@ -25,75 +24,17 @@
                 }">{{ _get_public_pin_state(pin_state) }}
                 </el-button>
 
-                <el-dialog v-model="show_feedback" style="height: 250px;width: 40%">
-                    <el-form>
-                        <el-form-item label="标题：">
-                            <el-input type="text" maxlength="10" v-model="feedback.title" autocomplete="off"/>
-                        </el-form-item>
-                        <el-form-item label="内容：">
-                            <el-input type="textarea" clearable rows="3" v-model="feedback.reason" autocomplete="off"/>
-                        </el-form-item>
-                    </el-form>
-                    <div style="position: absolute;bottom: 10px; right: 20px">
-                        <el-button @click="show_feedback = false">取消</el-button>
-                        <el-button type="primary" @click="apply_feedback">确定</el-button>
-                    </div>
-                </el-dialog>
-
                 <h1 style="margin-left: 10px;margin-top: 0px;padding: 0px">{{ info.name }}</h1>
-            </div>
-
-            <div>
-                <el-dialog :title="dialogTitle" v-model="dialogVisible">
-                    <el-form :model="formData" label-width="100px">
-                        <el-form-item label="名称">
-                            <el-input v-model="formData.name" maxlength="20"></el-input>
-                        </el-form-item>
-                        <el-form-item label="简介">
-                            <el-input v-model="formData.brief"
-                                      type="textarea" autosize maxlength="100"></el-input>
-                        </el-form-item>
-                        <el-form-item label="类别">
-                            <el-radio-group v-model="formData.pin_type">
-                                <el-radio :label="1">餐饮</el-radio>
-                                <el-radio :label="2">园地</el-radio>
-                                <el-radio :label="3">教学</el-radio>
-                                <el-radio :label="4">体育</el-radio>
-                                <el-radio :label="5">办公</el-radio>
-                                <el-radio :label="6">购物</el-radio>
-                                <el-radio :label="7">生活服务</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                        <el-form-item label="位置描述">
-                            <el-input v-model="formData.position"
-                                      type="textarea" autosize maxlength="100"></el-input>
-                        </el-form-item>
-                        <el-form-item label="开放时间">
-                            <el-input v-model="formData.opening_time"
-                                      type="textarea" autosize maxlength="100"></el-input>
-                        </el-form-item>
-                        <el-form-item label="电话">
-                            <el-input v-model="formData.phone"></el-input>
-                        </el-form-item>
-                    </el-form>
-                    <div>
-                        <el-button @click="dialogVisible = false">取消
-                            <CloseOutlined/>
-                        </el-button>
-                        <el-button type="primary" @click="submitForm">确认
-                            <CheckOutlined/>
-                        </el-button>
-                    </div>
-                </el-dialog>
             </div>
 
             <div class="pin-info">
                 <el-card :body-style="{ padding: '10px' }">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0px;">
+                    <div
+                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0px;">
                         <h4 style="margin-bottom: 0px;">信息</h4>
-                        <el-button type="link"
-                                   v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine===false && pin_state===0"
-                                   @click="editInfo">
+                        <el-button
+                            v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine===false && pin_state===0"
+                            @touchend="editInfo">
                             <EditOutlined/>
                         </el-button>
                     </div>
@@ -118,10 +59,10 @@
                     </el-carousel>
 
                     <el-upload
-                            v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine===false && pin_state===0"
-                            class="avatar-uploader" action="https://buaamapforum.cn:8443/photo/uploadPinPhoto"
-                            :show-file-list="false" :on-success="handleAvatarSuccess"
-                            :before-upload="beforeAvatarUpload">
+                        v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine===false && pin_state===0"
+                        class="avatar-uploader" action="https://buaamapforum.cn:8443/photo/uploadPinPhoto"
+                        :show-file-list="false" :on-success="handleAvatarSuccess"
+                        :before-upload="beforeAvatarUpload">
                         <el-button size="small" type="primary" plain>上传图片</el-button>
                     </el-upload>
                 </el-card>
@@ -150,7 +91,55 @@
                     <p>此处预留跳转链接</p>
                 </el-card>
             </div> -->
-        </el-drawer>
+        </van-dialog>
+
+        <van-dialog v-model:show="show_feedback" :z-index="2000" style="height: 80%; overflow-y: auto; padding: 3% 0">
+            <el-form>
+                <el-form-item label="标题：">
+                    <el-input type="text" maxlength="10" v-model="feedback.title" autocomplete="off"/>
+                </el-form-item>
+                <el-form-item label="内容：">
+                    <el-input type="textarea" clearable rows="3" v-model="feedback.reason" autocomplete="off"/>
+                </el-form-item>
+            </el-form>
+            <div style="position: absolute;bottom: 10px; right: 20px">
+                <el-button @touchend="show_feedback = false">取消</el-button>
+                <el-button type="primary" @touchend="apply_feedback">确定</el-button>
+            </div>
+        </van-dialog>
+
+        <van-dialog :title="dialogTitle" style="width: 90%; padding: 3% 0; background: #f0f0f0" :z-index="2000"
+                    v-model:show="dialogVisible" :showCancelButton="true" @confirm="submitForm"
+                     >
+            <van-form :model="formData" style="padding-top: 5%; padding-bottom: 5%">
+                <van-cell-group inset>
+                    <van-field v-model="formData.name" name="名称" label="名称" maxlength="20"
+                               :rules="[{required: true, message: '请填写名称'}]" />
+                    <van-field v-model="formData.brief" name="简介" label="简介" maxlength="100" type="textarea"
+                               :rules="[{required: true, message: '请填写简介'}]" />
+                    <van-field name="类别" label="类别" >
+                        <template #input>
+                            <van-radio-group v-model="formData.pin_type" direction="horizontal"
+                                             :rules="[{valid_type, message: '请填写类型'}]">
+                                <van-radio style="margin-bottom: 4px" :name="1">餐饮</van-radio>
+                                <van-radio style="margin-bottom: 4px" :name="2">园地</van-radio>
+                                <van-radio style="margin-bottom: 4px" :name="3">教学</van-radio>
+                                <van-radio style="margin-bottom: 4px" :name="4">体育</van-radio>
+                                <van-radio style="margin-bottom: 4px" :name="5">办公</van-radio>
+                                <van-radio style="margin-bottom: 4px" :name="6">购物</van-radio>
+                                <van-radio style="margin-bottom: 4px" :name="7">生活服务</van-radio>
+                            </van-radio-group>
+                        </template>
+                    </van-field>
+                    <van-field v-model="formData.position" name="位置描述" label="位置描述" maxlength="100"
+                               type="textarea" />
+                    <van-field v-model="formData.opening_time" name="开放时间" label="开放时间" maxlength="100"
+                               type="textarea" />
+                    <van-field v-model="formData.phone" name="电话" label="电话" maxlength="20" />
+                </van-cell-group>
+            </van-form>
+        </van-dialog>
+
     </div>
 </template>
 
@@ -168,6 +157,14 @@ export default {
         'close_drawer',
         'update_info'
     ],
+    setup() {
+        const valid_type = (val) => {
+            return val >= 1 && val <= 7
+        }
+        return {
+            valid_type
+        }
+    },
     data() {
         return {
             // 存储地图钉信息
@@ -216,8 +213,6 @@ export default {
 
     components: {
         EditOutlined,
-        CheckOutlined,
-        CloseOutlined,
     },
 
     methods: {
@@ -234,7 +229,7 @@ export default {
             return global.get_pin_state_color(pin_state_id)
         },
         get_user_type_administrator() {
-          return global.user_type_administrator
+            return global.user_type_administrator
         },
         handleDblClick() {
             this.getPinInfoById();
@@ -280,24 +275,16 @@ export default {
             // 进入编辑模式并打开对话框
             // 修改鉴权交给上一层
             this.formData = Object.assign({}, this.info)
+            this.drawer = false
             this.dialogVisible = true
         },
 
         // 提交修改
         submitForm() {
-            if (this.formData.name === '') {
-                return this.$message.error("名称不能为空")
-            }
-            else if (this.formData.brief === '') {
-                return this.$message.error("简介不能为空")
-            }
-            else if (this.formData.pin_type === -1) {
-                return this.$message.error("类别不能为空")
-            }
-
             let that = this
+            let now_id = that.id
             that.$axios.post('/map/pin/changePinInfoById', {
-                id: that.id,
+                id: now_id,
                 name: that.formData.name,
                 position: that.formData.position,
                 brief: that.formData.brief,
@@ -309,14 +296,12 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             })
-                .then(response => {
-                    // console.log(response);
+                .then(() => {
                     that.$emit('update_info', {
-                        id: that.id,
+                        id: now_id,
                         name: that.formData.name,
                         type: that.formData.pin_type,
                     })
-                    this.dialogVisible = false;
                 })
                 .catch(error => {
                     console.error(error);
@@ -458,7 +443,7 @@ export default {
                 }).catch(() => {
                     ElMessage({
                         type: 'info',
-                        message: '取消删除',
+                        message: '取消申请',
                         grouping: true,
                         showClose: true
                     })
@@ -528,7 +513,7 @@ export default {
                 this.handleDblClick()
             }
         },
-        drawer(newData) {
+        dialogVisible(newData) {
             if (newData === false) {
                 this.$emit("close_drawer")
                 // console.log("submit: close_drawer")
@@ -552,17 +537,9 @@ export default {
     padding: 10px;
 }
 
-.service-item {
-    display: flex;
-    align-items: center;
-}
 
 .service-item .photo {
     margin-right: 20px;
-}
-
-.el-divider {
-    margin: 10px 0;
 }
 
 .photo {
@@ -583,12 +560,6 @@ export default {
     transition: var(--el-transition-duration-fast);
 }
 
-.avatar {
-    margin-top: 10%;
-    margin-bottom: 2%;
-    margin-left: 5%;
-}
-
 avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
@@ -603,6 +574,12 @@ p {
 
 .float_right {
     float: right;
+}
+
+h1 {
+    text-align: center; /* 将文本居中 */
+    display: flex; /* 将元素转换为弹性布局 */
+    justify-content: center; /* 水平居中 */
 }
 
 </style>

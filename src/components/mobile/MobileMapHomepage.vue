@@ -3,7 +3,7 @@
         <PlaceSearch class="on_div place_search" @submit_p_id="(e) => concentrate_pin(e)" :click_map="close_search"
                      @search_close="close_search=false"/>
         <div class="on_div" style="width: 100%;" >
-            <MapPinInfo :id="show_marker_id" :is_examine="false" @close_drawer="show_marker_id = -1" @update_info="update_pin"/>
+            <MobileMapPinInfo :id="show_marker_id" @close_drawer="show_marker_id=-1" :is_examine="false" @update_info="update_pin"/>
 
             <div class="type_class">
                 <el-checkbox-group v-model="checkedTypes" style="padding-left: 10%; width: 100px" @change="markers_change">
@@ -42,7 +42,7 @@
 import AMapLoader from '@amap/amap-jsapi-loader'
 import {shallowRef} from "@vue/reactivity";
 import {ElMessageBox, ElMessage} from "element-plus";
-import MapPinInfo from "@/components/sub_components/MapPinInfo.vue";
+import MobileMapPinInfo from "@/components/mobile/sub_components/MobileMapPinInfo.vue";
 import MapPinAdd from "@/components/sub_components/mappage_sub_components/MapPinAdd.vue";
 import PlaceSearch from "@/components/sub_components/mappage_sub_components/PlaceSearch.vue";
 import global from "@/global";
@@ -54,7 +54,7 @@ import {ref} from "vue";
 export default {
     name: "MobileMapHomepage",
     components: {
-        MapPinInfo,
+        MobileMapPinInfo,
         MapPinAdd,
         PlaceSearch,
         SwitchPos
@@ -397,7 +397,6 @@ export default {
             this.map.setZoom(18)
         },
         update_pin(e) {
-            // console.log(this.markers_info[e.id])
             let info = this.markers_info[e.id]
             if (info.name !== e.name || info.type !== e.type) {
                 // console.log(1)
@@ -415,7 +414,6 @@ export default {
                     content: this.markers_info[e.id].name,
                     direction: 'top-center'
                 })
-
                 // console.log(this.markers_info[e.id])
             }
         },
