@@ -293,7 +293,7 @@ export default {
 <template>
     <div class="InforPage">
         <el-container class="MainPart">
-            <el-header height="35%">
+            <el-header height="20%">
                 <div class="headPart">
                     <div v-if="isReload">
                         <el-tooltip class="item" effect="dark" content="点击更换头像" placement="right">
@@ -309,7 +309,7 @@ export default {
                         <span style="margin-left: 5%;font-size: 30px;">{{ this.user.name }}</span>
                     </div>
                     <div class="buttonArea">
-                        <div style="padding-top: 40%"></div>
+                        <div style="padding-top: 10%"></div>
                         <el-button round style="font-size: 20px;" @click="editVisible = true">编辑</el-button>
                         <el-button round>
                             <el-dropdown>
@@ -377,6 +377,7 @@ export default {
                 </el-aside>
                 <el-main>
                     <div>
+                        <p>我的钉子</p>
                         <MyPin></MyPin>
                     </div>
                 </el-main>
@@ -479,7 +480,7 @@ export default {
     height: 90%;
     display: flex;
     flex-direction: row;
-    background-image: url('https://s2.loli.net/2023/04/25/VbTDNRqLr8UMZlB.png');
+    /*background-image: url('https://s2.loli.net/2023/04/25/VbTDNRqLr8UMZlB.png');*/
 }
 
 .headPart>div {
@@ -502,20 +503,6 @@ export default {
     border-right-width: thin;
     border-right-style: double;
     border-right-color: gainsboro;
-}
-
-.avatar {
-    margin-top: 25%;
-    margin-bottom: 2%;
-    margin-left: 5%;
-    width: 20%;
-}
-
-.avatarUp {
-    margin-top: 10%;
-    margin-bottom: 2%;
-    margin-left: 5%;
-    width: 20%;
 }
 
 .firstRow {
@@ -646,7 +633,7 @@ a {
     /* 设置圆角半径为容器宽高的一半 */
     overflow: hidden;
     /* 超出容器的部分隐藏 */
-    margin-top: 15%;
+    margin-top: 5%;
     margin-left: 3%;
     margin-bottom: 3%;
 }
