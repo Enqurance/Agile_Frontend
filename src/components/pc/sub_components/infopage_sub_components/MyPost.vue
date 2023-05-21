@@ -242,6 +242,26 @@ export default {
         }
       })
     },
+    queryBadPost() {
+      let that = this
+      that.$axios.get('/InfoPage/MyPost/getMyBadPost', {
+        headers: {
+          'token': that.$cookies.get('user_token')
+        }
+
+      }).then((res) => {
+        // console.log(res)
+        if (res.data.code === 200) {
+          console.log("get bad post success")
+          this.bad_posts = res.data.data
+        } else {
+          this.$message({
+            message: res.data.message,
+            type: 'error'
+          })
+        }
+      })
+    },
     browsePost(id) {
       // 记得改
       this.$router.push({path: '/Forum/' + id})
@@ -261,6 +281,10 @@ export default {
         // console.log(res)
         if (res.data.code === 200) {
           console.log("change success")
+          this.$message({
+            message: "已提交整改，请耐心等待",
+            type: 'success'
+          })
         } else {
           this.$message({
             message: res.data.message,
@@ -272,7 +296,7 @@ export default {
   },
   mounted() {
     this.queryAllPost()
-
+    this.queryBadPost()
   }
 }
 </script>

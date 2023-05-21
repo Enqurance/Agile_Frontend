@@ -1,6 +1,6 @@
 <template>
-    <router-view/>
-
+<!--    <router-view/>-->
+  <MyPost> </MyPost>
     <MobileNavigator v-if="this.$device==='mobile'"/>
 </template>
 
