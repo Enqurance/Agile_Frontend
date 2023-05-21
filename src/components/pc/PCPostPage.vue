@@ -260,8 +260,6 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
-                console.log(res)
-
                 that.post = res.data.data.post
             }).catch((error) => {
                 console.log(error);
@@ -330,8 +328,7 @@ export default {
                 });
             });
         },
-        deletePost() {// 执行删除post的逻辑
-            console.log('删除post');
+        deletePost() {
             let that = this
 
             that.$axios.delete('/forum/post/deletePost/' + that.post.id, {
