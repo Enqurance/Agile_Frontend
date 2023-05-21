@@ -1,6 +1,6 @@
 <template>
   <div
-      style="padding-left: 10%;padding-top:5%;padding-bottom:9%;background: rgb(246,246,246);width: 90%;height: 90%">
+      style="padding: 1% 15% 9% 15%;background: rgb(246,246,246);width: 70%;height: 80%">
     <div style="padding-left: 5%;font-size: 20px;width:400px;display: inline-block">
       <div style="height: 80px">
         我收到的
@@ -190,10 +190,10 @@ export default {
   methods: {
     clickMsg(msg) {
       this.readMsg(msg);
-      if (msg.examine_id !== 0) {
+      if (msg.examine_id !== null && msg.examine_id !== 0) {
         this.$router.push('/Administrator');
-      } else if (msg.post_id !== 0) {
-        if (msg.floor_id !== 0) {
+      } else if (msg.post_id !== null && msg.post_id !== 0) {
+        if (msg.floor_id !== null && msg.floor_id !== 0) {
           this.$router.push({path: '/Forum/' + msg.post_id});
         } else {
           this.$router.push({path: '/Forum/' + msg.post_id});
@@ -235,7 +235,7 @@ export default {
         }
 
       }).then((res) => {
-        // console.log(res)
+        console.log(res)
         if (res.data.code === 200) {
           console.log("get rev success")
           this.revs = res.data.data

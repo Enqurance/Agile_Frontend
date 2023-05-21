@@ -1,6 +1,6 @@
 <template>
   <div
-      style="padding: 5% 10% 11% 10%;background: rgb(246,246,246); word-wrap: break-word; word-break: normal">
+      style="padding: 1% 15% 3% 15%;background: rgb(246,246,246);width: 70%;height: 80%">
     <div style="padding-left: 5%;font-size: 20px;width:45%;display: inline-block">
       <div style="margin-bottom: 5%;font-size: 20px">
         我的楼层
