@@ -41,9 +41,9 @@ export default {
                         'token': that.$cookies.get('user_token')
                     },
                 }).then((res) => {
-                    console.log(res);
+                    console.log(res.data.data);
                     if (res.data.code === 200) {
-                        this.pins= res.data.pins;
+                        this.pins= res.data.data;
                         console.log("init success")
                     } else {
                         console.log(res);
