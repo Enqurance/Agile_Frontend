@@ -1,17 +1,17 @@
 <template>
   <div
-      style="padding: 1% 15% 3% 15%;background: rgb(246,246,246);width: 70%;height: 80%">
+      style="padding: 1% 5% 5% 1%;background: rgb(246,246,246);width: 90%;height: 80%">
     <div style="padding-left: 5%;font-size: 20px;width:45%;display: inline-block">
       <div style="margin-bottom: 5%;font-size: 20px">
         我的楼层
       </div>
 
-      <ul class="infinite-list" style="overflow: auto;display: inline-block">
+      <ul class="infinite-list" style="overflow: auto;display: inline-block;width: 100%">
         <div v-if="floors.length === 0">
           <el-empty description="暂时还没有楼层"/>
         </div>
         <div v-for="floor in floors" :key="floor.id"
-             style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 360px;height: 150px ">
+             style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 150px ">
           <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
                      @click="floor.deleteDialog=true">
             删除
@@ -51,20 +51,20 @@
         我的评论
       </div>
 
-      <ul class="infinite-list" style="overflow: auto;display: inline-block">
+      <ul class="infinite-list" style="overflow: auto;display: inline-block;width: 100%" >
         <div v-if="comments.length === 0">
           <el-empty description="暂时还没有评论"/>
         </div>
         <div v-for="comment in comments" :key="comment.id"
-             style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 360px;height: 150px ">
+             style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 150px ">
           <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
                      @click="comment.deleteDialog=true">
             删除
           </el-button>
           <el-dialog v-model="comment.deleteDialog" title="删除评论" width="30%" center>
-        <span style="text-align: center">
-          你确定要删除这个评论吗？
-        </span>
+            <span style="text-align: center">
+              你确定要删除这个评论吗？
+            </span>
             <template #footer>
             <span class="dialog-footer">
               <el-button @click="comment.deleteDialog = false">取消</el-button>
