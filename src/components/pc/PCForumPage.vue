@@ -17,7 +17,7 @@
           </div>
           <div class="bottom">
             <div v-for="post in posts" :key="post.id" style="padding: 10px;">
-              <router-link :to="`/Forum/${post.id}`"  class="custom-link">
+              <router-link :to="`/Forum/${post.id}`" class="custom-link">
                 <el-card style="padding: 10px;">
                   <div class="card-header">{{ post.title }}</div>
                   <div class="card-content">{{ post.content }}</div>
@@ -35,7 +35,7 @@
 
 
 <script>
-import { ref, onMounted,getCurrentInstance} from 'vue'
+import { ref, onMounted, getCurrentInstance } from 'vue'
 import PageHeader from "@/components/pc/PCPageHeader.vue";
 import NewPost from "../sub_components/NewPost.vue";
 
@@ -49,6 +49,9 @@ export default {
 
   data() {
     return {
+      searchText: '',
+      searchPosts: [],
+      selectedPost: null,
       // posts: [
       //   {
       //     id: 1,
@@ -98,18 +101,19 @@ export default {
     const offset = ref(0); // 跳过的帖子数量
     const limit = 5; // 每页显示的帖子数量
 
-    const loadPosts = () => {
+    const loadPosts = (offset) => {
+      console.log(offset.value)
       isLoading.value = true;
-      proxy.$axios.post('/forum/post/getPosts', {
-        offset: offset,
-        limit:limit
-      }, {
+      proxy.$axios.post('/forum/post/getPosts', null, {
+        params: {
+          offset: parseInt(offset.value),
+          limit: parseInt(limit)
+        },
         headers: {
           'token': proxy.$cookies.get('user_token')
         }
       }).then((res) => {
-        posts.value = [...posts.value, ...res.data];
-        offset.value += limit;
+        posts.value = [...posts.value, ...res.data.data];
         isLoading.value = false;
       }).catch((error) => {
         console.log(error);
@@ -118,12 +122,13 @@ export default {
     };
 
     onMounted(() => {
-      loadPosts();
+      loadPosts(offset);
     });
 
     window.addEventListener('scroll', () => {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        loadPosts();
+        offset.value += limit;
+        loadPosts(offset);
       }
     });
 
@@ -159,6 +164,32 @@ export default {
         this.isReload = true;
       })
     },
+
+
+    search() {
+      console.log('搜索内容：', this.searchText);
+      if (this.searchText === '') {
+        return this.$message.error("搜索内容不能为空")
+      }
+
+      let that = this
+      that.$axios.post('/forum/post/searchPosts', {
+        searchContext: that.searchText,
+      }, {
+        headers: {
+          'token': that.$cookies.get('user_token')
+        }
+      }).then((response) => {
+        that.searchPosts = response.data.posts
+      })
+    },
+
+    handleSelection() {
+      if (this.selectedPost) {
+        const postId = this.selectedPost.post_id;
+        this.$router.push(`/Forum/${postId}`);
+      }
+    }
   },
 
   mounted() {

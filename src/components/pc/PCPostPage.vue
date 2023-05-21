@@ -224,6 +224,12 @@ export default {
         initPost() {
             console.log("init")
             this.getIcon()
+            this.getPostDetail()
+            this.getComments()
+        },
+
+        getPostDetail() {
+
         },
 
         getIcon() {
@@ -293,20 +299,38 @@ export default {
                     cancelButtonText: '取消',
                     type: 'warning',
                 }
-            )
-                .then(() => {
-                    this.deletePost();
-                })
-                .catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '取消删除',
-                    });
+            ).then(() => {
+                this.deletePost();
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '取消删除',
                 });
+            });
         },
         deletePost() {// 执行删除post的逻辑
             console.log('删除post');
-            this.$router.push({ path: '/Forum' })
+            let that = this
+
+            that.$axios.delete('/forum/post/deletePost/' + that.post.id, {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then(() => {
+                if (res.data.code === 200) {
+                    ElMessage({
+                        type: 'success',
+                        message: '成功删除',
+                    })
+                    that.$router.push({ path: '/Forum' })
+                }
+                else {
+                    this.$message({
+                        message: res.data.message,
+                        type: 'error'
+                    })
+                }
+            }).catch((res) => console.log(res))
         },
 
 
@@ -319,16 +343,14 @@ export default {
                     cancelButtonText: '取消',
                     type: 'warning',
                 }
-            )
-                .then(() => {
-                    this.deleteFloor(floorId);
-                })
-                .catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '取消删除',
-                    });
+            ).then(() => {
+                this.deleteFloor(floorId);
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '取消删除',
                 });
+            });
         },
         deleteFloor(floorId) {// 执行删除评论的逻辑
             console.log('删除floor ID为' + floorId);
@@ -343,16 +365,14 @@ export default {
                     cancelButtonText: '取消',
                     type: 'warning',
                 }
-            )
-                .then(() => {
-                    this.deleteComment(commentId);
-                })
-                .catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '取消删除',
-                    });
+            ).then(() => {
+                this.deleteComment(commentId);
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '取消删除',
                 });
+            });
         },
         deleteComment(commentId) {// 执行删除评论的逻辑
             console.log('删除评论ID为' + commentId);
