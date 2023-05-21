@@ -3,7 +3,7 @@
         <PlaceSearch class="on_div place_search" @submit_p_id="(e) => concentrate_pin(e)" :click_map="close_search"
                      @search_close="close_search=false"/>
         <div class="on_div" style="width: 100%;" >
-            <MobileMapPinInfo :id="show_marker_id" :is_examine="false" @close_drawer="show_marker_id = -1" @update_info="update_pin"/>
+            <MobileMapPinInfo :id="show_marker_id" @close_drawer="show_marker_id=-1" :is_examine="false" @update_info="update_pin"/>
 
             <div class="type_class">
                 <el-checkbox-group v-model="checkedTypes" style="padding-left: 10%; width: 100px" @change="markers_change">
@@ -397,7 +397,6 @@ export default {
             this.map.setZoom(18)
         },
         update_pin(e) {
-            // console.log(this.markers_info[e.id])
             let info = this.markers_info[e.id]
             if (info.name !== e.name || info.type !== e.type) {
                 // console.log(1)
@@ -415,7 +414,6 @@ export default {
                     content: this.markers_info[e.id].name,
                     direction: 'top-center'
                 })
-
                 // console.log(this.markers_info[e.id])
             }
         },
