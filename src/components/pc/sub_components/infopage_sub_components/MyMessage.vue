@@ -1,17 +1,17 @@
 <template>
   <div
-      style="padding: 1% 15% 9% 15%;background: rgb(246,246,246);width: 70%;height: 80%">
+      style="padding: 1% 5% 5% 11%;background: rgb(246,246,246);width: 80%;height: 80%">
     <div style="padding-left: 5%;font-size: 20px;width:45%;display: inline-block">
       <div style="height: 80px">
         我收到的
       </div>
 
-      <ul class="infinite-list" style="overflow: auto;display: inline-block">
+      <ul class="infinite-list" style="width:100%;overflow: auto;display: inline-block">
         <div v-if="revs.length === 0">
           <el-empty description="暂时还没有消息"/>
         </div>
         <div v-for="rev in revs" :key="rev.id"
-             style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 360px;height: 120px ">
+             style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 120px ">
           <div v-if="rev.read===false" style="float: right;padding-top: 50px">
             <el-icon>
               <Warning/>
@@ -46,12 +46,12 @@
         我发起的
       </div>
 
-      <ul class="infinite-list" style="overflow: auto;display: inline-block">
+      <ul class="infinite-list" style="width:100%;overflow: auto;display: inline-block">
         <div v-if="snds.length === 0">
           <el-empty description="暂时还没有消息"/>
         </div>
         <div v-for="snd in snds" :key="snd.id"
-             style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 360px;height: 120px ">
+             style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 120px ">
           <div v-if="snd.read===false" style="float: right;padding-top: 50px">
             <el-icon>
               <Warning/>
@@ -95,10 +95,8 @@ export default {
   components: {Warning},
   data() {
     return {
-      revs: [
-      ],
-      snds: [
-      ],
+      revs: [],
+      snds: [],
     }
   },
   methods: {
@@ -192,7 +190,7 @@ export default {
 
 <style scoped>
 .infinite-list {
-  height: 360px;
+  height: 370px;
   padding: 0;
   margin: 0;
   list-style: none;
