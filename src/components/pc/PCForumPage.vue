@@ -53,41 +53,6 @@ export default {
       searchPosts: [],
       selectedPost: null,
       // posts: [
-      //   {
-      //     id: 1,
-      //     title: 'Post 1',
-      //     content: 'Post 1 body',
-      //   },
-      //   {
-      //     id: 2,
-      //     title: 'Post 2',
-      //     content: 'Post 2 body',
-      //   },
-      //   {
-      //     id: 3,
-      //     title: 'Post 3',
-      //     content: 'Post 3 body',
-      //   },
-      //   {
-      //     id: 4,
-      //     title: 'Post 4',
-      //     content: 'Post 4 body',
-      //   },
-      //   {
-      //     id: 5,
-      //     title: 'Post 5',
-      //     content: 'Post 4 body',
-      //   },
-      //   {
-      //     id: 6,
-      //     title: 'Post 6',
-      //     content: 'Post 6 body',
-      //   },
-      //   {
-      //     id: 7,
-      //     title: 'Post 7',
-      //     content: 'Post 7 body这是一个换行\n\rvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv-----------------------------------------------------------',
-      //   },
       // ],
 
     };

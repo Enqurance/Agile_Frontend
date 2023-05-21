@@ -10,6 +10,7 @@
                 <div class="center">
                     <div class="post_header">
                         <span class="post_title">{{ post.title }}</span>
+                        <span class="post_title">{{ post.content }}</span>
                         <div class="post_tags">{{ post.tags }}</div>
                         <div class="post_stars">收藏数量：{{ post.stars }}</div>
                         <el-button type="danger" @click="showDeletePost">删除post</el-button>
@@ -225,11 +226,6 @@ export default {
             console.log("init")
             this.getIcon()
             this.getPostDetail()
-            this.getComments()
-        },
-
-        getPostDetail() {
-
         },
 
         getIcon() {
@@ -252,6 +248,32 @@ export default {
             })
         },
 
+
+        getPostDetail() {
+            let that = this;
+            let id = that.$route.params.postID;
+            that.$axios.post('/forum/post/getPostDetail', null, {
+                params: {
+                    post_id: id,
+                },
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then((res) => {
+                console.log(res)
+
+                that.post = res.data.data.post
+            }).catch((error) => {
+                console.log(error);
+            });
+            this.refreshPostDetail();
+        },
+        refreshPostDetail() {
+            this.isReload = false;
+            this.$nextTick(() => {
+                this.isReload = true;
+            })
+        },
 
 
 
@@ -316,12 +338,13 @@ export default {
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
-            }).then(() => {
+            }).then((res) => {
                 if (res.data.code === 200) {
-                    ElMessage({
-                        type: 'success',
-                        message: '成功删除',
-                    })
+                    console.log("删除的帖子id为："+that.post.id)
+                    this.$message({
+                        type: 'info',
+                        message: '删除成功',
+                    });
                     that.$router.push({ path: '/Forum' })
                 }
                 else {
