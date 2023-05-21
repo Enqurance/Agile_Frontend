@@ -40,7 +40,7 @@
 import AMapLoader from '@amap/amap-jsapi-loader'
 import {shallowRef} from "@vue/reactivity";
 import {ElMessageBox, ElMessage} from "element-plus";
-import MapPinInfo from "@/components/sub_components/MapPinInfo.vue";
+import MapPinInfo from "@/components/pc/sub_components/MapPinInfo.vue";
 import MapPinAdd from "@/components/sub_components/mappage_sub_components/MapPinAdd.vue";
 import PlaceSearch from "@/components/sub_components/mappage_sub_components/PlaceSearch.vue";
 import PageHeader from "@/components/pc/PCPageHeader.vue";

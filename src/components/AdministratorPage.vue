@@ -5,7 +5,7 @@ import {Document, Location, Menu as IconMenu,} from "@element-plus/icons-vue";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import {shallowRef} from "@vue/reactivity";
 import global from "@/global";
-import MapPinInfo from "@/components/sub_components/MapPinInfo.vue";
+import MapPinInfo from "@/components/pc/sub_components/MapPinInfo.vue";
 
 export default defineComponent({
     name: "AdministratorPage",
