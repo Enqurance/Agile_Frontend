@@ -1,9 +1,10 @@
 <script>
 import { ref, reactive } from 'vue'
+import MyPin from './MyPin.vue'
 
 export default {
     name: "MyInfo",
-    components: {  },
+    components: { MyPin },
     inject: ['reload'],
     setup() {
         // information:
@@ -376,6 +377,7 @@ export default {
                 </el-aside>
                 <el-main>
                     <div>
+                        <MyPin></MyPin>
                     </div>
                 </el-main>
             </el-container>
