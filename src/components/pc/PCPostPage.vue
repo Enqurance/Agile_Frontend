@@ -31,7 +31,7 @@
                         <div class="avatar">
                             <img :src="this.imageUrl" alt="avatar" class="avatar-img">
                         </div>
-                        <el-button class="post_reply-btn" @click="showNewFloorDialog">回复帖子</el-button>
+                        <el-button class="post_reply-btn" @click="newFloorDialogVisible = true">回复帖子</el-button>
                         <el-dialog v-model="newFloorDialogVisible">
                             <el-form :model="newFloorForm" ref="newFloorForm" label-width="80px">
                                 <el-form-item label="评论内容">
@@ -63,21 +63,26 @@
                                 <el-button class="post_floor-reply-btn" @click="showAllCommentsDialog(index)">查看全部{{
                                     commentCount(index) }}条评论</el-button>
                             </div> -->
-                            <el-dialog v-model="floor.commentsDialogVisible" title="全部评论" width="50%">
-                                <div class="post_floor-comments" v-for="comment in floor.comments" :key="comment.id">
+                            <div class="post_floor-footer">
+                                <el-button class="post_floor-reply-btn"
+                                    @click="showAllCommentsDialog(floor.id)">查看全部评论</el-button>
+                            </div>
+
+                            <el-dialog v-model="commentsDialogVisible" title="全部评论" width="50%">
+                                <div class="post_floor-comments" v-for="comment in comments" :key="comment.id">
                                     <el-button type="danger" @click="showDeleteComment(comment.id)">删除comment</el-button>
                                     <el-button type="danger" @click="showReportReplyPrompt(1)">举报comment</el-button>
-                                    <div class="post_floor-comment-header">{{ comment.user }} 评论于 {{ comment.time }}</div>
-                                    <div class="post_floor-comment-body">{{ comment.body }}</div>
+                                    <div class="post_floor-comment-header">作者 评论于 {{ comment.createTime }}</div>
+                                    <div class="post_floor-comment-body">{{ comment.content }}</div>
                                 </div>
                                 <el-form>
                                     <el-form-item>
-                                        <el-input v-model="floor.newComment" placeholder="请输入评论内容"></el-input>
-                                    </el-form-item>
-                                    <el-form-item>
-                                        <el-button type="primary" @click="addComment(index)">提交评论</el-button>
+                                        <el-input v-model="newCommentBody" type="textarea"></el-input>
                                     </el-form-item>
                                 </el-form>
+                                <div>
+                                    <el-button type="primary" @click="addComment(floor.id)">提交评论</el-button>
+                                </div>
                             </el-dialog>
                         </div>
                     </div>
@@ -115,102 +120,18 @@ export default {
                 body: ''
             },
 
-            // floors: [
-            //     {
-            //         id: 1,
-            //         user: '张三',
-            //         time: '2021-01-01 10:00:00',
-            //         body: '这是第一层楼',
-            //         comments: [
-            //             {
-            //                 id: 1,
-            //                 user: '李四',
-            //                 time: '2021-01-01 10:10:00',
-            //                 body: '这是第一层楼的第一条评论'
-            //             },
-            //             {
-            //                 id: 2,
-            //                 user: '王五',
-            //                 time: '2021-01-01 10:20:00',
-            //                 body: '这是第一层楼的第二条评论'
-            //             },
-            //             {
-            //                 id: 3,
-            //                 user: '赵六',
-            //                 time: '2021-01-01 10:30:00',
-            //                 body: '这是第一层楼的第三条评论'
-            //             },
-            //             {
-            //                 id: 4,
-            //                 user: '赵六',
-            //                 time: '2021-01-01 10:30:00',
-            //                 body: '这是第一层楼的第四条评论'
-            //             }
-            //         ],
-            //         commentsDialogVisible: false,
-            //         newComment: ''
-            //     },
-            //     {
-            //         id: 2,
-            //         user: '李四',
-            //         time: '2021-01-01 11:00:00',
-            //         body: '这是第二层楼',
-            //         comments: [
-            //             {
-            //                 id: 1,
-            //                 user: '张三',
-            //                 time: '2021-01-01 11:10:00',
-            //                 body: '这是第二层楼的第一条评论'
-            //             }
-            //         ],
-            //         commentsDialogVisible: false,
-            //         newComment: ''
-            //     },
-            //     {
-            //         id: 3,
-            //         user: '用户3',
-            //         time: '2021-01-02 12:00:00',
-            //         body: '这是另一条评论的内容',
-            //         comments: [],
-            //         commentsDialogVisible: false,
-            //         newComment: ''
-            //     },
-            //     {
-            //         id: 4,
-            //         user: '用户4',
-            //         time: '2021-01-01 12:00:00',
-            //         body: '这是一条评论的内容',
-            //         comments: [],
-            //         commentsDialogVisible: false,
-            //         newComment: ''
-            //     },
-            //     {
-            //         id: 5,
-            //         user: '用户5',
-            //         time: '2021-01-02 12:00:00',
-            //         body: '这是另一条评论的内容',
-            //         comments: [],
-            //         commentsDialogVisible: false,
-            //         newComment: ''
-            //     },
-            //     {
-            //         id: 6,
-            //         user: '用户6',
-            //         time: '2021-01-02 12:00:00',
-            //         body: '这是另一条评论的内容',
-            //         comments: [],
-            //         commentsDialogVisible: false,
-            //         newComment: ''
-            //     },
-            // ],
+            commentsDialogVisible: false,
+            newCommentBody: '',
+
+            comments: [],
         };
     },
 
     setup() {
         const { proxy } = getCurrentInstance();
         const imageUrl = ref('');
-        const floors = ref([]); 
-        const isLoading = ref(false); 
+        const floors = ref([]);
+        const isLoading = ref(false);
         const offset = ref(0);
         const limit = 5;
 
@@ -221,7 +142,7 @@ export default {
             isLoading.value = true;
             proxy.$axios.post('/forum/floor/getFloors', null, {
                 params: {
-                    post_id:id,
+                    post_id: id,
                     offset: parseInt(offset.value),
                     limit: parseInt(limit)
                 },
@@ -308,10 +229,6 @@ export default {
 
 
 
-        showNewFloorDialog() {
-            this.newFloorDialogVisible = true
-        },
-
         addNewFloor() {
             if (this.newFloorForm.content === '') {
                 return this.$message.error("楼层正文不能为空")
@@ -328,15 +245,10 @@ export default {
                 }
             }).then((response) => {
                 console.log(response)
+                that.newFloorForm.body = ''
             })
             this.newFloorDialogVisible = false
         },
-
-
-
-
-
-
 
 
 
@@ -344,16 +256,46 @@ export default {
             return this.commentCounts[index];
         },
 
-        showAllCommentsDialog(index) {
-            console.log("show floor")
-            console.log("floor id" + this.floors[index].id)
-
-            this.floors[index].commentsDialogVisible = true
+        showAllCommentsDialog(floorID) {
+            let that = this
+            that.$axios.post('/forum/comment/getComments', null, {
+                params: {
+                    floor_id:floorID,
+                    offset: 0,
+                    limit: 100
+                },
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then((res) => {
+                console.log(res.data.data)
+                that.comments = res.data.data
+                that.commentsDialogVisible = true
+            }).catch((error) => {
+                console.log(error);
+            });
         },
 
-        addComment(index) {
-            console.log("floor id" + this.floors[index].id)
-            this.floors[index].commentsDialogVisible = false
+        addComment(floorID) {
+            if (this.newCommentBody === '') {
+                return this.$message.error("评论不能为空")
+            }
+
+            let that = this
+            that.$axios.post('/forum/comment/addComment', null, {
+                params: {
+                    c_content: that.newCommentBody,
+                    floor_id: floorID,
+                    rcomment_id: 0
+                },
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then((response) => {
+                console.log(response)
+                that.newCommentBody = ''
+            })
+            this.commentsDialogVisible = false
         },
 
         showDeletePost() {
@@ -425,7 +367,6 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
-                console.log(res)
                 if (res.data.code === 200) {
                     console.log("删除的floor的id为：" + floorId)
                     this.$message({
@@ -461,6 +402,26 @@ export default {
             });
         },
         deleteComment(commentId) {// 执行删除评论的逻辑
+            let that = this
+            that.$axios.delete('/forum/comment/deleteComment/' + commentId, {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then((res) => {
+                if (res.data.code === 200) {
+                    console.log("删除的comment的id为：" + commentId)
+                    this.$message({
+                        type: 'info',
+                        message: '删除成功',
+                    });
+                }
+                else {
+                    this.$message({
+                        message: res.data.message,
+                        type: 'error'
+                    })
+                }
+            }).catch((res) => console.log(res))
             console.log('删除评论ID为' + commentId);
         },
 
