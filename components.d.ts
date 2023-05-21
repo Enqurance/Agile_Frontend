@@ -13,6 +13,7 @@ declare module '@vue/runtime-core' {
     ForumPage: typeof import('./src/components/ForumPage.vue')['default']
     InforPage: typeof import('./src/components/InforPage.vue')['default']
     LoginPage: typeof import('./src/components/LoginPage.vue')['default']
+    LongPress: typeof import('./src/components/mobile/sub_components/LongPress.vue')['default']
     ManVerify: typeof import('./src/components/sub_components/ManVerify.vue')['default']
     MapHomepage: typeof import('./src/components/MapHomepage.vue')['default']
     MapPinAdd: typeof import('./src/components/sub_components/mappage_sub_components/MapPinAdd.vue')['default']

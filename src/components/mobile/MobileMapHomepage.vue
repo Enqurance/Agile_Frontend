@@ -1,11 +1,6 @@
 <template>
     <div>
-        <!--        <el-header height="7%">-->
-<!--        <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.3"/>-->
-        <!--        </el-header>-->
-        <!--        <el-main style="height: 93%">-->
-        <PlaceSearch class="on_div" style="width: 50%; height: 30%; margin-top: 15%; margin-left: 3%"
-                     @submit_p_id="(e) => concentrate_pin(e)" :click_map="close_search"
+        <PlaceSearch class="on_div place_search" @submit_p_id="(e) => concentrate_pin(e)" :click_map="close_search"
                      @search_close="close_search=false"/>
         <div class="on_div" style="width: 100%;" >
             <MapPinInfo :id="show_marker_id" :is_examine="false" @close_drawer="show_marker_id = -1" @update_info="update_pin"/>
@@ -20,7 +15,7 @@
 
         </div>
         <div :style="{width: screen_params.screenX+'px', height: screen_params.screenY+'px'}" class="bottom_div">
-            <div id="container" style="width: 100%; height: 100%" @click="close_search=true"></div>
+            <div id="container" style="width: 100%; height: 100%" @touchend="close_search=true"></div>
         </div>
         <MapPinAdd :is_add_pin="is_add_marker" :lnglat="click_marker_lnglat" @addMarker="(e) => new_pin(e)"
                    @close_dialog="this.is_add_marker = false"/>
@@ -29,7 +24,6 @@
             :lnglat="click_marker_lnglat"
             @close_dialog="this.is_switch = false"
             @switch_pos="switch_pos"/>
-        <!--        </el-main>-->
     </div>
 </template>
 
@@ -43,6 +37,7 @@ import PlaceSearch from "@/components/sub_components/mappage_sub_components/Plac
 import global from "@/global";
 import '../../assets/PinIcon/font2/iconfont.css'
 import SwitchPos from "@/components/sub_components/mappage_sub_components/SwitchPos.vue";
+import {ref} from "vue";
 
 
 export default {
@@ -52,7 +47,14 @@ export default {
         MapPinAdd,
         PlaceSearch,
         SwitchPos
-        // PageHeader,
+    },
+    setup() {
+        const start_touch_time = ref(0)
+        const timeout = ref(null)
+        return {
+            start_touch_time,
+            timeout
+        }
     },
     data() {
         let map = shallowRef(null)
@@ -219,8 +221,8 @@ export default {
             let that = this
 
             contextMenu.addItem("聚焦北航", function () {
-                this.map.setCenter(that.beihang_center)
-                this.map.setZoom(that.beihang_zoom[0])
+                that.map.setCenter(that.beihang_center)
+                that.map.setZoom(that.beihang_zoom[0])
                 contextMenu.close()
             }, 1);
 
@@ -235,6 +237,13 @@ export default {
                 that.is_switch = true
                 contextMenu.close()
             }, 2);
+
+            // 监听右键菜单的touch事件
+            AMap.Event.addListener(contextMenu, 'touchend', (e) => {
+                // const menuItemList = contextMenu._container.getElementsByTagName('ul')[0].children
+                console.log(contextMenu._menuEl)
+                contextMenu.Zy[0].fn();
+            });
 
             //右键添加Marker标记
             // eslint-disable-next-line no-unused-vars
@@ -251,10 +260,21 @@ export default {
             // }, 2);
 
             //地图绑定鼠标右击事件——弹出右键菜单
-            this.map.on('rightclick', function (e) {
-                that.click_marker_lnglat = [e.lnglat.lng, e.lnglat.lat]
-                contextMenu.open(that.map, e.lnglat);
+            this.map.on('touchstart', (e) => {
+                that.timeout = window.setTimeout(() => {
+                    that.click_marker_lnglat = [e.lnglat.lng, e.lnglat.lat]
+                    contextMenu.open(that.map, e.lnglat);
+                }, 1000);
+            })
+
+            this.map.on('touchmove', () => {
+                clearTimeout(that.timeout);
             });
+
+            this.map.on('touchend', () => {
+                clearTimeout(that.timeout);
+            })
+
 
         },
         new_pin(e) {
@@ -307,56 +327,66 @@ export default {
             marker.setMap(this.map)
             // show_event
             let that = this
-            marker.on('click', function (e) {
-                that.show_marker_id = parseInt(e.target._opts.extData.id)
-            })
 
-            // delete_event
-            marker.on('rightclick', function (e) {
-                // console.log(e.target._opts.extData.visibility)
-                // console.log(that.$cookies.get('user_type') === "0")
-                if ((e.target._opts.extData.visibility === 1 && that.$cookies.get('user_type') === "0") || that.$cookies.get('user_type') === null) {
-                    that.$message({
-                        grouping: true,
-                        message: '系统点标记不可删除',
-                        type: "warning"
-                    })
-                }
-                else {
-                    ElMessageBox.confirm(
-                        '确认删除该地图钉？',
-                        'Warning',
-                        {
-                            confirmButtonText: '确认',
-                            cancelButtonText: '取消',
-                            type: 'warning',
-                        }
-                    ).then(() => {
-                        that.delete_marker_id = e.target._opts.extData.id
-
-                        that.$axios.delete('map/pin/deletePin/' + that.delete_marker_id, {
-                            headers: {
-                                'token': that.$cookies.get('user_token')
-                            }
-                        }).then(() => {
-                            delete that.markers_info[that.delete_marker_id]
-                            Reflect.deleteProperty(that.markers_info, that.delete_marker_id)
-                            marker.setMap(null)
-                            // console.log(marker)
-                            marker = null
-                            ElMessage({
-                                type: 'success',
-                                message: '成功删除',
-                            })
-                        }).catch((res) => console.log(res))
-                    }).catch(() => {
-                        ElMessage({
-                            type: 'info',
-                            message: '取消删除',
+            marker.on('touchstart', (e) => {
+                that.start_touch_time = Date.now()
+                that.timeout = window.setTimeout(() => {
+                    if ((e.target._opts.extData.visibility === 1 && that.$cookies.get('user_type') === "0") || that.$cookies.get('user_type') === null) {
+                        that.$message({
+                            grouping: true,
+                            message: '系统点标记不可删除',
+                            type: "warning"
                         })
-                    })
+                    }
+                    else {
+                        ElMessageBox.confirm(
+                            '确认删除该地图钉？',
+                            'Warning',
+                            {
+                                confirmButtonText: '确认',
+                                cancelButtonText: '取消',
+                                type: 'warning',
+                            }
+                        ).then(() => {
+                            that.delete_marker_id = e.target._opts.extData.id
+
+                            that.$axios.delete('map/pin/deletePin/' + that.delete_marker_id, {
+                                headers: {
+                                    'token': that.$cookies.get('user_token')
+                                }
+                            }).then(() => {
+                                delete that.markers_info[that.delete_marker_id]
+                                Reflect.deleteProperty(that.markers_info, that.delete_marker_id)
+                                marker.setMap(null)
+                                // console.log(marker)
+                                marker = null
+                                ElMessage({
+                                    type: 'success',
+                                    message: '成功删除',
+                                })
+                            }).catch((res) => console.log(res))
+                        }).catch(() => {
+                            ElMessage({
+                                type: 'info',
+                                message: '取消删除',
+                            })
+                        })
+                    }
+                }, 1000);
+            });
+
+            marker.on('touchmove', () => {
+                clearTimeout(that.timeout);
+            });
+
+            marker.on('touchend', (e) => {
+                // console.log(that.timeout)
+                clearTimeout(that.timeout);
+                if (Date.now() - that.start_touch_time < 500) {
+                    that.show_marker_id = parseInt(e.target._opts.extData.id)
                 }
             })
+
         },
         concentrate_pin(pin_id) {
             this.map.setCenter(this.markers_info[pin_id].lnglat)
@@ -453,8 +483,10 @@ export default {
     z-index: 1;
 }
 
-.icon_class {
-
+.place_search {
+    width: 50%;
+    margin-top: 15%;
+    margin-left: 3%
 }
 
 </style>
