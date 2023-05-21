@@ -1,7 +1,7 @@
 <script>
 import {ref} from 'vue'
 export default {
-    name: "MyPin",
+    name: "MyPin_Mobile",
     components: {},
     setup(){
         const count = ref(5)
