@@ -70,10 +70,21 @@
 
 <script>
 import ManVerify from "@/components/sub_components/ManVerify.vue";
+import { ElInput, ElFormItem, ElButtonGroup, ElSelect, ElButton, ElRadio, ElForm, ElOption} from "element-plus";
 
 export default {
     name: "PCRegisterPage",
-    components: {ManVerify},
+    components: {
+        ManVerify,
+        ElInput,
+        ElFormItem,
+        ElButtonGroup,
+        ElSelect,
+        ElButton,
+        ElRadio,
+        ElForm,
+        ElOption
+        },
     data() {
         return {
             countdown: 0,
