@@ -11,7 +11,7 @@
           <el-empty description="暂时还没有楼层"/>
         </div>
         <div v-for="floor in floors" :key="floor.id"
-             style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 150px ">
+             style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 360px;height: 150px ">
           <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
                      @click="floor.deleteDialog=true">
             删除
@@ -56,7 +56,7 @@
           <el-empty description="暂时还没有评论"/>
         </div>
         <div v-for="comment in comments" :key="comment.id"
-             style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 150px ">
+             style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 360px;height: 150px ">
           <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
                      @click="comment.deleteDialog=true">
             删除
