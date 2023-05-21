@@ -25,6 +25,7 @@ declare module '@vue/runtime-core' {
     MyInfo: typeof import('./src/components/pc/sub_components/infopage_sub_components/MyInfo.vue')['default']
     MyMessage: typeof import('./src/components/pc/sub_components/infopage_sub_components/MyMessage.vue')['default']
     MyMessage_Mobile: typeof import('./src/components/mobile/sub_components/infopage_sub_components/MyMessage_Mobile.vue')['default']
+    MyPin: typeof import('./src/components/pc/sub_components/infopage_sub_components/MyPin.vue')['default']
     MyPost: typeof import('./src/components/pc/sub_components/infopage_sub_components/MyPost.vue')['default']
     MyPost_Mobile: typeof import('./src/components/mobile/sub_components/infopage_sub_components/MyPost_Mobile.vue')['default']
     NewPost: typeof import('./src/components/sub_components/NewPost.vue')['default']
