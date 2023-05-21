@@ -173,7 +173,6 @@ export default {
             type: 'info',
             message: '删除成功',
           });
-          that.$router.push({ path: '/Forum' })
         }
         else {
           this.$message({
