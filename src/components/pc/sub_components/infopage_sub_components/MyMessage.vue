@@ -1,6 +1,6 @@
 <template>
   <div
-      style="padding-left: 10%;padding-top:5%;padding-bottom:9%;background: rgb(246,246,246);width: 90%;height: 90%">
+      style="padding: 1% 15% 9% 15%;background: rgb(246,246,246);width: 70%;height: 80%">
     <div style="padding-left: 5%;font-size: 20px;width:400px;display: inline-block">
       <div style="height: 80px">
         我收到的
