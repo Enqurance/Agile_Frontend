@@ -114,7 +114,7 @@ export default {
     display: block;
 }
 .MainPart{
-    height: 100%;
+    height: 92%;
 }
 
 </style>
