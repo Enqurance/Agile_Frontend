@@ -150,10 +150,8 @@ export default {
   components: {ChatRound},
   data() {
     return {
-      posts: [
-      ],
-      bad_posts: [
-      ],
+      posts: [],
+      bad_posts: [],
       activeIndex: '1',
       Index: '1',
     }
@@ -161,6 +159,7 @@ export default {
   methods: {
     deletePost(post) {
       let that = this
+      post.deleteDialog = false;
       console.log(post);
       that.$axios.delete('/forum/post/deletePost/' + post.id, {
         headers: {
@@ -173,8 +172,7 @@ export default {
             type: 'info',
             message: '删除成功',
           });
-        }
-        else {
+        } else {
           this.$message({
             message: res.data.message,
             type: 'error'
@@ -195,7 +193,7 @@ export default {
         }
 
       }).then((res) => {
-         console.log(res)
+        console.log(res)
         if (res.data.code === 200) {
           console.log("get post success")
           this.posts = res.data.data
