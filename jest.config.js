@@ -11,6 +11,9 @@ module.exports = {
     preset: '@vue/cli-plugin-unit-jest',
     setupFilesAfterEnv: ['./tests/setup.js'],
     moduleNameMapper: {
-        '\\.(css|less)$': 'jest-css-modules'
-    }
+        '\\.(css|less)$': 'jest-css-modules', 
+    },
+    transformIgnorePatterns: [
+        '/node_modules/(?!(axios)/)'
+    ],
 }

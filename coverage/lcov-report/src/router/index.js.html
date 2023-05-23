@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for components/sub_components/ManVerify.vue</title>
+    <title>Code coverage report for src/router/index.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">components/sub_components</a> ManVerify.vue</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/router</a> index.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>6/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>6/7</span>
             </div>
         
             
@@ -90,51 +90,51 @@
 <a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
-    &lt;div&gt;
-        &lt;Vcode :show="isShow" @success="success" @fail='fail'&gt;&lt;/Vcode&gt;
-    &lt;/div&gt;
-&lt;/template&gt;
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { createRouter, createWebHistory } from 'vue-router'
+import routes from './routes.js'
+import VueCookies from 'vue-cookies';
 &nbsp;
-&lt;script&gt;
-import Vcode from "vue3-puzzle-vcode";
+const router = createRouter({
+    history: createWebHistory(),
+    routes,
+})
 &nbsp;
-export default {
-    emits: ['verified'],
-    props: ['isShow'],
-    components: {
-        Vcode,
-    },
-    methods: {
-        success() {
-            // this.isShow = false;
-            this.$emit('verified');
-        },
-        fail() {}
-    }
-}
-&lt;/script&gt;
+router.beforeEach((to, from, next) =&gt; {
+  //to代表要去的路径
+  //from表示原来的路径
+  //next()通行
+  //验证token,只有存在token的时候，才能跳转到内容页
+  let token = VueCookies.get('user_token');
+  console.log("token: ", token);
+  <span class="missing-if-branch" title="if path not taken" >I</span>if ( token === null &amp;&amp; (to.path === "/InforPage")) {
+<span class="cstat-no" title="statement not covered" >    next("/login");</span>
+  } else {
+    next();
+  }
+});
+&nbsp;
+export default router
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -142,7 +142,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-05-21T13:47:43.754Z
+                at 2023-05-21T14:16:51.005Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
