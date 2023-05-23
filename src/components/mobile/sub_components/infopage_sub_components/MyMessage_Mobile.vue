@@ -18,19 +18,19 @@
         <el-menu-item index="2" @click="Index='2'">我发起的</el-menu-item>
       </el-menu>
       <div v-if="this.Index==='1'">
-        <ul class="infinite-list" style="overflow: auto;display: inline-block">
+        <ul class="infinite-list" style="overflow: auto;display: inline-block;width: 100%">
           <div v-if="revs.length === 0">
             <el-empty description="暂时还没有消息"/>
           </div>
           <div v-for="rev in revs" :key="rev.id"
-               style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 360px;height: 120px ">
+               style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 99%;height: 120px ">
             <div v-if="rev.read===false" style="float: right;padding-top: 50px">
               <el-icon>
                 <Warning/>
               </el-icon>
             </div>
 
-            <h3 style="padding: 0 20px;font-size:20px;height:50px;width:300px;overflow: hidden;"
+            <h3 style="padding: 0 20px;font-size:20px;height:50px;width:95%;overflow: hidden;"
                 @click="clickMsg(rev)">
               {{ rev.title }}
             </h3>
@@ -52,19 +52,19 @@
         </ul>
       </div>
       <div v-if="this.Index==='2'">
-        <ul class="infinite-list" style="overflow: auto;display: inline-block">
+        <ul class="infinite-list" style="overflow: auto;display: inline-block;width: 100%">
           <div v-if="snds.length === 0">
             <el-empty description="暂时还没有消息"/>
           </div>
           <div v-for="snd in snds" :key="snd.id"
-               style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 360px;height: 120px ">
+               style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 120px ">
             <div v-if="snd.read===false" style="float: right;padding-top: 50px">
               <el-icon>
                 <Warning/>
               </el-icon>
             </div>
 
-            <h3 style="padding: 0 20px;font-size:20px;height:50px;width:300px;overflow: hidden;"
+            <h3 style="padding: 0 20px;font-size:20px;height:50px;width:95%;overflow: hidden;"
                 @click="clickMsg(snd)">
               {{ snd.title }}
             </h3>
