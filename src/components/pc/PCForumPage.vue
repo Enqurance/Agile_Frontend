@@ -11,7 +11,18 @@
             <div class="avatar">
               <img :src="this.imageUrl" alt="avatar" class="avatar-img">
             </div>
-            <el-input placeholder="Search"></el-input>
+
+            <div class="search-wrapper">
+              <el-input v-model="search_context" placeholder="Search" @input="handleSearchInput"></el-input>
+              <div v-show="showDropdown" class="dropdown">
+                <div class="scrollable">
+                  <div v-for="item in searchResults" :key="item.post_id" @click="handleSelect(item.post_id)">
+                    {{ item.post_title }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <el-button @click="showNewPostDialog">新建帖子</el-button>
             <new-post ref="child"></new-post>
           </div>
@@ -23,8 +34,10 @@
                   <div class="card-content">{{ post.content }}</div>
                 </el-card>
               </router-link>
-              <div v-if="isLoading">加载中...</div>
             </div>
+            <el-pagination v-if="totalPosts > 0" @current-change="handlePageChange" v-model="currentPage"
+              :page-size="limit" :total="totalPosts">
+            </el-pagination>
           </div>
         </div>
         <div class="right"></div>
@@ -49,26 +62,23 @@ export default {
 
   data() {
     return {
-      searchText: '',
-      searchPosts: [],
-      selectedPost: null,
-      // posts: [
-      // ],
-
+      search_context: '',
+      searchResults: [],
+      showDropdown: true
     };
   },
 
   setup() {
+    const currentPage = ref(1);
+    const totalPosts = ref(0);
+
     const { proxy } = getCurrentInstance();
     const imageUrl = ref('');
     const posts = ref([]); // 存储帖子列表
-    const isLoading = ref(false); // 是否正在加载中
     const offset = ref(0); // 跳过的帖子数量
     const limit = 5; // 每页显示的帖子数量
 
     const loadPosts = (offset) => {
-      console.log(offset.value)
-      isLoading.value = true;
       proxy.$axios.post('/forum/post/getPosts', null, {
         params: {
           offset: parseInt(offset.value),
@@ -78,11 +88,10 @@ export default {
           'token': proxy.$cookies.get('user_token')
         }
       }).then((res) => {
-        posts.value = [...posts.value, ...res.data.data];
-        isLoading.value = false;
+        posts.value = res.data.data.retPosts;
+        totalPosts.value = res.data.data.length;
       }).catch((error) => {
         console.log(error);
-        isLoading.value = false;
       });
     };
 
@@ -90,17 +99,47 @@ export default {
       loadPosts(offset);
     });
 
-    window.addEventListener('scroll', () => {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        offset.value += limit;
-        loadPosts(offset);
-      }
-    });
+    const handlePageChange = (currentPage) => {
+      offset.value = (currentPage - 1) * limit;
+      loadPosts(offset);
+    };
 
-    return { imageUrl, posts, isLoading, };
+
+    return {
+      imageUrl, posts, currentPage, totalPosts, limit,
+      handlePageChange
+    };
   },
 
   methods: {
+    handleSearchInput() {
+      let that = this
+
+      that.$axios.post('/forum/post/searchPosts', null, {
+        params: {
+          searchContext: that.search_context,
+        },
+        headers: {
+          'token': that.$cookies.get('user_token')
+        }
+      }).then((res) => {
+        if (res.data.code === 200) {
+          that.searchResults = res.data.data
+          console.log(res.data.data)
+        }
+        else {
+          that.$message({
+            message: res.data.message,
+            type: 'error'
+          })
+        }
+      }).catch((res) => console.log(res))
+
+    },
+    handleSelect(id) {
+      this.$router.push(`/Forum/${id}`);
+    },
+
     showNewPostDialog() {
       this.$refs.child.dialogVisible = true
     },
@@ -129,32 +168,6 @@ export default {
         this.isReload = true;
       })
     },
-
-
-    search() {
-      console.log('搜索内容：', this.searchText);
-      if (this.searchText === '') {
-        return this.$message.error("搜索内容不能为空")
-      }
-
-      let that = this
-      that.$axios.post('/forum/post/searchPosts', {
-        searchContext: that.searchText,
-      }, {
-        headers: {
-          'token': that.$cookies.get('user_token')
-        }
-      }).then((response) => {
-        that.searchPosts = response.data.posts
-      })
-    },
-
-    handleSelection() {
-      if (this.selectedPost) {
-        const postId = this.selectedPost.post_id;
-        this.$router.push(`/Forum/${postId}`);
-      }
-    }
   },
 
   mounted() {
@@ -218,5 +231,31 @@ export default {
 
 .custom-link {
   text-decoration: none;
+}
+
+.search-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.scrollable {
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+}
+
+.dropdown>div {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdown>div:hover {
+  background-color: #f5f5f5;
 }
 </style>

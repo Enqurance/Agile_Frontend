@@ -18,7 +18,7 @@
         <el-menu-item index="2" @click="Index='2'">我的评论</el-menu-item>
       </el-menu>
       <div v-if="this.Index==='1'">
-        <ul class="infinite-list" style="overflow: auto;display: inline-block">
+        <ul class="infinite-list" style="overflow: auto;display: inline-block;width: 100%">
         <div v-if="floors.length === 0">
           <el-empty description="暂时还没有楼层"/>
         </div>
@@ -58,7 +58,7 @@
       </ul>
       </div>
       <div v-if="this.Index==='2'">
-        <ul class="infinite-list" style="overflow: auto;display: inline-block">
+        <ul class="infinite-list" style="overflow: auto;display: inline-block;width: 100%">
           <div v-if="comments.length === 0">
             <el-empty description="暂时还没有评论"/>
           </div>
@@ -108,7 +108,7 @@ export default {
   components: {},
   data() {
     return {
-      Index:0,
+      Index:'1',
       activeIndex:'1',
       comments: [
       ],

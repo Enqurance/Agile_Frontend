@@ -1,7 +1,7 @@
 <template>
   <div
       style="padding-left: 10%;padding-top:10%;background: rgb(246,246,246);width: 90%">
-    <div style="width: 90%">
+    <div style="width: 95%">
       <div style="margin-bottom: 3%;font-size: 20px;">
         我的回复
         <!--      <el-button style="margin-left: 40%" size="large" type="primary">-->
@@ -12,31 +12,36 @@
           :default-active="activeIndex"
           class="el-menu-demo"
           mode="horizontal"
+          style="width: 90%;"
       >
         <el-menu-item index="1" @click="Index='1'">我收到的</el-menu-item>
         <div class="flex-grow"/>
         <el-menu-item index="2" @click="Index='2'">我发起的</el-menu-item>
       </el-menu>
       <div v-if="this.Index==='1'">
-        <ul class="infinite-list" style="overflow: auto;display: inline-block">
+        <ul class="infinite-list" style="overflow: auto;display: inline-block;width: 100%">
           <div v-if="revs.length === 0">
             <el-empty description="暂时还没有消息"/>
           </div>
           <div v-for="rev in revs" :key="rev.id"
-               style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 360px;height: 120px ">
+               style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 90%;height: 120px ">
             <div v-if="rev.read===false" style="float: right;padding-top: 50px">
               <el-icon>
                 <Warning/>
               </el-icon>
             </div>
 
-            <h3 style="padding: 0 20px;font-size:20px;height:50px;width:300px;overflow: hidden;"
+            <h3 style="padding: 0 20px;font-size:18px;height:50px;width:80%;overflow: hidden;"
                 @click="clickMsg(rev)">
               {{ rev.title }}
             </h3>
-            <p style="padding: 0 20px;font-size:16px;height:20px;width:300px;overflow: hidden;">
+            <p style="padding: 0 20px;font-size:16px;height:20px;width:70%;overflow: hidden;display: inline-block">
               {{ rev.time }}
             </p>
+            <el-button style="float: right; display: inline-block" type="danger" size="small"
+                       @click="rev.deleteDialog=true">
+              删除
+            </el-button>
             <el-dialog v-model="rev.detail" title="消息详情" width="80%" center>
             <span style="text-align: center">
               {{ rev.content }}
@@ -52,25 +57,29 @@
         </ul>
       </div>
       <div v-if="this.Index==='2'">
-        <ul class="infinite-list" style="overflow: auto;display: inline-block">
+        <ul class="infinite-list" style="overflow: auto;display: inline-block;width: 97%">
           <div v-if="snds.length === 0">
             <el-empty description="暂时还没有消息"/>
           </div>
           <div v-for="snd in snds" :key="snd.id"
-               style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 360px;height: 120px ">
+               style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 90%;height: 120px ">
             <div v-if="snd.read===false" style="float: right;padding-top: 50px">
               <el-icon>
                 <Warning/>
               </el-icon>
             </div>
 
-            <h3 style="padding: 0 20px;font-size:20px;height:50px;width:300px;overflow: hidden;"
+            <h3 style="padding: 0 20px;font-size:18px;height:50px;width:80%;overflow: hidden;"
                 @click="clickMsg(snd)">
               {{ snd.title }}
             </h3>
-            <p style="padding: 0 20px;font-size:16px;height:20px;width:300px;overflow: hidden;">
+            <p style="padding: 0 20px;font-size:16px;height:20px;width:70%;overflow: hidden;display: inline-block">
               {{ snd.time }}
             </p>
+            <el-button style="float: right; display: inline-block" type="danger" size="small"
+                       @click="snd.deleteDialog=true">
+              删除
+            </el-button>
             <el-dialog v-model="snd.detail" title="消息详情" width="80%" center>
             <span style="text-align: center">
               {{ snd.content }}
@@ -99,7 +108,7 @@ export default {
   components: {Warning},
   data() {
     return {
-      Index: 0,
+      Index: '1',
       activeIndex: '1',
       revs: [
 
@@ -126,6 +135,31 @@ export default {
         }
         msg.detail = true;
       }
+    },
+    deleteMessage(msg) {
+      let that = this
+      msg.deleteDialog = false;
+      console.log(msg);
+      that.$axios.delete('/InfoPage/MyMessage/deleteMessage/' + msg.id, {
+        headers: {
+          'token': that.$cookies.get('user_token')
+        }
+      }).then((res) => {
+        if (res.data.code === 200) {
+          console.log("删除的帖子id为：" + msg.id)
+          this.$message({
+            type: 'info',
+            message: '删除成功',
+          });
+          this.queryAllSnd();
+          this.queryAllRev();
+        } else {
+          this.$message({
+            message: res.data.message,
+            type: 'error'
+          })
+        }
+      }).catch((res) => console.log(res))
     },
     readMsg(msg) {
       let that = this;
@@ -212,7 +246,7 @@ export default {
   justify-content: center;
   height: 50px;
   background: var(--el-color-primary-light-9);
-  margin: 30px;
+  margin: 0;
   color: var(--el-color-primary);
 }
 </style>

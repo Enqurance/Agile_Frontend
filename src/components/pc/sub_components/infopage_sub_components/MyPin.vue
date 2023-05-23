@@ -80,7 +80,8 @@ export default {
 
 <template>
     <div v-if="isReload">
-    <ul class="infinite-list" style="overflow: auto" >
+    <div  v-if="count > 0">
+    <ul class="infinite-list" style="overflow: auto">
         <li v-for="i in count" :key="i" class="infinite-list-item">
             <el-card class="pinCard">
                 <div class="textItem">
@@ -98,6 +99,8 @@ export default {
             </el-card>
         </li>
     </ul>
+    </div>
+    <div v-else><el-empty description="该用户没有私有钉子" /></div>
     </div>
 </template>
 
