@@ -561,17 +561,15 @@
 <a name='L496'></a><a href='#L496'>496</a>
 <a name='L497'></a><a href='#L497'>497</a>
 <a name='L498'></a><a href='#L498'>498</a>
-<a name='L499'></a><a href='#L499'>499</a>
-<a name='L500'></a><a href='#L500'>500</a>
-<a name='L501'></a><a href='#L501'>501</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L499'></a><a href='#L499'>499</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1017,25 +1015,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1058,8 +1054,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1068,7 +1064,7 @@
         &lt;PlaceSearch class="on_div place_search" @submit_p_id="(e) =&gt; concentrate_pin(e)" :click_map="close_search"
                      @search_close="close_search=false"/&gt;
         &lt;div class="on_div" style="width: 100%;" &gt;
-            &lt;MapPinInfo :id="show_marker_id" :is_examine="false" @close_drawer="show_marker_id = -1" @update_info="update_pin"/&gt;
+            &lt;MobileMapPinInfo :id="show_marker_id" @close_drawer="show_marker_id=-1" :is_examine="false" @update_info="update_pin"/&gt;
 &nbsp;
             &lt;div class="type_class"&gt;
                 &lt;el-checkbox-group v-model="checkedTypes" style="padding-left: 10%; width: 100px" @change="markers_change"&gt;
@@ -1107,7 +1103,7 @@
 import AMapLoader from '@amap/amap-jsapi-loader'
 import {shallowRef} from "@vue/reactivity";
 import {ElMessageBox, ElMessage} from "element-plus";
-import MapPinInfo from "@/components/sub_components/MapPinInfo.vue";
+import MobileMapPinInfo from "@/components/mobile/sub_components/MobileMapPinInfo.vue";
 import MapPinAdd from "@/components/sub_components/mappage_sub_components/MapPinAdd.vue";
 import PlaceSearch from "@/components/sub_components/mappage_sub_components/PlaceSearch.vue";
 import global from "@/global";
@@ -1119,7 +1115,7 @@ import {ref} from "vue";
 export default {
     name: "MobileMapHomepage",
     components: {
-        MapPinInfo,
+        MobileMapPinInfo,
         MapPinAdd,
         PlaceSearch,
         SwitchPos
@@ -1462,7 +1458,6 @@ export default {
             this.map.setZoom(18)
         },
         update_pin(e) {
-            // console.log(this.markers_info[e.id])
             let info = this.markers_info[e.id]
             if (info.name !== e.name || info.type !== e.type) {
                 // console.log(1)
@@ -1480,7 +1475,6 @@ export default {
                     content: this.markers_info[e.id].name,
                     direction: 'top-center'
                 })
-&nbsp;
                 // console.log(this.markers_info[e.id])
             }
         },
@@ -1558,8 +1552,8 @@ export default {
     margin-left: 3%<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
 }
 &nbsp;
-el-menu {
-    position: relative;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+el-menu {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+    position: relative;
     width: 20%
 }
 &nbsp;
@@ -1570,7 +1564,7 @@ el-menu {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-05-21T14:16:51.005Z
+                at 2023-05-23T12:24:48.165Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
