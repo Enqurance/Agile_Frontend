@@ -23,7 +23,7 @@
             <el-empty description="暂时还没有消息"/>
           </div>
           <div v-for="rev in revs" :key="rev.id"
-               style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 99%;height: 120px ">
+               style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 120px ">
             <div v-if="rev.read===false" style="float: right;padding-top: 50px">
               <el-icon>
                 <Warning/>
@@ -34,7 +34,7 @@
                 @click="clickMsg(rev)">
               {{ rev.title }}
             </h3>
-            <p style="padding: 0 20px;font-size:16px;height:20px;width:300px;overflow: hidden;">
+            <p style="padding: 0 20px;font-size:16px;height:20px;width:95%;overflow: hidden;">
               {{ rev.time }}
             </p>
             <el-dialog v-model="rev.detail" title="消息详情" width="80%" center>
@@ -52,7 +52,7 @@
         </ul>
       </div>
       <div v-if="this.Index==='2'">
-        <ul class="infinite-list" style="overflow: auto;display: inline-block;width: 100%">
+        <ul class="infinite-list" style="overflow: auto;display: inline-block;width: 97%">
           <div v-if="snds.length === 0">
             <el-empty description="暂时还没有消息"/>
           </div>
@@ -68,7 +68,7 @@
                 @click="clickMsg(snd)">
               {{ snd.title }}
             </h3>
-            <p style="padding: 0 20px;font-size:16px;height:20px;width:300px;overflow: hidden;">
+            <p style="padding: 0 20px;font-size:16px;height:20px;width:95%;overflow: hidden;">
               {{ snd.time }}
             </p>
             <el-dialog v-model="snd.detail" title="消息详情" width="80%" center>
