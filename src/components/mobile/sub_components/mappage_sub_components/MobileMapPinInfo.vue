@@ -107,7 +107,7 @@
             </div>
         </van-dialog>
 
-        <van-dialog :title="dialogTitle" style="width: 80%; padding: 3% 0; overflow-y: auto; background: #f0f0f0"
+        <van-dialog :title="dialogTitle" style="width: 80%; padding: 3% 0; background: #fafafa"
                     :z-index="2000"
                     v-model:show="dialogVisible" :showCancelButton="true" @confirm="submitForm"
         >

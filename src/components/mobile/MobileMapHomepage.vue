@@ -17,7 +17,7 @@
         <div :style="{width: screen_params.screenX+'px', height: screen_params.screenY+'px'}" class="bottom_div">
             <div id="container" style="width: 100%; height: 100%" @touchend="close_search=true"></div>
         </div>
-        <MapPinAdd :is_add_pin="is_add_marker" :lnglat="click_marker_lnglat" @addMarker="(e) => new_pin(e)"
+        <MobileMapPinAdd :is_add_pin="is_add_marker" :lnglat="click_marker_lnglat" @addMarker="(e) => new_pin(e)"
                    @close_dialog="this.is_add_marker = false"/>
         <SwitchPos
             :is_switch="is_switch"
@@ -42,8 +42,8 @@
 import AMapLoader from '@amap/amap-jsapi-loader'
 import {shallowRef} from "@vue/reactivity";
 import {ElMessageBox, ElMessage} from "element-plus";
-import MobileMapPinInfo from "@/components/mobile/sub_components/MobileMapPinInfo.vue";
-import MapPinAdd from "@/components/sub_components/mappage_sub_components/MapPinAdd.vue";
+import MobileMapPinInfo from "@/components/mobile/sub_components/mappage_sub_components/MobileMapPinInfo.vue";
+import MapPinAdd from "@/components/pc/sub_components/mappage_sub_components/MapPinAdd.vue";
 import PlaceSearch from "@/components/sub_components/mappage_sub_components/PlaceSearch.vue";
 import global from "@/global";
 import '../../assets/PinIcon/font2/iconfont.css'
@@ -55,7 +55,6 @@ export default {
     name: "MobileMapHomepage",
     components: {
         MobileMapPinInfo,
-        MapPinAdd,
         PlaceSearch,
         SwitchPos
     },
