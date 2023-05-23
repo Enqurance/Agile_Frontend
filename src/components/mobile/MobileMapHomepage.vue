@@ -240,7 +240,7 @@ export default {
                     that.menu_xy = [e.pixel.x, e.pixel.y]
                     that.menu_isopen = true
 
-                }, 1000);
+                }, 2000);
             })
 
             this.map.on('touchmove', () => {
@@ -376,7 +376,7 @@ export default {
                             })
                         })
                     }
-                }, 1000);
+                }, 2000);
             });
 
             marker.on('touchmove', () => {

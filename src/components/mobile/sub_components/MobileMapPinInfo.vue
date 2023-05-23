@@ -1,16 +1,17 @@
 <template>
     <div>
         <van-dialog v-model:show="drawer" :z-index="1000" style="height: 80%; overflow-y: auto; padding: 3% 0"
-                    confirm-button-text="关闭" @confirm="() => {drawer=false; this.$emit('close_drawer')}">
-            <div style="margin-top: 0px;margin-bottom: 0px;">
-                <h1 style="margin-left: 10px;margin-top: 0px;padding: 0px">{{ info.name }}</h1>
+                    :scrollable="true" confirm-button-text="关闭" ref="content"
+                    @confirm="() => {drawer=false; this.$emit('close_drawer')}">
+            <div style="margin-top: 0;margin-bottom: 0;">
+                <h1 style="margin-left: 10px;margin-top: 0;padding: 0">{{ info.name }}</h1>
             </div>
 
             <div class="pin-info">
                 <el-card :body-style="{ padding: '10px' }">
                     <div
-                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0px;">
-                        <h4 style="margin-bottom: 0px;">信息</h4>
+                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0;">
+                        <h4 style="margin-bottom: 0;">信息</h4>
                         <el-button
                             v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine===false && pin_state===0"
                             @touchend="editInfo">
@@ -144,8 +145,9 @@
 
 <script>
 import global from '@/global'
-import {EditOutlined, CheckOutlined, CloseOutlined} from '@ant-design/icons-vue';
+import {EditOutlined} from '@ant-design/icons-vue';
 import {ElMessageBox, ElMessage} from "element-plus";
+import {ref} from 'vue'
 
 export default {
     props: {
@@ -157,11 +159,14 @@ export default {
         'update_info'
     ],
     setup() {
+        const contentRef = ref(null)
+
         const valid_type = (val) => {
             return val >= 1 && val <= 7
         }
         return {
-            valid_type
+            valid_type,
+            contentRef
         }
     },
     data() {
@@ -210,11 +215,13 @@ export default {
             dialogTitle: '编辑信息'
         }
     },
-
     components: {
         EditOutlined,
     },
-
+    onMounted() {
+        console.log(this.contentRef)
+        this.contentRef.value.scrollTop = 0
+    },
     methods: {
         _get_pin_type(pin_type_id) {
             return global.get_pin_type(pin_type_id)
