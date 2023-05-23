@@ -3,34 +3,12 @@
         <van-dialog v-model:show="drawer" :z-index="1000" style="height: 80%; overflow-y: auto; padding: 3% 0"
                     confirm-button-text="关闭" @confirm="() => {drawer=false; this.$emit('close_drawer')}">
             <div style="margin-top: 0px;margin-bottom: 0px;">
-                <el-button v-if="info.visibility===0 && this.$cookies.get('user_type')==='0'" class="float_right"
-                           size="large" :style="{background: _get_pin_color_state(pin_state)}" @touchend="apply_public">
-                    {{ _get_pin_state(pin_state) }}
-                </el-button>
-                <el-button v-if="info.visibility===1 && this.$cookies.get('user_type')==='0'" class="float_right"
-                           size="large" :style="{background: _get_pin_color_state(pin_state)}" @touchend="() => {
-                    if (this.pin_state === 1) {
-                this.$message({
-                    type: 'warning',
-                    message: '已申请，管理员将尽快审批！',
-                    showClose: true,
-                    grouping: true
-                })
-            }
-            else {
-                    show_feedback=true; this.feedback.title=''
-                    this.feedback.reason=''
-                    }
-                }">{{ _get_public_pin_state(pin_state) }}
-                </el-button>
-
                 <h1 style="margin-left: 10px;margin-top: 0px;padding: 0px">{{ info.name }}</h1>
             </div>
 
             <div class="pin-info">
                 <el-card :body-style="{ padding: '10px' }">
-                    <div
-                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0px;">
                         <h4 style="margin-bottom: 0px;">信息</h4>
                         <el-button
                             v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine===false && pin_state===0"
@@ -91,6 +69,19 @@
                     <p>此处预留跳转链接</p>
                 </el-card>
             </div> -->
+            <div style="text-align: center">
+                <div style="width: 98%; display: inline-block">
+                    <van-button v-if="info.visibility===0 && this.$cookies.get('user_type')==='0'"
+                                size="large" :style="{background: _get_pin_color_state(pin_state)}" @touchend="apply_public">
+                        {{ _get_pin_state(pin_state) }}
+                    </van-button>
+                    <van-button v-if="info.visibility===1 && this.$cookies.get('user_type')==='0'"
+                                size="large" :style="{background: _get_pin_color_state(pin_state)}" @touchend="open_feedback">
+                        {{ _get_public_pin_state(pin_state) }}
+                    </van-button>
+                </div>
+            </div>
+
         </van-dialog>
 
         <van-dialog v-model:show="show_feedback" :z-index="2000" style="height: 80%; overflow-y: auto; padding: 3% 0">
@@ -448,6 +439,21 @@ export default {
                         showClose: true
                     })
                 })
+            }
+        },
+
+        open_feedback() {
+            if (this.pin_state === 1) {
+                this.$message({
+                    type: 'warning',
+                    message: '已申请，管理员将尽快审批！',
+                    showClose: true,
+                    grouping: true
+                })
+            }
+            else {
+                this.show_feedback=true; this.feedback.title=''
+                this.feedback.reason=''
             }
         },
 
