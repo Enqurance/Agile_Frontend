@@ -23,8 +23,11 @@
                   <div class="card-content">{{ post.content }}</div>
                 </el-card>
               </router-link>
-              <div v-if="isLoading">加载中...</div>
             </div>
+            <el-pagination v-if="60 > 0" @current-change="handlePageChange" v-model="currentPage" :page-size="limit"
+              :total="60">
+              <!-- total 改接口 -->
+            </el-pagination>
           </div>
         </div>
         <div class="right"></div>
@@ -59,16 +62,16 @@ export default {
   },
 
   setup() {
+    const currentPage = ref(1);
+    const totalPosts = ref(0);
+
     const { proxy } = getCurrentInstance();
     const imageUrl = ref('');
     const posts = ref([]); // 存储帖子列表
-    const isLoading = ref(false); // 是否正在加载中
     const offset = ref(0); // 跳过的帖子数量
     const limit = 5; // 每页显示的帖子数量
 
     const loadPosts = (offset) => {
-      console.log(offset.value)
-      isLoading.value = true;
       proxy.$axios.post('/forum/post/getPosts', null, {
         params: {
           offset: parseInt(offset.value),
@@ -78,11 +81,10 @@ export default {
           'token': proxy.$cookies.get('user_token')
         }
       }).then((res) => {
-        posts.value = [...posts.value, ...res.data.data];
-        isLoading.value = false;
+        posts.value = res.data.data;
+        totalPosts.value = res.data.total;
       }).catch((error) => {
         console.log(error);
-        isLoading.value = false;
       });
     };
 
@@ -90,14 +92,16 @@ export default {
       loadPosts(offset);
     });
 
-    window.addEventListener('scroll', () => {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        offset.value += limit;
-        loadPosts(offset);
-      }
-    });
+    const handlePageChange = (currentPage) => {
+      offset.value = (currentPage - 1) * limit;
+      loadPosts(offset);
+    };
 
-    return { imageUrl, posts, isLoading, };
+
+    return {
+      imageUrl, posts, currentPage, totalPosts,
+      handlePageChange
+    };
   },
 
   methods: {
