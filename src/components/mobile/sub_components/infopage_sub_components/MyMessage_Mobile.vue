@@ -31,13 +31,17 @@
               </el-icon>
             </div>
 
-            <h3 style="padding: 0 20px;font-size:20px;height:50px;overflow: hidden;"
+            <h3 style="padding: 0 20px;font-size:18px;height:50px;width:80%;overflow: hidden;"
                 @click="clickMsg(rev)">
               {{ rev.title }}
             </h3>
-            <p style="padding: 0 20px;font-size:16px;height:20px;overflow: hidden;">
+            <p style="padding: 0 20px;font-size:16px;height:20px;width:70%;overflow: hidden;display: inline-block">
               {{ rev.time }}
             </p>
+            <el-button style="float: right; display: inline-block" type="danger" size="small"
+                       @click="rev.deleteDialog=true">
+              删除
+            </el-button>
             <el-dialog v-model="rev.detail" title="消息详情" width="80%" center>
             <span style="text-align: center">
               {{ rev.content }}
@@ -65,13 +69,17 @@
               </el-icon>
             </div>
 
-            <h3 style="padding: 0 20px;font-size:20px;height:50px;width:95%;overflow: hidden;"
+            <h3 style="padding: 0 20px;font-size:18px;height:50px;width:80%;overflow: hidden;"
                 @click="clickMsg(snd)">
               {{ snd.title }}
             </h3>
-            <p style="padding: 0 20px;font-size:16px;height:20px;width:95%;overflow: hidden;">
+            <p style="padding: 0 20px;font-size:16px;height:20px;width:70%;overflow: hidden;display: inline-block">
               {{ snd.time }}
             </p>
+            <el-button style="float: right; display: inline-block" type="danger" size="small"
+                       @click="snd.deleteDialog=true">
+              删除
+            </el-button>
             <el-dialog v-model="snd.detail" title="消息详情" width="80%" center>
             <span style="text-align: center">
               {{ snd.content }}
@@ -127,6 +135,31 @@ export default {
         }
         msg.detail = true;
       }
+    },
+    deleteMessage(msg) {
+      let that = this
+      msg.deleteDialog = false;
+      console.log(msg);
+      that.$axios.delete('/InfoPage/MyMessage/deleteMessage/' + msg.id, {
+        headers: {
+          'token': that.$cookies.get('user_token')
+        }
+      }).then((res) => {
+        if (res.data.code === 200) {
+          console.log("删除的帖子id为：" + msg.id)
+          this.$message({
+            type: 'info',
+            message: '删除成功',
+          });
+          this.queryAllSnd();
+          this.queryAllRev();
+        } else {
+          this.$message({
+            message: res.data.message,
+            type: 'error'
+          })
+        }
+      }).catch((res) => console.log(res))
     },
     readMsg(msg) {
       let that = this;
