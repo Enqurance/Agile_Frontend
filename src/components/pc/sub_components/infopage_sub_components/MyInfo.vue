@@ -378,7 +378,7 @@ export default {
                 </el-aside>
                 <el-main>
                     <div>
-                        <p>我的钉子</p>
+                        <p style="font-size: 25px;">我的钉子</p>
                         <MyPin></MyPin>
                     </div>
                 </el-main>

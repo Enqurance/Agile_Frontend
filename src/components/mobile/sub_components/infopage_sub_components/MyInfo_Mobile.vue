@@ -192,6 +192,7 @@ export default {
                 }).catch((res) => console.log(res))
         },
         chPaConfirm() {
+            console.log("chpaConfirm")
             if (this.newPassword !== this.tempPassword) {
                 this.$message({
                     message: "两次新密码不一致",
@@ -384,15 +385,16 @@ export default {
             </el-header>
             <el-main>
                 <div>
-                    <p>我的钉子</p>
+                    <p style="font-size: 20px;">我的钉子</p>
                     <MyPin_Mobile></MyPin_Mobile>
                 </div>
             </el-main>
         </el-container>
         <!--edit Dialog-->
 
-        <el-dialog v-model="editVisible" title="请编辑你的信息" width="50%">
-            <el-form :model="user" label-width="100px">
+        <van-dialog v-model:show="editVisible" title="请编辑你的信息" show-cancel-button style="height: 55%;"
+            @confirm="editConfirm" @cancel="editCancel">
+            <el-form :model="user" label-width="100px" class="form">
                 <el-form-item label="用户名">
                     <el-input v-model="tempUser.name" />
                 </el-form-item>
@@ -422,18 +424,11 @@ export default {
                     </el-radio-group>
                 </el-form-item>
             </el-form>
-            <template #footer>
-                <span class="dialog-footer">
-                    <el-button @click="editCancel">取消</el-button>
-                    <el-button type="primary" @click="editConfirm">
-                        确认
-                    </el-button>
-                </span>
-            </template>
-        </el-dialog>
+        </van-dialog>
 
-        <el-dialog v-model="changePasswordVisible" title="修改密码" width="30%">
-            <el-form :model="user" label-width="120px">
+        <van-dialog v-model:show="changePasswordVisible" title="修改密码" show-cancel-button style="height: 38%;"
+            @confirm="chPaConfirm" @cancel="chPaCancel">
+            <el-form :model="user" label-width="120px" class="form">
                 <el-form-item label="请输入当前密码">
                     <el-input v-model="curPassword" />
                 </el-form-item>
@@ -444,28 +439,15 @@ export default {
                     <el-input v-model="tempPassword" />
                 </el-form-item>
             </el-form>
-            <template #footer>
-                <span class="dialog-footer">
-                    <el-button @click="chPaCancel">取消</el-button>
-                    <el-button type="primary" @click="chPaConfirm">
-                        确认
-                    </el-button>
-                </span>
-            </template>
-        </el-dialog>
+        </van-dialog>
         <!--contactUs Dialog-->
-        <el-dialog v-model="contactUsVisible" title="联系我们" width="30%">
+        <van-dialog v-model:show="contactUsVisible" title="联系我们" show-cancel-button style="height: 38%;"
+            @confirm="coUsCancel" @cancel="coUsConfirm">
+            <div style="padding-left: 8%; padding-top: 8%; padding-right: 10%;">
             <el-input v-model="suggestion" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea"
-                placeholder="Please input" />
-            <template #footer>
-                <span class="dialog-footer">
-                    <el-button @click="coUsCancel">取消</el-button>
-                    <el-button type="primary" @click="coUsConfirm">
-                        确认
-                    </el-button>
-                </span>
-            </template>
-        </el-dialog>
+                placeholder="Please input"/>
+            </div>
+        </van-dialog>
     </div>
 </template>
 
@@ -649,5 +631,14 @@ a {
 .el-form-item {
     width: 100%;
     text-align: center;
+}
+.form {
+    padding-top: 8%;
+    padding-right: 10%;
+}
+.dialog-footer {
+    padding-left: 20%;
+    padding-right: 20%;
+    padding-bottom: 5%;
 }
 </style>
