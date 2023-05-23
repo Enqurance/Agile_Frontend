@@ -3,6 +3,7 @@ import {ref} from 'vue'
 export default {
     name: "MyPin",
     components: {},
+    inject: ['reload'],
     setup(){
     },
     data(){
@@ -24,6 +25,7 @@ export default {
                 },
             ],
             count: 0,
+            isReload: true,
         }
     },
     mounted() {
@@ -32,49 +34,53 @@ export default {
     methods: {
         init(){
             let that = this;
-            console.log(that.$cookies.get('user_token'))
             that.$axios.get('InfoPage/MyPin/getMyAllPin', 
                 { 
                     headers: { 
                         'token': that.$cookies.get('user_token')
                     },
                 }).then((res) => {
-                    console.log(res.data.data);
                     if (res.data.code === 200) {
                         this.pins = res.data.data;
                         this.count = this.pins.length;
-                        console.log(this.count)
                     } else {
-                        console.log(res);
                     }
                 })
         },
-        deletePin(pid){
+        refreshPins(index) {
+            this.isReload = false;
+            this.pins.splice(index);
+            this.count = this.count - 1;
+            this.$nextTick(() => {
+                this.isReload = true;
+            })
+        },
+        deletePin(pid, index){
             let that = this
-            that.$axios.post('/InfoPage/MyPin/deletePinById', 
-                { pin_id: pid },
+            that.$axios.delete('/map/pin/deletePin/' + pid, 
                 { 
                     headers: { 
                         'token': that.$cookies.get('user_token')
                     },
                 }
             ).then((res) => {
-                 console.log(res)
                 if (res.data.code === 200) {
-                    console.log("init success")
                 } else {
                     this.$message({
                     message: res.data.message,
                     type: 'error'
                     })}
             })
+            this.refreshPins(index);
+            console.log(this.pins);
         },
     }
 }
 </script>
 
 <template>
-    <ul class="infinite-list" style="overflow: auto">
+    <div v-if="isReload">
+    <ul class="infinite-list" style="overflow: auto" >
         <li v-for="i in count" :key="i" class="infinite-list-item">
             <el-card class="pinCard">
                 <div class="textItem">
@@ -85,13 +91,14 @@ export default {
                         <span>简介：{{ pins[i-1].brief }}</span>
                     </el-aside>
                     <el-main>
-                        <el-button @click="deletePin(this.pins[i-1].id)" type="danger">Delete</el-button>
+                        <el-button @click="deletePin(this.pins[i-1].id, i-1)" type="danger">Delete</el-button>
                     </el-main>
                     </el-container>
                 </div>
             </el-card>
         </li>
     </ul>
+    </div>
 </template>
 
 <style scoped>
