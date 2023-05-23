@@ -1,11 +1,18 @@
 <script>
-import {defineComponent} from 'vue'
+import {defineComponent, markRaw} from 'vue'
+import bus from "@/event-bus";
 
 export default defineComponent({
     name: "MobileNavigator",
+    mounted() {
+        bus.on('force-update-tabbar', () => {
+            this.count++
+        })
+    },
     data() {
         return {
-            tabbar_model: 0
+            tabbar_model: 0,
+            count: 0
         }
     },
 })
@@ -13,7 +20,7 @@ export default defineComponent({
 
 <template>
     <div>
-        <van-tabbar v-model="tabbar_model">
+        <van-tabbar :key="count" v-model="tabbar_model" :route="true">
             <van-tabbar-item :key="0" to="/home">Map</van-tabbar-item>
             <van-tabbar-item :key="1" to="/forum">Forum</van-tabbar-item>
             <van-tabbar-item v-if="this.$cookies.get('user_token') !== null" :key="2" to="/InforPage">我的信息</van-tabbar-item>
