@@ -32,23 +32,25 @@ export default {
     },
     methods: {
         init(){
-            console.log("init method!!!!!!!");
+            // console.log("init method!!!!!!!");
             let that = this;
-            console.log(that.$cookies.get('user_token'))
+            // console.log(that.$cookies.get('user_token'))
             that.$axios.get('InfoPage/MyPin/getMyAllPin', 
                 { 
                     headers: { 
                         'token': that.$cookies.get('user_token')
                     },
                 }).then((res) => {
-                    console.log(res.data.data);
+                    // console.log(res.data.data);
                     if (res.data.code === 200) {
                         this.pins= res.data.data;
-                        console.log("init success")
+                        // console.log("init success")
                     } else {
-                        console.log(res);
+                        // console.log(res);
                     }
-                })
+                }).catch((res) => {
+                    console.log(res)
+            })
         },
         deletePin(pid){
             let that = this
@@ -58,12 +60,14 @@ export default {
             ).then((res) => {
                 // console.log(res)
                 if (res.data.code === 200) {
-                    console.log("init success")
+                    // console.log("init success")
                 } else {
                     this.$message({
                     message: res.data.message,
                     type: 'error'
                     })}
+            }).catch((res) => {
+                console.log(res)
             })
         },
     }
