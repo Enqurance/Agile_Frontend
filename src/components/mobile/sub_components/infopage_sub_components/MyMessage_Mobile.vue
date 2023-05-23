@@ -1,7 +1,7 @@
 <template>
   <div
       style="padding-left: 10%;padding-top:10%;background: rgb(246,246,246);width: 90%">
-    <div style="width: 90%">
+    <div style="width: 95%">
       <div style="margin-bottom: 3%;font-size: 20px;">
         我的回复
         <!--      <el-button style="margin-left: 40%" size="large" type="primary">-->
@@ -12,6 +12,7 @@
           :default-active="activeIndex"
           class="el-menu-demo"
           mode="horizontal"
+          style="width: 90%;"
       >
         <el-menu-item index="1" @click="Index='1'">我收到的</el-menu-item>
         <div class="flex-grow"/>
@@ -23,18 +24,18 @@
             <el-empty description="暂时还没有消息"/>
           </div>
           <div v-for="rev in revs" :key="rev.id"
-               style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 120px ">
+               style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 90%;height: 120px ">
             <div v-if="rev.read===false" style="float: right;padding-top: 50px">
               <el-icon>
                 <Warning/>
               </el-icon>
             </div>
 
-            <h3 style="padding: 0 20px;font-size:20px;height:50px;width:95%;overflow: hidden;"
+            <h3 style="padding: 0 20px;font-size:20px;height:50px;overflow: hidden;"
                 @click="clickMsg(rev)">
               {{ rev.title }}
             </h3>
-            <p style="padding: 0 20px;font-size:16px;height:20px;width:95%;overflow: hidden;">
+            <p style="padding: 0 20px;font-size:16px;height:20px;overflow: hidden;">
               {{ rev.time }}
             </p>
             <el-dialog v-model="rev.detail" title="消息详情" width="80%" center>
@@ -57,7 +58,7 @@
             <el-empty description="暂时还没有消息"/>
           </div>
           <div v-for="snd in snds" :key="snd.id"
-               style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 120px ">
+               style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 90%;height: 120px ">
             <div v-if="snd.read===false" style="float: right;padding-top: 50px">
               <el-icon>
                 <Warning/>
@@ -212,7 +213,7 @@ export default {
   justify-content: center;
   height: 50px;
   background: var(--el-color-primary-light-9);
-  margin: 30px;
+  margin: 0;
   color: var(--el-color-primary);
 }
 </style>
