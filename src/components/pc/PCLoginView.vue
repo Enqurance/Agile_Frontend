@@ -30,10 +30,17 @@
 <script>
 import ManVerify from "@/components/sub_components/ManVerify.vue";
 import global from "@/global";
+import { ElButton, ElFormItem, ElInput, ElForm } from 'element-plus';
 
 export default {
     name: "PCLoginPage",
-    components: {ManVerify},
+    components: {
+        ManVerify,
+        ElButton, 
+        ElFormItem,
+        ElInput,
+        ElForm
+    },
     data() {
         return {
             loginForm: {
