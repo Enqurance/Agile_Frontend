@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">43.47% </span>
+                <span class="strong">45.83% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/23</span>
+                <span class='fraction'>11/24</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">43.47% </span>
+                <span class="strong">45.83% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/23</span>
+                <span class='fraction'>11/24</span>
             </div>
         
             
@@ -188,7 +188,14 @@
 <a name='L123'></a><a href='#L123'>123</a>
 <a name='L124'></a><a href='#L124'>124</a>
 <a name='L125'></a><a href='#L125'>125</a>
-<a name='L126'></a><a href='#L126'>126</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L126'></a><a href='#L126'>126</a>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a>
+<a name='L132'></a><a href='#L132'>132</a>
+<a name='L133'></a><a href='#L133'>133</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -268,19 +275,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -290,6 +293,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -313,11 +325,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;script&gt;
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;script&gt;
 import {ref} from 'vue'
 export default {
     name: "MyPin",
     components: {},
+    inject: ['reload'],
     setup(){
     },
     data(){
@@ -339,6 +354,7 @@ export default {
                 },
             ],
             count: 0,
+            isReload: true,
         }
     },
     mounted() {
@@ -347,49 +363,53 @@ export default {
     methods: {
         init(){
             let that = this;
-            console.log(that.$cookies.get('user_token'))
             that.$axios.get('InfoPage/MyPin/getMyAllPin', 
                 { 
                     headers: { 
                         'token': that.$cookies.get('user_token')
                     },
                 }).then((res) =&gt; {
-                    console.log(res.data.data);
                     if (res.data.code === 200) {
                         this.pins = res.data.data;
                         this.count = this.pins.length;
-                        console.log(this.count)
                     } else {
-                        console.log(res);
                     }
                 })
         },
-        deletePin(pid){
+        refreshPins(index) {
+            this.isReload = false;
+            this.pins.splice(index);
+            this.count = this.count - 1;
+            this.$nextTick(() =&gt; {
+                this.isReload = true;
+            })
+        },
+        deletePin(pid, index){
             let that = this
-            that.$axios.post('/InfoPage/MyPin/deletePinById', 
-                { pin_id: pid },
+            that.$axios.delete('/map/pin/deletePin/' + pid, 
                 { 
                     headers: { 
                         'token': that.$cookies.get('user_token')
                     },
                 }
             ).then((res) =&gt; {
-                 console.log(res)
                 if (res.data.code === 200) {
-                    console.log("init success")
                 } else {
                     this.$message({
                     message: res.data.message,
                     type: 'error'
                     })}
             })
+            this.refreshPins(index);
+            console.log(this.pins);
         },
     }
 }
 &lt;/script&gt;
 &nbsp;
 &lt;template&gt;
-    &lt;ul class="infinite-list" style="overflow: auto"&gt;
+    &lt;div v-if="isReload"&gt;
+    &lt;ul class="infinite-list" style="overflow: auto" &gt;
         &lt;li v-for="i in count" :key="i" class="infinite-list-item"&gt;
             &lt;el-card class="pinCard"&gt;
                 &lt;div class="textItem"&gt;
@@ -400,52 +420,53 @@ export default {
                         &lt;span&gt;简介：{{ pins[i-1].brief }}&lt;/span&gt;
                     &lt;/el-aside&gt;
                     &lt;el-main&gt;
-                        &lt;el-button @click="deletePin(this.pins[i-1].id)" type="danger"&gt;Delete&lt;/el-button&gt;
+                        &lt;el-button @click="deletePin(this.pins[i-1].id, i-1)" type="danger"&gt;Delete&lt;/el-button&gt;
                     &lt;/el-main&gt;
                     &lt;/el-container&gt;
                 &lt;/div&gt;
             &lt;/el-card&gt;
         &lt;/li&gt;
     &lt;/ul&gt;
+    &lt;/div&gt;
 &lt;/template&gt;
 &nbsp;
 &lt;style scoped&gt;
 .infinite-list {
   height: 400px;
   width: 80%;
-  padding: 0;
-  margin: 0;
-  list-st<span class="fstat-no" title="function not covered" >yle: no</span>ne;
+  padding<span class="fstat-no" title="function not covered" >: 0;</span>
+  margin: 0;<span class="cstat-no" title="statement not covered" ></span>
+  list-style: none;<span class="cstat-no" title="statement not covered" ></span>
 }<span class="cstat-no" title="statement not covered" ></span>
-.infinite-list .infinite-list-i<span class="cstat-no" title="statement not covered" >tem {</span>
+.infinite-list .infinite-list-item<span class="cstat-no" title="statement not covered" > {</span>
   display: flex;<span class="cstat-no" title="statement not covered" ></span>
-  align-items: center;<span class="cstat-no" title="statement not covered" ></span>
-  justify-content: center;<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  height: 120px;<span class="fstat-no" title="function not covered" ></span></span>
-  ba<span class="cstat-no" title="statement not covered" >ckground: var(--el-color-primary-light-9);</span>
+<span class="cstat-no" title="statement not covered" >  align-items: center;<span class="fstat-no" title="function not covered" ></span></span>
+  ju<span class="cstat-no" title="statement not covered" >stify-content: center;</span>
+  height: 120px;
+  background: var(--el-color-primary-light-9);
   margin: 10px;
   color: var(--el-color-primary);
 }
-.infinite-list .infinite-list-item + .list-item {
-  margin-top: 5px;
-}<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-.pinCard{
-    width: 100%;
-    height: 100%;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+.infinite-list .infinite-list-ite<span class="fstat-no" title="function not covered" >m </span>+ .l<span class="cstat-no" title="statement not covered" >ist-item {</span>
+  margin-top: 5px;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
 }
-.textItem{
+&nbsp;
+.pinCard{<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
     width: 100%;
-    height: 100%;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-}<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
-&lt;/style&gt;</pre></td></tr></table></pre>
+    height: 100%;
+}
+.textItem{<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+    width: 100%;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+    height: 100%;
+}
+&lt;/style&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-05-23T12:24:48.165Z
+                at 2023-05-23T13:27:29.077Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

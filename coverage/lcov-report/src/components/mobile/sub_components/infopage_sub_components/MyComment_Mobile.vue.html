@@ -470,28 +470,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -500,6 +483,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -542,8 +544,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
   &lt;div
@@ -565,7 +565,7 @@
         &lt;el-menu-item index="2" @click="Index='2'"&gt;我的评论&lt;/el-menu-item&gt;
       &lt;/el-menu&gt;
       &lt;div v-if="this.Index==='1'"&gt;
-<span class="fstat-no" title="function not covered" ></span>        &lt;ul class="infinite-list" style="overflow: auto;display: inline-block"&gt;
+<span class="fstat-no" title="function not covered" ></span>        &lt;ul class="infinite-list" style="overflow: auto;display: inline-block;width: 100%"&gt;
         &lt;div v-if="floors.length === 0"&gt;
           &lt;el-emp<span class="cstat-no" title="statement not covered" >ty de</span>scription="暂时还没有楼层"/&gt;
 <span class="cstat-no" title="statement not covered" >        &lt;/div&gt;</span>
@@ -605,7 +605,7 @@
       &lt;/ul&gt;
       &lt;/div&gt;
       &lt;div v-if="this.Index==='2'"&gt;
-        &lt;u<span class="cstat-no" title="statement not covered" >l class="infinite-list</span>" style="overflow: auto;display: inline-block"&gt;
+        &lt;u<span class="cstat-no" title="statement not covered" >l class="infinite-list</span>" style="overflow: auto;display: inline-block;width: 100%"&gt;
           &lt;div v-if="comments.length === 0"&gt;
 <span class="cstat-no" title="statement not covered" >            &lt;el-empty description="暂时还没有评论"/&gt;</span>
           &lt;/div&gt;
@@ -655,7 +655,7 @@ export default {
   co<span class="fstat-no" title="function not covered" >mp</span>onents: {},
   data() {
     re<span class="cstat-no" title="statement not covered" >turn {</span>
-      Index:0,
+      Index:'1',
       activeIndex:'1',
       comments: [
 <span class="fstat-no" title="function not covered" ></span>      ],
@@ -773,18 +773,18 @@ export default {
 .infinite-list {
   height: 450px;
   padding: 0;
-  margin:<span class="fstat-no" title="function not covered" > 0;</span>
-  list-style: none;<span class="cstat-no" title="statement not covered" ></span>
-}<span class="cstat-no" title="statement not covered" ></span>
+  margin: 0;
+  list-style: none;
+}<span class="fstat-no" title="function not covered" ></span>
 <span class="cstat-no" title="statement not covered" ></span>
-.infinite-list .infinite-list-i<span class="cstat-no" title="statement not covered" >tem {</span>
+.infinite-list .infinite-list<span class="cstat-no" title="statement not covered" >-item {</span>
   display: flex;<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  align-items: center;</span>
-  justify-content: center;
-  height: 50px;
+  align-items: center;<span class="cstat-no" title="statement not covered" ></span>
+  justify-content: center;<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  height: 50px;</span>
   background: var(--el-color-primary-light-9);
   margin: 10px;
-  color: var(--el-color-primary<span class="fstat-no" title="function not covered" >);<span class="cstat-no" title="statement not covered" ></span></span>
+  color: var(--el-color-primary);
 }
 &lt;/style&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></pre></td></tr></table></pre>
 
@@ -793,7 +793,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-05-23T12:24:48.165Z
+                at 2023-05-23T13:27:29.077Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

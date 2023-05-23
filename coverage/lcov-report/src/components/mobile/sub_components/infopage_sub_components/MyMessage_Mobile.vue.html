@@ -280,7 +280,8 @@
 <a name='L215'></a><a href='#L215'>215</a>
 <a name='L216'></a><a href='#L216'>216</a>
 <a name='L217'></a><a href='#L217'>217</a>
-<a name='L218'></a><a href='#L218'>218</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L218'></a><a href='#L218'>218</a>
+<a name='L219'></a><a href='#L219'>219</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -438,30 +439,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -469,7 +446,32 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -500,7 +502,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
   &lt;div
       style="padding-left: 10%;padding-top:10%;background: rgb(246,246,246);width: 90%"&gt;
-    &lt;div style="width: 90%"&gt;
+    &lt;div style="width: 95%"&gt;
       &lt;div style="margin-bottom: 3%;font-size: 20px;"&gt;
         我的回复
         &lt;!--      &lt;el-button style="margin-left: 40%" size="large" type="primary"&gt;--&gt;
@@ -511,29 +513,30 @@
           :default-active="activeIndex"
           class="el-menu-demo"
           mode="horizontal"
+          style="width: 90%;"
       &gt;
         &lt;el-menu-item index="1" @click="Index='1'"&gt;我收到的&lt;/el-menu-item&gt;
         &lt;div class="flex-grow"/&gt;
         &lt;el-menu-item index="2" @click="Index='2'"&gt;我发起的&lt;/el-menu-item&gt;
       &lt;/el-menu&gt;
       &lt;div v-if="this.Index==='1'"&gt;
-        &lt;ul class="infinite-list" style="overflow: auto;display: inline-block"&gt;
+        &lt;ul class="infinite-list" style="overflow: auto;display: inline-block;width: 100%"&gt;
           &lt;div v-if="revs.length === 0"&gt;
             &lt;el-empty description="暂时还没有消息"/&gt;
           &lt;/div&gt;
           &lt;div v-for="rev in revs" :key="rev.id"
-               style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 360px;height: 120px "&gt;
+               style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 90%;height: 120px "&gt;
             &lt;div v-if="rev.read===false" style="float: right;padding-top: 50px"&gt;
               &lt;el-icon&gt;
                 &lt;Warning/&gt;
               &lt;/el-icon&gt;
             &lt;/div&gt;
 &nbsp;
-            &lt;h3 style="padding: 0 20px;font-size:20px;height:50px;width:300px;overflow: hidden;"
+            &lt;h3 style="padding: 0 20px;font-size:20px;height:50px;overflow: hidden;"
                 @click="clickMsg(rev)"&gt;
               {{ rev.title }}
             &lt;/h3&gt;
-            &lt;p style="padding: 0 20px;font-size:16px;height:20px;width:300px;overflow: hidden;"&gt;
+            &lt;p style="padding: 0 20px;font-size:16px;height:20px;overflow: hidden;"&gt;
               {{ rev.time }}
             &lt;/p&gt;
             &lt;el-dialog v-model="rev.detail" title="消息详情" width="80%" center&gt;
@@ -551,23 +554,23 @@
         &lt;/ul&gt;
       &lt;/div&gt;
       &lt;div v-if="this.Index==='2'"&gt;
-        &lt;ul class="infinite-list" style="overflow: auto;display: inline-block"&gt;
+        &lt;ul class="infinite-list" style="overflow: auto;display: inline-block;width: 97%"&gt;
           &lt;div v-if="snds.length === 0"&gt;
             &lt;el-empty description="暂时还没有消息"/&gt;
           &lt;/div&gt;
           &lt;div v-for="snd in snds" :key="snd.id"
-               style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 360px;height: 120px "&gt;
+               style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 90%;height: 120px "&gt;
             &lt;div v-if="snd.read===false" style="float: right;padding-top: 50px"&gt;
               &lt;el-icon&gt;
                 &lt;Warning/&gt;
               &lt;/el-icon&gt;
             &lt;/div&gt;
 &nbsp;
-            &lt;h3 style="padding: 0 20px;font-size:20px;height:50px;width:300px;overflow: hidden;"
+            &lt;h3 style="padding: 0 20px;font-size:20px;height:50px;width:95%;overflow: hidden;"
                 @click="clickMsg(snd)"&gt;
               {{ snd.title }}
             &lt;/h3&gt;
-            &lt;p style="padding: 0 20px;font-size:16px;height:20px;width:300px;overflow: hidden;"&gt;
+            &lt;p style="padding: 0 20px;font-size:16px;height:20px;width:95%;overflow: hidden;"&gt;
               {{ snd.time }}
             &lt;/p&gt;
             &lt;el-dialog v-model="snd.detail" title="消息详情" width="80%" center&gt;
@@ -598,7 +601,7 @@ export default {
   components: {Warning},
   data() {
     return {
-      Index: 0,
+      Index: '1',
       activeIndex: '1',
       revs: [
 &nbsp;
@@ -611,10 +614,10 @@ export default {
   methods: {
     clickMsg(msg) {
       this.readMsg(msg);
-      if (msg.examine_id !== 0) {
+      if (msg.examine_id !== null &amp;&amp; msg.examine_id !== 0) {
         this.$router.push('/Administrator');
-      } else if (msg.post_id !== 0) {
-        if (msg.floor_id !== 0) {
+      } else if (msg.post_id !== null &amp;&amp; msg.post_id !== 0) {
+        if (msg.floor_id !== null &amp;&amp; msg.floor_id !== 0) {
           this.$router.push({path: '/Forum/' + msg.post_id});
         } else {
           this.$router.push({path: '/Forum/' + msg.post_id});
@@ -656,7 +659,7 @@ export default {
         }
 &nbsp;
       }).then((res) =&gt; {
-        // console.log(res)
+        console.log(res)
         if (res.data.code === 200) {
           console.log("get rev success")
           this.revs = res.data.data
@@ -711,7 +714,7 @@ export default {
   justify-content: center;
   height: 50px;
   background: var(--el-color-primary-light-9);
-  margin: 30px;
+  margin: 0;
   color: var(--el-color-primary);
 }
 &lt;/style&gt;</pre></td></tr></table></pre>
@@ -721,7 +724,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-05-23T12:24:48.165Z
+                at 2023-05-23T13:27:29.077Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>
