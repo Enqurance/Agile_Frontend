@@ -30,10 +30,17 @@
 <script>
 import ManVerify from "@/components/sub_components/ManVerify.vue";
 import global from "@/global";
+import { ElButton, ElFormItem, ElInput, ElForm } from 'element-plus';
 
 export default {
     name: "PCLoginPage",
-    components: {ManVerify},
+    components: {
+        ManVerify,
+        ElButton, 
+        ElFormItem,
+        ElInput,
+        ElForm
+    },
     data() {
         return {
             loginForm: {
@@ -60,7 +67,7 @@ export default {
                 if (res.data.code === 200) {
                     that.$cookies.set('user_token', res.data.data.token, 3600);
                     if (res.data.data.type === 0) {
-                          that.$cookies.set('user_type', '0', 3600);
+                            that.$cookies.set('user_type', '0', 3600);
                         }
                         else {
                             that.$cookies.set('user_type', global.user_type_administrator, 3600);

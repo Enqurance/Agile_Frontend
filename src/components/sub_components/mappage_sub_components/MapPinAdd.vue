@@ -41,7 +41,9 @@
 </template>
 
 <script>
-import { CheckOutlined, CloseOutlined} from '@ant-design/icons-vue';
+import { CheckOutlined, CloseOutlined} from '@ant-design/icons-vue'
+import { ElInput, ElFormItem, ElRadio, ElRadioGroup, ElForm, ElButton, ElDialog } from "element-plus"
+
 export default {
     props: {
         lnglat: Array,
@@ -63,6 +65,13 @@ export default {
     components: {
         CheckOutlined,
         CloseOutlined,
+        ElInput,
+        ElFormItem, 
+        ElRadio,
+        ElRadioGroup,
+        ElForm, 
+        ElButton, 
+        ElDialog
     },
 
     methods: {
