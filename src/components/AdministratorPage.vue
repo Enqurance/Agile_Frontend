@@ -426,7 +426,7 @@ export default defineComponent({
                         'token': that.$cookies.get('user_token')
                     }
                 }).then((res) => {
-                    console.log(res)
+                    // console.log(res)
                     that.report_posts = res.data.data
                     if (res.data.code === 401) {
                         that.report_posts = []
@@ -442,7 +442,7 @@ export default defineComponent({
                         'token': that.$cookies.get('user_token')
                     }
                 }).then((res) => {
-                    console.log(res)
+                    // console.log(res)
                     that.report_replies = res.data.data
                     if (res.data.code === 401) {
                         that.report_replies = []

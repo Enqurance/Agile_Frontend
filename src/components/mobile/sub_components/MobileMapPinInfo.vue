@@ -3,27 +3,6 @@
         <van-dialog v-model:show="drawer" :z-index="1000" style="height: 80%; overflow-y: auto; padding: 3% 0"
                     confirm-button-text="关闭" @confirm="() => {drawer=false; this.$emit('close_drawer')}">
             <div style="margin-top: 0px;margin-bottom: 0px;">
-                <el-button v-if="info.visibility===0 && this.$cookies.get('user_type')==='0'" class="float_right"
-                           size="large" :style="{background: _get_pin_color_state(pin_state)}" @touchend="apply_public">
-                    {{ _get_pin_state(pin_state) }}
-                </el-button>
-                <el-button v-if="info.visibility===1 && this.$cookies.get('user_type')==='0'" class="float_right"
-                           size="large" :style="{background: _get_pin_color_state(pin_state)}" @touchend="() => {
-                    if (this.pin_state === 1) {
-                this.$message({
-                    type: 'warning',
-                    message: '已申请，管理员将尽快审批！',
-                    showClose: true,
-                    grouping: true
-                })
-            }
-            else {
-                    show_feedback=true; this.feedback.title=''
-                    this.feedback.reason=''
-                    }
-                }">{{ _get_public_pin_state(pin_state) }}
-                </el-button>
-
                 <h1 style="margin-left: 10px;margin-top: 0px;padding: 0px">{{ info.name }}</h1>
             </div>
 
@@ -91,33 +70,53 @@
                     <p>此处预留跳转链接</p>
                 </el-card>
             </div> -->
+            <div style="text-align: center">
+                <div style="width: 98%; display: inline-block">
+                    <van-button v-if="info.visibility===0 && this.$cookies.get('user_type')==='0'"
+                                size="large" :style="{background: _get_pin_color_state(pin_state)}"
+                                @touchend="open_public">
+                        {{ _get_pin_state(pin_state) }}
+                    </van-button>
+                    <van-button v-if="info.visibility===1 && this.$cookies.get('user_type')==='0'"
+                                size="large" :style="{background: _get_pin_color_state(pin_state)}"
+                                @touchend="open_feedback">
+                        {{ _get_public_pin_state(pin_state) }}
+                    </van-button>
+                </div>
+            </div>
+
         </van-dialog>
 
-        <van-dialog v-model:show="show_feedback" :z-index="2000" style="height: 80%; overflow-y: auto; padding: 3% 0">
-            <el-form>
-                <el-form-item label="标题：">
-                    <el-input type="text" maxlength="10" v-model="feedback.title" autocomplete="off"/>
-                </el-form-item>
-                <el-form-item label="内容：">
-                    <el-input type="textarea" clearable rows="3" v-model="feedback.reason" autocomplete="off"/>
-                </el-form-item>
-            </el-form>
-            <div style="position: absolute;bottom: 10px; right: 20px">
-                <el-button @touchend="show_feedback = false">取消</el-button>
-                <el-button type="primary" @touchend="apply_feedback">确定</el-button>
+        <van-dialog v-model:show="show_feedback" :z-index="2000" style="background: #fcfcfc; padding: 3% 0"
+                    :show-cancel-button="true" @confirm="apply_feedback" title="反馈公共钉">
+            <van-form :model="feedback" style="margin: 20px 0">
+                <van-cell-group inset>
+                    <van-field v-model="feedback.title" name="名称" label="标题" maxlength="10"
+                               :rules="[{required: true, message: '请填写标题'}]"/>
+                    <van-field v-model="feedback.reason" name="简介" label="内容" maxlength="100" type="textarea"
+                               :rules="[{required: true, message: '请填写内容'}]"/>
+                </van-cell-group>
+            </van-form>
+        </van-dialog>
+
+        <van-dialog v-model:show="show_apply" :z-index="2000" style="background: #fcfcfc; padding: 3% 0"
+                    :show-cancel-button="true" @confirm="apply_public">
+            <div style="margin: 20px 0; text-align: center">
+                <h3>是否确定申请为公共钉？</h3>
             </div>
         </van-dialog>
 
-        <van-dialog :title="dialogTitle" style="width: 90%; padding: 3% 0; background: #f0f0f0" :z-index="2000"
+        <van-dialog :title="dialogTitle" style="width: 80%; padding: 3% 0; overflow-y: auto; background: #f0f0f0"
+                    :z-index="2000"
                     v-model:show="dialogVisible" :showCancelButton="true" @confirm="submitForm"
-                     >
+        >
             <van-form :model="formData" style="padding-top: 5%; padding-bottom: 5%">
                 <van-cell-group inset>
                     <van-field v-model="formData.name" name="名称" label="名称" maxlength="20"
-                               :rules="[{required: true, message: '请填写名称'}]" />
+                               :rules="[{required: true, message: '请填写名称'}]"/>
                     <van-field v-model="formData.brief" name="简介" label="简介" maxlength="100" type="textarea"
-                               :rules="[{required: true, message: '请填写简介'}]" />
-                    <van-field name="类别" label="类别" >
+                               :rules="[{required: true, message: '请填写简介'}]"/>
+                    <van-field name="类别" label="类别">
                         <template #input>
                             <van-radio-group v-model="formData.pin_type" direction="horizontal"
                                              :rules="[{valid_type, message: '请填写类型'}]">
@@ -132,10 +131,10 @@
                         </template>
                     </van-field>
                     <van-field v-model="formData.position" name="位置描述" label="位置描述" maxlength="100"
-                               type="textarea" />
+                               type="textarea"/>
                     <van-field v-model="formData.opening_time" name="开放时间" label="开放时间" maxlength="100"
-                               type="textarea" />
-                    <van-field v-model="formData.phone" name="电话" label="电话" maxlength="20" />
+                               type="textarea"/>
+                    <van-field v-model="formData.phone" name="电话" label="电话" maxlength="20"/>
                 </van-cell-group>
             </van-form>
         </van-dialog>
@@ -194,6 +193,7 @@ export default {
                 }
             ],
             pin_state: 0,
+            show_apply: false,
             show_feedback: false,
             feedback: {
                 title: '',
@@ -281,6 +281,16 @@ export default {
 
         // 提交修改
         submitForm() {
+            if (this.formData.name === '') {
+                return this.$message.error("名称不能为空")
+            }
+            else if (this.formData.brief === '') {
+                return this.$message.error("简介不能为空")
+            }
+            else if (this.formData.pin_type === -1) {
+                return this.$message.error("类别不能为空")
+            }
+
             let that = this
             let now_id = that.id
             that.$axios.post('/map/pin/changePinInfoById', {
@@ -399,7 +409,7 @@ export default {
             }
         },
 
-        apply_public() {
+        open_public() {
             if (this.pin_state === 1) {
                 this.$message({
                     type: 'warning',
@@ -407,47 +417,50 @@ export default {
                     showClose: true,
                     grouping: true
                 })
-                return
             }
             else {
-                let that = this
+                this.show_apply = true
+            }
+        },
 
-                ElMessageBox.confirm(
-                    '确认申请为公共钉？',
-                    'Warning',
-                    {
-                        confirmButtonText: '确认',
-                        cancelButtonText: '取消',
-                        type: 'warning',
-                    }
-                ).then(() => {
-                    that.$axios.get('/examine/apply_for_public/' + that.id, {
-                        headers: {
-                            'token': that.$cookies.get('user_token')
-                        }
-                    }).then(() => {
-                        that.pin_state = 1
-                        that.$message({
-                            type: 'success',
-                            message: '申请成功，管理员将尽快审批！',
-                            showClose: true
-                        })
-                    }).catch((error) => {
-                        console.log(error)
-                        that.$message({
-                            type: 'error',
-                            message: '申请失败！！',
-                            showClose: true
-                        })
-                    })
-                }).catch(() => {
-                    ElMessage({
-                        type: 'info',
-                        message: '取消申请',
-                        grouping: true,
-                        showClose: true
-                    })
+        apply_public() {
+            let that = this
+
+            that.$axios.get('/examine/apply_for_public/' + that.id, {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then(() => {
+                that.pin_state = 1
+                that.$message({
+                    type: 'success',
+                    message: '申请成功，管理员将尽快审批！',
+                    showClose: true
                 })
+            }).catch((error) => {
+                console.log(error)
+                that.$message({
+                    type: 'error',
+                    message: '申请失败！！',
+                    showClose: true
+                })
+            })
+
+        },
+
+        open_feedback() {
+            if (this.pin_state === 1) {
+                this.$message({
+                    type: 'warning',
+                    message: '已申请，管理员将尽快审批！',
+                    showClose: true,
+                    grouping: true
+                })
+            }
+            else {
+                this.show_feedback = true
+                this.feedback.title = ''
+                this.feedback.reason = ''
             }
         },
 
@@ -464,44 +477,27 @@ export default {
 
             let that = this
 
-            ElMessageBox.confirm(
-                '确认反馈内容？',
-                'Warning',
-                {
-                    confirmButtonText: '确认',
-                    cancelButtonText: '取消',
-                    type: 'warning',
+            that.$axios.post('/examine/apply_for_feedback/' + that.id, {
+                'title': that.feedback.title,
+                'content': that.feedback.reason
+            }, {
+                headers: {
+                    'token': that.$cookies.get('user_token')
                 }
-            ).then(() => {
-                that.$axios.post('/examine/apply_for_feedback/' + that.id, {
-                    'title': that.feedback.title,
-                    'content': that.feedback.reason
-                }, {
-                    headers: {
-                        'token': that.$cookies.get('user_token')
-                    }
-                }).then(() => {
-                    // console.log(res)
-                    that.show_feedback = false
-                    that.pin_state = 1
-                    that.$message({
-                        type: 'success',
-                        message: '反馈成功，管理员将尽快审批！',
-                        showClose: true
-                    })
-                }).catch((error) => {
-                    console.log(error)
-                    that.$message({
-                        type: 'error',
-                        message: '反馈失败！！',
-                        showClose: true
-                    })
+            }).then(() => {
+                // console.log(res)
+                that.show_feedback = false
+                that.pin_state = 1
+                that.$message({
+                    type: 'success',
+                    message: '反馈成功，管理员将尽快审批！',
+                    showClose: true
                 })
-            }).catch(() => {
-                ElMessage({
-                    type: 'info',
-                    message: '取消删除',
-                    grouping: true,
+            }).catch((error) => {
+                console.log(error)
+                that.$message({
+                    type: 'error',
+                    message: '反馈失败！！',
                     showClose: true
                 })
             })
