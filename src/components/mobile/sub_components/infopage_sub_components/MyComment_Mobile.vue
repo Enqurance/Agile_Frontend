@@ -108,7 +108,7 @@ export default {
   components: {},
   data() {
     return {
-      Index:0,
+      Index:'1',
       activeIndex:'1',
       comments: [
       ],
