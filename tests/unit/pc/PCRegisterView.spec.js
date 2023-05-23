@@ -20,5 +20,6 @@ describe('PCRegisterView', () => {
 
         // 等待异步代码执行完毕
         await wrapper.vm.startCountdown()
+        await wrapper.vm.openVerified()
     });
 });
