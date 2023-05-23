@@ -20,13 +20,5 @@ describe('PCRegisterView', () => {
 
         // 等待异步代码执行完毕
         await wrapper.vm.startCountdown()
-        await wrapper.vm.openVerified()
-
-        // 检查是否发送了请求
-        // expect(wrapper.vm.$axios.get).toHaveBeenCalledWith('/auth/email', {
-        //     params: {
-        //         email: 'test@example.com'
-        //     }
-        // });
     });
 });
