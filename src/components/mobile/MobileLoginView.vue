@@ -30,9 +30,10 @@
 <script>
 import ManVerify from "@/components/sub_components/ManVerify.vue";
 import global from "@/global";
+import bus from "@/event-bus";
 
 export default {
-    name: "PCLoginPage",
+    name: "MobileLoginPage",
     components: {ManVerify},
     data() {
         return {
@@ -60,13 +61,15 @@ export default {
                 if (res.data.code === 200) {
                     that.$cookies.set('user_token', res.data.data.token, 3600);
                     if (res.data.data.type === 0) {
-                          that.$cookies.set('user_type', '0', 3600);
-                        }
-                        else {
-                            that.$cookies.set('user_type', global.user_type_administrator, 3600);
-                        }
+                        that.$cookies.set('user_type', '0', 3600);
+                    }
+                    else {
+                        that.$cookies.set('user_type', global.user_type_administrator, 3600);
+                    }
 
-                      that.$router.push({path: '/home'})
+                    that.$router.push({path: '/home'}).then(() => {
+                        bus.emit('force-update-tabbar');
+                    })
                 }
                 else {
                     this.$message({
@@ -85,7 +88,7 @@ export default {
             })
         },
         goToRegister() {
-            this.$router.push({path: "/register"});
+            this.$router.push({path: "/register"})
         },
         openVerified() {
             for (var i in this.loginForm) {

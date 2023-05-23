@@ -363,7 +363,6 @@ export default defineComponent({
                     'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
-                // console.log(res)
                 that.rectify_posts = res.data.data
                 if (res.data.code === 401) {
                     that.rectify_posts = []

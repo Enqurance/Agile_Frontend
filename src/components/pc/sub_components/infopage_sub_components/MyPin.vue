@@ -4,8 +4,6 @@ export default {
     name: "MyPin",
     components: {},
     setup(){
-        const count = ref(5)
-        return {count}
     },
     data(){
         return{
@@ -24,7 +22,8 @@ export default {
                     phone_id: 0,
                     forum_id: 0,
                 },
-            ]
+            ],
+            count: 0,
         }
     },
     mounted() {
@@ -32,7 +31,6 @@ export default {
     },
     methods: {
         init(){
-            console.log("init method!!!!!!!");
             let that = this;
             console.log(that.$cookies.get('user_token'))
             that.$axios.get('InfoPage/MyPin/getMyAllPin', 
@@ -43,8 +41,9 @@ export default {
                 }).then((res) => {
                     console.log(res.data.data);
                     if (res.data.code === 200) {
-                        this.pins= res.data.data;
-                        console.log("init success")
+                        this.pins = res.data.data;
+                        this.count = this.pins.length;
+                        console.log(this.count)
                     } else {
                         console.log(res);
                     }
@@ -53,10 +52,14 @@ export default {
         deletePin(pid){
             let that = this
             that.$axios.post('/InfoPage/MyPin/deletePinById', 
-                { pin_id: pid},
-                { headers: { 'token': that.$cookies.get('user_token')}}
+                { pin_id: pid },
+                { 
+                    headers: { 
+                        'token': that.$cookies.get('user_token')
+                    },
+                }
             ).then((res) => {
-                // console.log(res)
+                 console.log(res)
                 if (res.data.code === 200) {
                     console.log("init success")
                 } else {
@@ -77,12 +80,12 @@ export default {
                 <div class="textItem">
                     <el-container>
                     <el-aside width="83%">
-                        <p>名字: {{ pins[0].name }}</p>
-                        <span style="padding-left: 5%; padding-right: 10%">位置： {{ pins[0].position }}</span>
-                        <span>简介：{{ pins[0].brief }}</span>
+                        <p>名字: {{ pins[i-1].name }}</p>
+                        <span style="padding-left: 5%; padding-right: 10%">位置： {{ pins[i-1].position }}</span>
+                        <span>简介：{{ pins[i-1].brief }}</span>
                     </el-aside>
                     <el-main>
-                        <el-button @click="deletePin(this.pins[i])" type="danger">Delete</el-button>
+                        <el-button @click="deletePin(this.pins[i-1].id)" type="danger">Delete</el-button>
                     </el-main>
                     </el-container>
                 </div>
