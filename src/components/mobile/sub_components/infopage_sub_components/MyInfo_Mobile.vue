@@ -1,6 +1,7 @@
 <script>
 import { ref, reactive } from 'vue'
 import MyPin_Mobile from './MyPin_Mobile.vue'
+import bus from "@/event-bus";
 
 export default {
     name: "MyInfo_Mobile",
@@ -286,7 +287,9 @@ export default {
             let that = this;
             that.$cookies.remove('user_token');
             that.$cookies.remove('user_type');
-            this.$router.replace({ path: '/' });
+            this.$router.replace({ path: '/' }).then(() => {
+                bus.emit('force-update-tabbar');
+            });
         },
 
     },
