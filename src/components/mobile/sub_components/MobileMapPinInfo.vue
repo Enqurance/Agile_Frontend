@@ -1,7 +1,7 @@
 <template>
     <div>
         <van-dialog v-model:show="drawer" :z-index="1000" style="height: 80%; overflow-y: auto; padding: 3% 0"
-                    :scrollable="true" confirm-button-text="关闭" ref="content"
+                    :scrollable="true" confirm-button-text="关闭" id="pinInfo"
                     @confirm="() => {drawer=false; this.$emit('close_drawer')}">
             <div style="margin-top: 0;margin-bottom: 0;">
                 <h1 style="margin-left: 10px;margin-top: 0;padding: 0">{{ info.name }}</h1>
@@ -218,10 +218,6 @@ export default {
     components: {
         EditOutlined,
     },
-    onMounted() {
-        console.log(this.contentRef)
-        this.contentRef.value.scrollTop = 0
-    },
     methods: {
         _get_pin_type(pin_type_id) {
             return global.get_pin_type(pin_type_id)
@@ -263,13 +259,14 @@ export default {
                 that.photos = res.data.data.photos
                 that.services = res.data.data.services
                 that.drawer = true;
-                // console.log(that.id)
+
                 that.$axios.get('/examine/' + (res.data.data.pin.visibility === 0 ? 'get_pin_state/' : 'get_public_pin_state/') + that.id, {
                     headers: {
                         'token': that.$cookies.get('user_token')
                     }
                 }).then((res) => {
                     // console.log(res)
+                    document.getElementById('pinInfo').scrollTo(0, 0)
                     that.pin_state = res.data.data
                 }).catch((error) => {
                     console.log(error)
