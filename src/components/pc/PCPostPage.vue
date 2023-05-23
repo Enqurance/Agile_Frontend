@@ -9,19 +9,37 @@
 
                 <div class="center">
                     <div class="post_header">
-                        <span class="post_title">{{ post.title }}</span>
-                        <span class="post_title">{{ post.content }}</span>
-                        <div class="post_tags">{{ post.tags }}</div>
-                        <div class="post_stars">收藏数量：{{ post.stars }}</div>
+                        <span class="post_title">标题：{{ post.title }}</span>
                         <el-button type="danger" @click="showDeletePost">删除post</el-button>
                         <el-button type="danger" @click="showReportPostPrompt">举报post</el-button>
                         <el-button @click="editPost">编辑post</el-button>
                     </div>
-                    <div class="post_body">{{ post.body }}</div>
+                    <div class="post_body">内容：{{ post.content }}</div>
                     <div>
                         <el-dialog :title="testInfo" v-model="postDialogVisible">
                             <div>
-                                <el-button @click="postDialogVisible = false">取消</el-button>
+                                <el-form>
+                                    <el-form-item label="标题">
+                                        <el-input v-model="formPost.title" maxlength="20"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="正文">
+                                        <el-input v-model="formPost.content" type="textarea" :rows="6"
+                                            maxlength="200"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="类别">
+                                        <el-radio-group v-model="formPost.tag">
+                                            <el-radio :label="1">餐饮</el-radio>
+                                            <el-radio :label="2">园地</el-radio>
+                                            <el-radio :label="3">教学</el-radio>
+                                            <el-radio :label="4">体育</el-radio>
+                                            <el-radio :label="5">办公</el-radio>
+                                            <el-radio :label="6">购物</el-radio>
+                                            <el-radio :label="7">生活服务</el-radio>
+                                        </el-radio-group>
+                                    </el-form-item>
+                                    <!-- <el-form-item label="关联钉子">
+                                    </el-form-item> -->
+                                </el-form>
                                 <el-button type="primary" @click="submitEditForm">确认</el-button>
                             </div>
                         </el-dialog>
@@ -39,7 +57,6 @@
                                 </el-form-item>
                             </el-form>
                             <div>
-                                <el-button @click="newFloorDialogVisible = false">取消</el-button>
                                 <el-button type="primary" @click="addNewFloor">提交</el-button>
                             </div>
                         </el-dialog>
@@ -85,6 +102,9 @@
                                 </div>
                             </el-dialog>
                         </div>
+                        <el-pagination v-if="totalFloors > 0" @current-change="handlePageChange" v-model="currentPage"
+                            :page-size="limit" :total="totalFloors">
+                        </el-pagination>
                     </div>
                 </div>
 
@@ -128,18 +148,18 @@ export default {
     },
 
     setup() {
+        const currentPage = ref(1);
+        const totalFloors = ref(0);
+
         const { proxy } = getCurrentInstance();
         const imageUrl = ref('');
         const floors = ref([]);
-        const isLoading = ref(false);
         const offset = ref(0);
         const limit = 5;
 
         const id = proxy.$route.params.postID;
 
         const loadFloors = (offset) => {
-            console.log(offset.value)
-            isLoading.value = true;
             proxy.$axios.post('/forum/floor/getFloors', null, {
                 params: {
                     post_id: id,
@@ -150,27 +170,27 @@ export default {
                     'token': proxy.$cookies.get('user_token')
                 }
             }).then((res) => {
-                console.log(res.data.data)
-                floors.value = [...floors.value, ...res.data.data];
-                isLoading.value = false;
+                floors.value = res.data.data.retFloors;
+                totalFloors.value = res.data.data.length;
             }).catch((error) => {
                 console.log(error);
-                isLoading.value = false;
             });
+        };
+
+        const handlePageChange = (currentPage) => {
+            offset.value = (currentPage - 1) * limit;
+            loadFloors(offset);
         };
 
         onMounted(() => {
             loadFloors(offset);
         });
 
-        window.addEventListener('scroll', () => {
-            if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-                offset.value += limit;
-                loadFloors(offset);
-            }
-        });
 
-        return { imageUrl, floors, isLoading, };
+        return {
+            imageUrl, floors, currentPage, totalFloors, limit,
+            handlePageChange
+        };
     },
 
     methods: {
@@ -260,9 +280,9 @@ export default {
             let that = this
             that.$axios.post('/forum/comment/getComments', null, {
                 params: {
-                    floor_id:floorID,
+                    floor_id: floorID,
                     offset: 0,
-                    limit: 100
+                    limit: 2147483647  //全加载
                 },
                 headers: {
                     'token': that.$cookies.get('user_token')
@@ -430,7 +450,35 @@ export default {
             this.postDialogVisible = true
         },
         submitEditForm() {
+            if (this.formPost.title === '') {
+                return this.$message.error("帖子标题不能为空")
+            } else if (this.formPost.content === '') {
+                return this.$message.error("帖子正文不能为空")
+            } else if (this.formPost.tag === -1) {
+                return this.$message.error("类别不能为空")
+            }
 
+            let that = this
+            let id = that.$route.params.postID;
+            console.log("here")
+            that.$axios.post('/forum/post/changePost', null, {
+                params: {
+                    post_id: id,
+                    tag: that.formPost.tag,
+                    pinIdStr: "76;77;78",
+                    title: that.formPost.title,
+                    content: that.formPost.content,
+                },
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then((res) => {
+                console.log(res)
+            })
+            that.post.title = that.formPost.title
+            that.post.content = that.formPost.content
+            that.post.tag = that.formPost.tag
+            that.postDialogVisible = false
         },
 
 
