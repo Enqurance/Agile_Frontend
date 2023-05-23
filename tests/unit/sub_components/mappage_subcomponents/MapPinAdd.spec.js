@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import MapPinAdd from "@/components/sub_components/mappage_sub_components/MapPinAdd.vue"
+import MapPinAdd from "@/components/pc/sub_components/mappage_sub_components/MapPinAdd.vue"
 
 // RegisterPage渲染测试
 describe('MapPinAdd Basic', () => {

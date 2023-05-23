@@ -5,7 +5,7 @@ import {Document, Location, Menu as IconMenu,} from "@element-plus/icons-vue";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import {shallowRef} from "@vue/reactivity";
 import global from "@/global";
-import MapPinInfo from "@/components/pc/sub_components/MapPinInfo.vue";
+import MapPinInfo from "@/components/pc/sub_components/mappage_sub_components/MapPinInfo.vue";
 
 export default defineComponent({
     name: "AdministratorPage",
@@ -261,7 +261,7 @@ export default defineComponent({
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
-            }).then(() => {
+            }).then((res) => {
                 // console.log(that.pin_apply_public_result)
                 that.examine_1_1_dialog_show = false
 
@@ -276,11 +276,20 @@ export default defineComponent({
                     result: 'false',
                     info: ''
                 }
-                that.$message({
-                    type: 'success',
-                    message: 'pin审核结果成功提交后端！',
-                    showClose: true
-                })
+                if (res.data.code !== 200) {
+                    that.$message({
+                        type: 'error',
+                        message: res.data.message,
+                        showClose: true
+                    })
+                }
+                else {
+                    that.$message({
+                        type: 'success',
+                        message: '举报帖子审核结果成功提交后端！',
+                        showClose: true
+                    })
+                }
             }).catch((error) => {
                 that.$message({
                     type: 'error',
@@ -326,7 +335,7 @@ export default defineComponent({
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
-            }).then(() => {
+            }).then((res) => {
                 // console.log(res)
                 that.examine_1_2_dialog_show = false
 
@@ -340,11 +349,20 @@ export default defineComponent({
                     marker = null
                 }
 
-                that.$message({
-                    type: 'success',
-                    message: 'pin审核结果成功提交后端！',
-                    showClose: true
-                })
+                if (res.data.code !== 200) {
+                    that.$message({
+                        type: 'error',
+                        message: res.data.message,
+                        showClose: true
+                    })
+                }
+                else {
+                    that.$message({
+                        type: 'success',
+                        message: '举报帖子审核结果成功提交后端！',
+                        showClose: true
+                    })
+                }
             }).catch((error) => {
                 that.$message({
                     type: 'error',
@@ -397,15 +415,24 @@ export default defineComponent({
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
-            }).then(() => {
+            }).then((res) => {
                 that.rectify_posts = that.rectify_posts.filter(post => post.id !== that.rectify_post_result.id)
                 that.examine_2_dialog_show = false
 
-                that.$message({
-                    type: 'success',
-                    message: '举报帖子审核结果成功提交后端！',
-                    showClose: true
-                })
+                if (res.data.code !== 200) {
+                    that.$message({
+                        type: 'error',
+                        message: res.data.message,
+                        showClose: true
+                    })
+                }
+                else {
+                    that.$message({
+                        type: 'success',
+                        message: '举报帖子审核结果成功提交后端！',
+                        showClose: true
+                    })
+                }
             }).catch((error) => {
                 that.$message({
                     type: 'error',
@@ -482,15 +509,24 @@ export default defineComponent({
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
-            }).then(() => {
+            }).then((res) => {
                 that.report_posts = that.report_posts.filter(post => post.id !== that.report_post_result.id)
                 that.examine_3_1_dialog_show = false
 
-                that.$message({
-                    type: 'success',
-                    message: '举报帖子审核结果成功提交后端！',
-                    showClose: true
-                })
+                if (res.data.code !== 200) {
+                    that.$message({
+                        type: 'error',
+                        message: res.data.message,
+                        showClose: true
+                    })
+                }
+                else {
+                    that.$message({
+                        type: 'success',
+                        message: '举报帖子审核结果成功提交后端！',
+                        showClose: true
+                    })
+                }
             }).catch((error) => {
                 that.$message({
                     type: 'error',
@@ -530,15 +566,24 @@ export default defineComponent({
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
-            }).then(() => {
+            }).then((res) => {
                 that.report_replies = that.report_replies.filter(reply => reply.id !== that.report_reply_result.id || reply.type !== that.report_reply_result.type)
                 that.examine_3_2_dialog_show = false
 
-                that.$message({
-                    type: 'success',
-                    message: '举报回复审核结果成功提交后端！',
-                    showClose: true
-                })
+                if (res.data.code !== 200) {
+                    that.$message({
+                        type: 'error',
+                        message: res.data.message,
+                        showClose: true
+                    })
+                }
+                else {
+                    that.$message({
+                        type: 'success',
+                        message: '举报帖子审核结果成功提交后端！',
+                        showClose: true
+                    })
+                }
             }).catch((error) => {
                 that.$message({
                     type: 'error',
