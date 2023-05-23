@@ -102,8 +102,8 @@
                                 </div>
                             </el-dialog>
                         </div>
-                        <el-pagination v-if="60 > 0" @current-change="handlePageChange" v-model="currentPage"
-                            :page-size="limit" :total="60">
+                        <el-pagination v-if="totalFloors > 0" @current-change="handlePageChange" v-model="currentPage"
+                            :page-size="limit" :total="totalFloors">
                         </el-pagination>
                     </div>
                 </div>
@@ -170,8 +170,8 @@ export default {
                     'token': proxy.$cookies.get('user_token')
                 }
             }).then((res) => {
-                floors.value = res.data.data;
-                totalFloors.value = res.data.total;
+                floors.value = res.data.data.retFloors;
+                totalFloors.value = res.data.data.length;
             }).catch((error) => {
                 console.log(error);
             });
@@ -188,7 +188,7 @@ export default {
 
 
         return {
-            imageUrl, floors, currentPage, totalFloors,
+            imageUrl, floors, currentPage, totalFloors, limit,
             handlePageChange
         };
     },
