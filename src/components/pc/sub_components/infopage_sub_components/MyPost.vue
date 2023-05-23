@@ -29,9 +29,9 @@
           </el-button>
 
           <el-dialog v-model="post.deleteDialog" title="删除帖子" width="30%" center>
-        <span style="text-align: center">
-          你确定要删除这个帖子吗？相关的评论也将被删除。
-        </span>
+            <span style="text-align: center">
+              你确定要删除这个帖子吗？相关的评论也将被删除。
+            </span>
             <template #footer>
             <span class="dialog-footer">
               <el-button @click="post.deleteDialog = false">取消</el-button>

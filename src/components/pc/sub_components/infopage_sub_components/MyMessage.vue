@@ -17,14 +17,31 @@
               <Warning/>
             </el-icon>
           </div>
+          <el-dialog v-model="rev.deleteDialog" title="删除消息" width="30%" center>
+            <span style="text-align: center">
+              你确定要删除这个消息吗？
+            </span>
+            <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="rev.deleteDialog = false">取消</el-button>
+              <el-button type="primary" @click="deleteMessage(rev)">
+                确认
+              </el-button>
+            </span>
+            </template>
+          </el-dialog>
 
-          <h3 style="padding: 0 20px;font-size:20px;height:50px;width:90%;overflow: hidden;"
+          <h3 style="padding: 0 20px;font-size:18px;height:50px;width:80%;overflow: hidden;"
               @click="clickMsg(rev)">
             {{ rev.title }}
           </h3>
-          <p style="padding: 0 20px;font-size:16px;height:20px;width:90%;overflow: hidden;">
+          <p style="padding: 0 20px;font-size:16px;height:20px;width:70%;overflow: hidden;display: inline-block">
             {{ rev.time }}
           </p>
+          <el-button style="float: right; display: inline-block" type="danger"
+                     @click="rev.deleteDialog=true">
+            删除
+          </el-button>
           <el-dialog v-model="rev.detail" title="消息详情" width="30%" center>
             <span style="text-align: center">
               {{ rev.content }}
@@ -58,13 +75,32 @@
             </el-icon>
           </div>
 
-          <h3 style="padding: 0 20px;font-size:20px;height:50px;width:90%;overflow: hidden;"
+
+          <el-dialog v-model="snd.deleteDialog" title="删除消息" width="30%" center>
+            <span style="text-align: center">
+              你确定要删除这个消息吗？
+            </span>
+            <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="snd.deleteDialog = false">取消</el-button>
+              <el-button type="primary" @click="deleteMessage(snd)">
+                确认
+              </el-button>
+            </span>
+            </template>
+          </el-dialog>
+
+          <h3 style="padding: 0 20px;font-size:18px;height:50px;width:80%;overflow: hidden;"
               @click="clickMsg(snd)">
             {{ snd.title }}
           </h3>
-          <p style="padding: 0 20px;font-size:16px;height:20px;width:90%;overflow: hidden;">
+          <p style="padding: 0 20px;font-size:16px;height:20px;width:70%;overflow: hidden;display: inline-block">
             {{ snd.time }}
           </p>
+          <el-button style="float: right; display: inline-block" type="danger"
+                     @click="snd.deleteDialog=true">
+            删除
+          </el-button>
           <el-dialog v-model="snd.detail" title="消息详情" width="30%" center>
             <span style="text-align: center">
               {{ snd.content }}
@@ -138,6 +174,31 @@ export default {
           })
         }
       })
+    },
+    deleteMessage(msg) {
+      let that = this
+      msg.deleteDialog = false;
+      console.log(msg);
+      that.$axios.delete('/InfoPage/MyMessage/deleteMessage/' + msg.id, {
+        headers: {
+          'token': that.$cookies.get('user_token')
+        }
+      }).then((res) => {
+        if (res.data.code === 200) {
+          console.log("删除的帖子id为：" + msg.id)
+          this.$message({
+            type: 'info',
+            message: '删除成功',
+          });
+          this.queryAllSnd();
+          this.queryAllRev();
+        } else {
+          this.$message({
+            message: res.data.message,
+            type: 'error'
+          })
+        }
+      }).catch((res) => console.log(res))
     },
     queryAllRev() {
       let that = this
