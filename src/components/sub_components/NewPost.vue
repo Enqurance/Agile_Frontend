@@ -19,16 +19,18 @@
                         <el-radio :label="7">生活服务</el-radio>
                     </el-radio-group>
                 </el-form-item>
-                <!-- <el-form-item label="关联钉子">
-                </el-form-item> -->
+                <el-form-item label="关联钉子">
+                    <PostBindPin :is_switch="is_switch" @get_bind_pins="(_bind_pins) => bind_pins = _bind_pins"/>
+                </el-form-item>
+                -->
             </el-form>
 
             <div>
                 <el-button @click="dialogVisible = false">取消
-                    <CloseOutlined />
+                    <CloseOutlined/>
                 </el-button>
                 <el-button type="primary" @click="submitForm">确认
-                    <CheckOutlined />
+                    <CheckOutlined/>
                 </el-button>
             </div>
         </el-dialog>
@@ -36,8 +38,9 @@
 </template>
 
 <script>
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons-vue';
-import { ElInput, ElFormItem, ElRadio, ElRadioGroup, ElForm, ElButton, ElDialog } from "element-plus"
+import {CheckOutlined, CloseOutlined} from '@ant-design/icons-vue';
+import {ElInput, ElFormItem, ElRadio, ElRadioGroup, ElForm, ElButton, ElDialog} from "element-plus"
+import PostBindPin from "@/components/sub_components/PostBindPin.vue";
 
 export default {
     data() {
@@ -48,20 +51,27 @@ export default {
                 post_body: "",
                 pin_type: -1,
             },   // 表单数据
-            dialogTitle: '新建帖子'
+            dialogTitle: '新建帖子',
+
+            is_switch: false,
+            bind_pins: [],
         }
     },
-
+    mounted() {
+        this.is_switch = false
+        this.bind_pins = []
+    },
     components: {
         CheckOutlined,
         CloseOutlined,
         ElInput,
-        ElFormItem, 
+        ElFormItem,
         ElRadio,
         ElRadioGroup,
-        ElForm, 
-        ElButton, 
-        ElDialog
+        ElForm,
+        ElButton,
+        ElDialog,
+        PostBindPin
     },
 
     methods: {
@@ -69,19 +79,24 @@ export default {
         submitForm() {
             if (this.formData.post_title === '') {
                 return this.$message.error("帖子标题不能为空")
-            } else if (this.formData.post_body === '') {
+            }
+            else if (this.formData.post_body === '') {
                 return this.$message.error("帖子正文不能为空")
-            } else if (this.formData.pin_type === -1) {
+            }
+            else if (this.formData.pin_type === -1) {
                 return this.$message.error("类别不能为空")
+            }
+            else if (this.bind_pins === []) {
+                return this.$message.error("关联钉子不能为空")
             }
 
             let that = this
-            //const pins = that.lnglat.join(';');
+            let pins = this.bind_pins.join(';');
 
             that.$axios.post('/forum/post/addPost', null, {
                 params: {
                     tag: that.formData.pin_type,
-                    pinIdStr: "76;77;78",
+                    pinIdStr: pins,
                     title: that.formData.post_title,
                     content: that.formData.post_body,
                 },
@@ -89,11 +104,20 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((response) => {
-                this.$emit('帖子id', response.data.data.id)
-            })
+                that.$emit('帖子id', response.data.data.id)
+                that.is_switch = false
+                that.bind_pins = []
+            }).catch((error) => console.log(error))
             that.dialogVisible = false
+
         },
     },
+
+    watch: {
+        bind_pins(newData) {
+            // console.log(newData)
+        },
+    }
 }
 </script>
 

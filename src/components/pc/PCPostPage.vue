@@ -591,7 +591,7 @@ export default {
 .main {
     display: flex;
     justify-content: space-between;
-    margin: 0, 15%;
+    margin: 0 15%;
 }
 
 .left,
