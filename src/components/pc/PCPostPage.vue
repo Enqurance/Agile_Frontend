@@ -73,13 +73,13 @@
                             <div v-if="floor.comment_cases">第一条comment ：{{ floor.comment_cases.content }}</div>
                             <div class="post_floor-footer">
                                 <el-button class="post_floor-reply-btn"
-                                    @click="showAllCommentsDialog(floor.id)">查看全部评论</el-button>
+                                    @click="loadAllComments(floor.id)">查看全部评论</el-button>
                             </div>
 
                             <el-dialog v-model="commentsDialogVisible" title="全部评论" width="50%">
                                 <div class="post_floor-comments" v-for="comment in comments" :key="comment.id">
                                     <el-button v-if="comment.is_auth" type="danger"
-                                        @click="showDeleteComment(comment.id)">删除comment</el-button>
+                                        @click="showDeleteComment(comment.id,floor.id)">删除comment</el-button>
                                     <el-button type="danger"
                                         @click="showReportReplyPrompt(1, comment.id)">举报comment</el-button>
                                     <div class="post_floor-comment-header">作者 评论于 {{ comment.createTime }}</div>
@@ -188,7 +188,7 @@ export default {
 
         return {
             imageUrl, floors, currentPage, totalFloors, limit,
-            handlePageChange
+            handlePageChange, loadFloors
         };
     },
 
@@ -266,12 +266,15 @@ export default {
             }).then((response) => {
                 //console.log(response)
                 that.newFloorForm.body = ''
+                if (response.data.code == 200) {
+                   that.loadFloors(ref(0))
+                }
             })
             this.newFloorDialogVisible = false
         },
 
 
-        showAllCommentsDialog(floorID) {
+        loadAllComments(floorID) {
             let that = this
             that.$axios.post('/forum/comment/getComments', null, {
                 params: {
@@ -314,8 +317,10 @@ export default {
             }).then((response) => {
                 //console.log(response)
                 that.newCommentBody = ''
+                if (response.data.code === 200) {
+                    that.loadAllComments(floorID)
+                }
             })
-            this.commentsDialogVisible = false
         },
 
         showDeletePost() {
@@ -393,6 +398,7 @@ export default {
                         type: 'info',
                         message: '删除成功',
                     });
+                    that.loadFloors(ref(0))
                 }
                 else {
                     this.$message({
@@ -403,7 +409,7 @@ export default {
             }).catch((res) => console.log(res))
         },
 
-        showDeleteComment(commentId) {
+        showDeleteComment(commentId,floorID) {
             this.$confirm(
                 '确认删除该comment？',
                 'Warning',
@@ -413,7 +419,7 @@ export default {
                     type: 'warning',
                 }
             ).then(() => {
-                this.deleteComment(commentId);
+                this.deleteComment(commentId,floorID);
             }).catch(() => {
                 this.$message({
                     type: 'info',
@@ -421,7 +427,7 @@ export default {
                 });
             });
         },
-        deleteComment(commentId) {// 执行删除评论的逻辑
+        deleteComment(commentId,floorID) {// 执行删除评论的逻辑
             let that = this
             that.$axios.delete('/forum/comment/deleteComment/' + commentId, {
                 headers: {
@@ -434,6 +440,7 @@ export default {
                         type: 'info',
                         message: '删除成功',
                     });
+                    that.loadAllComments(floorID)
                 }
                 else {
                     this.$message({
@@ -471,11 +478,11 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
-                console.log(res)
+                //console.log(res)
+                if (res.data.code == 200) {
+                    that.getPostDetail()
+                }
             })
-            that.post.title = that.formPost.title
-            that.post.content = that.formPost.content
-            that.post.tag = that.formPost.tag
             that.postDialogVisible = false
         },
 
