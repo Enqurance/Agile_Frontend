@@ -10,9 +10,9 @@
                 <div class="center">
                     <div class="post_header">
                         <span class="post_title">标题：{{ post.title }}</span>
-                        <el-button type="danger" @click="showDeletePost">删除post</el-button>
+                        <el-button v-if="post.is_auth" type="danger" @click="showDeletePost">删除post</el-button>
                         <el-button type="danger" @click="showReportPostPrompt">举报post</el-button>
-                        <el-button @click="editPost">编辑post</el-button>
+                        <el-button v-if="post.is_auth" @click="editPost">编辑post</el-button>
                     </div>
                     <div class="post_body">内容：{{ post.content }}</div>
                     <div>
@@ -67,8 +67,9 @@
                             <div class="post_floor-header">(用户id){{ floor.userid }} 发表于 {{ floor.createTime }}</div>
                             <div class="post_floor-body">{{ floor.content }}</div>
 
-                            <el-button type="danger" @click="showDeleteFloor(floor.id)">删除floor</el-button>
-                            <el-button type="danger" @click="showReportReplyPrompt(0,floor.id)">举报floor</el-button>
+                            <el-button v-if="floor.is_auth" type="danger"
+                                @click="showDeleteFloor(floor.id)">删除floor</el-button>
+                            <el-button type="danger" @click="showReportReplyPrompt(0, floor.id)">举报floor</el-button>
                             <div v-if="floor.comment_cases">第一条comment ：{{ floor.comment_cases.content }}</div>
                             <div class="post_floor-footer">
                                 <el-button class="post_floor-reply-btn"
@@ -77,8 +78,10 @@
 
                             <el-dialog v-model="commentsDialogVisible" title="全部评论" width="50%">
                                 <div class="post_floor-comments" v-for="comment in comments" :key="comment.id">
-                                    <el-button type="danger" @click="showDeleteComment(comment.id)">删除comment</el-button>
-                                    <el-button type="danger" @click="showReportReplyPrompt(1,comment.id)">举报comment</el-button>
+                                    <el-button v-if="comment.is_auth" type="danger"
+                                        @click="showDeleteComment(comment.id)">删除comment</el-button>
+                                    <el-button type="danger"
+                                        @click="showReportReplyPrompt(1, comment.id)">举报comment</el-button>
                                     <div class="post_floor-comment-header">作者 评论于 {{ comment.createTime }}</div>
                                     <div class="post_floor-comment-body">内容：{{ comment.content }}</div>
                                 </div>
@@ -160,9 +163,14 @@ export default {
                     'token': proxy.$cookies.get('user_token')
                 }
             }).then((res) => {
-                floors.value = res.data.data.retFloors;
-                totalFloors.value = res.data.data.length;
-                //console.log(res.data.data.retFloors)
+                if (res.data.code == 200) {
+                    floors.value = res.data.data.retFloors;
+                    totalFloors.value = res.data.data.length;
+                    //console.log(res.data.data.retFloors)
+                } else {
+                    floors.value = []
+                    totalFloors.value = 0;
+                }
             }).catch((error) => {
                 console.log(error);
             });
@@ -223,7 +231,8 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
-                that.post = res.data.data.post
+                that.post = res.data.data
+                //console.log(res)
             }).catch((error) => {
                 console.log(error);
             });
@@ -275,7 +284,12 @@ export default {
                 }
             }).then((res) => {
                 //console.log(res.data)
-                that.comments = res.data.data.retComments
+                if (res.data.code == 200) {
+                    that.comments = res.data.data.retComments
+                    //console.log(res.data.data.retComments)
+                } else {
+                    that.comments = []
+                }
                 that.commentsDialogVisible = true
             }).catch((error) => {
                 console.log(error);
@@ -503,7 +517,7 @@ export default {
             });
         },
 
-        showReportReplyPrompt(type,id) {
+        showReportReplyPrompt(type, id) {
             this.$prompt('请输入举报理由', '举报reply', {
                 confirmButtonText: '确认',
                 cancelButtonText: '取消',
@@ -514,7 +528,7 @@ export default {
                     }
                 },
             }).then(({ value }) => {
-                this.reportReply(value, type,id);
+                this.reportReply(value, type, id);
             }).catch(() => {
                 this.$message({
                     type: 'info',
@@ -522,7 +536,7 @@ export default {
                 });
             });
         },
-        reportReply(reason, type,id) {// 执行举报reply的逻辑
+        reportReply(reason, type, id) {// 执行举报reply的逻辑
             console.log('举报reply type= ' + type + '，理由为：' + reason);
             let that = this
             that.$axios.post('/forum/report/reportReply', {
