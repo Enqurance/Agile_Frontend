@@ -125,7 +125,7 @@ export default {
       }).then((res) => {
         if (res.data.code === 200) {
           that.searchResults = res.data.data
-          console.log(res.data.data)
+          //console.log(res.data.data)
         }
         else {
           that.$message({
