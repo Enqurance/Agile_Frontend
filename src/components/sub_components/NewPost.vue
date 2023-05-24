@@ -89,7 +89,6 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((response) => {
-                // todo
                 this.$emit('帖子id', response.data.data.id)
             })
             that.dialogVisible = false
