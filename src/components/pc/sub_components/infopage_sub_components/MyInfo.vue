@@ -1,9 +1,12 @@
 <template>
-    <el-row span="4">
+    <el-row span="6" gutter="20">
         <el-col 
             :xs="{ span: 5 }"
-            :sm="{ span: 3 }"
-            :md="{ span: 2 }">
+            :sm="{ span: 4 }"
+            :md="{ span: 3 }"
+            :lg="{ span: 2 }">
+            <el-row offset="8"></el-row>
+            <el-row>
             <el-upload 
                 action="http://43.143.148.116:8080/photo/uploadUserIcon"
                 :show-file-list="false" 
@@ -11,52 +14,71 @@
                 :before-upload="beforeAvatarUpload">
                 <el-tooltip effect="dark" content="点击更换头像" placement="right">
                     <el-avatar 
-                        :size="60" 
+                        :size="70" 
                         shape="circle" 
                         :src="this.imageUrl"
                         style="user-select: none;">
                     </el-avatar>
                 </el-tooltip>
             </el-upload>
+            </el-row>
         </el-col>
         <el-col 
-            :xs="{ span: 10 }"
-            :sm="{ span: 6 }"
-            style="display: flex; align-items: center;">
-            <span style="font-size: 30px;">{{ this.user.name }}</span>
+            :xs="{ span: 6 }"
+            :sm="{ span: 8 }"
+            :md="{ span: 8 }">
+            <el-row span="12">
+                <el-descriptions 
+                    :title="user.name"
+                    direction="vertical"
+                    :column="4"
+                    :size="size"
+                    border>
+                    <el-descriptions-item label="校区">
+                        <span style="font-size: 14px;">{{ user.campus == '1' ? '学院路校区' : '沙河校区' }}</span>
+                    </el-descriptions-item>
+                    <el-descriptions-item label="年级">
+                        <span style="font-size: 14px;">{{ user.grade == '1' ? '本科' : user.grade == '2' ? '硕士' :
+                                        '博士' }}</span>
+                    </el-descriptions-item>
+                    <el-descriptions-item label="性别">
+                        <span v-if="user.gender == 0" style="font-size: 14px;">男</span>
+                        <span v-if="user.gender == 1" style="font-size: 14px;">女</span>
+                    </el-descriptions-item>
+                    <el-descriptions-item label="简介">
+                        <span style="font-size: 14px;">{{ user.description }}</span>
+                    </el-descriptions-item>
+                </el-descriptions>
+            </el-row>
+        </el-col>
+        <el-col 
+            :xs="{ span: 12 }"
+            :sm="{ span: 10 }"
+            :md="{ span: 13 }">
+            <div class="right-aligned-content">
+                <el-row :justify="end">
+                    <el-button type="primary" :icon="Edit" @click="editVisible = true">编辑</el-button>
+                    <el-button type="primary" :icon="Edit" @click="changePasswordVisible = true">设置</el-button>
+                </el-row>
+            </div>
         </el-col>
     </el-row>
-    <!-- <div class="InforPage">
-        <el-container class="MainPart">
+    <el-row>
+        我的钉子
+    </el-row>
+    <el-row>
+        <MyPin></MyPin>
+    </el-row>
+        <!-- <el-container class="MainPart">
             <el-col :span="6">
+                                <p style="padding-top: 8%; padding-bottom: 5%; font-size:1.2em">{{ user.description }}</p>
                 <div class="headPart">
                     <div v-if="isReload">
-                        
-                        
                     </div>
                     <div class="buttonArea">
                         <div style="padding-top: 10%"></div>
-                        <el-button round style="font-size: 20px;" @click="editVisible = true">编辑</el-button>
-                        <el-button round>
-                            <el-dropdown>
-                                <span class="el-dropdown-link" style="font-size: 20px;">
-                                    设置
-                                </span>
-                                <template #dropdown>
-                                    <el-dropdown-menu>
-                                        <el-dropdown-item>
-                                            <el-button @click="changePasswordVisible = true">修改密码</el-button>
-                                        </el-dropdown-item>
-                                        <el-dropdown-item>
-                                            <el-button @click="contactUsVisible = true">联系我们</el-button>
-                                        </el-dropdown-item>
-                                        <el-dropdown-item>
-                                            <el-button @click="logOut()">登出</el-button>
-                                        </el-dropdown-item>
-                                    </el-dropdown-menu>
-                                </template>
-                            </el-dropdown>
-                        </el-button>
+                        
+
                     </div>
                 </div>
                 <el-divider />
@@ -64,21 +86,6 @@
             <el-container>
                 <el-aside width="30%">
                     <div class="LeftPart">
-                        <el-row class="firstRow">
-                            <p style="padding-top: 8%; padding-bottom: 5%; font-size:1.2em">{{ user.description }}</p>
-                            <el-descriptions column=1>
-                                <el-descriptions-item label="校区:">
-                                    <span style="font-size: 14px;">{{ user.campus == '1' ? '学院路校区' : '沙河校区' }}</span>
-                                </el-descriptions-item>
-                                <el-descriptions-item label="年级:">
-                                    <span style="font-size: 14px;">{{ user.grade == '1' ? '本科' : user.grade == '2' ? '硕士' :
-                                        '博士' }}</span>
-                                </el-descriptions-item>
-                                <el-descriptions-item label="性别:">
-                                    <span v-if="user.gender == 0" style="font-size: 14px;">男</span>
-                                    <span v-if="user.gender == 1" style="font-size: 14px;">女</span>
-                                </el-descriptions-item>
-                            </el-descriptions>
                         </el-row>
                         <el-row class="thirdRow">
                             <div style="padding-top:70%;"></div>
@@ -87,13 +94,13 @@
                 </el-aside>
                 <el-main>
                     <div>
-                        <p style="font-size: 25px;">我的钉子</p>
-                        <MyPin></MyPin>
+                        
+                        
                     </div>
                 </el-main>
             </el-container>
-        </el-container>
-    </div> -->
+        </el-container> -->
+        <!-- <el-button @click="contactUsVisible = true">联系我们</el-button> -->
     <!--edit Dialog-->
     <el-dialog v-model="editVisible" title="请编辑你的信息" width="50%">
             <el-form :model="user" label-width="100px">
@@ -136,7 +143,7 @@
             </template>
         </el-dialog>
 
-        <el-dialog v-model="changePasswordVisible" title="修改密码" width="30%">
+        <el-dialog v-model="changePasswordVisible" title="修改密码" width="50%">
             <el-form :model="user" label-width="120px">
                 <el-form-item label="请输入当前密码">
                     <el-input v-model="curPassword" />
@@ -175,6 +182,7 @@
 <script>
 import { ref, reactive } from 'vue'
 import MyPin from './MyPin.vue'
+import { Edit } from '@element-plus/icons-vue'
 
 export default {
     name: "MyInfo",
@@ -229,6 +237,7 @@ export default {
             changePasswordVisible, curPassword, newPassword, tempPassword,
             imageUrl, tags,
             contactUsVisible, suggestion,
+            Edit
         };
     },
     mounted() {
@@ -451,14 +460,6 @@ export default {
             // console.log(file)
             this.getIcon();
         },
-
-        logOut() {
-            let that = this;
-            that.$cookies.remove('user_token');
-            that.$cookies.remove('user_type');
-            this.$router.replace({ path: '/' });
-        },
-
     },
     data() {
         return { isReload: true, }
@@ -467,6 +468,11 @@ export default {
 </script>
 
 <style scoped>
+.right-aligned-content {
+    display: flex;
+    justify-content: flex-end;
+}
+
 .InforPage {
     width: 100%;
     height: 100%;
@@ -487,11 +493,6 @@ export default {
 
 .buttonArea {
     margin-left: 30%;
-}
-
-.MainPart {
-    height: 100%;
-    width: 100%;
 }
 
 .LeftPart {
@@ -602,22 +603,6 @@ p.desc {
     line-height: 1.55;
     display: list-item;
     text-align: -webkit-match-parent;
-}
-
-span {
-    font-size: 120%;
-}
-
-a {
-    font-size: 120%;
-    font-weight: 550;
-}
-
-.pic-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    /* 图片不拉伸，并保持完整显示 */
 }
 
 .el-form-item {
