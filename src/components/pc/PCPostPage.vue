@@ -15,6 +15,9 @@
                         <el-button v-if="post.is_auth" @click="editPost">编辑post</el-button>
                     </div>
                     <div class="post_body">内容：{{ post.content }}</div>
+                    <div class="post_body">点赞数：{{ post.thumbsUp }}</div>
+                    <el-button @click="addLike">点赞</el-button> 
+                    <!-- 这里会替换成图标，根据post.has_thumb来分辨 -->
                     <div>
                         <el-dialog v-model="postDialogVisible">
                             <div>
@@ -593,6 +596,22 @@ export default {
                 console.error(error);
             });
         },
+
+        addLike() {
+            let that = this
+            //console.log("初始点赞"+that.post.thumbsUp)
+            that.$axios.get('/forum/post/addLike/' + that.post.id, {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then((res) => {
+                if (res.data.code === 200) {
+                    //console.log("点赞成功");
+                    that.getPostDetail()
+                    //console.log("现在点赞"+that.post.thumbsUp)
+                }
+            }).catch((res) => console.log(res))
+        }
     },
 
     mounted() {
