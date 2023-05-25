@@ -559,7 +559,7 @@ export default defineComponent({
             }
 
             let that = this
-            that.$axios.post('examine/report/result_of_reply_post/' + that.report_reply_result.type + '/' + that.report_reply_result.id, {
+            that.$axios.post('examine/report/result_of_report_reply/' + that.report_reply_result.type + '/' + that.report_reply_result.id, {
                 result: JSON.parse(that.report_reply_result.result),
                 basis: that.report_reply_result.basis
             }, {

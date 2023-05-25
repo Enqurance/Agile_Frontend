@@ -1,7 +1,6 @@
 <template>
-  <div
-      style="padding: 1% 15% 3% 15%;background: rgb(246,246,246);width: 70%;height: 80%">
-    <div style="margin-bottom: 3%;font-size: 20px">
+  <div style="margin: 0 auto;background: #fafafa; padding: 0 3%; width: 80%; height: 90%">
+    <div style="padding-bottom: 2.5%; padding-top: 1.5%; font-size: 20px">
       我的帖子
       <!--      <el-button style="margin-left: 40%" size="large" type="primary">-->
       <!--        创建-->
@@ -22,7 +21,7 @@
           <el-empty description="暂时还没有贴子"/>
         </div>
         <div v-for="post in posts" :key="post.id"
-             style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 98%;height: 150px ">
+             style="margin: 7px 0; border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 98%;height: 150px ">
           <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
                      @click="post.deleteDialog=true">
             删除
@@ -63,8 +62,8 @@
 
     <div v-if="this.Index==='2'">
       <ul class="infinite-list" style="overflow: auto">
-        <div v-if="posts.length === 0">
-          <el-empty description="暂时还没有贴子"/>
+        <div v-if="bad_posts.length === 0">
+          <el-empty description="没有待整改贴子"/>
         </div>
         <div v-for="post in bad_posts" :key="post.id"
              style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 98%;height: 150px ">
@@ -160,14 +159,14 @@ export default {
     deletePost(post) {
       let that = this
       post.deleteDialog = false;
-      console.log(post);
+      // console.log(post);
       that.$axios.delete('/forum/post/deletePost/' + post.id, {
         headers: {
           'token': that.$cookies.get('user_token')
         }
       }).then((res) => {
         if (res.data.code === 200) {
-          console.log("删除的帖子id为：" + post.id)
+          // console.log("删除的帖子id为：" + post.id)
           this.$message({
             type: 'info',
             message: '删除成功',
@@ -193,9 +192,9 @@ export default {
         }
 
       }).then((res) => {
-        console.log(res)
+        // console.log(res)
         if (res.data.code === 200) {
-          console.log("get post success")
+          // console.log("get post success")
           this.posts = res.data.data
         } else {
           this.$message({
@@ -215,7 +214,7 @@ export default {
       }).then((res) => {
         // console.log(res)
         if (res.data.code === 200) {
-          console.log("get bad post success")
+          // console.log("get bad post success")
           this.bad_posts = res.data.data
         } else {
           this.$message({
@@ -243,7 +242,7 @@ export default {
       }).then((res) => {
         // console.log(res)
         if (res.data.code === 200) {
-          console.log("change success")
+          // console.log("change success")
           this.$message({
             message: "已提交整改，请耐心等待",
             type: 'success'
@@ -266,9 +265,9 @@ export default {
 
 <style scoped>
 .infinite-list {
-  height: 460px;
-  padding: 0;
-  margin: 0;
+  height: 500px;
+  //padding: 0;
+  //margin: 0;
   list-style: none;
 }
 
