@@ -19,8 +19,9 @@
                         <el-radio :label="7">生活服务</el-radio>
                     </el-radio-group>
                 </el-form-item>
-                <!-- <el-form-item label="关联钉子">
-                </el-form-item> -->
+                <el-form-item label="关联钉子">
+                    <PostBindPin @get_bind_pins="(_bind_pins) => bind_pins = _bind_pins" />
+                </el-form-item>
             </el-form>
 
             <div>
@@ -38,6 +39,7 @@
 <script>
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons-vue';
 import { ElInput, ElFormItem, ElRadio, ElRadioGroup, ElForm, ElButton, ElDialog } from "element-plus"
+import PostBindPin from "@/components/sub_components/PostBindPin.vue";
 
 export default {
     data() {
@@ -48,7 +50,9 @@ export default {
                 post_body: "",
                 pin_type: -1,
             },   // 表单数据
-            dialogTitle: '新建帖子'
+            dialogTitle: '新建帖子',
+
+            bind_pins: []
         }
     },
 
@@ -61,7 +65,8 @@ export default {
         ElRadioGroup,
         ElForm, 
         ElButton, 
-        ElDialog
+        ElDialog,
+        PostBindPin
     },
 
     methods: {
@@ -76,12 +81,13 @@ export default {
             }
 
             let that = this
-            //const pins = that.lnglat.join(';');
+            let pins = this.bind_pins.join(';');
+            //console.log(pins)
 
             that.$axios.post('/forum/post/addPost', null, {
                 params: {
                     tag: that.formData.pin_type,
-                    pinIdStr: "76;77;78",
+                    pinIdStr: pins,
                     title: that.formData.post_title,
                     content: that.formData.post_body,
                 },
@@ -90,12 +96,17 @@ export default {
                 }
             }).then((response) => {
                 //console.log(response.data)
+                that.bind_pins = []
                 if (response.data.code == 200) {
                     that.$router.push(`/Forum/${response.data.data}`);
                 }
             })
             that.dialogVisible = false
         },
+    },
+
+    mounted() {
+        this.bind_pins = []
     },
 }
 </script>
