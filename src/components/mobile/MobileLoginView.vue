@@ -3,23 +3,23 @@
         <div class="logo-container">
             <img src="/img/logo.png" alt="logo" style="width: 100%; height: auto;">
         </div>
-        <div class="form-container">
-            <el-form ref="loginForm" :model="loginForm" class="login-form">
-                <el-form-item prop="email">
-                    <el-input v-model="loginForm.email" placeholder="请输入用户邮箱" @keyup.enter="openVerified"></el-input>
-                </el-form-item>
-                <el-form-item prop="password">
-                    <el-input type="password" v-model="loginForm.password" placeholder="请输入密码"
-                              @keyup.enter="openVerified"></el-input>
-                </el-form-item>
-
-                <el-form-item>
-                    <div class="button-container">
-                        <el-button @click="goToRegister">注册</el-button>
-                        <el-button type="primary" @click="openVerified">登录</el-button>
-                    </div>
-                </el-form-item>
-            </el-form>
+        <div>
+            <van-form :model="loginForm" class="login-form">
+                <van-cell-group inset>
+                    <van-field
+                        v-model="loginForm.email" placeholder="请输入用户邮箱" @keyup.enter="openVerified"
+                        name="用户邮箱" label="用户邮箱" :rules="[{ required: true, message: '请填写用户名' }]"
+                    />
+                    <van-field
+                    type="password" v-model="loginForm.password" placeholder="请输入密码" @keyup.enter="openVerified"
+                        name="用户密码" label="用户密码" :rules="[{ required: true, message: '请填写密码' }]"
+                    />
+                </van-cell-group>
+                <div style="margin: 16px;">
+                    <el-button @click="goToRegister" style="margin-left: 15%;">注册</el-button>
+                    <el-button type="primary" @click="openVerified" style="margin-left: 30%;">登录</el-button>
+                </div>
+            </van-form>
         </div>
 
         <ManVerify :is-show="isShow" @verified="closeVerified"/>
@@ -126,54 +126,21 @@ export default {
     background-attachment: fixed;
 }
 
-.logo-container {
-    width: 180px;
-    height: 180px;
-    background: rgba(255, 255, 255, 0);
-    margin-top: 0px;
-    margin-bottom: 0px;
-    text-align: center;
-}
-
 .form-container {
     display: flex;
     /* 添加Flex属性 */
     justify-content: center;
     align-items: center;
     position: relative;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-top: 15px;
-    padding-bottom: 0;
     z-index: 1;
-}
-
-.form-container:before {
-    content: "";
-    position: absolute;
-    top: -10px; /* 向上移动一点 */
-    bottom: -10px; /* 向下移动一点 */
-    left: -10px; /* 向左移动一点 */
-    right: -10px; /* 向右移动一点 */
-    z-index: -1;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 20px; /* 圆角边框 */
+    background-color:rgba(255,0,0,0);
 }
 
 .login-form {
+    padding-top: 6%;
     flex: 1;
     /* 添加Flex属性 */
-}
-
-.el-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.el-form-item {
-    width: 100%;
-    text-align: center;
+    background-color:rgba(255,0,0,0);
 }
 
 .button-container {
