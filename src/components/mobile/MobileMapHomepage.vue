@@ -69,6 +69,8 @@ export default {
     data() {
         let map = shallowRef(null)
         return {
+            currentTime: null,
+
             close_search: false,
 
             screen_params: {
@@ -152,11 +154,13 @@ export default {
         document.oncontextmenu = () => {
             return false
         }
-
         this.screen_params.screenX = document.documentElement.clientWidth
         this.screen_params.screenY = document.documentElement.clientHeight
         // console.log(this.screen_params)
         this.init_map()
+    },
+    beforeUnmount() {
+        clearInterval(this.timer)
     },
     methods: {
         init_map() {
@@ -187,21 +191,18 @@ export default {
                         enableHighAccuracy: true,//是否使用高精度定位，默认:true
                         maximumAge: 0,           //定位结果缓存0毫秒，默认：0
                         convert: false,           //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
-                        showButton: true,        //显示定位按钮，默认：true
-                        buttonPosition: 'LB',    //定位按钮停靠位置，默认：'LB'，左下角
-                        buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+                        showButton: false,        //显示定位按钮，默认：true
                         showMarker: true,        //定位成功后在定位到的位置显示点标记，默认：true
                         showCircle: false,        //定位成功后用圆圈表示定位精度范围，默认：true
                         panToLocation: false,     //定位成功后将定位到的位置作为地图中心点，默认：true
                         GeoLocationFirst: true,
-
                     })
 
                     this.map.addControl(geolocation)
                     geolocation.getCurrentPosition((statue, result) => {
                         if (statue === 'complete') {
-                            console.log('gps_lng:' + result.position.lng)
-                            console.log('gps_lat:' + result.position.lat)
+                            // console.log('gps_lng:' + result.position.lng)
+                            // console.log('gps_lat:' + result.position.lat)
                             onComplete(result)
                         }
                         else {
@@ -209,19 +210,19 @@ export default {
                         }
                     })
 
-                    function onComplete (data) {
-                        // data是具体的定位信息
-                        // let gpsPoint = GPS.gcj_encrypt(data.position.getLat(), data.position.getLng())
-                        // console.log(gpsPoint)
-                        // let lng= gpsPoint.lon;
-                        // let lat= gpsPoint.lat;
+                    this.timer = setInterval(() => {
+                        this.currentTime = new Date().toLocaleTimeString()
+                        geolocation.getCurrentPosition(() => {
 
+                        })
+                    }, 30000)
+
+                    function onComplete (data) {
                         geolocation._marker.setPosition([data.position.getLng(), data.position.getLat()])
-                        geolocation._marker.setPosition([lng, lat])
-                        // that.map.setCenter([lng, lat])
 
                         that.$message({
-                            message: '定位成功lnglat: ' + lng + ', ' + lat,
+                            // message: '定位成功lnglat: ' + lng + ', ' + lat,
+                            message: '定位成功',
                             type: 'success',
                             showClose: true,
                         })
@@ -229,9 +230,9 @@ export default {
 
                     function onError (data) {
                         // 定位出错
-                        console.log(data)
+                        // console.log(data)
                         that.$message({
-                            message: data,
+                            message: data.message,
                             type: 'error'
                         })
                     }
