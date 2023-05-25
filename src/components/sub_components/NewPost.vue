@@ -89,8 +89,10 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((response) => {
-                // todo
-                this.$emit('帖子id', response.data.data.id)
+                //console.log(response.data)
+                if (response.data.code == 200) {
+                    that.$router.push(`/Forum/${response.data.data}`);
+                }
             })
             that.dialogVisible = false
         },

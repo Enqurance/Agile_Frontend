@@ -27,8 +27,21 @@
             <new-post ref="child"></new-post>
           </div>
           <div class="bottom">
+            <div>
+              <el-radio-group v-model="tag">
+                <el-radio :label="0">全部</el-radio>
+                <el-radio :label="1">餐饮</el-radio>
+                <el-radio :label="2">园地</el-radio>
+                <el-radio :label="3">教学</el-radio>
+                <el-radio :label="4">体育</el-radio>
+                <el-radio :label="5">办公</el-radio>
+                <el-radio :label="6">购物</el-radio>
+                <el-radio :label="7">生活服务</el-radio>
+              </el-radio-group>
+            </div>
+
             <div v-for="post in posts" :key="post.id" style="padding: 10px;">
-              <router-link :to="`/Forum/${post.id}`" class="custom-link">
+              <router-link :to="`/Forum/${post.id}`" class="custom-link" @click="tokenCheck">
                 <el-card style="padding: 10px;">
                   <div class="card-header">{{ post.title }}</div>
                   <div class="card-content">{{ post.content }}</div>
@@ -48,7 +61,7 @@
 
 
 <script>
-import { ref, onMounted, getCurrentInstance } from 'vue'
+import { ref, onMounted, getCurrentInstance, watch } from 'vue'
 import PageHeader from "@/components/pc/PCPageHeader.vue";
 import NewPost from "../sub_components/NewPost.vue";
 
@@ -78,18 +91,38 @@ export default {
     const offset = ref(0); // 跳过的帖子数量
     const limit = 5; // 每页显示的帖子数量
 
+    const tag = ref(0);
+
     const loadPosts = (offset) => {
-      proxy.$axios.post('/forum/post/getPosts', null, {
-        params: {
+      let api = '/forum/post/getPosts';
+      let params = {
+        offset: parseInt(offset.value),
+        limit: parseInt(limit)
+      };
+
+      if (tag.value !== 0) {
+        api = '/forum/post/getPostsByTag';
+        params = {
+          type: parseInt(tag.value),
           offset: parseInt(offset.value),
           limit: parseInt(limit)
-        },
+        }
+      }
+
+      proxy.$axios.post(api, null, {
+        params: params,
         headers: {
           'token': proxy.$cookies.get('user_token')
         }
       }).then((res) => {
-        posts.value = res.data.data.retPosts;
-        totalPosts.value = res.data.data.length;
+        //console.log(res)
+        if (res.data.code == 200) {
+          posts.value = res.data.data.retPosts;
+          totalPosts.value = res.data.data.length;
+        } else {
+          posts.value = [];
+          totalPosts.value = 0;
+        }
       }).catch((error) => {
         console.log(error);
       });
@@ -104,14 +137,28 @@ export default {
       loadPosts(offset);
     };
 
+    watch(tag, (newVal, oldVal) => {
+      console.log(tag.value)
+      loadPosts(offset);
+    });
 
     return {
-      imageUrl, posts, currentPage, totalPosts, limit,
+      imageUrl, posts, currentPage, totalPosts, limit, tag,
       handlePageChange
     };
   },
 
   methods: {
+    tokenCheck() {
+      if (!this.$cookies.get('user_token')) {
+        this.$message({
+          message: '请先登录!',
+          type: "warning"
+        })
+        this.$router.push({ path: '/login' })
+      }
+    },
+
     handleSearchInput() {
       let that = this
 
@@ -125,7 +172,7 @@ export default {
       }).then((res) => {
         if (res.data.code === 200) {
           that.searchResults = res.data.data
-          console.log(res.data.data)
+          //console.log(res.data.data)
         }
         else {
           that.$message({
@@ -137,10 +184,25 @@ export default {
 
     },
     handleSelect(id) {
-      this.$router.push(`/Forum/${id}`);
+      if (!this.$cookies.get('user_token')) {
+        this.$message({
+          message: '请先登录!',
+          type: "warning"
+        })
+        this.$router.push({ path: '/login' })
+      } else {
+        this.$router.push(`/Forum/${id}`);
+      }
     },
 
     showNewPostDialog() {
+      if (!this.$cookies.get('user_token')) {
+        this.$message({
+          message: '请先登录!',
+          type: "warning"
+        })
+        this.$router.push({ path: '/login' })
+      }
       this.$refs.child.dialogVisible = true
     },
 
