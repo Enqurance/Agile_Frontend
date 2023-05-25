@@ -2,6 +2,11 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from "./router/index.js";
 import axiosInstance from "./axios/axios.js";
+import VueQuillEditor from 'vue-quill-editor'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
 
 import VueCookies from 'vue-cookies'
 
@@ -13,6 +18,7 @@ const app = createApp(App)
 app.use(router)
 app.use(VueCookies)
 app.use(ElementPlus)
+app.use(VueQuillEditor);
 
 app.config.globalProperties.$axios = axiosInstance
 app.config.globalProperties.$router = router

@@ -1,6 +1,6 @@
 <template>
     <router-view/>
-    <MobileNavigator v-if="this.$device==='mobile'"/>
+    <MobileNavigator v-if="this.$device==='mobile'"/>  
 </template>
 
 <script>
