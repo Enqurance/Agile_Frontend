@@ -48,6 +48,7 @@ import global from "@/global";
 import '../../assets/PinIcon/font2/iconfont.css'
 import SwitchPos from "@/components/sub_components/mappage_sub_components/SwitchPos.vue";
 import {ref} from "vue";
+import {GPS} from '@/gps'
 
 
 export default {
@@ -185,7 +186,7 @@ export default {
                     let geolocation = new AMap.Geolocation({
                         enableHighAccuracy: true,//是否使用高精度定位，默认:true
                         maximumAge: 0,           //定位结果缓存0毫秒，默认：0
-                        convert: false,           //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+                        convert: true,           //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
                         showButton: true,        //显示定位按钮，默认：true
                         buttonPosition: 'LB',    //定位按钮停靠位置，默认：'LB'，左下角
                         buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
@@ -197,8 +198,8 @@ export default {
                     this.map.addControl(geolocation)
                     geolocation.getCurrentPosition((statue, result) => {
                         if (statue === 'complete') {
-                            console.log(result.position.lng)
-                            console.log(result.position.lat)
+                            console.log('gps_lng:' + result.position.lng)
+                            console.log('gps_lat:' + result.position.lat)
                             onComplete(result)
                         }
                         else {
@@ -208,9 +209,16 @@ export default {
 
                     function onComplete (data) {
                         // data是具体的定位信息
-                        // console.log(data)
+                        let gpsPoint = GPS.gcj_encrypt(data.position.getLat(), data.position.getLng())
+                        console.log(gpsPoint)
+                        let lng= gpsPoint.lon;
+                        let lat= gpsPoint.lat;
+
+                        geolocation._marker.setPosition([lng, lat])
+                        that.map.setCenter([lng, lat])
+
                         that.$message({
-                            message: '定位成功lnglat: ' + data.position.lng + "; " + data.position.lat,
+                            message: '定位成功lnglat: ' + lng + ', ' + lat,
                             type: 'success',
                             showClose: true,
                         })
