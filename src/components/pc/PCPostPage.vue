@@ -79,7 +79,7 @@
                             <el-dialog v-model="commentsDialogVisible" title="全部评论" width="50%">
                                 <div class="post_floor-comments" v-for="comment in comments" :key="comment.id">
                                     <el-button v-if="comment.is_auth" type="danger"
-                                        @click="showDeleteComment(comment.id,floor.id)">删除comment</el-button>
+                                        @click="showDeleteComment(comment.id, floor.id)">删除comment</el-button>
                                     <el-button type="danger"
                                         @click="showReportReplyPrompt(1, comment.id)">举报comment</el-button>
                                     <div class="post_floor-comment-header">作者 评论于 {{ comment.createTime }}</div>
@@ -163,6 +163,7 @@ export default {
                     'token': proxy.$cookies.get('user_token')
                 }
             }).then((res) => {
+                //console.log(res)
                 if (res.data.code == 200) {
                     floors.value = res.data.data.retFloors;
                     totalFloors.value = res.data.data.length;
@@ -193,6 +194,16 @@ export default {
     },
 
     methods: {
+        tokenCheck() {
+            if (!this.$cookies.get('user_token')) {
+                this.$message({
+                    message: '请先登录!',
+                    type: "warning"
+                })
+                this.$router.push({ path: '/login' })
+            }
+        },
+
         initPost() {
             console.log("init")
             this.getIcon()
@@ -250,6 +261,7 @@ export default {
 
 
         addNewFloor() {
+            this.tokenCheck()
             if (this.newFloorForm.content === '') {
                 return this.$message.error("楼层正文不能为空")
             }
@@ -267,7 +279,7 @@ export default {
                 //console.log(response)
                 that.newFloorForm.body = ''
                 if (response.data.code == 200) {
-                   that.loadFloors(ref(0))
+                    that.loadFloors(ref(0))
                 }
             })
             this.newFloorDialogVisible = false
@@ -300,6 +312,7 @@ export default {
         },
 
         addComment(floorID) {
+            this.tokenCheck()
             if (this.newCommentBody === '') {
                 return this.$message.error("评论不能为空")
             }
@@ -324,6 +337,7 @@ export default {
         },
 
         showDeletePost() {
+            this.tokenCheck()
             this.$confirm(
                 '确认删除该post？',
                 'Warning',
@@ -368,6 +382,7 @@ export default {
 
 
         showDeleteFloor(floorId) {
+            this.tokenCheck()
             this.$confirm(
                 '确认删除该floor？',
                 'Warning',
@@ -409,7 +424,8 @@ export default {
             }).catch((res) => console.log(res))
         },
 
-        showDeleteComment(commentId,floorID) {
+        showDeleteComment(commentId, floorID) {
+            this.tokenCheck()
             this.$confirm(
                 '确认删除该comment？',
                 'Warning',
@@ -419,7 +435,7 @@ export default {
                     type: 'warning',
                 }
             ).then(() => {
-                this.deleteComment(commentId,floorID);
+                this.deleteComment(commentId, floorID);
             }).catch(() => {
                 this.$message({
                     type: 'info',
@@ -427,7 +443,7 @@ export default {
                 });
             });
         },
-        deleteComment(commentId,floorID) {// 执行删除评论的逻辑
+        deleteComment(commentId, floorID) {// 执行删除评论的逻辑
             let that = this
             that.$axios.delete('/forum/comment/deleteComment/' + commentId, {
                 headers: {
@@ -452,6 +468,7 @@ export default {
         },
 
         editPost() {
+            this.tokenCheck()
             this.formPost = Object.assign({}, this.post)
             this.postDialogVisible = true
         },
@@ -490,23 +507,31 @@ export default {
 
 
         showReportPostPrompt() {
-            this.$prompt('请输入举报理由', '举报帖子', {
-                confirmButtonText: '确认',
-                cancelButtonText: '取消',
-                inputPlaceholder: '请输入举报理由',
-                inputValidator: (value) => {
-                    if (!value) {
-                        return '举报理由不能为空';
-                    }
-                },
-            }).then(({ value }) => {
-                this.reportPost(value);
-            }).catch(() => {
+            if (!this.$cookies.get('user_token')) {
                 this.$message({
-                    type: 'info',
-                    message: '取消举报',
+                    message: '请先登录!',
+                    type: "warning"
+                })
+                this.$router.push({ path: '/login' })
+            } else {
+                this.$prompt('请输入举报理由', '举报帖子', {
+                    confirmButtonText: '确认',
+                    cancelButtonText: '取消',
+                    inputPlaceholder: '请输入举报理由',
+                    inputValidator: (value) => {
+                        if (!value) {
+                            return '举报理由不能为空';
+                        }
+                    },
+                }).then(({ value }) => {
+                    this.reportPost(value);
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消举报',
+                    });
                 });
-            });
+            }
         },
         reportPost(reason) {// 执行举报post的逻辑
             let that = this
@@ -525,23 +550,31 @@ export default {
         },
 
         showReportReplyPrompt(type, id) {
-            this.$prompt('请输入举报理由', '举报reply', {
-                confirmButtonText: '确认',
-                cancelButtonText: '取消',
-                inputPlaceholder: '请输入举报理由',
-                inputValidator: (value) => {
-                    if (!value) {
-                        return '举报理由不能为空';
-                    }
-                },
-            }).then(({ value }) => {
-                this.reportReply(value, type, id);
-            }).catch(() => {
+            if (!this.$cookies.get('user_token')) {
                 this.$message({
-                    type: 'info',
-                    message: '取消举报',
+                    message: '请先登录!',
+                    type: "warning"
+                })
+                this.$router.push({ path: '/login' })
+            } else {
+                this.$prompt('请输入举报理由', '举报reply', {
+                    confirmButtonText: '确认',
+                    cancelButtonText: '取消',
+                    inputPlaceholder: '请输入举报理由',
+                    inputValidator: (value) => {
+                        if (!value) {
+                            return '举报理由不能为空';
+                        }
+                    },
+                }).then(({ value }) => {
+                    this.reportReply(value, type, id);
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消举报',
+                    });
                 });
-            });
+            }
         },
         reportReply(reason, type, id) {// 执行举报reply的逻辑
             console.log('举报reply type= ' + type + '，理由为：' + reason);
