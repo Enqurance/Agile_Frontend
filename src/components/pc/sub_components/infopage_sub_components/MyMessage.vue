@@ -12,6 +12,11 @@
         </div>
         <div v-for="rev in revs" :key="rev.id"
              style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 120px ">
+          <el-icon style="float: right">
+            <circle-close @click="rev.deleteDialog=true">
+
+            </circle-close>
+          </el-icon>
           <div v-if="rev.read===false" style="float: right;padding-top: 50px">
             <el-icon>
               <Warning/>
@@ -38,9 +43,8 @@
           <p style="padding: 0 20px;font-size:16px;height:20px;width:70%;overflow: hidden;display: inline-block">
             {{ rev.time }}
           </p>
-          <el-button style="float: right; display: inline-block" type="danger"
-                     @click="rev.deleteDialog=true">
-            删除
+          <el-button v-if="rev.content" style="float: right;" @click="readDetail(rev)">
+            查看详情
           </el-button>
           <el-dialog v-model="rev.detail" title="消息详情" width="30%" center>
             <span style="text-align: center">
@@ -69,13 +73,17 @@
         </div>
         <div v-for="snd in snds" :key="snd.id"
              style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 120px ">
+
+          <el-icon style="float: right">
+            <circle-close @click="snd.deleteDialog=true">
+
+            </circle-close>
+          </el-icon>
           <div v-if="snd.read===false" style="float: right;padding-top: 50px">
             <el-icon>
-              <Warning/>
+              <Opportunity></Opportunity>
             </el-icon>
           </div>
-
-
           <el-dialog v-model="snd.deleteDialog" title="删除消息" width="30%" center>
             <span style="text-align: center">
               你确定要删除这个消息吗？
@@ -97,9 +105,8 @@
           <p style="padding: 0 20px;font-size:16px;height:20px;width:70%;overflow: hidden;display: inline-block">
             {{ snd.time }}
           </p>
-          <el-button style="float: right; display: inline-block" type="danger"
-                     @click="snd.deleteDialog=true">
-            删除
+          <el-button v-if="snd.content" style="float: right;" @click="readDetail(snd)">
+            查看详情
           </el-button>
           <el-dialog v-model="snd.detail" title="消息详情" width="30%" center>
             <span style="text-align: center">
@@ -124,11 +131,11 @@
 
 <script>
 
-import {Warning} from "@element-plus/icons-vue";
+import {CircleClose, Opportunity, Warning} from "@element-plus/icons-vue";
 
 export default {
   name: "MyMessage",
-  components: {Warning},
+  components: {Opportunity, CircleClose, Warning},
   data() {
     return {
       revs: [],
@@ -146,12 +153,18 @@ export default {
         } else {
           this.$router.push({path: '/Forum/' + msg.post_id});
         }
-      } else {
-        if (msg.content === null) {
-          msg.content = msg.title;
-        }
-        msg.detail = true;
       }
+      // else {
+      //   if (msg.content === null) {
+      //     // msg.content = msg.title;
+      //   }
+      //   msg.detail = true;
+      // }
+    },
+    readDetail(msg) {
+      console.log(msg);
+      msg.detail = true;
+      msg.read = true;
     },
     readMsg(msg) {
       let that = this;
@@ -228,7 +241,7 @@ export default {
         }
 
       }).then((res) => {
-        // console.log(res)
+        console.log(res)
         if (res.data.code === 200) {
           console.log("get snd success")
           this.snds = res.data.data

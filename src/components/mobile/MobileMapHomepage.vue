@@ -48,7 +48,7 @@ import global from "@/global";
 import '../../assets/PinIcon/font2/iconfont.css'
 import SwitchPos from "@/components/sub_components/mappage_sub_components/SwitchPos.vue";
 import {ref} from "vue";
-import {GPS} from '@/gps'
+// import {GPS} from '@/gps'
 
 
 export default {
@@ -69,7 +69,7 @@ export default {
     data() {
         let map = shallowRef(null)
         return {
-            currentTime: null,
+            // currentTime: null,
 
             close_search: false,
 
@@ -84,7 +84,7 @@ export default {
                 39.9820
             ],
             beihang_zoom: [
-                16,
+                14.5,
                 20
             ],
 
@@ -160,7 +160,7 @@ export default {
         this.init_map()
     },
     beforeUnmount() {
-        clearInterval(this.timer)
+        // clearInterval(this.timer)
     },
     methods: {
         init_map() {
@@ -168,7 +168,7 @@ export default {
                 key: '159f00b0e9d69324ced6b97a73f6883b',
                 version: '2.0',
                 plugins: ['AMap.DistrictSearch', 'AMap.Polyline', 'AMap.Marker', 'AMap.ContextMenu', 'AMap.Pixel',
-                    'AMap.Icon', ' AMap.Size', 'AMap.Geolocation']
+                    'AMap.Icon', ' AMap.Size']
             }).then((AMap) => {
                 let that = this
 
@@ -186,57 +186,57 @@ export default {
                 })
                 this.map.setZooms(that.beihang_zoom)
 
-                AMap.plugin('AMap.Geolocation', () => {
-                    let geolocation = new AMap.Geolocation({
-                        enableHighAccuracy: true,//是否使用高精度定位，默认:true
-                        maximumAge: 0,           //定位结果缓存0毫秒，默认：0
-                        convert: false,           //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
-                        showButton: false,        //显示定位按钮，默认：true
-                        showMarker: true,        //定位成功后在定位到的位置显示点标记，默认：true
-                        showCircle: false,        //定位成功后用圆圈表示定位精度范围，默认：true
-                        panToLocation: false,     //定位成功后将定位到的位置作为地图中心点，默认：true
-                        GeoLocationFirst: true,
-                    })
-
-                    this.map.addControl(geolocation)
-                    geolocation.getCurrentPosition((statue, result) => {
-                        if (statue === 'complete') {
-                            // console.log('gps_lng:' + result.position.lng)
-                            // console.log('gps_lat:' + result.position.lat)
-                            onComplete(result)
-                        }
-                        else {
-                            onError(result)
-                        }
-                    })
-
-                    this.timer = setInterval(() => {
-                        this.currentTime = new Date().toLocaleTimeString()
-                        geolocation.getCurrentPosition(() => {
-
-                        })
-                    }, 30000)
-
-                    function onComplete (data) {
-                        geolocation._marker.setPosition([data.position.getLng(), data.position.getLat()])
-
-                        that.$message({
-                            // message: '定位成功lnglat: ' + lng + ', ' + lat,
-                            message: '定位成功',
-                            type: 'success',
-                            showClose: true,
-                        })
-                    }
-
-                    function onError (data) {
-                        // 定位出错
-                        // console.log(data)
-                        that.$message({
-                            message: data.message,
-                            type: 'error'
-                        })
-                    }
-                })
+                // AMap.plugin('AMap.Geolocation', () => {
+                //     let geolocation = new AMap.Geolocation({
+                //         enableHighAccuracy: true,//是否使用高精度定位，默认:true
+                //         maximumAge: 0,           //定位结果缓存0毫秒，默认：0
+                //         convert: false,           //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+                //         showButton: false,        //显示定位按钮，默认：true
+                //         showMarker: true,        //定位成功后在定位到的位置显示点标记，默认：true
+                //         showCircle: false,        //定位成功后用圆圈表示定位精度范围，默认：true
+                //         panToLocation: false,     //定位成功后将定位到的位置作为地图中心点，默认：true
+                //         GeoLocationFirst: true,
+                //     })
+                //
+                //     this.map.addControl(geolocation)
+                //     geolocation.getCurrentPosition((statue, result) => {
+                //         if (statue === 'complete') {
+                //             // console.log('gps_lng:' + result.position.lng)
+                //             // console.log('gps_lat:' + result.position.lat)
+                //             onComplete(result)
+                //         }
+                //         else {
+                //             onError(result)
+                //         }
+                //     })
+                //
+                //     this.timer = setInterval(() => {
+                //         this.currentTime = new Date().toLocaleTimeString()
+                //         geolocation.getCurrentPosition(() => {
+                //
+                //         })
+                //     }, 30000)
+                //
+                //     function onComplete (data) {
+                //         geolocation._marker.setPosition([data.position.getLng(), data.position.getLat()])
+                //
+                //         that.$message({
+                //             // message: '定位成功lnglat: ' + lng + ', ' + lat,
+                //             message: '定位成功',
+                //             type: 'success',
+                //             showClose: true,
+                //         })
+                //     }
+                //
+                //     function onError (data) {
+                //         // 定位出错
+                //         // console.log(data)
+                //         that.$message({
+                //             message: data.message,
+                //             type: 'error'
+                //         })
+                //     }
+                // })
 
                 this.markers_info = {}
                 that.$axios.get('map/getUserAllBriefPin', {

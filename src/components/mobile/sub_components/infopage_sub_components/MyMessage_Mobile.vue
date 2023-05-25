@@ -42,6 +42,10 @@
                        @click="rev.deleteDialog=true">
               删除
             </el-button>
+            <el-button v-if="rev.content" style="float: right; display: inline-block" type="primary" size="small"
+                       @click="readDetail(rev)">
+              查看详情
+            </el-button>
             <el-dialog v-model="rev.detail" title="消息详情" width="80%" center>
             <span style="text-align: center">
               {{ rev.content }}
@@ -79,6 +83,10 @@
             <el-button style="float: right; display: inline-block" type="danger" size="small"
                        @click="snd.deleteDialog=true">
               删除
+            </el-button>
+            <el-button v-if="snd.content" style="float: right; display: inline-block" type="primary" size="small"
+                       @click="readDetail(snd)">
+              查看详情
             </el-button>
             <el-dialog v-model="snd.detail" title="消息详情" width="80%" center>
             <span style="text-align: center">
@@ -129,12 +137,13 @@ export default {
         } else {
           this.$router.push({path: '/Forum/' + msg.post_id});
         }
-      } else {
-        if (msg.content === null) {
-          msg.content = msg.title;
-        }
-        msg.detail = true;
       }
+      // else {
+      //   if (msg.content === null) {
+      //     msg.content = msg.title;
+      //   }
+      //   msg.detail = true;
+      // }
     },
     deleteMessage(msg) {
       let that = this
@@ -182,6 +191,11 @@ export default {
           })
         }
       })
+    },
+    readDetail(msg) {
+      console.log(msg);
+      msg.detail = true;
+      msg.read = true;
     },
     queryAllRev() {
       let that = this

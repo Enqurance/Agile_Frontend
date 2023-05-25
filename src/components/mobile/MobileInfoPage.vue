@@ -23,10 +23,10 @@ export default {
 <template>
     <div class="InforPage">
         <van-tabs v-model:active="Index">
-        <van-tab title="个人信息"><MyInfo_Mobile></MyInfo_Mobile></van-tab>
-        <van-tab title="我的帖子"><MyPost_Mobile/></van-tab>
-        <van-tab title="我的回复"><MyComment_Mobile></MyComment_Mobile></van-tab>
-        <van-tab title="我的消息"><MyMessage_Mobile></MyMessage_Mobile></van-tab>
+        <van-tab title="个人信息" class="tabs"><MyInfo_Mobile class="content"></MyInfo_Mobile></van-tab>
+        <van-tab title="我的帖子" class="tabs"><MyPost_Mobile class="content"></MyPost_Mobile></van-tab>
+        <van-tab title="我的回复" class="tabs"><MyComment_Mobile class="content"></MyComment_Mobile></van-tab>
+        <van-tab title="我的消息" class="tabs"><MyMessage_Mobile class="content"></MyMessage_Mobile></van-tab>
         </van-tabs>
     </div>
 </template>
@@ -38,5 +38,4 @@ export default {
     padding-right: 2%;
     display: block;
 }
-
 </style>
