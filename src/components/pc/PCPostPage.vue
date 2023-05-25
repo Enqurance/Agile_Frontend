@@ -598,6 +598,7 @@ export default {
         },
 
         addLike() {
+            this.tokenCheck()
             let that = this
             //console.log("初始点赞"+that.post.thumbsUp)
             that.$axios.get('/forum/post/addLike/' + that.post.id, {
