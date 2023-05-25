@@ -43,7 +43,6 @@ import AMapLoader from '@amap/amap-jsapi-loader'
 import {shallowRef} from "@vue/reactivity";
 import {ElMessageBox, ElMessage} from "element-plus";
 import MobileMapPinInfo from "@/components/mobile/sub_components/mappage_sub_components/MobileMapPinInfo.vue";
-import MapPinAdd from "@/components/pc/sub_components/mappage_sub_components/MapPinAdd.vue";
 import PlaceSearch from "@/components/sub_components/mappage_sub_components/PlaceSearch.vue";
 import global from "@/global";
 import '../../assets/PinIcon/font2/iconfont.css'
@@ -163,7 +162,8 @@ export default {
             AMapLoader.load({
                 key: '159f00b0e9d69324ced6b97a73f6883b',
                 version: '2.0',
-                plugins: ['AMap.DistrictSearch', 'AMap.Polyline', 'AMap.Marker', 'AMap.ContextMenu', 'AMap.Pixel', 'AMap.Icon', ' AMap.Size']
+                plugins: ['AMap.DistrictSearch', 'AMap.Polyline', 'AMap.Marker', 'AMap.ContextMenu', 'AMap.Pixel',
+                    'AMap.Icon', ' AMap.Size', 'AMap.Geolocation']
             }).then((AMap) => {
                 let that = this
 
@@ -181,8 +181,47 @@ export default {
                 })
                 this.map.setZooms(that.beihang_zoom)
 
-                // let bounds = this.map.getBounds();
-                // this.map.setLimitBounds(bounds);
+                AMap.plugin('AMap.Geolocation', () => {
+                    let geolocation = new AMap.Geolocation({
+                        enableHighAccuracy: true,//是否使用高精度定位，默认:true
+                        maximumAge: 0,           //定位结果缓存0毫秒，默认：0
+                        convert: true,           //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+                        showButton: true,        //显示定位按钮，默认：true
+                        buttonPosition: 'LB',    //定位按钮停靠位置，默认：'LB'，左下角
+                        buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+                        showMarker: true,        //定位成功后在定位到的位置显示点标记，默认：true
+                        showCircle: false,        //定位成功后用圆圈表示定位精度范围，默认：true
+                        panToLocation: false,     //定位成功后将定位到的位置作为地图中心点，默认：true
+                    })
+
+                    this.map.addControl(geolocation)
+                    geolocation.getCurrentPosition((statue, result) => {
+                        if (statue === 'complete') {
+                            onComplete(result)
+                        }
+                        else {
+                            onError(result)
+                        }
+                    })
+
+                    function onComplete (data) {
+                        // data是具体的定位信息
+                        // console.log(data)
+                        that.$message({
+                            message: data,
+                            type: 'success'
+                        })
+                    }
+
+                    function onError (data) {
+                        // 定位出错
+                        console.log(data)
+                        that.$message({
+                            message: data,
+                            type: 'error'
+                        })
+                    }
+                })
 
                 this.markers_info = {}
                 that.$axios.get('map/getUserAllBriefPin', {
