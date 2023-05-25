@@ -41,7 +41,8 @@
             </div>
 
             <div v-for="post in posts" :key="post.id" style="padding: 10px;">
-              <router-link :to="`/Forum/${post.id}`" class="custom-link" @click="tokenCheck">
+              <!-- <router-link :to="`/Forum/${post.id}`" class="custom-link" @click="tokenCheck"> -->
+              <router-link :to="`/Forum/${post.id}`" class="custom-link">
                 <el-card style="padding: 10px;">
                   <div class="card-header">{{ post.title }}</div>
                   <div class="card-content">{{ post.content }}</div>
@@ -149,15 +150,15 @@ export default {
   },
 
   methods: {
-    tokenCheck() {
-      if (!this.$cookies.get('user_token')) {
-        this.$message({
-          message: '请先登录!',
-          type: "warning"
-        })
-        this.$router.push({ path: '/login' })
-      }
-    },
+    // tokenCheck() {
+    //   if (!this.$cookies.get('user_token')) {
+    //     this.$message({
+    //       message: '请先登录!',
+    //       type: "warning"
+    //     })
+    //     this.$router.push({ path: '/login' })
+    //   }
+    // },
 
     handleSearchInput() {
       let that = this
@@ -184,15 +185,16 @@ export default {
 
     },
     handleSelect(id) {
-      if (!this.$cookies.get('user_token')) {
-        this.$message({
-          message: '请先登录!',
-          type: "warning"
-        })
-        this.$router.push({ path: '/login' })
-      } else {
-        this.$router.push(`/Forum/${id}`);
-      }
+      // if (!this.$cookies.get('user_token')) {
+      //   this.$message({
+      //     message: '请先登录!',
+      //     type: "warning"
+      //   })
+      //   this.$router.push({ path: '/login' })
+      // } else {
+      //   this.$router.push(`/Forum/${id}`);
+      // }
+      this.$router.push(`/Forum/${id}`);
     },
 
     showNewPostDialog() {
