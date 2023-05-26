@@ -169,7 +169,7 @@
                         </template>
                     </el-dialog>
 
-                    <el-dialog v-model="post.deleteDialog width="30%" center>
+                    <el-dialog v-model="post.deleteDialog" width="30%" center>
                         <div style="; text-align: center">
                             <el-text tag="b" style="color: black; font-size: 15px">您确定要删除这个帖子吗？相关的评论也将被删除。</el-text>
                         </div>
