@@ -22,48 +22,50 @@
                         </template>
                     </el-popover>
 
-                    <div style="padding: 0 10px 20px 20px;overflow: hidden;">
-                        <el-text tag="b" size="large">内容: </el-text>
-                        <el-text tag="i" size="large">
-                            {{ post.content }}
-                        </el-text>
-                    </div>
-
-                    <div style="padding: 0 10px 20px 20px;overflow: hidden;">
-                        <el-text tag="b" size="large">标签: </el-text>
-                        <el-text size="large" :style="{color: _tag_to(post.tag).color}">
-                            {{ _tag_to(post.tag).type }}
-                        </el-text>
-                    </div>
-
-                    <div style="padding: 0 10px 20px 20px;overflow: hidden;">
-                        <el-text tag="b" size="large">关联钉子: </el-text>
-                        <el-text size="large" >
-                            {{ post.pin_id_str }}
-                        </el-text>
-                    </div>
-
-                    <div style="padding: 0 10px 20px 20px;overflow: hidden;">
-                        <el-text tag="b" size="large">创建时间: </el-text>
-                        <el-text tag="i" size="large">
-                            {{ post.createTime }}
-                        </el-text>
-                    </div>
-
-                    <div class="clearfix" style="padding: 0 10px 20px 20px;">
-                        <div style="float: left; margin-right: 30px">
-                            <el-icon>
-                                <ChatLineRound/>
-                            </el-icon>
-                            {{ post.floor_num }}
+                    <div style="padding-left: 20px">
+                        <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                            <el-text tag="b" size="large">内容: </el-text>
+                            <el-text tag="i" size="large">
+                                {{ post.content }}
+                            </el-text>
                         </div>
-                        <div style="float: left; margin-right: 30px">
-                            <span class="iconfont icon-dianzan" style="color: red" />
-                            {{ post.thumbs_up }}
+
+                        <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                            <el-text tag="b" size="large">标签: </el-text>
+                            <el-text size="large" :style="{color: _tag_to(post.tag).color}">
+                                {{ _tag_to(post.tag).type }}
+                            </el-text>
                         </div>
-                        <div style="float: left">
-                            <span class="iconfont icon-dianji" />
-                            {{ post.visit }}
+
+                        <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                            <el-text tag="b" size="large">关联钉子: </el-text>
+                            <el-text size="large" >
+                                {{ post.pin_id_str }}
+                            </el-text>
+                        </div>
+
+                        <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                            <el-text tag="b" size="large">创建时间: </el-text>
+                            <el-text tag="i" size="large">
+                                {{ post.createTime }}
+                            </el-text>
+                        </div>
+
+                        <div class="clearfix" style="padding: 0 10px 20px 20px;">
+                            <div style="float: left; margin-right: 30px">
+                                <el-icon>
+                                    <ChatLineRound/>
+                                </el-icon>
+                                {{ post.floor_num }}
+                            </div>
+                            <div style="float: left; margin-right: 30px">
+                                <span class="iconfont icon-dianzan" style="color: red" />
+                                {{ post.thumbs_up }}
+                            </div>
+                            <div style="float: left">
+                                <span class="iconfont icon-dianji" />
+                                {{ post.visit }}
+                            </div>
                         </div>
                     </div>
 
@@ -157,10 +159,8 @@
 
                         <template #footer>
                             <div class="dialog-footer">
-                                <el-button @click="post.changeDialog = false">取消</el-button>
-                                <el-button type="primary" @click="changePost(post)">
-                                    确认
-                                </el-button>
+                                <el-button style="margin-left: 50%" @click="post.changeDialog = false">取消</el-button>
+                                <el-button type="primary" @click="changePost(post)">确认</el-button>
                             </div>
                         </template>
                     </el-dialog>
