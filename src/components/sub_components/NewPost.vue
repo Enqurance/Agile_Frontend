@@ -3,7 +3,7 @@
         <el-dialog :title="dialogTitle" v-model="dialogVisible">
             <el-form :model="formData" label-width="100px">
                 <el-form-item label="标题">
-                    <el-input v-model="formData.post_title" maxlength="20"></el-input>
+                    <el-input v-model="formData.post_title" autosize maxlength="60"></el-input>
                 </el-form-item>
                 <el-form-item label="正文">
                     <el-input v-model="formData.post_body" type="textarea" :rows="6" maxlength="200"></el-input>

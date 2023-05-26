@@ -23,7 +23,7 @@
                             <div>
                                 <el-form>
                                     <el-form-item label="标题">
-                                        <el-input v-model="formPost.title" maxlength="20"></el-input>
+                                        <el-input v-model="formPost.title" autosize maxlength="60"></el-input>
                                     </el-form-item>
                                     <el-form-item label="正文">
                                         <el-input v-model="formPost.content" type="textarea" :rows="6"
