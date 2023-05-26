@@ -89,7 +89,7 @@ export default {
                     <el-aside width="70%">
                         <p>{{ pins[i-1].name }}</p>
                     </el-aside>
-                    <el-main>
+                    <el-main style="padding-right: 3%; padding-left: 3%;">
                         <el-button @click="deletePin(this.pins[i-1].id, i-1)" type="danger" round size="small"><el-icon><Delete /></el-icon></el-button>
                     </el-main>
                     </el-container>

@@ -312,7 +312,7 @@ export default {
                                 <div class="pic-container"><img :src="this.imageUrl"></div>
                             </van-col>
                             <van-col span="10" style="padding-top: 10%">
-                                <p style="margin-left: 5%;font-size: 21px;">{{ this.user.name }}</p>
+                                <p style="margin-left: 3%;font-size: 21px;">{{ this.user.name }}</p>
                             </van-col>
                             </van-row>
                         </div>
@@ -358,10 +358,10 @@ export default {
                     </div>
                     <div class="buttonArea">
                         <div style="padding-top: 50%;"></div>
-                        <el-button round style="font-size: 15px;" @click="editVisible = true">编辑</el-button>
+                        <el-button round style="font-size: 14px;" @click="editVisible = true">编辑</el-button>
                         <el-button round>
                             <el-dropdown>
-                                <span class="el-dropdown-link" style="font-size: 15px;">
+                                <span class="el-dropdown-link" style="font-size: 14px;">
                                     设置
                                 </span>
                                 <template #dropdown>
@@ -383,7 +383,7 @@ export default {
                 </div>
                 <el-divider />
             </el-header>
-            <el-main>
+            <el-main style="padding-top: 0%;">
                 <div>
                     <p style="font-size: 20px;">我的钉子</p>
                     <MyPin_Mobile></MyPin_Mobile>
@@ -472,7 +472,7 @@ export default {
 }
 
 .buttonArea {
-    margin-left: 15%;
+    margin-left: 12%;
 }
 
 .MainPart {
