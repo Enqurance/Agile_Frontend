@@ -46,9 +46,24 @@
             <div v-for="post in posts" :key="post.id" style="padding: 10px;">
               <!-- <router-link :to="`/Forum/${post.id}`" class="custom-link" @click="tokenCheck"> -->
               <router-link :to="`/Forum/${post.id}`" class="custom-link">
-                <el-card style="padding: 10px;">
-                  <div class="card-header">{{ post.title }}</div>
-                  <div class="card-content">{{ post.content }}</div>
+                <el-card style="min-height: auto;">
+                  <div class="card_header">
+                    <div class="title">
+                      <h2 style="padding-bottom: 15px;">{{ post.title }}</h2>
+                      <el-tag class="tag">{{ _get_pin_type(post.tag) }}</el-tag>
+                    </div>
+                    <div style="width: 80px;">
+                      <el-descriptions title="   " :column="1" style="width: 80px;">
+                        <el-descriptions-item label="点赞数">{{ post.thumbsUp }}</el-descriptions-item>
+                        <el-descriptions-item label="访问量">{{ post.visit }}</el-descriptions-item>
+                        <el-descriptions-item label="楼层数">{{ post.floorNum }}</el-descriptions-item>
+                        <el-descriptions-item>{{ getTimeSubstring(post.createTime) }}</el-descriptions-item>
+                      </el-descriptions>
+                    </div>
+                  </div>
+                  <div>
+                    <p>{{ post.content }}</p>
+                  </div>
                 </el-card>
               </router-link>
             </div>
@@ -226,15 +241,13 @@ export default {
         }).then((res) => {
           this.imageUrl = res.data.data;
         }).catch((res) => console.log(res))
+    },
 
-      this.refreshIcon();
-    },
-    refreshIcon() {
-      this.isReload = false;
-      this.$nextTick(() => {
-        this.isReload = true;
-      })
-    },
+    getTimeSubstring(timeString) {
+      if (timeString) {
+        return timeString.substring(5, 16);
+      }
+    }
   },
 
   mounted() {
@@ -244,6 +257,23 @@ export default {
 </script>
 
 <style>
+.card_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.title {
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-top: 10px
+}
+
+.title h2 {
+  margin: 0;
+  color: #333;
+}
+
 .avatar {
   width: 100px;
   height: 100px;
