@@ -16,6 +16,7 @@
                     </div>
                     <div class="post_body">内容：{{ post.content }}</div>
                     <div class="post_body">点赞数：{{ post.thumbsUp }}</div>
+                    <div class="post_body">绑定的地点：{{ post.pinNameStr }}</div>
                     <el-button @click="addLike">点赞</el-button> 
                     <!-- 这里会替换成图标，根据post.has_thumb来分辨 -->
                     <div>
@@ -246,7 +247,7 @@ export default {
                 }
             }).then((res) => {
                 that.post = res.data.data
-                //console.log(res)
+                //console.log(res.data.data)
             }).catch((error) => {
                 console.log(error);
             });

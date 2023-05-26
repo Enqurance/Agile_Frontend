@@ -1,37 +1,36 @@
 <template>
     <div class="map-pin-info">
-        <el-drawer direction="ltr" v-model="drawer"
-                   :with-header="true" :append-to-body="true" class="my-drawer">
+        <el-drawer direction="ltr" v-model="drawer" :with-header="true" :append-to-body="true" class="my-drawer">
             <div style="margin-top: 0px;margin-bottom: 0px;">
-                <el-button v-if="info.visibility===0 && this.$cookies.get('user_type')==='0'" class="float_right"
-                           size="large" :style="{background: _get_pin_color_state(pin_state)}" @click="apply_public">
+                <el-button v-if="info.visibility === 0 && this.$cookies.get('user_type') === '0'" class="float_right"
+                    size="large" :style="{ background: _get_pin_color_state(pin_state) }" @click="apply_public">
                     {{ _get_pin_state(pin_state) }}
                 </el-button>
-                <el-button v-if="info.visibility===1 && this.$cookies.get('user_type')==='0'" class="float_right"
-                           size="large" :style="{background: _get_pin_color_state(pin_state)}" @click="() => {
-                    if (this.pin_state === 1) {
-                this.$message({
-                    type: 'warning',
-                    message: '已申请，管理员将尽快审批！',
-                    showClose: true,
-                    grouping: true
-                })
-                return
-            }
-            else {
-                    show_feedback=true; this.feedback.title=''
-                    this.feedback.reason=''
-                    }
-                }">{{ _get_public_pin_state(pin_state) }}
+                <el-button v-if="info.visibility === 1 && this.$cookies.get('user_type') === '0'" class="float_right"
+                    size="large" :style="{ background: _get_pin_color_state(pin_state) }" @click="() => {
+                            if (this.pin_state === 1) {
+                                this.$message({
+                                    type: 'warning',
+                                    message: '已申请，管理员将尽快审批！',
+                                    showClose: true,
+                                    grouping: true
+                                })
+                                return
+                            }
+                            else {
+                                show_feedback = true; this.feedback.title = ''
+                                this.feedback.reason = ''
+                            }
+                        }">{{ _get_public_pin_state(pin_state) }}
                 </el-button>
 
                 <el-dialog v-model="show_feedback" style="height: 250px;width: 40%">
                     <el-form>
                         <el-form-item label="标题：">
-                            <el-input type="text" maxlength="10" v-model="feedback.title" autocomplete="off"/>
+                            <el-input type="text" maxlength="10" v-model="feedback.title" autocomplete="off" />
                         </el-form-item>
                         <el-form-item label="内容：">
-                            <el-input type="textarea" clearable rows="3" v-model="feedback.reason" autocomplete="off"/>
+                            <el-input type="textarea" clearable rows="3" v-model="feedback.reason" autocomplete="off" />
                         </el-form-item>
                     </el-form>
                     <div style="position: absolute;bottom: 10px; right: 20px">
@@ -50,8 +49,7 @@
                             <el-input v-model="formData.name" maxlength="20"></el-input>
                         </el-form-item>
                         <el-form-item label="简介">
-                            <el-input v-model="formData.brief"
-                                      type="textarea" autosize maxlength="100"></el-input>
+                            <el-input v-model="formData.brief" type="textarea" autosize maxlength="100"></el-input>
                         </el-form-item>
                         <el-form-item label="类别">
                             <el-radio-group v-model="formData.pin_type">
@@ -65,12 +63,10 @@
                             </el-radio-group>
                         </el-form-item>
                         <el-form-item label="位置描述">
-                            <el-input v-model="formData.position"
-                                      type="textarea" autosize maxlength="100"></el-input>
+                            <el-input v-model="formData.position" type="textarea" autosize maxlength="100"></el-input>
                         </el-form-item>
                         <el-form-item label="开放时间">
-                            <el-input v-model="formData.opening_time"
-                                      type="textarea" autosize maxlength="100"></el-input>
+                            <el-input v-model="formData.opening_time" type="textarea" autosize maxlength="100"></el-input>
                         </el-form-item>
                         <el-form-item label="电话">
                             <el-input v-model="formData.phone"></el-input>
@@ -78,10 +74,10 @@
                     </el-form>
                     <div>
                         <el-button @click="dialogVisible = false">取消
-                            <CloseOutlined/>
+                            <CloseOutlined />
                         </el-button>
                         <el-button type="primary" @click="submitForm">确认
-                            <CheckOutlined/>
+                            <CheckOutlined />
                         </el-button>
                     </div>
                 </el-dialog>
@@ -91,9 +87,10 @@
                 <el-card :body-style="{ padding: '10px' }">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0px;">
                         <h4 style="margin-bottom: 0px;">信息</h4>
-                        <el-button v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine===false && pin_state===0"
-                                   @click="editInfo">
-                            <EditOutlined/>
+                        <el-button
+                            v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine === false && pin_state === 0"
+                            @click="editInfo">
+                            <EditOutlined />
                         </el-button>
                     </div>
 
@@ -112,15 +109,14 @@
                     <h4>图片</h4>
                     <el-carousel trigger="click" height="150">
                         <el-carousel-item v-for="photoUrl in photos" :key="photoUrl">
-                            <img :src="photoUrl" class="photo" @contextmenu.prevent="deletePhoto(photoUrl)"/>
+                            <img :src="photoUrl" class="photo" @contextmenu.prevent="deletePhoto(photoUrl)" />
                         </el-carousel-item>
                     </el-carousel>
 
                     <el-upload
-                            v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine===false && pin_state===0"
-                            class="avatar-uploader" action="https://buaamapforum.cn:8443/photo/uploadPinPhoto"
-                            :show-file-list="false" :on-success="handleAvatarSuccess"
-                            :before-upload="beforeAvatarUpload">
+                        v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine === false && pin_state === 0"
+                        class="avatar-uploader" action="https://buaamapforum.cn:8443/photo/uploadPinPhoto"
+                        :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                         <el-button size="small" type="primary" plain>上传图片</el-button>
                     </el-upload>
                 </el-card>
@@ -136,27 +132,42 @@
                                     <div class="name">{{ service.name }}</div>
                                     <div class="info">{{ service.brief }}</div>
                                 </div>
-                                <img :src="service.photo" class="photo"/>
+                                <img :src="service.photo" class="photo" />
                             </el-card>
                         </el-collapse-item>
                     </el-collapse>
                 </el-card>
             </div>
 
-            <!-- <div class="pin-forum">
+            <div class="pin-post">
                 <el-card :body-style="{ padding: '10px' }">
-                    <h4>Forum</h4>
-                    <p>此处预留跳转链接</p>
+                    <h4>论坛</h4>
+                    <el-button @click="toForum">去论坛</el-button>
+                    <div v-for="post in posts" :key="post.id" style="padding-top: 5px;">
+                        <router-link :to="`/Forum/${post.id}`" class="custom-link">
+                            <el-card style="min-height: auto;">
+                                <div class="card_header">
+                                    <div class="title">
+                                        <p style="padding-bottom: 15px;">{{ post.title }}</p>
+                                        <el-tag class="tag">{{ _get_pin_type(post.tag) }}</el-tag>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p>{{ post.content }}</p>
+                                </div>
+                            </el-card>
+                        </router-link>
+                    </div>
                 </el-card>
-            </div> -->
+            </div>
         </el-drawer>
     </div>
 </template>
 
 <script>
 import global from '@/global'
-import {EditOutlined, CheckOutlined, CloseOutlined} from '@ant-design/icons-vue';
-import {ElMessageBox, ElMessage} from "element-plus";
+import { EditOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons-vue';
+import { ElMessageBox, ElMessage } from "element-plus";
 
 export default {
     props: {
@@ -170,6 +181,8 @@ export default {
     data() {
         return {
             // 存储地图钉信息
+            posts: [],
+
             info: {
                 name: "新北食堂",
                 position: "北边",
@@ -220,6 +233,26 @@ export default {
     },
 
     methods: {
+        toForum() {
+            this.$router.push({ path: '/Forum' })
+        },
+
+        loadPost() {
+            let that = this
+            that.$axios.post('/forum/post/getPostsByPinId', null, {
+                params: {
+                    pin_id:that.id
+                },
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then((res) => {
+                that.posts = res.data.data;
+            }).catch((error) => {
+                console.log(error);
+            });
+        },
+
         _get_pin_type(pin_type_id) {
             return global.get_pin_type(pin_type_id)
         },
@@ -233,13 +266,14 @@ export default {
             return global.get_pin_state_color(pin_state_id)
         },
         get_user_type_administrator() {
-          return global.user_type_administrator
+            return global.user_type_administrator
         },
         handleDblClick() {
             this.getPinInfoById();
         },
         // 获取地图钉信息
         getPinInfoById() {
+            this.loadPost()
             let that = this
             that.$axios.post('map/pin/getPinInfoById', {
                 id: that.id,
@@ -374,7 +408,7 @@ export default {
                     message: '请先登录!',
                     type: "warning"
                 })
-                that.$router.push({path: '/login'})
+                that.$router.push({ path: '/login' })
                 return
             }
             const index = that.photos.indexOf(photoUrl);
@@ -547,7 +581,7 @@ export default {
 
 .pin-photo,
 .pin-service,
-.pin-forum {
+.pin-post {
     padding: 10px;
 }
 
