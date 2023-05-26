@@ -45,7 +45,7 @@ export default {
     },
     watch: {
         sub_menu(newData) {
-            console.log(newData)
+            // console.log(newData)
         }
     }
 }

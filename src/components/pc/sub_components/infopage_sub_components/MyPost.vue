@@ -1,35 +1,26 @@
 <template>
     <div style="margin: 0 auto;padding: 0 3%; width: 80%">
-        <div class="sub_div" v-if="this.subMenu === 1" >
+        <div class="sub_div" v-if="this.subMenu === 1">
             <div style="overflow: auto">
                 <div v-if="posts.length === 0">
                     <el-empty description="暂时还没有贴子"/>
                 </div>
+
                 <div v-else class="post_div" v-for="post in posts" :key="post.id">
-                    <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
-                               @click="post.deleteDialog=true">
+                    <el-button style="float: right; margin-top: 20px;margin-right: 20px"
+                               type="danger" @click="post.deleteDialog=true">
                         删除
                     </el-button>
 
-                    <el-dialog v-model="post.deleteDialog" title="删除帖子" width="30%" center>
-            <span style="text-align: center">
-              你确定要删除这个帖子吗？相关的评论也将被删除。
-            </span>
-                        <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="post.deleteDialog = false">取消</el-button>
-              <el-button type="primary" @click="deletePost(post)">
-                确认
-              </el-button>
-            </span>
+                    <el-popover placement="top-start" :hide-after="0" trigger="hover"
+                                content="点击跳转至帖子">
+                        <template #reference>
+                            <h3 class="link_hover" style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
+                                @click="browsePost(post.id)">
+                                {{ post.title }}
+                            </h3>
                         </template>
-                    </el-dialog>
-                    <h3 class="hover"
-                        style="padding: 0 20px; height:28px;overflow: hidden"
-                        @click="browsePost(post.id)">
-                        {{ post.title }}
-
-                    </h3>
+                    </el-popover>
 
                     <p style="padding: 0 20px;height:40px;overflow: hidden;">
                         {{ post.content }}
@@ -40,82 +31,75 @@
                         </el-icon>
                         {{ post.floor_num }}
                     </div>
+
+                    <el-dialog v-model="post.deleteDialog" title="删除帖子" width="30%" center>
+                        <span style="text-align: center">你确定要删除这个帖子吗？相关的评论也将被删除。</span>
+                        <template #footer>
+                            <div class="dialog-footer">
+                                <el-button @click="post.deleteDialog = false">取消</el-button>
+                                <el-button type="primary" @click="deletePost(post)">确认</el-button>
+                            </div>
+                        </template>
+                    </el-dialog>
+
                 </div>
             </div>
         </div>
+
 
         <div class="sub_div" v-if="this.subMenu === 2">
             <div style="overflow: auto">
                 <div v-if="bad_posts.length === 0">
                     <el-empty class="empty_div" description="没有待整改贴子"/>
                 </div>
+
                 <div v-else class="post_div" v-for="post in bad_posts" :key="post.id">
-                    <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
-                               @click="post.deleteDialog=true">
+                    <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger" @click="post.deleteDialog=true">
                         删除
                     </el-button>
-                    <el-button style="float: right; margin-top: 20px;margin-right: 20px"
-                               type="primary"
-                               @click="editInfo(post)">
+                    <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="primary" @click="editInfo(post)">
                         整改
                     </el-button>
+
+                    <h3 class="hover" style="padding: 0 20px; height:28px;overflow: hidden">{{ post.title }}</h3>
+                    <p style="padding: 0 20px;height:40px;overflow: hidden;">{{ post.content }}</p>
+                    <div style="padding: 0 20px;">
+                        <el-button @click="post.reasonDialog=true" size="small"> 查看原因</el-button>
+                    </div>
+
+
                     <el-dialog v-model="post.changeDialog" title="整改帖子" width="30%" center>
-                        <el-input
-                            v-model="post.new_title"
-                            type="textarea"
-                            placeholder="Please input"
-                        />
+                        <el-input v-model="post.new_title" type="textarea" placeholder="Please input"/>
                         <div style="margin: 20px 0"/>
-                        <el-input
-                            v-model="post.new_content"
-                            type="textarea"
-                            placeholder="Please input"
-                        />
+                        <el-input v-model="post.new_content" type="textarea" placeholder="Please input"/>
                         <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="post.changeDialog = false">取消</el-button>
-              <el-button type="primary" @click="changePost(post)">
-                确认
-              </el-button>
-            </span>
+                            <div class="dialog-footer">
+                                <el-button @click="post.changeDialog = false">取消</el-button>
+                                <el-button type="primary" @click="changePost(post)">
+                                    确认
+                                </el-button>
+                            </div>
                         </template>
                     </el-dialog>
 
                     <el-dialog v-model="post.deleteDialog" title="删除帖子" width="30%" center>
-            <span style="text-align: center">
-              你确定要删除这个帖子吗？相关的评论也将被删除。
-            </span>
+                        <span style="text-align: center">你确定要删除这个帖子吗？相关的评论也将被删除。</span>
                         <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="post.deleteDialog = false">取消</el-button>
-              <el-button type="primary" @click="deletePost(post)">
-                确认
-              </el-button>
-            </span>
+                            <div class="dialog-footer">
+                                <el-button @click="post.deleteDialog = false">取消</el-button>
+                                <el-button type="primary" @click="deletePost(post)">
+                                    确认
+                                </el-button>
+                            </div>
                         </template>
                     </el-dialog>
-                    <h3 class="hover"
-                        style="padding: 0 20px; height:28px;overflow: hidden"
-                    >
-                        {{ post.title }}
 
-                    </h3>
-
-                    <p style="padding: 0 20px;height:40px;overflow: hidden;">
-                        {{ post.content }}
-                    </p>
-
-                    <div style="padding: 0 20px;">
-                        <el-button @click="post.reasonDialog=true" size="small"> 查看原因</el-button>
-                    </div>
                     <el-dialog v-model="post.reasonDialog" title="整改原因" width="30%" center>
-            <span style="text-align: center">
-              {{ post.reason }}
-            </span>
+                        <span style="text-align: center">{{ post.reason }}</span>
                         <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="post.reasonDialog = false">关闭</el-button>
-            </span>
+                            <div class="dialog-footer">
+                                <el-button @click="post.reasonDialog = false">关闭</el-button>
+                            </div>
                         </template>
                     </el-dialog>
                 </div>
@@ -259,14 +243,8 @@ export default {
 
 <style scoped>
 
-.infinite-list .infinite-list-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 50px;
-    background: var(--el-color-primary-light-9);
-    margin: 8px;
-    color: var(--el-color-primary);
+.link_hover {
+    cursor: pointer;
 }
 
 .sub_div {
@@ -281,7 +259,8 @@ export default {
     margin: 20px 0;
     border-radius: 20px;
     background: white;
-    border: 2px solid rgb(246,246,246);
-    width: 98%;height: 150px
+    border: 2px solid rgb(246, 246, 246);
+    width: 98%;
+    height: 150px
 }
 </style>
