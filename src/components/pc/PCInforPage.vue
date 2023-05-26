@@ -59,7 +59,7 @@ export default {
             </el-header>
             <el-container style="height: 80%">
                 <el-aside width="15%">
-                    <el-menu default-active="1" :default-openeds="[]" :collapse="isCollapse" style="height: 100%; padding-top: 5%">
+                    <el-menu default-active="1" :default-openeds="[]" :collapse="isCollapse" style="height: 100%; padding-top: 7%">
                         <el-menu-item index="1" @click="Index='1'">
                             <el-icon><User /></el-icon>
                             <template #title>
