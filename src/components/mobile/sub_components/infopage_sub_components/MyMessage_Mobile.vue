@@ -25,7 +25,11 @@
           </div>
           <div v-for="rev in revs" :key="rev.id"
                style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 90%;height: 120px ">
-            <div v-if="rev.read===false" style="float: right;padding-top: 50px">
+            <el-icon style="float: right;">
+              <circle-close  @click="rev.deleteDialog=true">
+              </circle-close>
+            </el-icon>
+            <div v-if="rev.read===false" style="float: right;">
               <el-icon>
                 <Warning/>
               </el-icon>
@@ -35,13 +39,10 @@
                 @click="clickMsg(rev)">
               {{ rev.title }}
             </h3>
-            <p style="padding: 0 20px;font-size:16px;height:20px;width:70%;overflow: hidden;display: inline-block">
+            <p style="padding: 0 20px;font-size:15px;height:20px;width:55%;overflow: hidden;display: inline-block">
               {{ rev.time }}
             </p>
-            <el-button style="float: right; display: inline-block" type="danger" size="small"
-                       @click="rev.deleteDialog=true">
-              删除
-            </el-button>
+
             <el-button v-if="rev.content" style="float: right; display: inline-block" type="primary" size="small"
                        @click="readDetail(rev)">
               查看详情
@@ -67,7 +68,11 @@
           </div>
           <div v-for="snd in snds" :key="snd.id"
                style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 90%;height: 120px ">
-            <div v-if="snd.read===false" style="float: right;padding-top: 50px">
+            <el-icon style="float: right;">
+              <circle-close  @click="snd.deleteDialog=true">
+              </circle-close>
+            </el-icon>
+            <div v-if="snd.read===false" style="float: right;">
               <el-icon>
                 <Warning/>
               </el-icon>
@@ -77,13 +82,9 @@
                 @click="clickMsg(snd)">
               {{ snd.title }}
             </h3>
-            <p style="padding: 0 20px;font-size:16px;height:20px;width:70%;overflow: hidden;display: inline-block">
+            <p style="padding: 0 20px;font-size:15px;height:20px;width:55%;overflow: hidden;display: inline-block">
               {{ snd.time }}
             </p>
-            <el-button style="float: right; display: inline-block" type="danger" size="small"
-                       @click="snd.deleteDialog=true">
-              删除
-            </el-button>
             <el-button v-if="snd.content" style="float: right; display: inline-block" type="primary" size="small"
                        @click="readDetail(snd)">
               查看详情
@@ -109,11 +110,11 @@
 
 <script>
 
-import {Warning} from "@element-plus/icons-vue";
+import {CircleClose, Warning} from "@element-plus/icons-vue";
 
 export default {
   name: "MyMessage_Mobile",
-  components: {Warning},
+  components: {CircleClose, Warning},
   data() {
     return {
       Index: '1',
@@ -148,14 +149,14 @@ export default {
     deleteMessage(msg) {
       let that = this
       msg.deleteDialog = false;
-      console.log(msg);
+      // console.log(msg);
       that.$axios.delete('/InfoPage/MyMessage/deleteMessage/' + msg.id, {
         headers: {
           'token': that.$cookies.get('user_token')
         }
       }).then((res) => {
         if (res.data.code === 200) {
-          console.log("删除的帖子id为：" + msg.id)
+          // console.log("删除的帖子id为：" + msg.id)
           this.$message({
             type: 'info',
             message: '删除成功',
@@ -172,7 +173,7 @@ export default {
     },
     readMsg(msg) {
       let that = this;
-      console.log(msg);
+      // console.log(msg);
       that.$axios.post('/InfoPage/MyMessage/readMessageById', {
         m_id: msg.id
       }, {
@@ -183,7 +184,7 @@ export default {
         //console.log(res)
         if (res.data.code === 200) {
           msg.read = true;
-          console.log("read success")
+          // console.log("read success")
         } else {
           this.$message({
             message: res.data.message,
@@ -193,7 +194,7 @@ export default {
       })
     },
     readDetail(msg) {
-      console.log(msg);
+      // console.log(msg);
       msg.detail = true;
       msg.read = true;
     },
@@ -205,9 +206,9 @@ export default {
         }
 
       }).then((res) => {
-        console.log(res)
+        // console.log(res)
         if (res.data.code === 200) {
-          console.log("get rev success")
+          // console.log("get rev success")
           this.revs = res.data.data
         } else {
           this.$message({
