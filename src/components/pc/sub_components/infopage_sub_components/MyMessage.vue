@@ -1,17 +1,9 @@
 <template>
-    <div
-        style="padding: 1% 5% 5% 11%;background: rgb(246,246,246);width: 80%;height: 80%">
-        <div v-if="subMenu === 1" style="padding-left: 5%;font-size: 20px;width:45%;display: inline-block">
-            <div style="height: 80px">
-                我收到的
-            </div>
-
-            <ul class="infinite-list" style="width:100%;overflow: auto;display: inline-block">
-                <div v-if="revs.length === 0">
-                    <el-empty description="暂时还没有消息"/>
-                </div>
-                <div v-for="rev in revs" :key="rev.id"
-                     style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 120px ">
+    <div style="margin: 0 auto;padding: 0 3%; width: 80%">
+        <div class="sub_div" v-if="subMenu === 1">
+            <div style="overflow: auto;">
+                <el-empty v-if="revs.length === 0" class="empty_div" description="暂时还没有消息"/>
+                <div v-else class="post_div" v-for="rev in revs" :key="rev.id">
                     <el-icon style="float: right">
                         <circle-close @click="rev.deleteDialog=true">
 
@@ -58,22 +50,15 @@
                         </template>
                     </el-dialog>
                 </div>
-            </ul>
-
-
-        </div>
-        <div v-if="subMenu === 2" style="padding-left: 5%;font-size: 20px;width:45%;display: inline-block">
-            <div style="height: 80px">
-                我发起的
             </div>
+        </div>
 
-            <ul class="infinite-list" style="width:100%;overflow: auto;display: inline-block">
+        <div class="sub_div" v-if="subMenu === 2">
+            <div style="overflow: auto">
                 <div v-if="snds.length === 0">
-                    <el-empty description="暂时还没有消息"/>
+                    <el-empty class="empty_div" description="暂时还没有消息"/>
                 </div>
-                <div v-for="snd in snds" :key="snd.id"
-                     style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 120px ">
-
+                <div v-else class="post_div" v-for="snd in snds" :key="snd.id">
                     <el-icon style="float: right">
                         <circle-close @click="snd.deleteDialog=true">
 
@@ -120,7 +105,7 @@
                         </template>
                     </el-dialog>
                 </div>
-            </ul>
+            </div>
 
 
         </div>
@@ -272,12 +257,6 @@ export default {
 </script>
 
 <style scoped>
-.infinite-list {
-    height: 370px;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
 
 .infinite-list .infinite-list-item {
     display: inline-block;
@@ -288,4 +267,22 @@ export default {
     margin: 30px;
     color: var(--el-color-primary);
 }
+
+.sub_div {
+
+}
+
+.empty_div {
+    margin-top: 10%;
+}
+
+.post_div {
+    margin: 20px 0;
+    border-radius: 20px;
+    background: white;
+    border: 2px solid rgb(246, 246, 246);
+    width: 98%;
+    height: 150px
+}
+
 </style>

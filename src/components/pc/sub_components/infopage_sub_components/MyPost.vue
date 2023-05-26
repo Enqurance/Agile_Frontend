@@ -1,11 +1,11 @@
 <template>
-    <div style="margin: 0 auto;padding: 0 3%; width: 80%; height: 90%">
+    <div style="margin: 0 auto;padding: 0 3%; width: 80%">
         <div class="sub_div" v-if="this.subMenu === 1" >
-            <ul style="overflow: auto">
+            <div style="overflow: auto">
                 <div v-if="posts.length === 0">
                     <el-empty description="暂时还没有贴子"/>
                 </div>
-                <div class="post_div" v-for="post in posts" :key="post.id">
+                <div v-else class="post_div" v-for="post in posts" :key="post.id">
                     <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
                                @click="post.deleteDialog=true">
                         删除
@@ -41,15 +41,15 @@
                         {{ post.floor_num }}
                     </div>
                 </div>
-            </ul>
+            </div>
         </div>
 
         <div class="sub_div" v-if="this.subMenu === 2">
-            <ul style="overflow: auto">
+            <div style="overflow: auto">
                 <div v-if="bad_posts.length === 0">
                     <el-empty class="empty_div" description="没有待整改贴子"/>
                 </div>
-                <div class="post_div" v-for="post in bad_posts" :key="post.id">
+                <div v-else class="post_div" v-for="post in bad_posts" :key="post.id">
                     <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
                                @click="post.deleteDialog=true">
                         删除
@@ -119,7 +119,7 @@
                         </template>
                     </el-dialog>
                 </div>
-            </ul>
+            </div>
         </div>
     </div>
 </template>

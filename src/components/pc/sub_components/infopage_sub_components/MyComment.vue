@@ -1,17 +1,11 @@
 <template>
-    <div
-        style="padding: 1% 5% 5% 1%;background: rgb(246,246,246);width: 90%;height: 80%">
-        <div v-if="subMenu === 1" style="padding-left: 5%;font-size: 20px;width:45%;display: inline-block">
-            <div style="margin-bottom: 5%;font-size: 20px">
-                我的楼层
-            </div>
-
-            <ul class="infinite-list" style="overflow: auto;display: inline-block;width: 100%">
-                <div v-if="floors.length === 0">
+    <div style="margin: 0 auto;padding: 0 3%; width: 80%">
+        <div class="sub_div" v-if="subMenu === 1" >
+            <div style="overflow: auto">
+                <div class="empty_div" v-if="floors.length === 0">
                     <el-empty description="暂时还没有楼层"/>
                 </div>
-                <div v-for="floor in floors" :key="floor.id"
-                     style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 150px ">
+                <div v-else class="post_div" v-for="floor in floors" :key="floor.id">
                     <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
                                @click="floor.deleteDialog=true">
                         删除
@@ -43,20 +37,15 @@
                         楼层：{{ floor.floor }}
                     </div>
                 </div>
-            </ul>
+            </div>
         </div>
 
-        <div v-if="subMenu === 2" style="padding-left: 5%;font-size: 20px;width:45%;display: inline-block">
-            <div style="margin-bottom: 5%;font-size: 20px">
-                我的评论
-            </div>
-
-            <ul class="infinite-list" style="overflow: auto;display: inline-block;width: 100%">
-                <div v-if="comments.length === 0">
+        <div v-if="subMenu === 2" class="sub_div">
+            <div style="overflow: auto">
+                <div class="empty_div" v-if="comments.length === 0">
                     <el-empty description="暂时还没有评论"/>
                 </div>
-                <div v-for="comment in comments" :key="comment.id"
-                     style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 97%;height: 150px ">
+                <div v-else class="post_div" v-for="comment in comments" :key="comment.id">
                     <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
                                @click="comment.deleteDialog=true">
                         删除
@@ -88,7 +77,7 @@
                         回复楼层：{{ comment.floor }}
                     </div>
                 </div>
-            </ul>
+            </div>
         </div>
     </div>
 </template>
@@ -218,12 +207,6 @@ export default {
 </script>
 
 <style scoped>
-.infinite-list {
-    height: 460px;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
 
 .infinite-list .infinite-list-item {
     display: flex;
@@ -233,5 +216,21 @@ export default {
     background: var(--el-color-primary-light-9);
     margin: 8px;
     color: var(--el-color-primary);
+}
+
+.sub_div {
+
+}
+
+.empty_div {
+    margin-top: 10%;
+}
+
+.post_div {
+    margin: 20px 0;
+    border-radius: 20px;
+    background: white;
+    border: 2px solid rgb(246,246,246);
+    width: 98%;height: 150px
 }
 </style>
