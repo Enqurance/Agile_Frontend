@@ -125,8 +125,6 @@ export default defineComponent({
         }
 
         this.init_map()
-        this.init_rectify()
-        this.init_report()
     },
     methods: {
         init_map() {
@@ -180,6 +178,7 @@ export default defineComponent({
                 marker.setMap(that.map)
             }
 
+            that.show_info = 1
             AMapLoader.load({
                 key: '159f00b0e9d69324ced6b97a73f6883b',
                 version: '2.0',
@@ -227,8 +226,8 @@ export default defineComponent({
                         // console.log(marker_info)
                         add_marker(info)
                     }
-                }).catch((res) => {
-                    console.log(res)
+                }).catch((err) => {
+                    console.log(err)
                 })
             }).catch(e => {
                 that.$message({
@@ -385,6 +384,8 @@ export default defineComponent({
                 if (res.data.code === 401) {
                     that.rectify_posts = []
                 }
+
+                that.show_info = 2
             }).catch((error) => {
                 console.log(error)
             })
@@ -458,6 +459,8 @@ export default defineComponent({
                     if (res.data.code === 401) {
                         that.report_posts = []
                     }
+
+                    that.show_info = 3
                 }).catch((error) => {
                     console.log(error)
                 })
@@ -474,13 +477,17 @@ export default defineComponent({
                     if (res.data.code === 401) {
                         that.report_replies = []
                     }
+
+                    that.show_info = 4
                 }).catch((error) => {
                     console.log(error)
                 })
             }
 
-            init_report_posts()
-            init_report_replies()
+            return {
+                init_report_posts,
+                init_report_replies
+            }
         },
 
         show_dialog_3_1(id) {
@@ -619,13 +626,13 @@ export default defineComponent({
             <el-container style="height: 80%">
                 <el-aside style="width: 20%">
                     <el-menu :default-openeds="['3']" style="height: 100%" default-active="1">
-                        <el-menu-item index="1" @click="() => {show_info=1;this.init_map();}">
+                        <el-menu-item index="1" @click="this.init_map">
                             <el-icon>
                                 <location/>
                             </el-icon>
                             <template #title>{{ examine_list[0] }}</template>
                         </el-menu-item>
-                        <el-menu-item index="2" @click="show_info=2">
+                        <el-menu-item index="2" @click="this.init_rectify">
                             <el-icon>
                                 <document/>
                             </el-icon>
@@ -639,8 +646,8 @@ export default defineComponent({
                                 <span>{{ examine_list[2] }}</span>
                             </template>
                             <el-menu-item-group>
-                                <el-menu-item index="3-1" @click="show_info=3">{{ report_list[0] }}</el-menu-item>
-                                <el-menu-item index="3-2" @click="show_info=4">{{ report_list[1] }}</el-menu-item>
+                                <el-menu-item index="3-1" @click="this.init_report().init_report_posts()">{{ report_list[0] }}</el-menu-item>
+                                <el-menu-item index="3-2" @click="this.init_report().init_report_replies()">{{ report_list[1] }}</el-menu-item>
                             </el-menu-item-group>
                         </el-sub-menu>
                     </el-menu>
