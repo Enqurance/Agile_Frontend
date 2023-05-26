@@ -7,67 +7,71 @@
                 </div>
 
                 <div v-else class="post_div" v-for="post in posts" :key="post.id">
-                    <el-button style="float: right; margin-top: 20px;margin-right: 20px"
-                               type="danger" @click="post.deleteDialog=true">
-                        删除
-                    </el-button>
+                    <div>
+                        <el-button style="float: right; margin-top: 20px;margin-right: 20px"
+                                   type="danger" @click="post.deleteDialog=true">
+                            删除
+                        </el-button>
 
-                    <el-popover placement="top-start" :hide-after="0" trigger="hover"
-                                content="点击跳转至帖子">
-                        <template #reference>
-                            <h3 class="link_hover" style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
-                                @click="browsePost(post.id)">
-                                {{ post.title }}
-                            </h3>
-                        </template>
-                    </el-popover>
+                        <el-popover placement="top-start" :hide-after="0" trigger="hover"
+                                    content="点击跳转至帖子">
+                            <template #reference>
+                                <h3 class="link_hover" style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
+                                    @click="browsePost(post.id)">
+                                    {{ post.title }}
+                                </h3>
+                            </template>
+                        </el-popover>
 
-                    <div style="padding: 0 10px 20px 20px;overflow: hidden;">
-                        <el-text tag="b" size="large">内容: </el-text>
-                        <el-text tag="i" size="large">
-                            {{ post.content }}
-                        </el-text>
-                    </div>
+                        <div style="padding-left: 20px">
+                            <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                                <el-text tag="b" size="large">内容: </el-text>
+                                <el-text tag="i" size="large">
+                                    {{ post.content }}
+                                </el-text>
+                            </div>
 
-                    <div style="padding: 0 10px 20px 20px;overflow: hidden;">
-                        <el-text tag="b" size="large">标签: </el-text>
-                        <el-text size="large" :style="{color: _tag_to(post.tag).color}">
-                            {{ _tag_to(post.tag).type }}
-                        </el-text>
-                    </div>
+                            <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                                <el-text tag="b" size="large">标签: </el-text>
+                                <el-text size="large" :style="{color: _tag_to(post.tag).color}">
+                                    {{ _tag_to(post.tag).type }}
+                                </el-text>
+                            </div>
 
-                    <div style="padding: 0 10px 20px 20px;overflow: hidden;">
-                        <el-text tag="b" size="large">关联钉子: </el-text>
-                        <el-text size="large" >
-                            {{ post.pin_id_str }}
-                        </el-text>
-                    </div>
+                            <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                                <el-text tag="b" size="large">关联钉子: </el-text>
+                                <el-text size="large" >
+                                    {{ post.pin_id_str }}
+                                </el-text>
+                            </div>
 
-                    <div style="padding: 0 10px 20px 20px;overflow: hidden;">
-                        <el-text tag="b" size="large">创建时间: </el-text>
-                        <el-text tag="i" size="large">
-                            {{ post.createTime }}
-                        </el-text>
-                    </div>
+                            <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                                <el-text tag="b" size="large">创建时间: </el-text>
+                                <el-text tag="i" size="large">
+                                    {{ post.createTime }}
+                                </el-text>
+                            </div>
 
-                    <div class="clearfix" style="padding: 0 10px 20px 20px;">
-                        <div style="float: left; margin-right: 30px">
-                            <el-icon>
-                                <ChatLineRound/>
-                            </el-icon>
-                            {{ post.floor_num }}
+                            <div class="clearfix" style="padding: 0 10px 20px 20px;">
+                                <div style="float: left; margin-right: 30px">
+                                    <el-icon>
+                                        <ChatLineRound/>
+                                    </el-icon>
+                                    {{ post.floor_num }}
+                                </div>
+                                <div style="float: left; margin-right: 30px">
+                                    <span class="iconfont icon-dianzan" style="color: red" />
+                                    {{ post.thumbs_up }}
+                                </div>
+                                <div style="float: left">
+                                    <span class="iconfont icon-dianji" />
+                                    {{ post.visit }}
+                                </div>
+                            </div>
                         </div>
-                        <div style="float: left; margin-right: 30px">
-                            <span class="iconfont icon-dianzan" style="color: red" />
-                            {{ post.thumbs_up }}
-                        </div>
-                        <div style="float: left">
-                            <span class="iconfont icon-dianji" />
-                            {{ post.visit }}
-                        </div>
                     </div>
 
-                    <el-dialog v-model="post.deleteDialog" title="删除帖子" width="30%" center>
+                    <el-dialog v-model="post.deleteDialog" width="30%" center>
                         <div style="; text-align: center">
                             <el-text tag="b" style="color: black; font-size: 15px">您确定要删除这个帖子吗？相关的评论也将被删除。</el-text>
                         </div>
@@ -91,55 +95,57 @@
                 </div>
 
                 <div v-else class="post_div" v-for="post in bad_posts" :key="post.id">
-                    <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger" @click="post.deleteDialog=true">
-                        删除
-                    </el-button>
-                    <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="primary" @click="editInfo(post)">
-                        整改
-                    </el-button>
-
-                    <h3 class="link_hover" style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
-                        @click="browsePost(post.id)">
-                        {{ post.title }}
-                    </h3>
-
-                    <div style="padding-left: 20px">
-                        <div style="padding: 0 10px 20px 20px;overflow: hidden;">
-                            <el-text tag="b" size="large">内容: </el-text>
-                            <el-text tag="i" size="large">
-                                {{ post.content }}
-                            </el-text>
-                        </div>
-
-                        <div style="padding: 0 10px 20px 20px;overflow: hidden;">
-                            <el-text tag="b" size="large">标签: </el-text>
-                            <el-text size="large" :style="{color: _tag_to(post.tag).color}">
-                                {{ _tag_to(post.tag).type }}
-                            </el-text>
-                        </div>
-
-                        <div style="padding: 0 10px 20px 20px;overflow: hidden;">
-                            <el-text tag="b" size="large">关联钉子: </el-text>
-                            <el-text size="large" >
-                                {{ post.pin_id_str }}
-                            </el-text>
-                        </div>
-
-                        <div style="padding: 0 10px 10px 20px;overflow: hidden;">
-                            <el-text tag="b" size="large">创建时间: </el-text>
-                            <el-text tag="i" size="large">
-                                {{ post.createTime }}
-                            </el-text>
-                        </div>
-                    </div>
-
                     <div>
-                        <div style="padding: 0 10px 20px 20px;overflow: hidden;">
-                            <h4>整改原因: </h4>
-                            <div>
-                                <el-text style="padding-left: 20px" tag="i" size="large">
-                                    {{ post.reason }}
+                        <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger" @click="post.deleteDialog=true">
+                            删除
+                        </el-button>
+                        <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="primary" @click="editInfo(post)">
+                            整改
+                        </el-button>
+
+                        <h3 class="link_hover" style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
+                            @click="browsePost(post.id)">
+                            {{ post.title }}
+                        </h3>
+
+                        <div style="padding-left: 20px">
+                            <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                                <el-text tag="b" size="large">内容: </el-text>
+                                <el-text tag="i" size="large">
+                                    {{ post.content }}
                                 </el-text>
+                            </div>
+
+                            <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                                <el-text tag="b" size="large">标签: </el-text>
+                                <el-text size="large" :style="{color: _tag_to(post.tag).color}">
+                                    {{ _tag_to(post.tag).type }}
+                                </el-text>
+                            </div>
+
+                            <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                                <el-text tag="b" size="large">关联钉子: </el-text>
+                                <el-text size="large" >
+                                    {{ post.pin_id_str }}
+                                </el-text>
+                            </div>
+
+                            <div style="padding: 0 10px 10px 20px;overflow: hidden;">
+                                <el-text tag="b" size="large">创建时间: </el-text>
+                                <el-text tag="i" size="large">
+                                    {{ post.createTime }}
+                                </el-text>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                                <h4>整改原因: </h4>
+                                <div>
+                                    <el-text style="padding-left: 20px" tag="i" size="large">
+                                        {{ post.reason }}
+                                    </el-text>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -157,15 +163,13 @@
 
                         <template #footer>
                             <div class="dialog-footer">
-                                <el-button @click="post.changeDialog = false">取消</el-button>
-                                <el-button type="primary" @click="changePost(post)">
-                                    确认
-                                </el-button>
+                                <el-button style="margin-left: 50%" @click="post.changeDialog = false">取消</el-button>
+                                <el-button type="primary" @click="changePost(post)">确认</el-button>
                             </div>
                         </template>
                     </el-dialog>
 
-                    <el-dialog v-model="post.deleteDialog" title="删除帖子" width="30%" center>
+                    <el-dialog v-model="post.deleteDialog" width="30%" center>
                         <div style="; text-align: center">
                             <el-text tag="b" style="color: black; font-size: 15px">您确定要删除这个帖子吗？相关的评论也将被删除。</el-text>
                         </div>
@@ -328,10 +332,6 @@ export default {
 </script>
 
 <style scoped>
-.infinite-list {
-    height: 500px;
-    list-style: none;
-}
 
 .empty_div {
     margin-top: 10%;
