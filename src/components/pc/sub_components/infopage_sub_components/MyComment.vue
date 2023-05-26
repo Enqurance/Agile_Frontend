@@ -23,12 +23,16 @@
               </span>
                         </template>
                     </el-dialog>
-                    <h3 class="hover"
-                        style="padding: 0 20px; height:28px;overflow: hidden"
-                        @click="browseFloor(floor.id)">
-                        {{ floor.title }}
 
-                    </h3>
+                    <el-popover placement="top-start" :hide-after="0" trigger="hover"
+                                content="点击跳转至帖子">
+                        <template #reference>
+                            <h3 class="link_hover" style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
+                                @click="browseFloor(floor.id)">
+                                {{ floor.title }}
+                            </h3>
+                        </template>
+                    </el-popover>
 
                     <p style="padding: 0 20px;height:40px;font-size:16px;overflow: hidden;">
                         {{ floor.content }}
@@ -63,12 +67,16 @@
             </span>
                         </template>
                     </el-dialog>
-                    <h3 class="hover"
-                        style="padding: 0 20px; height:28px;overflow: hidden"
-                        @click="browseComment(comment.id)">
-                        {{ comment.title }}
 
-                    </h3>
+                    <el-popover placement="top-start" :hide-after="0" trigger="hover"
+                                content="点击跳转至帖子">
+                        <template #reference>
+                            <h3 class="link_hover" style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
+                                @click="browseComment(comment.id)">
+                                {{ comment.title }}
+                            </h3>
+                        </template>
+                    </el-popover>
 
                     <p style="padding: 0 20px;height:40px;font-size:16px;overflow: hidden;">
                         {{ comment.content }}
@@ -216,6 +224,10 @@ export default {
     background: var(--el-color-primary-light-9);
     margin: 8px;
     color: var(--el-color-primary);
+}
+
+.link_hover {
+    cursor: pointer;
 }
 
 .sub_div {
