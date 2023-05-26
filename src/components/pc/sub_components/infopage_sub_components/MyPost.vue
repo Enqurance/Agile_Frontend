@@ -242,9 +242,9 @@ export default {
 </script>
 
 <style scoped>
-
-.link_hover {
-    cursor: pointer;
+.infinite-list {
+    height: 500px;
+    list-style: none;
 }
 
 .sub_div {
