@@ -43,7 +43,7 @@
               </el-radio-group>
             </div>
 
-            <div v-for="post in posts" :key="post.id" style="padding: 10px;">
+            <div v-for="post in posts" :key="post.id" style="padding-top: 5px;">
               <!-- <router-link :to="`/Forum/${post.id}`" class="custom-link" @click="tokenCheck"> -->
               <router-link :to="`/Forum/${post.id}`" class="custom-link">
                 <el-card style="min-height: auto;">
@@ -83,6 +83,7 @@
 import { ref, onMounted, getCurrentInstance, watch } from 'vue'
 import PageHeader from "@/components/pc/PCPageHeader.vue";
 import NewPost from "../sub_components/NewPost.vue";
+import global from '@/global'
 
 export default {
   name: "PCForumpage",
@@ -138,6 +139,7 @@ export default {
         if (res.data.code == 200) {
           posts.value = res.data.data.retPosts;
           totalPosts.value = res.data.data.length;
+          //console.log(res.data.data.retPosts)
         } else {
           posts.value = [];
           totalPosts.value = 0;
@@ -177,6 +179,9 @@ export default {
     //     this.$router.push({ path: '/login' })
     //   }
     // },
+    _get_pin_type(pin_type_id) {
+      return global.get_pin_type(pin_type_id)
+    },
 
     handleSearchInput() {
       let that = this
@@ -296,7 +301,7 @@ export default {
 
 .left,
 .right {
-  width: 15%;
+  width: 20%;
 }
 
 .center {
