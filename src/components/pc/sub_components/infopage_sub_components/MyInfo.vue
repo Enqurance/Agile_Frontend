@@ -64,44 +64,15 @@
         </el-col>
     </el-row>
     <el-row>
-        我的钉子
-    </el-row>
-    <el-row>
-        <MyPin></MyPin>
-    </el-row>
-        <!-- <el-container class="MainPart">
-            <el-col :span="6">
-                                <p style="padding-top: 8%; padding-bottom: 5%; font-size:1.2em">{{ user.description }}</p>
-                <div class="headPart">
-                    <div v-if="isReload">
-                    </div>
-                    <div class="buttonArea">
-                        <div style="padding-top: 10%"></div>
-                        
-
-                    </div>
+        <el-card>
+            <template #header>
+                <div class="card-header">
+                    <span>我的钉子</span>
                 </div>
-                <el-divider />
-            </el-col>
-            <el-container>
-                <el-aside width="30%">
-                    <div class="LeftPart">
-                        </el-row>
-                        <el-row class="thirdRow">
-                            <div style="padding-top:70%;"></div>
-                        </el-row>
-                    </div>
-                </el-aside>
-                <el-main>
-                    <div>
-                        
-                        
-                    </div>
-                </el-main>
-            </el-container>
-        </el-container> -->
-        <!-- <el-button @click="contactUsVisible = true">联系我们</el-button> -->
-    <!--edit Dialog-->
+            </template>
+            <MyPin></MyPin>
+        </el-card>
+    </el-row>
     <el-dialog v-model="editVisible" title="请编辑你的信息" width="50%">
             <el-form :model="user" label-width="100px">
                 <el-form-item label="用户名">
@@ -187,7 +158,7 @@ import { Edit } from '@element-plus/icons-vue'
 export default {
     name: "MyInfo",
     components: { 
-        // MyPin
+        MyPin
     },
     inject: ['reload'],
     setup() {
@@ -468,145 +439,9 @@ export default {
 </script>
 
 <style scoped>
-.right-aligned-content {
+.card-header {
     display: flex;
-    justify-content: flex-end;
-}
-
-.InforPage {
-    width: 100%;
-    height: 100%;
-    display: block;
-}
-.headPart {
-    width: 100%;
-    height: 90%;
-    display: flex;
-    flex-direction: row;
-    /*background-image: url('https://s2.loli.net/2023/04/25/VbTDNRqLr8UMZlB.png');*/
-}
-
-.headPart>div {
-    flex: 1;
-    vertical-align: bottom;
-}
-
-.buttonArea {
-    margin-left: 30%;
-}
-
-.LeftPart {
-    margin-left: 8%;
-    border-right-width: thin;
-    border-right-style: double;
-    border-right-color: gainsboro;
-}
-
-.firstRow {
-    margin-bottom: 10%;
-    display: block;
+    justify-content: space-between;
     align-items: center;
-}
-
-.secondRow {
-    margin-right: 8%;
-    margin-bottom: 10%;
-}
-
-.thirdRow {
-    margin-right: 8%;
-    margin-bottom: 10%;
-}
-
-.scrollbar-flex-content {
-    display: flex;
-}
-
-.scrollbar-demo-item {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 30px;
-    margin: 10px;
-    text-align: center;
-    border-radius: 4px;
-    background: var(--el-color-danger-light-9);
-    color: var(--el-color-danger);
-}
-
-.achImg {
-    height: 100%;
-    width: 100%;
-}
-
-.example-showcase .el-dropdown-link {
-    cursor: pointer;
-    color: var(--el-color-primary);
-    display: flex;
-    align-items: center;
-}
-
-.avatar-uploader .el-upload:hover {
-    border-color: var(--el-color-primary);
-}
-
-.el-icon.avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 30%;
-    height: 30%;
-    text-align: center;
-}
-
-.ml-2 {
-    margin-left: 3%;
-}
-
-p.desc {
-    text-align-last: center;
-}
-
-#body {
-    margin-top: 5%;
-    height: 20px;
-    width: 20px;
-}
-
-.ul {
-    margin-top: 10%;
-}
-
-.left {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-    margin-left: 2%;
-    margin-right: 20%;
-}
-
-.right {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-    margin-left: 20%;
-    margin-right: 2%;
-}
-
-.li {
-    border: 0;
-    font-family: inherit;
-    font-size: 100%;
-    font-weight: 400;
-    font-style: normal;
-    line-height: 1.55;
-    display: list-item;
-    text-align: -webkit-match-parent;
-}
-
-.el-form-item {
-    width: 100%;
-    text-align: center;
 }
 </style>

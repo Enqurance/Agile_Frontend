@@ -268,10 +268,6 @@ export default {
     color: var(--el-color-primary);
 }
 
-.sub_div {
-
-}
-
 .empty_div {
     margin-top: 10%;
 }

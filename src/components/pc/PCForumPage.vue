@@ -1,16 +1,19 @@
 <template>
   <el-container>
     <el-header>
-      <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.8" />
+        <PageHeader/>
     </el-header>
     <el-main>
       <div class="main">
         <div class="left"></div>
         <div class="center">
           <div class="top">
-            <div class="avatar">
-              <img :src="this.imageUrl" alt="avatar" class="avatar-img">
-            </div>
+                <el-avatar 
+                    :size="70" 
+                    shape="circle" 
+                    :src="this.imageUrl"
+                    style="user-select: none;">
+                </el-avatar>
 
             <div class="search-wrapper">
               <el-input v-model="search_context" placeholder="Search" @input="handleSearchInput"></el-input>
@@ -40,27 +43,12 @@
               </el-radio-group>
             </div>
 
-            <div v-for="post in posts" :key="post.id" style="padding-top: 5px;">
+            <div v-for="post in posts" :key="post.id" style="padding: 10px;">
               <!-- <router-link :to="`/Forum/${post.id}`" class="custom-link" @click="tokenCheck"> -->
               <router-link :to="`/Forum/${post.id}`" class="custom-link">
-                <el-card style="min-height: auto;">
-                  <div class="card_header">
-                    <div class="title">
-                      <h2 style="padding-bottom: 15px;">{{ post.title }}</h2>
-                      <el-tag class="tag">{{ _get_pin_type(post.tag) }}</el-tag>
-                    </div>
-                    <div style="width: 80px;">
-                      <el-descriptions title="   " :column="1" :size="size" style="width: 80px;">
-                        <el-descriptions-item label="点赞数">{{ post.thumbsUp }}</el-descriptions-item>
-                        <el-descriptions-item label="访问量">{{ post.visit }}</el-descriptions-item>
-                        <el-descriptions-item label="楼层数">{{ post.floorNum }}</el-descriptions-item>
-                        <el-descriptions-item>{{ getTimeSubstring(post.createTime) }}</el-descriptions-item>
-                      </el-descriptions>
-                    </div>
-                  </div>
-                  <div>
-                    <p>{{ post.content }}</p>
-                  </div>
+                <el-card style="padding: 10px;">
+                  <div class="card-header">{{ post.title }}</div>
+                  <div class="card-content">{{ post.content }}</div>
                 </el-card>
               </router-link>
             </div>
@@ -80,7 +68,6 @@
 import { ref, onMounted, getCurrentInstance, watch } from 'vue'
 import PageHeader from "@/components/pc/PCPageHeader.vue";
 import NewPost from "../sub_components/NewPost.vue";
-import global from '@/global'
 
 export default {
   name: "PCForumpage",
@@ -136,7 +123,6 @@ export default {
         if (res.data.code == 200) {
           posts.value = res.data.data.retPosts;
           totalPosts.value = res.data.data.length;
-          //console.log(res.data.data.retPosts)
         } else {
           posts.value = [];
           totalPosts.value = 0;
@@ -176,9 +162,6 @@ export default {
     //     this.$router.push({ path: '/login' })
     //   }
     // },
-    _get_pin_type(pin_type_id) {
-      return global.get_pin_type(pin_type_id)
-    },
 
     handleSearchInput() {
       let that = this
@@ -252,10 +235,6 @@ export default {
         this.isReload = true;
       })
     },
-
-    getTimeSubstring(timeString) {
-      return timeString.substring(5, 16);
-    }
   },
 
   mounted() {
@@ -265,23 +244,6 @@ export default {
 </script>
 
 <style>
-.card_header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.title {
-  align-items: flex-start;
-  justify-content: space-between;
-  padding-top:10px
-}
-
-.title h2 {
-  margin: 0;
-  color: #333;
-}
-
 .avatar {
   width: 100px;
   height: 100px;
@@ -304,7 +266,7 @@ export default {
 
 .left,
 .right {
-  width: 20%;
+  width: 15%;
 }
 
 .center {
