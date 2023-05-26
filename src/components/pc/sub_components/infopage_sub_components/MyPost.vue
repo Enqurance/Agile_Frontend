@@ -332,6 +332,10 @@ export default {
 </script>
 
 <style scoped>
+.infinite-list {
+    height: 500px;
+    list-style: none;
+}
 
 .empty_div {
     margin-top: 10%;

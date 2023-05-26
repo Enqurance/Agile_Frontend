@@ -69,39 +69,6 @@
     <el-row>
         <MyPin></MyPin>
     </el-row>
-        <!-- <el-container class="MainPart">
-            <el-col :span="6">
-                                <p style="padding-top: 8%; padding-bottom: 5%; font-size:1.2em">{{ user.description }}</p>
-                <div class="headPart">
-                    <div v-if="isReload">
-                    </div>
-                    <div class="buttonArea">
-                        <div style="padding-top: 10%"></div>
-                        
-
-                    </div>
-                </div>
-                <el-divider />
-            </el-col>
-            <el-container>
-                <el-aside width="30%">
-                    <div class="LeftPart">
-                        </el-row>
-                        <el-row class="thirdRow">
-                            <div style="padding-top:70%;"></div>
-                        </el-row>
-                    </div>
-                </el-aside>
-                <el-main>
-                    <div>
-                        
-                        
-                    </div>
-                </el-main>
-            </el-container>
-        </el-container> -->
-        <!-- <el-button @click="contactUsVisible = true">联系我们</el-button> -->
-    <!--edit Dialog-->
     <el-dialog v-model="editVisible" title="请编辑你的信息" width="50%">
             <el-form :model="user" label-width="100px">
                 <el-form-item label="用户名">
@@ -187,7 +154,7 @@ import { Edit } from '@element-plus/icons-vue'
 export default {
     name: "MyInfo",
     components: { 
-        // MyPin
+        MyPin
     },
     inject: ['reload'],
     setup() {

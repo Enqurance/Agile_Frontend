@@ -1,5 +1,4 @@
 <script>
-import {ref} from 'vue'
 export default {
     name: "MyPin",
     components: {},
@@ -100,7 +99,7 @@ export default {
         </li>
     </ul>
     </div>
-    <div v-else><el-empty description="该用户没有私有钉子" /></div>
+        <div v-else><el-empty description="该用户没有私有钉子" /></div>
     </div>
 </template>
 
