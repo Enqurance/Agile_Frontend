@@ -9,16 +9,34 @@
 
                 <div class="center">
                     <div class="post_header">
-                        <span class="post_title">标题：{{ post.title }}</span>
-                        <el-button v-if="post.is_auth" type="danger" @click="showDeletePost">删除post</el-button>
-                        <el-button type="danger" @click="showReportPostPrompt">举报post</el-button>
-                        <el-button v-if="post.is_auth" @click="editPost">编辑post</el-button>
+                        <div class="title">
+                            <h2 style="padding-bottom: 15px;">{{ post.title }}</h2>
+                            <el-tag class="tag">{{ _get_pin_type(post.tag) }}</el-tag>
+
+                            <div v-if="tags.length > 0" style="display: flex;flex-wrap: wrap;margin-top: 10px;margin-bottom: 10px;">
+                                <div v-for="(tag, index) in tags" :key="index" style="margin-right: 10px;">
+                                    <el-tag size="small" effect="plain" type="success">{{ tag }}</el-tag>
+                                </div>
+                            </div>
+                            <el-button v-if="post.is_auth" type="danger" @click="showDeletePost">删除post</el-button>
+                            <el-button type="danger" @click="showReportPostPrompt">举报post</el-button>
+                            <el-button v-if="post.is_auth" @click="editPost">编辑post</el-button>
+                            <el-button @click="addLike">点赞</el-button>
+                            <!-- 这里会替换成图标，根据post.has_thumb来分辨 -->
+                        </div>
+                        <div style="width: 80px;">
+                            <el-descriptions title="   " :column="1" style="width: 80px;">
+                                <el-descriptions-item label="点赞数">{{ post.thumbsUp }}</el-descriptions-item>
+                                <el-descriptions-item label="访问量">{{ post.visit }}</el-descriptions-item>
+                                <el-descriptions-item label="楼层数">{{ post.floorNum }}</el-descriptions-item>
+                                <el-descriptions-item>{{ this.getTimeSubstring(post.createTime) }}</el-descriptions-item>
+                            </el-descriptions>
+                        </div>
                     </div>
-                    <div class="post_body">内容：{{ post.content }}</div>
-                    <div class="post_body">点赞数：{{ post.thumbsUp }}</div>
-                    <div class="post_body">绑定的地点：{{ post.pinNameStr }}</div>
-                    <el-button @click="addLike">点赞</el-button> 
-                    <!-- 这里会替换成图标，根据post.has_thumb来分辨 -->
+                    <div>
+                        <p>{{ post.content }}</p>
+                    </div>
+
                     <div>
                         <el-dialog v-model="postDialogVisible">
                             <div>
@@ -30,19 +48,6 @@
                                         <el-input v-model="formPost.content" type="textarea" :rows="6"
                                             maxlength="200"></el-input>
                                     </el-form-item>
-                                    <el-form-item label="类别">
-                                        <el-radio-group v-model="formPost.tag">
-                                            <el-radio :label="1">餐饮</el-radio>
-                                            <el-radio :label="2">园地</el-radio>
-                                            <el-radio :label="3">教学</el-radio>
-                                            <el-radio :label="4">体育</el-radio>
-                                            <el-radio :label="5">办公</el-radio>
-                                            <el-radio :label="6">购物</el-radio>
-                                            <el-radio :label="7">生活服务</el-radio>
-                                        </el-radio-group>
-                                    </el-form-item>
-                                    <!-- <el-form-item label="关联钉子">
-                                    </el-form-item> -->
                                 </el-form>
                                 <el-button type="primary" @click="submitEditForm">确认</el-button>
                             </div>
@@ -115,6 +120,7 @@
 <script>
 import { ref, onMounted, getCurrentInstance } from 'vue'
 import PageHeader from "@/components/pc/PCPageHeader.vue";
+import global from '@/global'
 
 export default {
     name: "PCPostpage",
@@ -198,6 +204,10 @@ export default {
     },
 
     methods: {
+        _get_pin_type(pin_type_id) {
+            return global.get_pin_type(pin_type_id)
+        },
+
         tokenCheck() {
             if (!this.$cookies.get('user_token')) {
                 this.$message({
@@ -224,14 +234,6 @@ export default {
                 }).then((res) => {
                     this.imageUrl = res.data.data;
                 }).catch((res) => console.log(res))
-
-            this.refreshIcon();
-        },
-        refreshIcon() {
-            this.isReload = false;
-            this.$nextTick(() => {
-                this.isReload = true;
-            })
         },
 
 
@@ -251,18 +253,7 @@ export default {
             }).catch((error) => {
                 console.log(error);
             });
-            this.refreshPostDetail();
         },
-        refreshPostDetail() {
-            this.isReload = false;
-            this.$nextTick(() => {
-                this.isReload = true;
-            })
-        },
-
-
-
-
 
         addNewFloor() {
             this.tokenCheck()
@@ -481,8 +472,6 @@ export default {
                 return this.$message.error("帖子标题不能为空")
             } else if (this.formPost.content === '') {
                 return this.$message.error("帖子正文不能为空")
-            } else if (this.formPost.tag === -1) {
-                return this.$message.error("类别不能为空")
             }
 
             let that = this
@@ -491,7 +480,7 @@ export default {
                 params: {
                     post_id: id,
                     tag: that.formPost.tag,
-                    pinIdStr: "76;77;78",
+                    pinIdStr: that.formPost.pinIdStr,
                     title: that.formPost.title,
                     content: that.formPost.content,
                 },
@@ -613,16 +602,44 @@ export default {
                     //console.log("现在点赞"+that.post.thumbsUp)
                 }
             }).catch((res) => console.log(res))
+        },
+
+        getTimeSubstring(timeString) {
+            if (timeString) {
+                return timeString.substring(5, 16);
+            }
         }
     },
 
     mounted() {
         this.initPost();
     },
+
+    computed: {
+        tags() {
+            console.log(this.post.pinNameStr)
+            if (this.post.pinNameStr) {
+                return this.post.pinNameStr.split(";");
+            } else {
+                return [];
+            }
+        }
+    },
 }
 </script>
     
 <style>
+.title {
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-top: 10px
+}
+
+.title h2 {
+    margin: 0;
+    color: #333;
+}
+
 .avatar {
     width: 100px;
     height: 100px;
@@ -660,10 +677,17 @@ export default {
 .post_header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 20px;
     width: 100%;
 }
+
+.card_header {
+    display: flex;
+    justify-content: space-between;
+
+}
+
 
 
 .post_title {
