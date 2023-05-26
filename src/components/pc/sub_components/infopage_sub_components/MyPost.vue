@@ -1,19 +1,11 @@
 <template>
-    <div style="margin: 0 auto;background: #fafafa; padding: 0 3%; width: 80%; height: 90%">
-        <div style="padding-bottom: 2.5%; padding-top: 1.5%; font-size: 20px">
-            我的帖子
-            <!--      <el-button style="margin-left: 40%" size="large" type="primary">-->
-            <!--        创建-->
-            <!--      </el-button>-->
-        </div>
-
-        <div v-if="this.subMenu === 1">
-            <ul class="infinite-list" style="overflow: auto">
+    <div style="margin: 0 auto;padding: 0 3%; width: 80%">
+        <div class="sub_div" v-if="this.subMenu === 1" >
+            <div style="overflow: auto">
                 <div v-if="posts.length === 0">
                     <el-empty description="暂时还没有贴子"/>
                 </div>
-                <div v-for="post in posts" :key="post.id"
-                     style="margin: 7px 0; border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 98%;height: 150px ">
+                <div v-else class="post_div" v-for="post in posts" :key="post.id">
                     <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
                                @click="post.deleteDialog=true">
                         删除
@@ -49,16 +41,15 @@
                         {{ post.floor_num }}
                     </div>
                 </div>
-            </ul>
+            </div>
         </div>
 
-        <div v-if="this.subMenu === 2">
-            <ul class="infinite-list" style="overflow: auto">
+        <div class="sub_div" v-if="this.subMenu === 2">
+            <div style="overflow: auto">
                 <div v-if="bad_posts.length === 0">
-                    <el-empty description="没有待整改贴子"/>
+                    <el-empty class="empty_div" description="没有待整改贴子"/>
                 </div>
-                <div v-for="post in bad_posts" :key="post.id"
-                     style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 98%;height: 150px ">
+                <div v-else class="post_div" v-for="post in bad_posts" :key="post.id">
                     <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
                                @click="post.deleteDialog=true">
                         删除
@@ -128,7 +119,7 @@
                         </template>
                     </el-dialog>
                 </div>
-            </ul>
+            </div>
         </div>
     </div>
 </template>
@@ -260,17 +251,13 @@ export default {
     },
     watch: {
         subMenu(newData) {
-            console.log(newData)
+            // console.log(newData)
         }
     }
 }
 </script>
 
 <style scoped>
-.infinite-list {
-    height: 500px;
-//padding: 0; //margin: 0; list-style: none;
-}
 
 .infinite-list .infinite-list-item {
     display: flex;
@@ -280,5 +267,21 @@ export default {
     background: var(--el-color-primary-light-9);
     margin: 8px;
     color: var(--el-color-primary);
+}
+
+.sub_div {
+
+}
+
+.empty_div {
+    margin-top: 10%;
+}
+
+.post_div {
+    margin: 20px 0;
+    border-radius: 20px;
+    background: white;
+    border: 2px solid rgb(246,246,246);
+    width: 98%;height: 150px
 }
 </style>
