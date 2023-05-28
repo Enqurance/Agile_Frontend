@@ -251,16 +251,6 @@ export default {
 
 <style scoped>
 
-.infinite-list .infinite-list-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 50px;
-    background: var(--el-color-primary-light-9);
-    margin: 8px;
-    color: var(--el-color-primary);
-}
-
 .link_hover {
     cursor: pointer;
 }
