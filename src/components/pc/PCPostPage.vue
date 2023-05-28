@@ -11,9 +11,22 @@
                     <div class="post_header">
                         <div class="title">
                             <h2 style="padding-bottom: 15px;">{{ post.title }}</h2>
-                            <div style="display: flex; align-items: center;margin-bottom: 10px;">
-                                <el-tag class="tag" style="margin-left: 10px;">{{ _get_pin_type(post.tag) }}</el-tag>
-                                <p style="padding-left: 10px;">留个放userName的位置</p>
+                            <div style="display: flex; align-items: center;margin-bottom: 10px;font-size:18px;">
+                                <el-tag class="tag" style="margin-right: 10px;">{{ _get_pin_type(post.tag) }}</el-tag>
+                                <el-popover placement="right" width="220" trigger="hover">
+                                    <p>昵称：{{ userInfo.name }}</p>
+                                    <p>邮箱：{{ userInfo.email }}</p>
+                                    <p>个人描述：{{ userInfo.description }}</p>
+                                    <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
+                                    <p>校区：{{ getCampus(userInfo.campus) }}</p>
+                                    <p>性别：{{ getGender(userInfo.gender) }}</p>
+                                    <template v-slot:reference>
+                                        <el-link :underline="false" type="primary" style="font-size:18px;"
+                                            @mouseenter="showPopover(post.userId)">{{ post.userName
+                                            }}</el-link>
+                                    </template>
+                                </el-popover>
+
                                 <p style="padding-left: 10px;">{{ getTimeSubstring(post.createTime) }}</p>
 
                             </div>
@@ -98,8 +111,20 @@
                             <el-card style="min-height: auto;">
                                 <div class="post_floor-header">
                                     <div>
-                                        (用户名字){{ floor.userName }} 、(用户id){{ floor.userId }} 、发表于 {{
-                                            getTimeSubstring(floor.createTime) }}
+                                        <el-popover placement="right" width="220" trigger="hover">
+                                            <p>昵称：{{ userInfo.name }}</p>
+                                            <p>邮箱：{{ userInfo.email }}</p>
+                                            <p>个人描述：{{ userInfo.description }}</p>
+                                            <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
+                                            <p>校区：{{ getCampus(userInfo.campus) }}</p>
+                                            <p>性别：{{ getGender(userInfo.gender) }}</p>
+                                            <template v-slot:reference>
+                                                <el-link :underline="false" type="primary" style="font-size:18px;"
+                                                    @mouseenter="showPopover(floor.userId)">{{ floor.userName
+                                                    }}</el-link>
+                                            </template>
+                                        </el-popover>
+                                        <span>发表于 {{ getTimeSubstring(floor.createTime) }} </span>
                                     </div>
                                     <div class="floor-number">
                                         <span style="margin-right: 10px;">{{ floor.layers }}楼</span>
@@ -118,7 +143,8 @@
                                 </div>
                                 <div style="margin-bottom: 10px;font-size: 20px;">{{ floor.content }}</div>
 
-                                <div v-if="!floor.comment_cases" style="display: flex; justify-content: flex-end;margin-right: 20px;">
+                                <div v-if="!floor.comment_cases"
+                                    style="display: flex; justify-content: flex-end;margin-right: 20px;">
                                     <el-button @click="showComments(floor.id)">回复楼层</el-button>
                                 </div>
 
@@ -126,8 +152,20 @@
                                     <div v-for="comment in comments" :key="comment.id">
                                         <el-card style="min-height: auto;" shadow="never">
                                             <div>
-                                                <p style="font-size: 20px;">(用户名字){{ comment.ruserName }} 、(用户id){{
-                                                    comment.ruserId }} 、发表于 {{ getTimeSubstring(comment.createTime) }} </p>
+                                                <el-popover placement="right" width="220" trigger="hover">
+                                                    <p>昵称：{{ userInfo.name }}</p>
+                                                    <p>邮箱：{{ userInfo.email }}</p>
+                                                    <p>个人描述：{{ userInfo.description }}</p>
+                                                    <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
+                                                    <p>校区：{{ getCampus(userInfo.campus) }}</p>
+                                                    <p>性别：{{ getGender(userInfo.gender) }}</p>
+                                                    <template v-slot:reference>
+                                                        <el-link :underline="false" type="primary" style="font-size:18px;"
+                                                            @mouseenter="showPopover(comment.cuserId)">{{ comment.cuserName }}</el-link>
+                                                    </template>
+                                                </el-popover>
+
+                                                <span style="font-size: 18px;">发表于 {{ getTimeSubstring(comment.createTime) }} </span>
                                             </div>
                                             <el-tooltip content="删除评论" placement="bottom">
                                                 <el-button v-if="comment.is_auth" type="danger"
@@ -142,7 +180,7 @@
                                                 </el-button>
                                             </el-tooltip>
                                             <div>
-                                                <p style="font-size: 18px;">(内容){{ comment.content }}</p>
+                                                <p style="font-size: 18px;">{{ comment.content }}</p>
                                             </div>
                                         </el-card>
                                     </div>
@@ -157,7 +195,23 @@
                                 </el-dialog>
                                 <el-card v-if="floor.comment_cases" shadow="never">
                                     <div style="display:flex;align-items: center;justify-content: space-between;">
-                                        <div>{{ floor.comment_cases.cuserName }} ：{{ floor.comment_cases.content }}</div>
+                                        <div>
+                                            <el-popover placement="right" width="220" trigger="hover">
+                                                <p>昵称：{{ userInfo.name }}</p>
+                                                <p>邮箱：{{ userInfo.email }}</p>
+                                                <p>个人描述：{{ userInfo.description }}</p>
+                                                <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
+                                                <p>校区：{{ getCampus(userInfo.campus) }}</p>
+                                                <p>性别：{{ getGender(userInfo.gender) }}</p>
+                                                <template v-slot:reference>
+                                                    <el-link :underline="false" type="primary" style="font-size:18px;"
+                                                        @mouseenter="showPopover(floor.comment_cases.cuserId)">{{
+                                                            floor.comment_cases.cuserName
+                                                        }}</el-link>
+                                                </template>
+                                            </el-popover>
+                                            <span> ：{{ floor.comment_cases.content }}</span>
+                                        </div>
                                         <el-button @click="showComments(floor.id)">查看全部评论</el-button>
                                     </div>
                                 </el-card>
@@ -213,6 +267,8 @@ export default {
             newCommentBody: '',
 
             comments: [],
+
+            userInfo: {}
         };
     },
 
@@ -271,6 +327,21 @@ export default {
     },
 
     methods: {
+        showPopover(user_id) {
+            let that = this
+            that.$axios.get('/user/getUserById/' + user_id, {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then((res) => {
+                console.log(res)
+                if (res.data.code === 200) {
+                    that.userInfo = res.data.data
+                    console.log(that.userInfo)
+                }
+            }).catch((res) => console.log(res))
+        },
+
         _get_pin_type(pin_type_id) {
             return global.get_pin_type(pin_type_id)
         },
@@ -682,6 +753,18 @@ export default {
             if (timeString) {
                 return timeString.substring(5, 16);
             }
+        },
+
+        getGrade(value) {
+            return value === '1' ? '本科' : value === '2' ? '硕士' : value === '3' ? '博士' : ''
+        },
+
+        getCampus(value) {
+            return value === '1' ? '学院路校区' : value === '2' ? '沙河校区' : ''
+        },
+
+        getGender(value) {
+            return value === 1 ? '女' : value === 0 ? '男' : ''
         }
     },
 

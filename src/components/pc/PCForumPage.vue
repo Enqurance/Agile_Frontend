@@ -47,8 +47,7 @@
                     <div class="title">
                       <h2 style="padding-bottom: 15px;">{{ post.title }}</h2>
                       <div style="display:flex;align-items: center;">
-                        <el-tag class="tag" >{{ _get_pin_type(post.tag) }}</el-tag>
-                        <p style="padding-left: 10px;">留个放userName的位置</p>
+                        <el-tag class="tag">{{ _get_pin_type(post.tag) }}</el-tag>
                         <p style="padding-left: 10px;">{{ getTimeSubstring(post.createTime) }}</p>
                       </div>
                     </div>
@@ -169,30 +168,6 @@ export default {
   },
 
   methods: {
-    // tokenCheck() {
-    //   if (!this.$cookies.get('user_token')) {
-    //     this.$message({
-    //       message: '请先登录!',
-    //       type: "warning"
-    //     })
-    //     this.$router.push({ path: '/login' })
-    //   }
-    // },
-    getUserById(user_id) {
-      let that = this
-      that.$axios.get('/user/getUserById/' + user_id, {
-        headers: {
-          'token': that.$cookies.get('user_token')
-        }
-      }).then((res) => {
-        console.log(res)
-        if (res.data.code === 200) {
-
-        }
-      }).catch((res) => console.log(res))
-    },
-
-
     _get_pin_type(pin_type_id) {
       return global.get_pin_type(pin_type_id)
     },
