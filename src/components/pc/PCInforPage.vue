@@ -52,10 +52,9 @@ export default {
 </script>
 
 <template>
-    <div class="InforPage" style="height: 100%;width: 100%">
         <el-container style="height: 100%">
-            <el-header>
-                <PageHeader/>    
+            <el-header style="padding-left: 0;padding-right: 0">
+                <PageHeader/>
             </el-header>
             <el-container style="height: 80%">
                 <el-aside width="15%">
@@ -112,7 +111,6 @@ export default {
             </el-main>
         </el-container>
         </el-container>
-    </div>
 </template>
 
 <style scoped>

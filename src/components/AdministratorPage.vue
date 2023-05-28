@@ -620,12 +620,15 @@ export default defineComponent({
 <template>
     <div style="height: 100%">
         <el-container style="height: 100%">
-            <el-header>
+            <el-header style="padding-left: 0;padding-right: 0">
                 <PCPageHeader/>
             </el-header>
             <el-container style="height: 80%">
                 <el-aside style="width: 20%">
-                    <el-menu :default-openeds="['3']" style="height: 100%" default-active="1">
+                    <el-menu 
+                        :default-openeds="['3']" 
+                        style="height: 100%" 
+                        default-active="1">
                         <el-menu-item index="1" @click="this.init_map">
                             <el-icon>
                                 <location/>

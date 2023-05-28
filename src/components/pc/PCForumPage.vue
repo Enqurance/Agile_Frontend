@@ -1,7 +1,21 @@
 <template>
   <el-container>
+<<<<<<< HEAD
+<<<<<<< HEAD
     <el-header>
       <PageHeader />
+=======
+    <el-header style="padding-left: 0;padding-right: 0">
+        <PageHeader/>
+>>>>>>> 1e859e8 ([chore](Global):美化样式)
+=======
+    <el-header style="padding-left: 0;padding-right: 0">
+        <PageHeader/>
+=======
+    <el-header>
+      <PageHeader />
+>>>>>>> cd7e101 ([fix](forumPage、postPage)：论坛页面文字按钮替换为图标+提示)
+>>>>>>> 06549d2 ([fix](forumPage、postPage)：论坛页面文字按钮替换为图标+提示)
     </el-header>
     <el-main>
       <div class="main">
@@ -168,6 +182,33 @@ export default {
   },
 
   methods: {
+<<<<<<< HEAD
+=======
+    // tokenCheck() {
+    //   if (!this.$cookies.get('user_token')) {
+    //     this.$message({
+    //       message: '请先登录!',
+    //       type: "warning"
+    //     })
+    //     this.$router.push({ path: '/login' })
+    //   }
+    // },
+    getUserById(user_id) {
+      let that = this
+      that.$axios.get('/user/getUserById/' + user_id, {
+        headers: {
+          'token': that.$cookies.get('user_token')
+        }
+      }).then((res) => {
+        console.log(res)
+        if (res.data.code === 200) {
+          
+        }
+      }).catch((res) => console.log(res))
+    },
+
+
+>>>>>>> 06549d2 ([fix](forumPage、postPage)：论坛页面文字按钮替换为图标+提示)
     _get_pin_type(pin_type_id) {
       return global.get_pin_type(pin_type_id)
     },
@@ -266,20 +307,6 @@ export default {
 .title h2 {
   margin: 0;
   color: #333;
-}
-
-.avatar {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-right: 20px;
-}
-
-.avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .main {
