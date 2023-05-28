@@ -13,13 +13,15 @@
                             删除
                         </el-button>
 
-                        <el-popover placement="top-start" :hide-after="0" trigger="hover"
-                                    content="点击跳转至帖子">
+                        <el-popover placement="top-start" :hide-after="0" trigger="hover">
                             <template #reference>
                                 <h3 class="link_hover" style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
                                     @click="browsePost(post.id)">
                                     {{ post.title }}
                                 </h3>
+                                <div style="text-align: center">
+                                    <el-text tag="b" type="info">点击跳转至帖子</el-text>
+                                </div>
                             </template>
                         </el-popover>
 
@@ -103,10 +105,17 @@
                             整改
                         </el-button>
 
-                        <h3 class="link_hover" style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
-                            @click="browsePost(post.id)">
-                            {{ post.title }}
-                        </h3>
+                        <el-popover placement="top-start" :hide-after="0" trigger="hover">
+                            <template #reference>
+                                <h3 class="link_hover" style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
+                                    @click="browsePost(post.id)">
+                                    {{ post.title }}
+                                </h3>
+                                <div style="text-align: center">
+                                    <el-text tag="b" type="info">点击跳转至帖子</el-text>
+                                </div>
+                            </template>
+                        </el-popover>
 
                         <div style="padding-left: 20px">
                             <div style="padding: 0 10px 20px 20px;overflow: hidden;">
@@ -353,6 +362,10 @@ export default {
     content: "";
     display: block;
     clear: both;
+}
+
+.link_hover {
+    cursor: pointer;
 }
 
 </style>
