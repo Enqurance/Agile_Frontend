@@ -1,7 +1,12 @@
 <template>
   <el-container>
+<<<<<<< HEAD
     <el-header>
       <PageHeader />
+=======
+    <el-header style="padding-left: 0;padding-right: 0">
+        <PageHeader/>
+>>>>>>> 1e859e8 ([chore](Global):美化样式)
     </el-header>
     <el-main>
       <div class="main">
@@ -266,20 +271,6 @@ export default {
 .title h2 {
   margin: 0;
   color: #333;
-}
-
-.avatar {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-right: 20px;
-}
-
-.avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .main {

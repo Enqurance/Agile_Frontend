@@ -1,6 +1,31 @@
 <template>
     <div class="map-pin-info">
         <el-drawer direction="ltr" v-model="drawer" :with-header="true" :append-to-body="true" class="my-drawer">
+            <el-card class="box-card">
+                <template #header>
+                    <div class="card-header">
+                    <el-col span="12">
+                        <span>{{ info.name }}</span>
+                    </el-col>
+                    <el-col span="2"></el-col>
+                    <el-col span="10">
+                    <el-button
+                        v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine === false && pin_state === 0"
+                        @click="editInfo">
+                        <EditOutlined />
+                        修改信息
+                    </el-button>
+                    </el-col>
+                    </div>
+                </template>
+                    <el-descriptions title="简介" :column="1">
+                        <el-descriptions-item label="位置">{{ info.position }}</el-descriptions-item>
+                        <el-descriptions-item label="电话">{{ info.phone }}</el-descriptions-item>
+                        <el-descriptions-item label="简介">{{ info.brief }}</el-descriptions-item>
+                        <el-descriptions-item label="类型">{{ _get_pin_type(info.pin_type)}}</el-descriptions-item>
+                        <el-descriptions-item label="开放时间">{{ info.opening_time }}</el-descriptions-item>
+                    </el-descriptions>
+            </el-card>
             <div style="margin-top: 0px;margin-bottom: 0px;">
                 <el-button v-if="info.visibility === 0 && this.$cookies.get('user_type') === '0'" class="float_right"
                     size="large" :style="{ background: _get_pin_color_state(pin_state) }" @click="apply_public">
@@ -38,8 +63,6 @@
                         <el-button type="primary" @click="apply_feedback">确定</el-button>
                     </div>
                 </el-dialog>
-
-                <h1 style="margin-left: 10px;margin-top: 0px;padding: 0px">{{ info.name }}</h1>
             </div>
 
             <div>
@@ -83,42 +106,24 @@
                 </el-dialog>
             </div>
 
-            <div class="pin-info">
-                <el-card :body-style="{ padding: '10px' }">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0px;">
-                        <h4 style="margin-bottom: 0px;">信息</h4>
-                        <el-button
-                            v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine === false && pin_state === 0"
-                            @click="editInfo">
-                            <EditOutlined />
-                        </el-button>
-                    </div>
-
-                    <!-- <p>{{ info.name }}</p> -->
-                    <p v-if="info.position">位置描述：{{ info.position }}</p>
-                    <p v-if="info.brief">简介：{{ info.brief }}</p>
-                    <!-- <p> {{ pin_tag }}</p> -->
-                    <p v-if="_get_pin_type(info.pin_type)">类型：{{ _get_pin_type(info.pin_type) }}</p>
-                    <p v-if="info.opening_time">开放时间：{{ info.opening_time }}</p>
-                    <p v-if="info.phone">电话：{{ info.phone }}</p>
-                </el-card>
-            </div>
-
             <div class="pin-photo">
-                <el-card :body-style="{ padding: '10px' }">
-                    <h4>图片</h4>
+                <el-card class="box-card">
+                <template #header>
+                    <div class="card-header">
+                        <span>图片</span>
+                        <el-upload
+                            v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine === false && pin_state === 0"
+                            class="avatar-uploader" action="https://buaamapforum.cn:8443/photo/uploadPinPhoto"
+                            :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                            <el-button size="small" type="primary" plain>上传图片</el-button>
+                        </el-upload>
+                    </div>
+                </template>
                     <el-carousel trigger="click" height="150">
                         <el-carousel-item v-for="photoUrl in photos" :key="photoUrl">
                             <img :src="photoUrl" class="photo" @contextmenu.prevent="deletePhoto(photoUrl)" />
                         </el-carousel-item>
                     </el-carousel>
-
-                    <el-upload
-                        v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine === false && pin_state === 0"
-                        class="avatar-uploader" action="https://buaamapforum.cn:8443/photo/uploadPinPhoto"
-                        :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                        <el-button size="small" type="primary" plain>上传图片</el-button>
-                    </el-upload>
                 </el-card>
             </div>
 
@@ -573,6 +578,13 @@ export default {
 
 
 <style scoped>
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+}
+
 .pin-info {
     padding: 10px;
     margin-bottom: 10px;
@@ -582,7 +594,7 @@ export default {
 .pin-photo,
 .pin-service,
 .pin-post {
-    padding: 10px;
+    padding-top: 30px;
 }
 
 .service-item {
