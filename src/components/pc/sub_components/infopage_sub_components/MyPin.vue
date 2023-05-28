@@ -93,7 +93,7 @@ export default {
                 <template #header>
                     <div class="card-header">
                         <span>{{ pins[i-1].name }}</span>
-                        <el-button @click="deleteConfirm = true; curI = i;" type="danger">Delete</el-button>
+                        <el-button @click="deleteConfirm = true; curI = i;" plain type="danger">删除钉子</el-button>
                     </div>
                 </template>
                 <el-row>

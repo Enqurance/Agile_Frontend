@@ -11,28 +11,12 @@
                     <el-col span="10">
                     <el-button
                         v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine === false && pin_state === 0"
-                        @click="editInfo">
+                        @click="editInfo" type=primary plain>
                         <EditOutlined />
                         修改信息
                     </el-button>
-                    </el-col>
-                    </div>
-                </template>
-                    <el-descriptions title="简介" :column="1">
-                        <el-descriptions-item label="位置">{{ info.position }}</el-descriptions-item>
-                        <el-descriptions-item label="电话">{{ info.phone }}</el-descriptions-item>
-                        <el-descriptions-item label="简介">{{ info.brief }}</el-descriptions-item>
-                        <el-descriptions-item label="类型">{{ _get_pin_type(info.pin_type)}}</el-descriptions-item>
-                        <el-descriptions-item label="开放时间">{{ info.opening_time }}</el-descriptions-item>
-                    </el-descriptions>
-            </el-card>
-            <div style="margin-top: 0px;margin-bottom: 0px;">
-                <el-button v-if="info.visibility === 0 && this.$cookies.get('user_type') === '0'" class="float_right"
-                    size="large" :style="{ background: _get_pin_color_state(pin_state) }" @click="apply_public">
-                    {{ _get_pin_state(pin_state) }}
-                </el-button>
-                <el-button v-if="info.visibility === 1 && this.$cookies.get('user_type') === '0'" class="float_right"
-                    size="large" :style="{ background: _get_pin_color_state(pin_state) }" @click="() => {
+                    <el-button v-if="info.visibility === 1 && this.$cookies.get('user_type') === '0'" class="float_right"
+                        size="large" :type="pin_state === 0 ? 'success' : 'warning'" plain @click="() => {
                             if (this.pin_state === 1) {
                                 this.$message({
                                     type: 'warning',
@@ -47,8 +31,25 @@
                                 this.feedback.reason = ''
                             }
                         }">{{ _get_public_pin_state(pin_state) }}
-                </el-button>
-
+                    </el-button>
+                    </el-col>
+                    </div>
+                </template>
+                    <el-descriptions title="简介" :column="1">
+                        <el-descriptions-item label="位置">{{ info.position }}</el-descriptions-item>
+                        <el-descriptions-item label="电话">{{ info.phone }}</el-descriptions-item>
+                        <el-descriptions-item label="简介">{{ info.brief }}</el-descriptions-item>
+                        <el-descriptions-item label="类型">{{ _get_pin_type(info.pin_type)}}</el-descriptions-item>
+                        <el-descriptions-item label="开放时间">{{ info.opening_time }}</el-descriptions-item>
+                    </el-descriptions>
+                    <el-row>
+                        <el-button v-if="info.visibility === 0 && this.$cookies.get('user_type') === '0'" class="float_right"
+                        type="success" plain @click="apply_public">
+                        {{ _get_pin_state(pin_state) }}
+                    </el-button>
+                    </el-row>
+            </el-card>
+            <div style="margin-top: 0px;margin-bottom: 0px;">
                 <el-dialog v-model="show_feedback" style="height: 250px;width: 40%">
                     <el-form>
                         <el-form-item label="标题：">

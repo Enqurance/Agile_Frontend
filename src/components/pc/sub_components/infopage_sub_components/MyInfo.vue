@@ -1,7 +1,7 @@
 <template>
     <el-row span="6" :gutter="20">
         <el-col 
-            :xs="{ span: 5 }"
+            :xs="{ span: 6 }"
             :sm="{ span: 4 }"
             :md="{ span: 3 }"
             :lg="{ span: 2 }">
@@ -14,8 +14,8 @@
                 :before-upload="beforeAvatarUpload">
                 <el-tooltip effect="dark" content="点击更换头像" placement="right">
                     <el-avatar 
-                        :size="70" 
-                        shape="circle" 
+                        :size="80" 
+                        shape="square" 
                         :src="this.imageUrl"
                         style="user-select: none;">
                     </el-avatar>
@@ -24,42 +24,38 @@
             </el-row>
         </el-col>
         <el-col 
-            :xs="{ span: 6 }"
-            :sm="{ span: 8 }"
-            :md="{ span: 8 }">
+            :xs="{ span: 18 }"
+            :sm="{ span: 20 }"
+            :md="{ span: 21 }">
+            <el-row span="12"></el-row>
             <el-row span="12">
+                <el-col span="18">
                 <el-descriptions 
                     :title="user.name"
                     direction="vertical"
                     :column="4"
-                    border>
-                    <el-descriptions-item label="校区">
+                    >
+                    <el-descriptions-item min-width="75px" label="校区">
                         <span style="font-size: 14px;">{{ user.campus === '1' ? '学院路校区' : '沙河校区' }}</span>
                     </el-descriptions-item>
-                    <el-descriptions-item label="年级">
+                    <el-descriptions-item min-width="75px" label="年级">
                         <span style="font-size: 14px;">{{ user.grade === '1' ? '本科' : user.grade === '2' ? '硕士' :
                                         '博士' }}</span>
                     </el-descriptions-item>
-                    <el-descriptions-item label="性别">
+                    <el-descriptions-item min-width="75px" label="性别">
                         <span v-if="user.gender === 0" style="font-size: 14px;">男</span>
                         <span v-if="user.gender === 1" style="font-size: 14px;">女</span>
                     </el-descriptions-item>
-                    <el-descriptions-item label="简介">
+                    <el-descriptions-item min-width="100px" label="简介">
                         <span style="font-size: 14px;">{{ user.description }}</span>
                     </el-descriptions-item>
                 </el-descriptions>
+                </el-col>
+                <el-col span="6" offset="12">
+                    <el-button type="primary" plain :icon="Edit" @click="editVisible = true">编辑</el-button>
+                    <el-button type="primary" plain :icon="Edit" @click="changePasswordVisible = true">修改密码</el-button>
+                </el-col>
             </el-row>
-        </el-col>
-        <el-col 
-            :xs="{ span: 12 }"
-            :sm="{ span: 10 }"
-            :md="{ span: 13 }">
-            <div class="right-aligned-content">
-                <el-row>
-                    <el-button type="primary" :icon="Edit" @click="editVisible = true">编辑</el-button>
-                    <el-button type="primary" :icon="Edit" @click="changePasswordVisible = true">设置</el-button>
-                </el-row>
-            </div>
         </el-col>
     </el-row>
     <el-row class="pinRow">

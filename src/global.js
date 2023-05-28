@@ -19,7 +19,7 @@ let pin_color_dic = {
 }
 
 let pin_state_dic = {
-    0: "可申请",
+    0: "可申请为公共钉",
     1: "待审批",
     2: "申请冷却",
 }
@@ -31,8 +31,8 @@ let pin_public_state_dic = {
 }
 
 let pin_state_color_dic = {
-    0: "springGreen",
-    1: "yellow",
+    0: "#66ff99",
+    1: "#ff9999",
     // 2: "red",
 }
 
