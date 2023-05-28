@@ -30,6 +30,8 @@ export default {
             ],
             count: 0,
             isReload: true,
+            deleteConfirm: false,
+            curI: 0,
         }
     },
     mounted() {
@@ -91,7 +93,7 @@ export default {
                 <template #header>
                     <div class="card-header">
                         <span>{{ pins[i-1].name }}</span>
-                        <el-button @click="deletePin(this.pins[i-1].id, i-1)" type="danger">Delete</el-button>
+                        <el-button @click="deleteConfirm = true; curI = i;" type="danger">Delete</el-button>
                     </div>
                 </template>
                 <el-row>
@@ -116,6 +118,23 @@ export default {
     </div>
         <div v-else><el-empty description="该用户没有私有钉子"/></div>
     </div>
+
+    <el-dialog
+        v-model="deleteConfirm"
+        title="确认"
+        width="30%"
+        align-center
+    >
+        <span>您确认删除该钉子吗？</span>
+        <template #footer>
+        <span class="dialog-footer">
+            <el-button @click="deleteConfirm = false">取消</el-button>
+            <el-button type="danger" plain @click="deletePin(this.pins[curI-1].id, curI-1); deleteConfirm = false">
+            确认
+            </el-button>
+        </span>
+        </template>
+    </el-dialog>
 </template>
 
 <style scoped>
