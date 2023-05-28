@@ -1,21 +1,7 @@
 <template>
     <el-container>
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <el-header>
-            <PageHeader />
-=======
         <el-header style="padding-left: 0;padding-right: 0">
-            <PageHeader/>
->>>>>>> 1e859e8 ([chore](Global):美化样式)
-=======
-        <el-header style="padding-left: 0;padding-right: 0">
-            <PageHeader/>
-=======
-        <el-header>
             <PageHeader />
->>>>>>> cd7e101 ([fix](forumPage、postPage)：论坛页面文字按钮替换为图标+提示)
->>>>>>> 06549d2 ([fix](forumPage、postPage)：论坛页面文字按钮替换为图标+提示)
         </el-header>
         <el-main>
             <div class="main">
@@ -25,7 +11,6 @@
                     <div class="post_header">
                         <div class="title">
                             <h2 style="padding-bottom: 15px;">{{ post.title }}</h2>
-<<<<<<< HEAD
                             <div style="display: flex; align-items: center;margin-bottom: 10px;font-size:18px;">
                                 <el-tag class="tag" style="margin-right: 10px;">{{ _get_pin_type(post.tag) }}</el-tag>
                                 <el-popover placement="right" width="220" trigger="hover">
@@ -46,16 +31,6 @@
 
                             </div>
 
-=======
-                            <div style="display: flex; align-items: center;margin-bottom: 10px;">
-                                <el-tag class="tag" style="margin-right: 10px;">{{ _get_pin_type(post.tag) }}</el-tag>
-                                <el-button @click="addLike" circle>
-                                    <HeartTwoTone v-if="post.has_thumb" twoToneColor="#eb2f96" />
-                                    <HeartOutlined v-else />
-                                </el-button>
-                            </div>
-
->>>>>>> 06549d2 ([fix](forumPage、postPage)：论坛页面文字按钮替换为图标+提示)
                             <div v-if="tags.length > 0"
                                 style="display: flex;flex-wrap: wrap;margin-top: 10px;margin-bottom: 10px;">
                                 <div v-for="(tag, index) in tags" :key="index" style="margin-right: 10px;">
@@ -78,15 +53,12 @@
                                     <EditOutlined />
                                 </el-button>
                             </el-tooltip>
-<<<<<<< HEAD
                             <el-tooltip content="点赞帖子" placement="bottom">
                                 <el-button @click="addLike" circle>
                                     <HeartTwoTone v-if="post.has_thumb" twoToneColor="#eb2f96" />
                                     <HeartOutlined v-else />
                                 </el-button>
                             </el-tooltip>
-=======
->>>>>>> 06549d2 ([fix](forumPage、postPage)：论坛页面文字按钮替换为图标+提示)
                         </div>
                         <div style="width: 100px;">
                             <el-descriptions title="   " :column="1" style="width: 100px;">
@@ -327,13 +299,6 @@ export default {
                 if (res.data.code == 200) {
                     floors.value = res.data.data.retFloors;
                     totalFloors.value = res.data.data.length;
-<<<<<<< HEAD
-                    console.log("floors")
-                    console.log(res.data.data.retFloors)
-=======
-                    //console.log("floors")
-                    //console.log(res.data.data.retFloors)
->>>>>>> 06549d2 ([fix](forumPage、postPage)：论坛页面文字按钮替换为图标+提示)
                 } else {
                     floors.value = []
                     totalFloors.value = 0;
@@ -473,11 +438,6 @@ export default {
                 if (res.data.code == 200) {
                     that.comments = res.data.data.retComments
                     //console.log("getComments")
-<<<<<<< HEAD
-                    console.log(res.data.data.retComments)
-=======
-                    //console.log(res.data.data.retComments)
->>>>>>> 06549d2 ([fix](forumPage、postPage)：论坛页面文字按钮替换为图标+提示)
                 } else {
                     that.comments = []
                 }
