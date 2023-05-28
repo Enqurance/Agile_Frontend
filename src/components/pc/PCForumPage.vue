@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-        <PageHeader/>
+      <PageHeader />
     </el-header>
     <el-main>
       <div class="main">
@@ -179,6 +179,21 @@ export default {
     //     this.$router.push({ path: '/login' })
     //   }
     // },
+    getUserById(user_id) {
+      let that = this
+      that.$axios.get('/user/getUserById/' + user_id, {
+        headers: {
+          'token': that.$cookies.get('user_token')
+        }
+      }).then((res) => {
+        console.log(res)
+        if (res.data.code === 200) {
+          
+        }
+      }).catch((res) => console.log(res))
+    },
+
+
     _get_pin_type(pin_type_id) {
       return global.get_pin_type(pin_type_id)
     },

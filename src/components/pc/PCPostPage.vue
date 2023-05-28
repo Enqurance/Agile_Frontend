@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-header>
-            <PageHeader/>
+            <PageHeader />
         </el-header>
         <el-main>
             <div class="main">
@@ -11,18 +11,36 @@
                     <div class="post_header">
                         <div class="title">
                             <h2 style="padding-bottom: 15px;">{{ post.title }}</h2>
-                            <el-tag class="tag">{{ _get_pin_type(post.tag) }}</el-tag>
+                            <div style="display: flex; align-items: center;margin-bottom: 10px;">
+                                <el-tag class="tag" style="margin-right: 10px;">{{ _get_pin_type(post.tag) }}</el-tag>
+                                <el-button @click="addLike" circle>
+                                    <HeartTwoTone v-if="post.has_thumb" twoToneColor="#eb2f96" />
+                                    <HeartOutlined v-else />
+                                </el-button>
+                            </div>
 
-                            <div v-if="tags.length > 0" style="display: flex;flex-wrap: wrap;margin-top: 10px;margin-bottom: 10px;">
+                            <div v-if="tags.length > 0"
+                                style="display: flex;flex-wrap: wrap;margin-top: 10px;margin-bottom: 10px;">
                                 <div v-for="(tag, index) in tags" :key="index" style="margin-right: 10px;">
                                     <el-tag size="small" effect="plain" type="success">{{ tag }}</el-tag>
                                 </div>
                             </div>
-                            <el-button v-if="post.is_auth" type="danger" @click="showDeletePost">删除post</el-button>
-                            <el-button type="danger" @click="showReportPostPrompt">举报post</el-button>
-                            <el-button v-if="post.is_auth" @click="editPost">编辑post</el-button>
-                            <el-button @click="addLike">点赞</el-button>
-                            <!-- 这里会替换成图标，根据post.has_thumb来分辨 -->
+
+                            <el-tooltip content="删除帖子" placement="bottom">
+                                <el-button v-if="post.is_auth" type="danger" @click="showDeletePost" circle>
+                                    <DeleteOutlined />
+                                </el-button>
+                            </el-tooltip>
+                            <el-tooltip content="举报帖子" placement="bottom">
+                                <el-button type="danger" @click="showReportPostPrompt" circle>
+                                    <QuestionCircleOutlined />
+                                </el-button>
+                            </el-tooltip>
+                            <el-tooltip content="编辑帖子" placement="bottom">
+                                <el-button v-if="post.is_auth" @click="editPost" circle>
+                                    <EditOutlined />
+                                </el-button>
+                            </el-tooltip>
                         </div>
                         <div style="width: 80px;">
                             <el-descriptions title="   " :column="1" style="width: 80px;">
@@ -121,12 +139,18 @@
 import { ref, onMounted, getCurrentInstance } from 'vue'
 import PageHeader from "@/components/pc/PCPageHeader.vue";
 import global from '@/global'
+import { DeleteOutlined, QuestionCircleOutlined, EditOutlined, HeartOutlined, HeartTwoTone } from '@ant-design/icons-vue';
 
 export default {
     name: "PCPostpage",
 
     components: {
         PageHeader,
+        DeleteOutlined,
+        QuestionCircleOutlined,
+        EditOutlined,
+        HeartOutlined,
+        HeartTwoTone
     },
 
     data() {
@@ -177,6 +201,7 @@ export default {
                 if (res.data.code == 200) {
                     floors.value = res.data.data.retFloors;
                     totalFloors.value = res.data.data.length;
+                    //console.log("floors")
                     //console.log(res.data.data.retFloors)
                 } else {
                     floors.value = []
@@ -249,6 +274,7 @@ export default {
                 }
             }).then((res) => {
                 that.post = res.data.data
+                //console.log("getPostDetail()")
                 //console.log(res.data.data)
             }).catch((error) => {
                 console.log(error);
@@ -296,6 +322,7 @@ export default {
                 //console.log(res.data)
                 if (res.data.code == 200) {
                     that.comments = res.data.data.retComments
+                    //console.log("getComments")
                     //console.log(res.data.data.retComments)
                 } else {
                     that.comments = []
@@ -327,6 +354,7 @@ export default {
                 that.newCommentBody = ''
                 if (response.data.code === 200) {
                     that.loadAllComments(floorID)
+                    that.loadFloors(ref(0))
                 }
             })
         },
