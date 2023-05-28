@@ -12,11 +12,10 @@
                         <div class="title">
                             <h2 style="padding-bottom: 15px;">{{ post.title }}</h2>
                             <div style="display: flex; align-items: center;margin-bottom: 10px;">
-                                <el-tag class="tag" style="margin-right: 10px;">{{ _get_pin_type(post.tag) }}</el-tag>
-                                <el-button @click="addLike" circle>
-                                    <HeartTwoTone v-if="post.has_thumb" twoToneColor="#eb2f96" />
-                                    <HeartOutlined v-else />
-                                </el-button>
+                                <el-tag class="tag" style="margin-left: 10px;">{{ _get_pin_type(post.tag) }}</el-tag>
+                                <p style="padding-left: 10px;">留个放userName的位置</p>
+                                <p style="padding-left: 10px;">{{ getTimeSubstring(post.createTime) }}</p>
+
                             </div>
 
                             <div v-if="tags.length > 0"
@@ -41,17 +40,22 @@
                                     <EditOutlined />
                                 </el-button>
                             </el-tooltip>
+                            <el-tooltip content="点赞帖子" placement="bottom">
+                                <el-button @click="addLike" circle>
+                                    <HeartTwoTone v-if="post.has_thumb" twoToneColor="#eb2f96" />
+                                    <HeartOutlined v-else />
+                                </el-button>
+                            </el-tooltip>
                         </div>
-                        <div style="width: 80px;">
-                            <el-descriptions title="   " :column="1" style="width: 80px;">
+                        <div style="width: 100px;">
+                            <el-descriptions title="   " :column="1" style="width: 100px;">
                                 <el-descriptions-item label="点赞数">{{ post.thumbsUp }}</el-descriptions-item>
                                 <el-descriptions-item label="访问量">{{ post.visit }}</el-descriptions-item>
                                 <el-descriptions-item label="楼层数">{{ post.floorNum }}</el-descriptions-item>
-                                <el-descriptions-item>{{ this.getTimeSubstring(post.createTime) }}</el-descriptions-item>
                             </el-descriptions>
                         </div>
                     </div>
-                    <div>
+                    <div class="post_content" style="text-align: left; font-size: 20px;">
                         <p>{{ post.content }}</p>
                     </div>
 
@@ -73,10 +77,9 @@
                     </div>
 
                     <div class="post_footer">
-                        <div class="avatar">
-                            <img :src="this.imageUrl" alt="avatar" class="avatar-img">
-                        </div>
-                        <el-button class="post_reply-btn" @click="newFloorDialogVisible = true">回复帖子</el-button>
+                        <el-avatar :size="70" shape="circle" :src="this.imageUrl" style="user-select: none;">
+                        </el-avatar>
+                        <el-button type="info" plain @click="newFloorDialogVisible = true">回复帖子</el-button>
                         <el-dialog v-model="newFloorDialogVisible">
                             <el-form :model="newFloorForm" ref="newFloorForm" label-width="80px">
                                 <el-form-item label="评论内容">
@@ -89,20 +92,35 @@
                         </el-dialog>
                     </div>
 
-                    <div class="post_floors">
-                        <div class="post_floor" v-for="(floor, index) in floors" :key="index">
-                            <div class="post_floor-header">(用户id){{ floor.userid }} 发表于 {{ floor.createTime }}</div>
-                            <div class="post_floor-body">{{ floor.content }}</div>
+                    <div class="post_floors" style="width: 100%;">
+                        <div v-for="floor in floors" :key="floor.id" style="padding-top: 5px;">
+                            <el-card style="min-height: auto;">
+                                <div class="post_floor-header">
+                                    <div>
+                                        (用户名字){{ floor.userName }} 、(用户id){{ floor.userId }} 、发表于 {{
+                                            getTimeSubstring(floor.createTime) }}
+                                    </div>
+                                    <div class="floor-number">
+                                        {{ floor.layers }}楼
+                                    </div>
+                                </div>
+                                <div class="post_floor-body" style="">{{ floor.content }}</div>
+                                <el-tooltip content="删除楼层" placement="bottom">
+                                    <el-button v-if="floor.is_auth" type="danger" plain @click="showDeleteFloor(floor.id)">
+                                        <DeleteOutlined />
+                                    </el-button>
+                                </el-tooltip>
+                                <el-tooltip content="举报楼层" placement="bottom">
+                                    <el-button type="danger" plain @click="showReportReplyPrompt(0, floor.id)">
+                                        <QuestionCircleOutlined />
+                                    </el-button>
+                                </el-tooltip>
+                                <el-button @click="loadAllComments(floor.id)">查看全部评论</el-button>
+                                <div v-if="floor.comment_cases">第一条comment ：{{ floor.comment_cases.content }}</div>
+                            </el-card>
+                        </div>
 
-                            <el-button v-if="floor.is_auth" type="danger"
-                                @click="showDeleteFloor(floor.id)">删除floor</el-button>
-                            <el-button type="danger" @click="showReportReplyPrompt(0, floor.id)">举报floor</el-button>
-                            <div v-if="floor.comment_cases">第一条comment ：{{ floor.comment_cases.content }}</div>
-                            <div class="post_floor-footer">
-                                <el-button class="post_floor-reply-btn"
-                                    @click="loadAllComments(floor.id)">查看全部评论</el-button>
-                            </div>
-
+                        <div>
                             <el-dialog v-model="commentsDialogVisible" title="全部评论" width="50%">
                                 <div class="post_floor-comments" v-for="comment in comments" :key="comment.id">
                                     <el-button v-if="comment.is_auth" type="danger"
@@ -122,6 +140,7 @@
                                 </div>
                             </el-dialog>
                         </div>
+
                         <el-pagination v-if="totalFloors > 0" @current-change="handlePageChange" v-model="currentPage"
                             :page-size="limit" :total="totalFloors">
                         </el-pagination>
@@ -201,8 +220,8 @@ export default {
                 if (res.data.code == 200) {
                     floors.value = res.data.data.retFloors;
                     totalFloors.value = res.data.data.length;
-                    //console.log("floors")
-                    //console.log(res.data.data.retFloors)
+                    console.log("floors")
+                    console.log(res.data.data.retFloors)
                 } else {
                     floors.value = []
                     totalFloors.value = 0;
@@ -319,11 +338,11 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
-                //console.log(res.data)
+                console.log(res.data)
                 if (res.data.code == 200) {
                     that.comments = res.data.data.retComments
                     //console.log("getComments")
-                    //console.log(res.data.data.retComments)
+                    console.log(res.data.data.retComments)
                 } else {
                     that.comments = []
                 }
@@ -645,7 +664,6 @@ export default {
 
     computed: {
         tags() {
-            console.log(this.post.pinNameStr)
             if (this.post.pinNameStr) {
                 return this.post.pinNameStr.split(";");
             } else {
@@ -693,12 +711,11 @@ export default {
     width: 15%;
 }
 
-
 .center {
     width: 70%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
 }
 
@@ -715,8 +732,6 @@ export default {
     justify-content: space-between;
 
 }
-
-
 
 .post_title {
     font-size: 24px;
@@ -740,9 +755,7 @@ export default {
 .post_footer {
     display: flex;
     justify-content: space-between;
-    width: 100%;
     margin-bottom: 20px;
-    height: 100px;
     align-items: center;
 }
 
@@ -750,26 +763,18 @@ export default {
     margin-left: auto;
 }
 
-.post_floors {
-    width: 100%;
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.post_floor {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
-}
-
 .post_floor-header {
     color: #999;
     margin-bottom: 10px;
+    font-size: 18px;
+
+    display: flex;
+    justify-content: space-between;
 }
 
 .post_floor-body {
     margin-bottom: 10px;
+    font-size: 20px;
 }
 
 .post_floor-footer {
