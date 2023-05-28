@@ -89,7 +89,7 @@ export default {
     <div  v-if="count > 0">
     <el-scrollbar height="400px">
         <p v-for="i in count" :key="i" class="scrollbar-demo-item">
-            <el-card>
+            <el-card shadow="hover">
                 <template #header>
                     <div class="card-header">
                         <span>{{ pins[i-1].name }}</span>

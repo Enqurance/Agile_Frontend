@@ -147,9 +147,16 @@ export default {
 </script>
 
 <template>
-    <div>
-        <el-menu class="el-menu-demo" mode="horizontal" :ellipsis="false" background-color=#87CEEB
-            text-color="white" active-color=#2E8B57 active-text-color="white">
+        <el-menu
+                :default-active="activeIndex"
+                class="el-menu-demo"
+                mode="horizontal"
+                :ellipsis="false"
+                background-color=#545454
+                text-color="white"
+                active-color=#2E8B57
+                active-text-color="white"
+        >
             <el-menu-item v-on:click="clickToMap()" index="1">
                 BUAAMapForum
             </el-menu-item>

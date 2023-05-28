@@ -38,30 +38,33 @@
                 <el-radio :label="7">生活服务</el-radio>
               </el-radio-group>
             </div>
-
-            <div v-for="post in posts" :key="post.id" style="padding-top: 5px;">
+            <div v-for="post in posts" :key="post.id" style="padding-top: 20px;">
               <!-- <router-link :to="`/Forum/${post.id}`" class="custom-link" @click="tokenCheck"> -->
               <router-link :to="`/Forum/${post.id}`" class="custom-link">
                 <el-card style="min-height: auto;">
-                  <div class="card_header">
-                    <div class="title">
-                      <h2 style="padding-bottom: 15px;">{{ post.title }}</h2>
-                      <div style="display:flex;align-items: center;">
-                        <el-tag class="tag">{{ _get_pin_type(post.tag) }}</el-tag>
-                        <p style="padding-left: 10px;">{{ getTimeSubstring(post.createTime) }}</p>
-                      </div>
+                <template #header>
+                    <div class="card-header">
+                        <span>{{ post.title }}</span>
+                        <div>
+                            <span style="padding-right: 20px">{{ getTimeSubstring(post.createTime) }}</span>
+                            <el-tag class="tag" size="large">{{ _get_pin_type(post.tag) }}</el-tag>
+                        </div>
                     </div>
-                    <div style="width: 100px;">
-                      <el-descriptions title="   " :column="1" style="width: 100px;">
-                        <el-descriptions-item label="点赞数">{{ post.thumbsUp }}</el-descriptions-item>
-                        <el-descriptions-item label="访问量">{{ post.visit }}</el-descriptions-item>
-                        <el-descriptions-item label="楼层数">{{ post.floorNum }}</el-descriptions-item>
-                      </el-descriptions>
-                    </div>
-                  </div>
-                  <div>
-                    <p>{{ post.content }}</p>
-                  </div>
+                </template>
+                    <el-col span="24">
+                    <el-row>
+                        <div>
+                            <p>{{ post.content }}</p>
+                        </div>
+                    </el-row>
+                    <el-row>
+                        <el-descriptions :column="3">
+                            <el-descriptions-item min-width="100px" label="点赞数">{{ post.thumbsUp }}</el-descriptions-item>
+                            <el-descriptions-item min-width="100px" label="访问量">{{ post.visit }}</el-descriptions-item>
+                            <el-descriptions-item min-width="100px" label="楼层数">{{ post.floorNum }}</el-descriptions-item>
+                        </el-descriptions>
+                    </el-row>
+                    </el-col>
                 </el-card>
               </router-link>
             </div>
@@ -253,10 +256,10 @@ export default {
 </script>
 
 <style scoped>
-.card_header {
+.card-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .title {
