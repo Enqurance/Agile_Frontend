@@ -41,7 +41,7 @@
                             <div style="padding: 0 10px 20px 20px;overflow: hidden;">
                                 <el-text tag="b" size="large">关联钉子: </el-text>
                                 <el-text size="large" >
-                                    {{ post.pin_id_str }}
+                                    {{ post.pin_name_str }}
                                 </el-text>
                             </div>
 
@@ -126,7 +126,7 @@
                             <div style="padding: 0 10px 20px 20px;overflow: hidden;">
                                 <el-text tag="b" size="large">关联钉子: </el-text>
                                 <el-text size="large" >
-                                    {{ post.pin_id_str }}
+                                    {{ post.pin_name_str }}
                                 </el-text>
                             </div>
 

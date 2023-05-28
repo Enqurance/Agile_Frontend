@@ -134,7 +134,7 @@ export default {
             this.getIcon();
         },
 
-        LogOut() {
+        logOut() {
             this.$cookies.remove('user_token');
             this.$router.push({
                 path: '/',
@@ -147,12 +147,7 @@ export default {
 </script>
 
 <template>
-        <el-menu
-                :default-active="activeIndex"
-                class="el-menu-demo"
-                mode="horizontal"
-                :ellipsis="false"
-        >
+        <el-menu class="el-menu-demo" mode="horizontal" :ellipsis="false">
             <el-menu-item v-on:click="clickToMap()" index="1">
                 BUAAMapForum
             </el-menu-item>
@@ -181,7 +176,7 @@ export default {
                             {{ this.user.name }}
                         </span>
                     </template>
-                    <el-menu-item index="2-1" v-on:click="LogOut()">
+                    <el-menu-item index="2-1" v-on:click="logOut">
                         账号登出
                     </el-menu-item>
                 </el-sub-menu>

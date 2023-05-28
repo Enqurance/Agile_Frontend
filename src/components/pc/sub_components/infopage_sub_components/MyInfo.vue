@@ -1,5 +1,5 @@
 <template>
-    <el-row span="6" gutter="20">
+    <el-row span="6" :gutter="20">
         <el-col 
             :xs="{ span: 5 }"
             :sm="{ span: 4 }"
@@ -32,18 +32,17 @@
                     :title="user.name"
                     direction="vertical"
                     :column="4"
-                    :size="size"
                     border>
                     <el-descriptions-item label="校区">
-                        <span style="font-size: 14px;">{{ user.campus == '1' ? '学院路校区' : '沙河校区' }}</span>
+                        <span style="font-size: 14px;">{{ user.campus === '1' ? '学院路校区' : '沙河校区' }}</span>
                     </el-descriptions-item>
                     <el-descriptions-item label="年级">
-                        <span style="font-size: 14px;">{{ user.grade == '1' ? '本科' : user.grade == '2' ? '硕士' :
+                        <span style="font-size: 14px;">{{ user.grade === '1' ? '本科' : user.grade === '2' ? '硕士' :
                                         '博士' }}</span>
                     </el-descriptions-item>
                     <el-descriptions-item label="性别">
-                        <span v-if="user.gender == 0" style="font-size: 14px;">男</span>
-                        <span v-if="user.gender == 1" style="font-size: 14px;">女</span>
+                        <span v-if="user.gender === 0" style="font-size: 14px;">男</span>
+                        <span v-if="user.gender === 1" style="font-size: 14px;">女</span>
                     </el-descriptions-item>
                     <el-descriptions-item label="简介">
                         <span style="font-size: 14px;">{{ user.description }}</span>
@@ -56,7 +55,7 @@
             :sm="{ span: 10 }"
             :md="{ span: 13 }">
             <div class="right-aligned-content">
-                <el-row :justify="end">
+                <el-row>
                     <el-button type="primary" :icon="Edit" @click="editVisible = true">编辑</el-button>
                     <el-button type="primary" :icon="Edit" @click="changePasswordVisible = true">设置</el-button>
                 </el-row>
@@ -284,7 +283,7 @@ export default {
                     headers: {
                         'token': that.$cookies.get('user_token')
                     },
-                }).then((res) => {
+                }).then(() => {
                     // console.log(res);
                 }).catch((res) => console.log(res))
 
@@ -366,7 +365,7 @@ export default {
                     headers: {
                         'token': that.$cookies.get('user_token')
                     },
-                }).then((res) => {
+                }).then(() => {
                     // console.log(res);
                 }).catch((res) => console.log(res))
             this.suggestions = '';
@@ -393,7 +392,7 @@ export default {
             let that = this;
             // console.log("before axio!");
 
-            var option = ({
+            let option = ({
                 url: 'photo/uploadUserIcon',
                 method: 'post',
                 data: formData,

@@ -218,7 +218,7 @@ export default {
                 }
 
             }).then((res) => {
-                console.log(res)
+                // console.log(res)
                 if (res.data.code === 200) {
                     // console.log("get comment success")
                     this.floors = res.data.data
