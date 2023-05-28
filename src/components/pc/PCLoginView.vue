@@ -4,7 +4,7 @@
             <img src="/img/logo.png" alt="logo" style="width: 100%; height: auto;">
         </div>
         <div>
-            <t class="title">BUAAMapForum</t>
+            <p class="title">BUAAMapForum</p>
         </div>
         <div class="form-container" style="width: 50%;">
             <el-form ref="loginForm" :model="loginForm" class="login-form">
