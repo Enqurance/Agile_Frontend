@@ -102,27 +102,32 @@
                                             getTimeSubstring(floor.createTime) }}
                                     </div>
                                     <div class="floor-number">
-                                        {{ floor.layers }}楼
+                                        <span style="margin-right: 10px;">{{ floor.layers }}楼</span>
+                                        <el-tooltip content="删除楼层" placement="bottom">
+                                            <el-button v-if="floor.is_auth" type="danger" plain
+                                                @click="showDeleteFloor(floor.id)">
+                                                <DeleteOutlined />
+                                            </el-button>
+                                        </el-tooltip>
+                                        <el-tooltip content="举报楼层" placement="bottom">
+                                            <el-button type="danger" plain @click="showReportReplyPrompt(0, floor.id)">
+                                                <QuestionCircleOutlined />
+                                            </el-button>
+                                        </el-tooltip>
                                     </div>
                                 </div>
-                                <div class="post_floor-body" style="">{{ floor.content }}</div>
-                                <el-tooltip content="删除楼层" placement="bottom">
-                                    <el-button v-if="floor.is_auth" type="danger" plain @click="showDeleteFloor(floor.id)">
-                                        <DeleteOutlined />
-                                    </el-button>
-                                </el-tooltip>
-                                <el-tooltip content="举报楼层" placement="bottom">
-                                    <el-button type="danger" plain @click="showReportReplyPrompt(0, floor.id)">
-                                        <QuestionCircleOutlined />
-                                    </el-button>
-                                </el-tooltip>
-                                <el-button @click="showComments(floor.id)">查看全部评论</el-button>
-                                <el-dialog v-model="commentsDialogVisible" title="全部评论" width="50%">
+                                <div style="margin-bottom: 10px;font-size: 20px;">{{ floor.content }}</div>
+
+                                <div v-if="!floor.comment_cases" style="display: flex; justify-content: flex-end;margin-right: 20px;">
+                                    <el-button @click="showComments(floor.id)">回复楼层</el-button>
+                                </div>
+
+                                <el-dialog v-model="commentsDialogVisible" title="全部评论" width="50%" :modal="false">
                                     <div v-for="comment in comments" :key="comment.id">
-                                        <el-card style="min-height: auto;">
-                                            <div >
-                                                <p style="font-size: 20px;">(用户名字){{ comment.ruserName }} 、(用户id){{ comment.ruserId }} 、发表于 {{
-                                                    getTimeSubstring(comment.createTime) }} </p>
+                                        <el-card style="min-height: auto;" shadow="never">
+                                            <div>
+                                                <p style="font-size: 20px;">(用户名字){{ comment.ruserName }} 、(用户id){{
+                                                    comment.ruserId }} 、发表于 {{ getTimeSubstring(comment.createTime) }} </p>
                                             </div>
                                             <el-tooltip content="删除评论" placement="bottom">
                                                 <el-button v-if="comment.is_auth" type="danger"
@@ -150,7 +155,12 @@
                                         <el-button type="primary" @click="addComment(floor.id)">提交评论</el-button>
                                     </div>
                                 </el-dialog>
-                                <div v-if="floor.comment_cases">第一条comment ：{{ floor.comment_cases.content }}</div>
+                                <el-card v-if="floor.comment_cases" shadow="never">
+                                    <div style="display:flex;align-items: center;justify-content: space-between;">
+                                        <div>{{ floor.comment_cases.cuserName }} ：{{ floor.comment_cases.content }}</div>
+                                        <el-button @click="showComments(floor.id)">查看全部评论</el-button>
+                                    </div>
+                                </el-card>
                             </el-card>
                         </div>
 
@@ -515,6 +525,7 @@ export default {
                         message: '删除成功',
                     });
                     that.loadAllComments(floorID)
+                    that.loadFloors(ref(0))
                 }
                 else {
                     this.$message({
@@ -786,11 +797,6 @@ export default {
 
     display: flex;
     justify-content: space-between;
-}
-
-.post_floor-body {
-    margin-bottom: 10px;
-    font-size: 20px;
 }
 
 .post_floor-footer {
