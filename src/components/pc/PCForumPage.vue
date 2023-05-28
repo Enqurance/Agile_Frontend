@@ -8,12 +8,8 @@
         <div class="left"></div>
         <div class="center">
           <div class="top">
-                <el-avatar 
-                    :size="70" 
-                    shape="circle" 
-                    :src="this.imageUrl"
-                    style="user-select: none;">
-                </el-avatar>
+            <el-avatar :size="70" shape="circle" :src="this.imageUrl" style="user-select: none;">
+            </el-avatar>
 
             <div class="search-wrapper">
               <el-input v-model="search_context" placeholder="Search" @input="handleSearchInput"></el-input>
@@ -50,14 +46,17 @@
                   <div class="card_header">
                     <div class="title">
                       <h2 style="padding-bottom: 15px;">{{ post.title }}</h2>
-                      <el-tag class="tag">{{ _get_pin_type(post.tag) }}</el-tag>
+                      <div style="display:flex;align-items: center;">
+                        <el-tag class="tag" >{{ _get_pin_type(post.tag) }}</el-tag>
+                        <p style="padding-left: 10px;">留个放userName的位置</p>
+                        <p style="padding-left: 10px;">{{ getTimeSubstring(post.createTime) }}</p>
+                      </div>
                     </div>
-                    <div style="width: 80px;">
-                      <el-descriptions title="   " :column="1" style="width: 80px;">
+                    <div style="width: 100px;">
+                      <el-descriptions title="   " :column="1" style="width: 100px;">
                         <el-descriptions-item label="点赞数">{{ post.thumbsUp }}</el-descriptions-item>
                         <el-descriptions-item label="访问量">{{ post.visit }}</el-descriptions-item>
                         <el-descriptions-item label="楼层数">{{ post.floorNum }}</el-descriptions-item>
-                        <el-descriptions-item>{{ getTimeSubstring(post.createTime) }}</el-descriptions-item>
                       </el-descriptions>
                     </div>
                   </div>
@@ -188,7 +187,7 @@ export default {
       }).then((res) => {
         console.log(res)
         if (res.data.code === 200) {
-          
+
         }
       }).catch((res) => console.log(res))
     },
