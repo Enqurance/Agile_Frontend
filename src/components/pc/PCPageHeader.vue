@@ -191,7 +191,6 @@ export default {
                 </el-menu-item>
             </el-sub-menu>
         </el-menu>
-    </div>
 </template>
 
 <style scoped>
