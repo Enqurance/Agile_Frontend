@@ -841,7 +841,7 @@ export default defineComponent({
                              @click.right="show_dialog_3_2(reply.id, reply.type)">
                             <el-popconfirm title="确定跳转到回复？" :hide-icon=true :hide-after=0 width="200"
                                            confirm-button-text="确定" cancel-button-text="取消"
-                                           @confirm="browseReply(reply.id, reply.layer)">
+                                           @confirm="browseReply(reply.post_id, reply.layer)">
                                 <template #reference>
                                     <h3 class="link_hover"
                                         style="padding: 0 20px;margin-bottom: 5px; height:28px;overflow: hidden; width: 300px">
