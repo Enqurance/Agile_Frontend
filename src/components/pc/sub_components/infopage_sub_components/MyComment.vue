@@ -16,7 +16,7 @@
                             <template #reference>
                                 <h3 class="link_hover"
                                     style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
-                                    @click="browseFloor(floor.id)">
+                                    @click="browseFloor(floor.post_id)">
                                     帖子名称: {{ floor.title }}
                                 </h3>
                             </template>
@@ -78,7 +78,7 @@
                             <template #reference>
                                 <h3 class="link_hover"
                                     style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
-                                    @click="browseFloor(comment.id)">
+                                    @click="browseFloor(comment.post_id)">
                                     帖子名称: {{ comment.title }}
                                 </h3>
                             </template>
