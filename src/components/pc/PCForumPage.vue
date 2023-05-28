@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header style="padding-left: 0;padding-right: 0">
-        <PageHeader/>
+      <PageHeader />
     </el-header>
     <el-main>
       <div class="main">
@@ -11,12 +11,15 @@
             <el-avatar :size="70" shape="circle" :src="this.imageUrl" style="user-select: none;">
             </el-avatar>
 
-            <div class="search-wrapper">
-              <el-input v-model="search_context" placeholder="Search" @input="handleSearchInput"></el-input>
-              <div v-show="showDropdown" class="dropdown">
+            <div style="position: relative;">
+              <el-input v-model="search_context" placeholder="Search" @input="handleSearchInput"
+                @keyup.enter="handleSearchInput" style="width: 250px;"></el-input>
+              <div v-show="showDropdown"
+                style="position: relative; top: {{ $refs.input.$el.offsetHeight }}px; left: 0; width: 100%">
                 <div class="scrollable">
-                  <div v-for="item in searchResults" :key="item.post_id" @click="handleSelect(item.post_id)">
-                    {{ item.post_title }}
+                  <div v-for="item in searchResults" :key="item.post_id" @click="handleSelect(item.post_id)"
+                    style="width: 250px;margin-top: 10px;margin-bottom: 10px;">
+                    <span style="font-size: 18px;word-wrap:break-word;padding-left: 10px;">{{ item.post_title }}</span>
                   </div>
                 </div>
               </div>
@@ -98,7 +101,7 @@ export default {
     return {
       search_context: '',
       searchResults: [],
-      showDropdown: true
+      showDropdown: false
     };
   },
 
@@ -171,7 +174,12 @@ export default {
   },
 
   methods: {
-
+    handleDocumentClick(event) {
+      const scrollableEl = this.$el.querySelector('.scrollable'); // 获取<div class="scrollable">的DOM元素
+      if (!scrollableEl.contains(event.target)) {
+        this.showDropdown = false;
+      }
+    },
 
     _get_pin_type(pin_type_id) {
       return global.get_pin_type(pin_type_id)
@@ -188,11 +196,16 @@ export default {
           'token': that.$cookies.get('user_token')
         }
       }).then((res) => {
+        //console.log(res)
         if (res.data.code === 200) {
-          that.searchResults = res.data.data
-          //console.log(res.data.data)
+          that.searchResults = res.data.data.slice(0, 5)
+          that.showDropdown = true
+          if (that.search_context === "") {
+            that.showDropdown = false
+          }
         }
         else {
+          that.showDropdown = false
           that.$message({
             message: res.data.message,
             type: 'error'
@@ -202,15 +215,6 @@ export default {
 
     },
     handleSelect(id) {
-      // if (!this.$cookies.get('user_token')) {
-      //   this.$message({
-      //     message: '请先登录!',
-      //     type: "warning"
-      //   })
-      //   this.$router.push({ path: '/login' })
-      // } else {
-      //   this.$router.push(`/Forum/${id}`);
-      // }
       this.$router.push(`/Forum/${id}`);
     },
 
@@ -251,6 +255,13 @@ export default {
 
   mounted() {
     this.initForum();
+  },
+
+  mounted() {
+    document.addEventListener('click', this.handleDocumentClick);
+  },
+  beforeUnmount() {
+    document.removeEventListener('click', this.handleDocumentClick);
   },
 }
 </script>
@@ -293,11 +304,9 @@ export default {
 
 .top {
   display: flex;
-  justify-content: space-between;
   width: 100%;
   margin-bottom: 20px;
   height: 100px;
-  align-items: center;
 }
 
 .bottom {
@@ -315,29 +324,12 @@ export default {
   text-decoration: none;
 }
 
-.search-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.dropdown {
-  position: relative;
-  width: 100%;
-}
-
 .scrollable {
-  max-height: 150px;
+  max-height: 300px;
   overflow-y: auto;
   border: 1px solid #ccc;
-}
-
-.dropdown>div {
-  padding: 8px;
-  cursor: pointer;
-}
-
-.dropdown>div:hover {
-  background-color: #f5f5f5;
+  position: absolute;
+  z-index: 9999;
+  background-color: #fff
 }
 </style>
