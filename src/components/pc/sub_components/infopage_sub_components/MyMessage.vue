@@ -3,50 +3,55 @@
         <div class="sub_div" v-if="subMenu === 1">
             <div style="overflow: auto;">
                 <el-empty v-if="revs.length === 0" class="empty_div" description="暂时还没有消息"/>
-                <div v-else class="post_div" v-for="rev in revs" :key="rev.id">
-                    <el-icon style="float: right">
-                        <circle-close @click="rev.deleteDialog=true">
-
-                        </circle-close>
-                    </el-icon>
-                    <div v-if="rev.read===false" style="float: right;padding-top: 50px">
-                        <el-icon>
-                            <Warning/>
+                <div v-else class="post_div" v-for="rev in revs" :key="rev.id" @click="readMsg(rev)">
+                    <div>
+                        <el-icon style="float: right">
+                            <circle-close @click="rev.deleteDialog=true" />
                         </el-icon>
+
+                        <div v-if="rev.read===false" style="float: right;padding-top: 50px">
+                            <el-icon>
+                                <Warning/>
+                            </el-icon>
+                        </div>
+
+                        <el-popover placement="top-start" :width="170" :hide-after="0" trigger="hover">
+                            <template #reference>
+                                <h3 class="link_hover" style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
+                                    @click="clickMsg(rev)">
+                                    {{ rev.title }}
+                                </h3>
+                            </template>
+                            <div style="text-align: center">
+                                <el-text tag="b" type="info">点击跳转至相关界面</el-text>
+                            </div>
+                        </el-popover>
+
+                        <p style="padding: 0 20px;font-size:16px;height:20px;width:70%;overflow: hidden;display: inline-block">
+                            {{ rev.time }}
+                        </p>
+                        <el-button v-if="rev.content" style="float: right;" @click="readDetail(rev)">查看详情</el-button>
                     </div>
-                    <el-dialog v-model="rev.deleteDialog" title="删除消息" width="30%" center>
-            <span style="text-align: center">
-              你确定要删除这个消息吗？
-            </span>
+
+                    <el-dialog v-model="rev.detail" title="消息详情" width="30%" center>
+                        <span style="text-align: center">{{ rev.content }}</span>
+
                         <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="rev.deleteDialog = false">取消</el-button>
-              <el-button type="primary" @click="deleteMessage(rev)">
-                确认
-              </el-button>
-            </span>
+                            <div class="dialog-footer">
+                                <el-button @click="rev.detail = false">关闭</el-button>
+                            </div>
                         </template>
                     </el-dialog>
 
-                    <h3 style="padding: 0 20px;font-size:18px;height:50px;width:80%;overflow: hidden;"
-                        @click="clickMsg(rev)">
-                        {{ rev.title }}
-                    </h3>
-                    <p style="padding: 0 20px;font-size:16px;height:20px;width:70%;overflow: hidden;display: inline-block">
-                        {{ rev.time }}
-                    </p>
-                    <el-button v-if="rev.content" style="float: right;" @click="readDetail(rev)">
-                        查看详情
-                    </el-button>
-                    <el-dialog v-model="rev.detail" title="消息详情" width="30%" center>
-            <span style="text-align: center">
-              {{ rev.content }}
-            </span>
-
+                    <el-dialog v-model="rev.deleteDialog" title="删除消息" width="30%" center>
+                        <span style="text-align: center">你确定要删除这个消息吗？</span>
                         <template #footer>
-              <span class="dialog-footer">
-                <el-button @click="rev.detail = false">关闭</el-button>
-              </span>
+                            <div class="dialog-footer">
+                                <el-button @click="rev.deleteDialog = false">取消</el-button>
+                                <el-button type="primary" @click="deleteMessage(rev)">
+                                    确认
+                                </el-button>
+                            </div>
                         </template>
                     </el-dialog>
                 </div>
@@ -132,7 +137,6 @@ export default {
     },
     methods: {
         clickMsg(msg) {
-            this.readMsg(msg);
             if (msg.examine_id !== null && msg.examine_id !== 0) {
                 this.$router.push('/Administrator');
             }
@@ -213,7 +217,7 @@ export default {
                 }
 
             }).then((res) => {
-                // console.log(res)
+                console.log(res)
                 if (res.data.code === 200) {
                     // console.log("get rev success")
                     this.revs = res.data.data
@@ -258,16 +262,6 @@ export default {
 
 <style scoped>
 
-.infinite-list .infinite-list-item {
-    display: inline-block;
-    align-items: center;
-    justify-content: center;
-    height: 50px;
-    background: var(--el-color-primary-light-9);
-    margin: 30px;
-    color: var(--el-color-primary);
-}
-
 .empty_div {
     margin-top: 10%;
 }
@@ -279,6 +273,10 @@ export default {
     border: 2px solid rgb(246, 246, 246);
     width: 98%;
     height: 150px
+}
+
+.link_hover {
+    cursor: pointer;
 }
 
 </style>

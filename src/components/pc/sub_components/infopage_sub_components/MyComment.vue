@@ -12,7 +12,7 @@
                             删除
                         </el-button>
 
-                        <el-popover placement="top-start" :hide-after="0" trigger="hover" content="点击跳转至帖子">
+                        <el-popover placement="top-start" :hide-after="0" trigger="hover">
                             <template #reference>
                                 <h3 class="link_hover"
                                     style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
@@ -20,6 +20,9 @@
                                     帖子名称: {{ floor.title }}
                                 </h3>
                             </template>
+                            <div style="text-align: center">
+                                <el-text tag="b" type="info">点击跳转至帖子</el-text>
+                            </div>
                         </el-popover>
 
                         <div style="padding-left: 20px">
@@ -74,7 +77,7 @@
                             删除
                         </el-button>
 
-                        <el-popover placement="top-start" :hide-after="0" trigger="hover" content="点击跳转至帖子">
+                        <el-popover placement="top-start" :hide-after="0" trigger="hover">
                             <template #reference>
                                 <h3 class="link_hover"
                                     style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
@@ -82,6 +85,9 @@
                                     帖子名称: {{ comment.title }}
                                 </h3>
                             </template>
+                            <div style="text-align: center">
+                                <el-text tag="b" type="info">点击跳转至帖子</el-text>
+                            </div>
                         </el-popover>
 
                         <div style="padding-left: 20px">
