@@ -63,8 +63,8 @@
             </div>
         </el-col>
     </el-row>
-    <el-row>
-        <el-card>
+    <el-row class="pinRow">
+        <el-card class="pinCard">
             <template #header>
                 <div class="card-header">
                     <span>我的钉子</span>
@@ -443,5 +443,11 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+.pinRow{
+    width: 100%;
+}
+.pinCard{
+    width: 100%;
 }
 </style>
