@@ -252,6 +252,7 @@ export default {
                 type: 'info',
                 message: '操作成功',
               });
+              this.queryAllRev()
             }
             else {
               this.$message({
@@ -260,7 +261,7 @@ export default {
               })
             }
           }).catch((res) => console.log(res))
-          this.queryAllRev()
+
         },
         delAllRev(){
           let that = this
@@ -301,6 +302,7 @@ export default {
                 type: 'info',
                 message: '操作成功',
               });
+              this.queryAllSnd();
             }
             else {
               this.$message({
@@ -309,7 +311,7 @@ export default {
               })
             }
           }).catch((res) => console.log(res))
-          this.queryAllSnd();
+
         },
         delAllSnd(){
           let that = this
