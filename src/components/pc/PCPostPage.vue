@@ -106,7 +106,7 @@
                                     <div style="float: left; margin-right: 10px">
                                         <el-button @click="addLike" circle>
                                             <HeartTwoTone v-if="post.has_thumb" style="color: red" twoToneColor="red"/>
-                                            <HeartOutlined v-else style="color: black" />
+                                            <HeartOutlined v-else style="color: black"/>
                                         </el-button>
                                     </div>
                                 </el-tooltip>
@@ -146,138 +146,8 @@
                         </div>
                     </el-dialog>
 
-                    <div class="post_floors" style="width: 100%;">
-                        <ul v-infinite-scroll="loadLazyFloors">
-                            <li v-for="floor in floors" :key="floor.id" style="padding-top: 5px;">
-                                <el-card style="min-height: auto;">
-                                    <div class="post_floor-header">
-                                        <div>
-                                            <el-popover placement="right" width="220" trigger="hover">
-                                                <p>昵称：{{ userInfo.name }}</p>
-                                                <p>邮箱：{{ userInfo.email }}</p>
-                                                <p>个人描述：{{ userInfo.description }}</p>
-                                                <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
-                                                <p>校区：{{ getCampus(userInfo.campus) }}</p>
-                                                <p>性别：{{ getGender(userInfo.gender) }}</p>
-                                                <template v-slot:reference>
-                                                    <el-link :underline="false" type="primary" style="font-size:18px;"
-                                                             @mouseenter="showPopover(floor.userId)">
-                                                        {{ floor.userName }}
-                                                    </el-link>
-                                                </template>
-                                            </el-popover>
-                                            <span>发表于 {{ getTimeSubstring(floor.createTime) }} </span>
-                                        </div>
-                                        <div class="floor-number">
-                                            <span style="margin-right: 10px;">{{ floor.layers }}楼</span>
-                                            <el-tooltip content="删除楼层" placement="bottom">
-                                                <div>
-                                                    <el-button v-if="floor.is_auth" type="danger" plain
-                                                               @click="showDeleteFloor(floor.id)">
-                                                        <DeleteOutlined/>
-                                                    </el-button>
-                                                </div>
-                                            </el-tooltip>
-                                            <el-tooltip content="举报楼层" placement="bottom">
-                                                <div>
-                                                    <el-button type="danger" plain
-                                                               @click="showReportReplyPrompt(0, floor.id)">
-                                                        <QuestionCircleOutlined/>
-                                                    </el-button>
-                                                </div>
-                                            </el-tooltip>
-                                        </div>
-                                    </div>
-                                    <div style="margin-bottom: 10px;font-size: 20px;">{{ floor.content }}</div>
-
-                                    <div v-if="!floor.comment_cases"
-                                         style="display: flex; justify-content: flex-end;margin-right: 20px;">
-                                        <el-button @click="showComments(floor.id)">回复楼层</el-button>
-                                    </div>
-
-                                    <el-dialog v-model="commentsDialogVisible" title="全部评论" width="50%" :modal="false">
-                                        <div v-for="comment in comments" :key="comment.id">
-                                            <el-card style="min-height: auto;" shadow="never">
-                                                <div>
-                                                    <el-popover placement="right" width="220" trigger="hover">
-                                                        <p>昵称：{{ userInfo.name }}</p>
-                                                        <p>邮箱：{{ userInfo.email }}</p>
-                                                        <p>个人描述：{{ userInfo.description }}</p>
-                                                        <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
-                                                        <p>校区：{{ getCampus(userInfo.campus) }}</p>
-                                                        <p>性别：{{ getGender(userInfo.gender) }}</p>
-                                                        <template v-slot:reference>
-                                                            <el-link :underline="false" type="primary"
-                                                                     style="font-size:18px;"
-                                                                     @mouseenter="showPopover(comment.cuserId)">
-                                                                {{ comment.cuserName }}
-                                                            </el-link>
-                                                        </template>
-                                                    </el-popover>
-
-                                                    <span style="font-size: 18px;">发表于
-                                                    {{ getTimeSubstring(comment.createTime) }} </span>
-                                                </div>
-                                                <el-tooltip content="删除评论" placement="bottom">
-                                                    <div>
-                                                        <el-button v-if="comment.is_auth" type="danger"
-                                                                   @click="showDeleteComment(comment.id, floor.id)" circle
-                                                                   plain>
-                                                            <DeleteOutlined/>
-                                                        </el-button>
-                                                    </div>
-                                                </el-tooltip>
-                                                <el-tooltip content="举报评论" placement="bottom">
-                                                    <div>
-                                                        <el-button type="danger"
-                                                                   @click="showReportReplyPrompt(1, comment.id)"
-                                                                   circle plain>
-                                                            <QuestionCircleOutlined/>
-                                                        </el-button>
-                                                    </div>
-                                                </el-tooltip>
-                                                <div>
-                                                    <p style="font-size: 18px;">{{ comment.content }}</p>
-                                                </div>
-                                            </el-card>
-                                        </div>
-                                        <el-form>
-                                            <el-form-item>
-                                                <el-input v-model="newCommentBody" type="textarea"></el-input>
-                                            </el-form-item>
-                                        </el-form>
-                                        <div>
-                                            <el-button type="primary" @click="addComment(floor.id)">提交评论</el-button>
-                                        </div>
-                                    </el-dialog>
-                                    <el-card v-if="floor.comment_cases" shadow="never">
-                                        <div style="display:flex;align-items: center;justify-content: space-between;">
-                                            <div>
-                                                <el-popover placement="right" width="220" trigger="hover">
-                                                    <p>昵称：{{ userInfo.name }}</p>
-                                                    <p>邮箱：{{ userInfo.email }}</p>
-                                                    <p>个人描述：{{ userInfo.description }}</p>
-                                                    <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
-                                                    <p>校区：{{ getCampus(userInfo.campus) }}</p>
-                                                    <p>性别：{{ getGender(userInfo.gender) }}</p>
-                                                    <template v-slot:reference>
-                                                        <el-link :underline="false" type="primary" style="font-size:18px;"
-                                                                 @mouseenter="showPopover(floor.comment_cases.cuserId)">
-                                                            {{ floor.comment_cases.cuserName }}
-                                                        </el-link>
-                                                    </template>
-                                                </el-popover>
-                                                <span> ：{{ floor.comment_cases.content }}</span>
-                                            </div>
-                                            <el-button @click="showComments(floor.id)">查看全部评论</el-button>
-                                        </div>
-                                    </el-card>
-                                </el-card>
-                            </li>
-                        </ul>
-
-
-                        <div v-for="floor in floors" :key="floor.id" style="padding-top: 5px;">
+                    <div style="width: 100%;">
+                        <div v-for="floor in this.floors" :key="floor.id" style="padding-top: 5px;">
                             <el-card style="min-height: auto;">
                                 <div class="post_floor-header">
                                     <div>
@@ -403,10 +273,6 @@
                                 </el-card>
                             </el-card>
                         </div>
-
-<!--                        <el-pagination v-if="totalFloors > 0" @current-change="handlePageChange" v-model="currentPage"-->
-<!--                                       :page-size="limit" :total="totalFloors">-->
-<!--                        </el-pagination>-->
                     </div>
                 </div>
 
@@ -418,7 +284,7 @@
 
 
 <script>
-import {ref, onMounted, getCurrentInstance} from 'vue'
+import {ref, getCurrentInstance} from 'vue'
 import PageHeader from "@/components/pc/PCPageHeader.vue";
 import global from '@/global'
 import {DeleteOutlined, QuestionCircleOutlined, EditOutlined, HeartOutlined, HeartTwoTone} from '@ant-design/icons-vue';
@@ -452,22 +318,15 @@ export default {
 
             comments: [],
 
-            userInfo: {}
+            userInfo: {},
         };
     },
 
     setup() {
-        const currentPage = ref(1);
-        const totalFloors = ref(0);
-
         const {proxy} = getCurrentInstance();
         const imageUrl = ref('');
-        const floors = ref({
-            value: []
-        });
-        const offset = ref({
-            value: 0
-        });
+        const floors = ref([]);
+        const offset = ref(0);
         const limit = 5;
 
         const id = proxy.$route.params.postID;
@@ -476,69 +335,52 @@ export default {
             proxy.$axios.post('/forum/floor/getFloors', null, {
                 params: {
                     post_id: id,
-                    offset: parseInt(offset.value),
-                    limit: parseInt(limit)
+                    offset: offset.value,
+                    limit: limit
                 },
                 headers: {
                     'token': proxy.$cookies.get('user_token')
                 }
             }).then((res) => {
-                //console.log(res)
+                console.log(res)
                 if (res.data.code === 200) {
                     // 懒加载
-                    floors.value.push(res.data.data.retFloors)
-                    totalFloors.value += res.data.data.length;
-                    console.log(floors)
-                    console.log(totalFloors)
+                    floors.value = floors.value.concat(res.data.data.retFloors)
+                    offset.value += floors.value.length
+                    console.log(floors.value)
                 }
                 else {
                     floors.value = []
-                    totalFloors.value = 0;
                 }
             }).catch((error) => {
                 console.log(error);
             });
         };
 
-        const loadFloors = (offset) => {
-            proxy.$axios.post('/forum/floor/getFloors', null, {
-                params: {
-                    post_id: id,
-                    offset: parseInt(offset.value),
-                    limit: parseInt(limit)
-                },
-                headers: {
-                    'token': proxy.$cookies.get('user_token')
-                }
-            }).then((res) => {
-                //console.log(res)
-                if (res.data.code === 200) {
-                    // 分页
-                    floors.value = res.data.data.retFloors;
-                    totalFloors.value = res.data.data.length;
-                }
-                else {
-                    floors.value = []
-                    totalFloors.value = 0;
-                }
-            }).catch((error) => {
-                console.log(error);
-            });
-        };
+        const debounce = (f, delay) => {
+            let timer = null
+            return () => {
+                clearTimeout(timer)
+                timer = setTimeout(() => {
+                    f.apply(this, arguments)
+                }, delay)
+            }
+        }
 
-        const handlePageChange = (currentPage) => {
-            offset.value = (currentPage - 1) * limit;
-            loadFloors(offset);
-        };
-
-        onMounted(() => {
-            loadFloors(offset);
-        });
-
+        const handleScroll = debounce(() => {
+            {
+                const windowHeight = window.innerHeight
+                const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+                const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
+                const distance = scrollHeight - (windowHeight + scrollTop)
+                if (distance <= 10) {
+                    loadLazyFloors() // 触发加载数据的方法
+                }
+            }
+        }, 1000)
 
         return {
-            imageUrl, floors, currentPage, totalFloors, limit,
-            handlePageChange, loadFloors, loadLazyFloors
+            imageUrl, floors, limit, loadLazyFloors, handleScroll
         };
     },
 
@@ -638,9 +480,7 @@ export default {
             }).then((response) => {
                 //console.log(response)
                 that.newFloorForm.body = ''
-                if (response.data.code === 200) {
-                    that.loadFloors(ref(0))
-                }
+                // todo
             })
             this.newFloorDialogVisible = false
         },
@@ -696,7 +536,7 @@ export default {
                 that.newCommentBody = ''
                 if (response.data.code === 200) {
                     that.loadAllComments(floorID)
-                    that.loadFloors(ref(0))
+                    // todo
                 }
             })
         },
@@ -778,7 +618,7 @@ export default {
                         type: 'info',
                         message: '删除成功',
                     });
-                    that.loadFloors(ref(0))
+                    // todo
                 }
                 else {
                     this.$message({
@@ -822,7 +662,7 @@ export default {
                         message: '删除成功',
                     });
                     that.loadAllComments(floorID)
-                    that.loadFloors(ref(0))
+                    // todo
                 }
                 else {
                     this.$message({
@@ -994,11 +834,14 @@ export default {
 
         getGender(value) {
             return value === 1 ? '女' : value === 0 ? '男' : ''
-        }
+        },
+
     },
 
     mounted() {
         this.initPost();
+        window.addEventListener('scroll', this.handleScroll)
+        this.loadLazyFloors()
     },
 
     computed: {
