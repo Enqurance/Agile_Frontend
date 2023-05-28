@@ -147,16 +147,9 @@ export default {
 </script>
 
 <template>
-        <el-menu
-                :default-active="activeIndex"
-                class="el-menu-demo"
-                mode="horizontal"
-                :ellipsis="false"
-                background-color=#87CEEB
-                text-color="white"
-                active-color=#2E8B57
-                active-text-color="white"
-        >
+    <div>
+        <el-menu class="el-menu-demo" mode="horizontal" :ellipsis="false" background-color=#87CEEB
+            text-color="white" active-color=#2E8B57 active-text-color="white">
             <el-menu-item v-on:click="clickToMap()" index="1">
                 BUAAMapForum
             </el-menu-item>
@@ -166,30 +159,32 @@ export default {
             <el-menu-item v-on:click="clickToForum()" index="3">
                 Forum
             </el-menu-item>
-            <el-menu-item v-if="this.$cookies.get('user_type')===get_user_type_administrator()" v-on:click="clickToAdministrator()" index="4">
+            <el-menu-item v-if="this.$cookies.get('user_type')===get_user_type_administrator()"
+                          v-on:click="clickToAdministrator()" index="4">
                 Administrator
             </el-menu-item>
-            <div class="flex-grow" />
+            <div class="flex-grow"/>
             <el-menu-item v-if="this.$cookies.get('user_token') === null" v-on:click="clickToLogin()" index="5">
                 <template #title>Login</template>
             </el-menu-item>
-                <el-sub-menu v-else index="5" v-on:click="clickToInfor()">
-                    <template #title>
-                        <el-avatar 
-                            :size="40" 
-                            shape="circle" 
-                            :src="this.imageUrl"
-                            style="user-select: none;">
-                        </el-avatar>
-                        <span style="margin-left:10px">
+            <el-sub-menu v-else index="5" v-on:click="clickToInfor()">
+                <template #title>
+                    <el-avatar
+                        :size="40"
+                        shape="circle"
+                        :src="this.imageUrl"
+                        style="user-select: none;">
+                    </el-avatar>
+                    <span style="margin-left:10px">
                             {{ this.user.name }}
                         </span>
-                    </template>
-                    <el-menu-item index="2-1" v-on:click="logOut">
-                        账号登出
-                    </el-menu-item>
-                </el-sub-menu>
+                </template>
+                <el-menu-item index="2-1" v-on:click="logOut">
+                    账号登出
+                </el-menu-item>
+            </el-sub-menu>
         </el-menu>
+    </div>
 </template>
 
 <style scoped>

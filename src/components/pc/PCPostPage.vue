@@ -296,7 +296,7 @@ export default {
                 }
             }).then((res) => {
                 //console.log(res)
-                if (res.data.code == 200) {
+                if (res.data.code === 200) {
                     floors.value = res.data.data.retFloors;
                     totalFloors.value = res.data.data.length;
                 } else {
@@ -410,7 +410,7 @@ export default {
             }).then((response) => {
                 //console.log(response)
                 that.newFloorForm.body = ''
-                if (response.data.code == 200) {
+                if (response.data.code === 200) {
                     that.loadFloors(ref(0))
                 }
             })
@@ -435,7 +435,7 @@ export default {
                 }
             }).then((res) => {
                 console.log(res.data)
-                if (res.data.code == 200) {
+                if (res.data.code === 200) {
                     that.comments = res.data.data.retComments
                     //console.log("getComments")
                 } else {
@@ -631,7 +631,7 @@ export default {
                 }
             }).then((res) => {
                 //console.log(res)
-                if (res.data.code == 200) {
+                if (res.data.code === 200) {
                     that.getPostDetail()
                 }
             })
@@ -722,7 +722,7 @@ export default {
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
-            }).then(response => {
+            }).then(() => {
                 //console.log(response);
             }).catch(error => {
                 console.error(error);
@@ -793,24 +793,11 @@ export default {
     color: #333;
 }
 
-.avatar {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-right: 20px;
-}
-
-.avatar-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
 
 .main {
     display: flex;
     justify-content: space-between;
-    margin: 0, 15%;
+    margin: 0 15%;
 }
 
 .left,
@@ -834,31 +821,6 @@ export default {
     width: 100%;
 }
 
-.card_header {
-    display: flex;
-    justify-content: space-between;
-
-}
-
-.post_title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    flex: 1;
-    text-align: left;
-}
-
-.post_stars,
-.post_tags {
-    color: #999;
-    margin-bottom: 10px;
-    margin-left: 20px;
-}
-
-.post_body {
-    margin-bottom: 20px;
-}
-
 .post_footer {
     display: flex;
     justify-content: space-between;
@@ -866,9 +828,6 @@ export default {
     align-items: center;
 }
 
-.post_reply-btn {
-    margin-left: auto;
-}
 
 .post_floor-header {
     color: #999;
@@ -879,12 +838,4 @@ export default {
     justify-content: space-between;
 }
 
-.post_floor-footer {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.post_floor-reply-btn {
-    margin-left: 10px;
-}
 </style>
