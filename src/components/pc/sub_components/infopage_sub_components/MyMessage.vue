@@ -5,55 +5,39 @@
                 <el-empty v-if="revs.length === 0" class="empty_div" description="暂时还没有消息"/>
                 <div v-else class="post_div" v-for="rev in revs" :key="rev.id" @click="readMsg(rev)">
                     <div>
-                        <el-icon style="float: right">
-                            <circle-close @click="rev.deleteDialog=true" />
-                        </el-icon>
-
-                        <div v-if="rev.read===false" style="float: right;padding-top: 50px">
-                            <el-icon>
+                        <div v-if="rev.read===false" style="float: right; margin-top: -15px">
+                            <el-icon color="blue" :size="20">
                                 <Warning/>
                             </el-icon>
                         </div>
-
-                        <el-popover placement="top-start" :width="170" :hide-after="0" trigger="hover">
+                        <el-popconfirm v-else title="您确定要删除这个消息吗？" confirm-button-text="确定" cancel-button-text="取消"
+                                       confirm-button-type="warning" :hide-after="0" @confirm="deleteMessage(rev)">
                             <template #reference>
-                                <h3 class="link_hover" style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
-                                    @click="clickMsg(rev)">
-                                    {{ rev.title }}
-                                </h3>
+                                <el-icon color="red" :size="20" class="link_hover" style="float: right; margin-top: -15px">
+                                    <circle-close />
+                                </el-icon>
                             </template>
-                            <div style="text-align: center">
-                                <el-text tag="b" type="info">点击跳转至相关界面</el-text>
-                            </div>
-                        </el-popover>
+                        </el-popconfirm>
 
-                        <p style="padding: 0 20px;font-size:16px;height:20px;width:70%;overflow: hidden;display: inline-block">
-                            {{ rev.time }}
-                        </p>
-                        <el-button v-if="rev.content" style="float: right;" @click="readDetail(rev)">查看详情</el-button>
+                        <div style="padding: 0 20px; overflow: hidden; margin: 0.83em 0">
+                            <el-text style="font-size: 1.17em; color: black; font-weight: bolder">
+                                {{ rev.title }}
+                            </el-text>
+                        </div>
+
+                        <div v-if="rev.content" style="padding: 0 10px 20px 20px;overflow: hidden;">
+                            <el-text tag="b" size="large">消息详情:</el-text>
+                            <el-text size="large">
+                                {{ rev.content }}
+                            </el-text>
+                        </div>
+
+                        <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                            <el-text tag="i" size="large">
+                                {{ rev.time }}
+                            </el-text>
+                        </div>
                     </div>
-
-                    <el-dialog v-model="rev.detail" title="消息详情" width="30%" center>
-                        <span style="text-align: center">{{ rev.content }}</span>
-
-                        <template #footer>
-                            <div class="dialog-footer">
-                                <el-button @click="rev.detail = false">关闭</el-button>
-                            </div>
-                        </template>
-                    </el-dialog>
-
-                    <el-dialog v-model="rev.deleteDialog" title="删除消息" width="30%" center>
-                        <span style="text-align: center">你确定要删除这个消息吗？</span>
-                        <template #footer>
-                            <div class="dialog-footer">
-                                <el-button @click="rev.deleteDialog = false">取消</el-button>
-                                <el-button type="primary" @click="deleteMessage(rev)">
-                                    确认
-                                </el-button>
-                            </div>
-                        </template>
-                    </el-dialog>
                 </div>
             </div>
         </div>
@@ -63,52 +47,40 @@
                 <div v-if="snds.length === 0">
                     <el-empty class="empty_div" description="暂时还没有消息"/>
                 </div>
-                <div v-else class="post_div" v-for="snd in snds" :key="snd.id">
-                    <el-icon style="float: right">
-                        <circle-close @click="snd.deleteDialog=true">
-
-                        </circle-close>
-                    </el-icon>
-                    <div v-if="snd.read===false" style="float: right;padding-top: 50px">
-                        <el-icon>
-                            <Opportunity></Opportunity>
+                <div v-else class="post_div" v-for="snd in snds" :key="snd.id" @click="readMsg(snd)" >
+                    <div v-if="snd.read===false" style="float: right; margin-top: -2px">
+                        <el-icon color="blue" :size="20">
+                            <Warning/>
                         </el-icon>
                     </div>
-                    <el-dialog v-model="snd.deleteDialog" title="删除消息" width="30%" center>
-            <span style="text-align: center">
-              你确定要删除这个消息吗？
-            </span>
-                        <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="snd.deleteDialog = false">取消</el-button>
-              <el-button type="primary" @click="deleteMessage(snd)">
-                确认
-              </el-button>
-            </span>
+                    <el-popconfirm v-else title="您确定要删除这个消息吗？" confirm-button-text="确定" cancel-button-text="取消"
+                                   confirm-button-type="warning" :hide-after="0" @confirm="deleteMessage(snd)">
+                        <template #reference>
+                            <el-icon color="red" :size="20" class="link_hover" style="float: right; margin-top: -2px">
+                                <circle-close/>
+                            </el-icon>
                         </template>
-                    </el-dialog>
+                    </el-popconfirm>
 
-                    <h3 style="padding: 0 20px;font-size:18px;height:50px;width:80%;overflow: hidden;"
-                        @click="clickMsg(snd)">
-                        {{ snd.title }}
-                    </h3>
-                    <p style="padding: 0 20px;font-size:16px;height:20px;width:70%;overflow: hidden;display: inline-block">
-                        {{ snd.time }}
-                    </p>
-                    <el-button v-if="snd.content" style="float: right;" @click="readDetail(snd)">
-                        查看详情
-                    </el-button>
-                    <el-dialog v-model="snd.detail" title="消息详情" width="30%" center>
-            <span style="text-align: center">
-              {{ snd.content }}
-            </span>
 
-                        <template #footer>
-              <span class="dialog-footer">
-                <el-button @click="snd.detail = false">关闭</el-button>
-              </span>
-                        </template>
-                    </el-dialog>
+                    <div style="padding: 0 20px;overflow: hidden; margin: 0.83em 0">
+                        <el-text style="font-size: 1.17em; color: black; font-weight: bolder">
+                            {{ snd.title }}
+                        </el-text>
+                    </div>
+
+                    <div v-if="snd.content" style="padding: 0 10px 20px 20px;overflow: hidden;">
+                        <el-text tag="b" size="large">消息详情:</el-text>
+                        <el-text size="large">
+                            {{ snd.content }}
+                        </el-text>
+                    </div>
+
+                    <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                        <el-text tag="i" size="large">
+                            {{ snd.time }}
+                        </el-text>
+                    </div>
                 </div>
             </div>
 
@@ -121,11 +93,11 @@
 
 <script>
 
-import {CircleClose, Opportunity, Warning} from "@element-plus/icons-vue";
+import {CircleClose, Warning} from "@element-plus/icons-vue";
 
 export default {
     name: "MyMessage",
-    components: {Opportunity, CircleClose, Warning},
+    components: {CircleClose, Warning},
     props: {
         subMenu: Number
     },
@@ -136,25 +108,6 @@ export default {
         }
     },
     methods: {
-        clickMsg(msg) {
-            if (msg.examine_id !== null && msg.examine_id !== 0) {
-                this.$router.push('/Administrator');
-            }
-            else if (msg.post_id !== null && msg.post_id !== 0) {
-                if (msg.floor_id !== null && msg.floor_id !== 0) {
-                    this.$router.push({path: '/Forum/' + msg.post_id});
-                }
-                else {
-                    this.$router.push({path: '/Forum/' + msg.post_id});
-                }
-            }
-            // else {
-            //   if (msg.content === null) {
-            //     // msg.content = msg.title;
-            //   }
-            //   msg.detail = true;
-            // }
-        },
         readDetail(msg) {
             // console.log(msg);
             msg.detail = true;
@@ -185,7 +138,6 @@ export default {
         },
         deleteMessage(msg) {
             let that = this
-            msg.deleteDialog = false;
             // console.log(msg);
             that.$axios.delete('/InfoPage/MyMessage/deleteMessage/' + msg.id, {
                 headers: {
@@ -238,7 +190,7 @@ export default {
                 }
 
             }).then((res) => {
-                // console.log(res)
+                console.log(res)
                 if (res.data.code === 200) {
                     // console.log("get snd success")
                     this.snds = res.data.data
@@ -272,7 +224,6 @@ export default {
     background: white;
     border: 2px solid rgb(246, 246, 246);
     width: 98%;
-    height: 150px
 }
 
 .link_hover {

@@ -25,7 +25,7 @@
                             </div>
                         </el-popover>
 
-                        <div style="padding-left: 20px">
+                        <div style="padding-left: 20px; margin-right: 15%">
                             <div style="padding: 0 10px 20px 20px;overflow: hidden;">
                                 <el-text tag="b" size="large">评论内容:</el-text>
                                 <el-text tag="i" size="large">
@@ -90,7 +90,7 @@
                             </div>
                         </el-popover>
 
-                        <div style="padding-left: 20px">
+                        <div style="padding-left: 20px; margin-right: 15%">
                             <div style="padding: 0 10px 20px 20px;overflow: hidden;">
                                 <el-text tag="b" size="large">评论内容:</el-text>
                                 <el-text tag="i" size="large">
@@ -114,6 +114,7 @@
 
                         </div>
                     </div>
+
                     <el-dialog v-model="comment.deleteDialog" width="30%" center>
                         <div style="; text-align: center">
                             <el-text tag="b" style="color: black; font-size: 15px">你确定要删除这个评论吗？</el-text>
