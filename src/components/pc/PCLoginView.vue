@@ -113,7 +113,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .login-container {
     display: flex;
     flex-direction: column;

@@ -79,7 +79,8 @@
                     <div class="post_footer">
                         <el-avatar :size="70" shape="circle" :src="this.imageUrl" style="user-select: none;">
                         </el-avatar>
-                        <el-button type="info" plain @click="newFloorDialogVisible = true">回复帖子</el-button>
+                        <el-button type="info" plain @click="newFloorDialogVisible = true"
+                            style="margin-left: 10px;">回复帖子</el-button>
                         <el-dialog v-model="newFloorDialogVisible">
                             <el-form :model="newFloorForm" ref="newFloorForm" label-width="80px">
                                 <el-form-item label="评论内容">
@@ -115,30 +116,42 @@
                                         <QuestionCircleOutlined />
                                     </el-button>
                                 </el-tooltip>
-                                <el-button @click="loadAllComments(floor.id)">查看全部评论</el-button>
+                                <el-button @click="showComments(floor.id)">查看全部评论</el-button>
+                                <el-dialog v-model="commentsDialogVisible" title="全部评论" width="50%">
+                                    <div v-for="comment in comments" :key="comment.id">
+                                        <el-card style="min-height: auto;">
+                                            <div >
+                                                <p style="font-size: 20px;">(用户名字){{ comment.ruserName }} 、(用户id){{ comment.ruserId }} 、发表于 {{
+                                                    getTimeSubstring(comment.createTime) }} </p>
+                                            </div>
+                                            <el-tooltip content="删除评论" placement="bottom">
+                                                <el-button v-if="comment.is_auth" type="danger"
+                                                    @click="showDeleteComment(comment.id, floor.id)" circle plain>
+                                                    <DeleteOutlined />
+                                                </el-button>
+                                            </el-tooltip>
+                                            <el-tooltip content="举报评论" placement="bottom">
+                                                <el-button type="danger" @click="showReportReplyPrompt(1, comment.id)"
+                                                    circle plain>
+                                                    <QuestionCircleOutlined />
+                                                </el-button>
+                                            </el-tooltip>
+                                            <div>
+                                                <p style="font-size: 18px;">(内容){{ comment.content }}</p>
+                                            </div>
+                                        </el-card>
+                                    </div>
+                                    <el-form>
+                                        <el-form-item>
+                                            <el-input v-model="newCommentBody" type="textarea"></el-input>
+                                        </el-form-item>
+                                    </el-form>
+                                    <div>
+                                        <el-button type="primary" @click="addComment(floor.id)">提交评论</el-button>
+                                    </div>
+                                </el-dialog>
                                 <div v-if="floor.comment_cases">第一条comment ：{{ floor.comment_cases.content }}</div>
                             </el-card>
-                        </div>
-
-                        <div>
-                            <el-dialog v-model="commentsDialogVisible" title="全部评论" width="50%">
-                                <div class="post_floor-comments" v-for="comment in comments" :key="comment.id">
-                                    <el-button v-if="comment.is_auth" type="danger"
-                                        @click="showDeleteComment(comment.id, floor.id)">删除comment</el-button>
-                                    <el-button type="danger"
-                                        @click="showReportReplyPrompt(1, comment.id)">举报comment</el-button>
-                                    <div class="post_floor-comment-header">作者 评论于 {{ comment.createTime }}</div>
-                                    <div class="post_floor-comment-body">内容：{{ comment.content }}</div>
-                                </div>
-                                <el-form>
-                                    <el-form-item>
-                                        <el-input v-model="newCommentBody" type="textarea"></el-input>
-                                    </el-form-item>
-                                </el-form>
-                                <div>
-                                    <el-button type="primary" @click="addComment(floor.id)">提交评论</el-button>
-                                </div>
-                            </el-dialog>
                         </div>
 
                         <el-pagination v-if="totalFloors > 0" @current-change="handlePageChange" v-model="currentPage"
@@ -325,6 +338,10 @@ export default {
             this.newFloorDialogVisible = false
         },
 
+        showComments(floorID) {
+            this.loadAllComments(floorID)
+            this.commentsDialogVisible = true
+        },
 
         loadAllComments(floorID) {
             let that = this
@@ -346,7 +363,6 @@ export default {
                 } else {
                     that.comments = []
                 }
-                that.commentsDialogVisible = true
             }).catch((error) => {
                 console.log(error);
             });
@@ -674,7 +690,7 @@ export default {
 }
 </script>
     
-<style>
+<style scoped>
 .title {
     align-items: flex-start;
     justify-content: space-between;

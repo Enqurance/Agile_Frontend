@@ -275,7 +275,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .card_header {
   display: flex;
   justify-content: space-between;
