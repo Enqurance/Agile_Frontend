@@ -16,9 +16,12 @@ router.beforeEach((to, from, next) => {
   console.log("token: ", token);
   if ( token === null && (to.path === "/InforPage")) {
     next("/login");
-  } else {
-    next();
   }
+  if ( token !== 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OSwiZXhwIjoxNjg0NDIwMDA4LCJpYXQiOjE2ODQ0MTY0MDh9.1vyPE06rkFosfXzwCJbWmkFJHhZ8w3l1zBMmFY8aMUo' && (to.path === "/Administrator")) {
+    console.log("to Admin!");
+    next("/home");
+  }
+  next();
 });
 
 export default router
