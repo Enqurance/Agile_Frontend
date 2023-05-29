@@ -9,7 +9,7 @@ import MobilePostPage from './mobile/MobilePostPage.vue';
 
 export default {
     name: "PostPage",
-    components: {PCPostPage, MobilePostPage}
+    components: { PCPostPage, MobilePostPage }
 }
 </script>
 

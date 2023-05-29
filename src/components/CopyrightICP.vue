@@ -22,7 +22,7 @@ let record = '京ICP备2023010281号'			// 备案号
     text-decoration: none;
 }
 .icp > a:hover {
-    color: aqua;
+    color: rgb(0, 102, 255);
     text-decoration: none;
 }
 </style>

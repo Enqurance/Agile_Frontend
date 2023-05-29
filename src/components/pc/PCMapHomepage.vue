@@ -21,6 +21,7 @@
         </div>
         <div :style="{width: screen_params.screenX+'px', height: screen_params.screenY+'px'}" class="bottom_div">
             <div id="container" style="width: 100%; height: 100%" @click="close_search=true"></div>
+            <CopyrightICP/>
         </div>
         <MapPinAdd 
             :is_add_pin="is_add_marker" 
@@ -45,6 +46,7 @@ import MapPinAdd from "@/components/pc/sub_components/mappage_sub_components/Map
 import PlaceSearch from "@/components/sub_components/mappage_sub_components/PlaceSearch.vue";
 import PageHeader from "@/components/pc/PCPageHeader.vue";
 import SwitchPos from "@/components/sub_components/mappage_sub_components/SwitchPos.vue"
+import CopyrightICP from "@/components/CopyrightICP.vue";
 import global from "@/global";
 import '../../assets/PinIcon/font2/iconfont.css'
 
@@ -57,6 +59,7 @@ export default {
         PlaceSearch,
         PageHeader,
         SwitchPos,
+        CopyrightICP,
     },
     data() {
         let map = shallowRef(null)
