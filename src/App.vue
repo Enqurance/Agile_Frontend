@@ -1,15 +1,15 @@
 <template>
     <router-view/>
     <MobileNavigator v-if="this.$device==='mobile'"/>  
-    <CopyrightICP/>
 </template>
 
 <script>
-import CopyrightICP from '@/components/CopyrightICP.vue';
 
 export default {
     name: 'App',
-    components: {CopyrightICP},
+    components: {
+        
+    },
     provide() {
         return {
             reload: this.reload
