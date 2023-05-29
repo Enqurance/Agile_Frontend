@@ -72,7 +72,7 @@
 
                     <div style="text-align: left; font-size: 20px; width: 100%">
                         <el-text tag="b" style="font-size: 16px; color: black">内容：</el-text>
-                        <div>
+                        <div style="padding-bottom: 10px">
                             <!-- <pre style="font-size: 14px; word-wrap: break-word;font-family: 'Open Sans', sans-serif;
                             white-space: pre-wrap;">{{ post.content }}</pre> -->
                             <div v-html="post.content"></div>
@@ -121,7 +121,7 @@
                         </div>
                     </div>
 
-                    <el-dialog v-model="postDialogVisible">
+                    <el-dialog v-model="postDialogVisible" title="编辑帖子" center>
                         <div>
                             <el-form>
                                 <el-form-item label="标题">
@@ -132,18 +132,24 @@
                                               maxlength="200"></el-input>
                                 </el-form-item>
                             </el-form>
-                            <el-button type="primary" @click="submitEditForm">确认</el-button>
+                            <div class="clearfix">
+                                <div style="float: right">
+                                    <el-button type="primary" @click="submitEditForm">提交更改</el-button>
+                                </div>
+                            </div>
                         </div>
                     </el-dialog>
 
-                    <el-dialog v-model="newFloorDialogVisible">
+                    <el-dialog v-model="newFloorDialogVisible" title="新建楼层" center>
                         <el-form :model="newFloorForm" ref="newFloorForm" label-width="80px">
-                            <el-form-item label="评论内容">
-                                <el-input v-model="newFloorForm.body" type="textarea"></el-input>
+                            <el-form-item label="回复内容">
+                                <el-input v-model="newFloorForm.body" :rows="5" clearable type="textarea"></el-input>
                             </el-form-item>
                         </el-form>
-                        <div>
-                            <el-button type="primary" @click="addNewFloor">提交</el-button>
+                        <div class="clearfix">
+                            <div style="float: right">
+                                <el-button type="primary" size="large" @click="addNewFloor">提交</el-button>
+                            </div>
                         </div>
                     </el-dialog>
 
@@ -151,49 +157,90 @@
                         <div v-for="floor in this.floors" :key="floor.id" style="padding-top: 10px;">
                             <el-card style="min-height: auto; margin-bottom: 20px">
                                 <div class="post_floor-header">
-                                    <div>
-                                        <el-popover placement="right" width="220" trigger="hover">
-                                            <p>昵称：{{ userInfo.name }}</p>
-                                            <p>邮箱：{{ userInfo.email }}</p>
-                                            <p>个人描述：{{ userInfo.description }}</p>
-                                            <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
-                                            <p>校区：{{ getCampus(userInfo.campus) }}</p>
-                                            <p>性别：{{ getGender(userInfo.gender) }}</p>
-                                            <template v-slot:reference>
-                                                <el-link :underline="false" type="primary" style="font-size:18px;"
-                                                         @mouseenter="showPopover(floor.userId)">
-                                                    {{ floor.userName }}
-                                                </el-link>
-                                            </template>
-                                        </el-popover>
-                                        <span>发表于 {{ getTimeSubstring(floor.createTime) }} </span>
+                                    <div style="width: 80%">
+                                        <div style="width: 100%">
+                                            <div style="padding-left: 20px">
+                                                <el-popover placement="right" width="220" trigger="hover">
+                                                    <p>昵称：{{ userInfo.name }}</p>
+                                                    <p>邮箱：{{ userInfo.email }}</p>
+                                                    <p>个人描述：{{ userInfo.description }}</p>
+                                                    <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
+                                                    <p>校区：{{ getCampus(userInfo.campus) }}</p>
+                                                    <p>性别：{{ getGender(userInfo.gender) }}</p>
+                                                    <template v-slot:reference>
+                                                        <el-link :underline="false" type="primary" style="font-size:20px;"
+                                                                 @mouseenter="showPopover(floor.userId)">
+                                                            {{ floor.userName }}
+                                                        </el-link>
+                                                    </template>
+                                                </el-popover>
+                                            </div>
+                                            <div style="margin-left: 20%">
+                                                <span style="font-size: 13px">——发表于 {{ getTimeSubstring(floor.createTime) }} </span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="floor-number">
-                                        <span style="margin-right: 10px;">{{ floor.layers }}楼</span>
-                                        <el-tooltip content="删除楼层" placement="bottom">
-                                            <div>
-                                                <el-button v-if="floor.is_auth" type="danger" plain
-                                                           @click="showDeleteFloor(floor.id)">
-                                                    <DeleteOutlined/>
-                                                </el-button>
-                                            </div>
-                                        </el-tooltip>
-                                        <el-tooltip content="举报楼层" placement="bottom">
-                                            <div>
-                                                <el-button type="danger" plain
-                                                           @click="showReportReplyPrompt(0, floor.id)">
-                                                    <QuestionCircleOutlined/>
-                                                </el-button>
-                                            </div>
-                                        </el-tooltip>
+                                    <div>
+                                        <span style="margin-right: 10px;">共{{ floor.layers }}楼</span>
                                     </div>
                                 </div>
-                                <div style="margin-bottom: 10px;font-size: 20px;">{{ floor.content }}</div>
+
+                                <div style="margin-bottom: 5px; font-size: 20px;padding-left: 20px; padding-right: 20px">
+                                        {{ floor.content }}
+                                </div>
+
+                                <div class="clearfix" style="margin-bottom: 20px">
+                                    <el-tooltip content="举报楼层" placement="bottom">
+                                        <div style="float: right; margin-left: 10px; margin-right: 20px">
+                                            <el-button circle @click="showReportReplyPrompt(0, floor.id)">
+                                                <QuestionCircleOutlined style="color: red" />
+                                            </el-button>
+                                        </div>
+                                    </el-tooltip>
+                                    <el-tooltip content="删除楼层" placement="bottom">
+                                        <div style="float: right">
+                                            <el-button v-if="floor.is_auth" circle @click="showDeleteFloor(floor.id)">
+                                                <DeleteOutlined style="color: red" />
+                                            </el-button>
+                                        </div>
+                                    </el-tooltip>
+                                </div>
 
                                 <div v-if="!floor.comment_cases"
                                      style="display: flex; justify-content: flex-end;margin-right: 20px;">
                                     <el-button @click="showComments(floor.id)">回复楼层</el-button>
                                 </div>
+                                <el-card v-else shadow="never">
+                                    <div style="width: 100%">
+                                        <el-container style="width: 100%">
+                                            <el-main>
+                                                <div>
+                                                    <el-popover placement="right" width="220" trigger="hover">
+                                                        <p>昵称：{{ userInfo.name }}</p>
+                                                        <p>邮箱：{{ userInfo.email }}</p>
+                                                        <p>个人描述：{{ userInfo.description }}</p>
+                                                        <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
+                                                        <p>校区：{{ getCampus(userInfo.campus) }}</p>
+                                                        <p>性别：{{ getGender(userInfo.gender) }}</p>
+                                                        <template v-slot:reference>
+                                                            <el-link :underline="false" type="primary" style="font-size:18px;"
+                                                                     @mouseenter="showPopover(floor.comment_cases.cuserId)">
+                                                                {{ floor.comment_cases.cuserName }}
+                                                            </el-link>
+                                                        </template>
+                                                    </el-popover>
+                                                    <span>:</span>
+                                                </div>
+                                                <div>
+                                                    <pre>{{ floor.comment_cases.content }}</pre>
+                                                </div>
+                                            </el-main>
+                                            <el-aside style="width: 30%; margin-left: 20px; display: flex; justify-content: center; align-items: center">
+                                                <el-button @click="showComments(floor.id)">查看全部评论</el-button>
+                                            </el-aside>
+                                        </el-container>
+                                    </div>
+                                </el-card>
 
                                 <el-dialog v-model="commentsDialogVisible" title="全部评论" width="50%" :modal="false">
                                     <div v-for="comment in comments" :key="comment.id">
@@ -250,28 +297,6 @@
                                         <el-button type="primary" @click="addComment(floor.id)">提交评论</el-button>
                                     </div>
                                 </el-dialog>
-                                <el-card v-if="floor.comment_cases" shadow="never">
-                                    <div style="display:flex;align-items: center;justify-content: space-between;">
-                                        <div>
-                                            <el-popover placement="right" width="220" trigger="hover">
-                                                <p>昵称：{{ userInfo.name }}</p>
-                                                <p>邮箱：{{ userInfo.email }}</p>
-                                                <p>个人描述：{{ userInfo.description }}</p>
-                                                <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
-                                                <p>校区：{{ getCampus(userInfo.campus) }}</p>
-                                                <p>性别：{{ getGender(userInfo.gender) }}</p>
-                                                <template v-slot:reference>
-                                                    <el-link :underline="false" type="primary" style="font-size:18px;"
-                                                             @mouseenter="showPopover(floor.comment_cases.cuserId)">
-                                                        {{ floor.comment_cases.cuserName }}
-                                                    </el-link>
-                                                </template>
-                                            </el-popover>
-                                            <span> ：{{ floor.comment_cases.content }}</span>
-                                        </div>
-                                        <el-button @click="showComments(floor.id)">查看全部评论</el-button>
-                                    </div>
-                                </el-card>
                             </el-card>
                         </div>
                         <div v-loading="loading" element-loading-text="Loading..."/>
@@ -375,7 +400,6 @@ export default {
         };
 
         const debounce = (f, delay) => {
-            console.log(1)
             let timer = null
             let loadingTimer = null
             return () => {
@@ -504,7 +528,7 @@ export default {
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
-            }).then((response) => {
+            }).then(() => {
                 //console.log(response)
                 that.newFloorForm.body = ''
                 this.$message({
@@ -576,7 +600,7 @@ export default {
         showDeletePost() {
             this.tokenCheck()
             this.$confirm(
-                '确认删除该post？',
+                '确认删除该帖子？',
                 'Warning',
                 {
                     confirmButtonText: '确认',
@@ -621,7 +645,7 @@ export default {
         showDeleteFloor(floorId) {
             this.tokenCheck()
             this.$confirm(
-                '确认删除该floor？',
+                '确认删除该楼层？',
                 'Warning',
                 {
                     confirmButtonText: '确认',
@@ -665,7 +689,7 @@ export default {
         showDeleteComment(commentId, floorID) {
             this.tokenCheck()
             this.$confirm(
-                '确认删除该comment？',
+                '确认删除该评论？',
                 'Warning',
                 {
                     confirmButtonText: '确认',
@@ -932,7 +956,7 @@ export default {
 
 .post_floor-header {
     color: #999;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     font-size: 18px;
 
     display: flex;
@@ -943,6 +967,20 @@ export default {
     content: '';
     display: block;
     clear: both;
+}
+
+
+/*
+    覆盖element-plus自身css
+*/
+.el-button:focus {
+    color: white;
+    background: white;
+    outline: none;
+}
+
+.el-main {
+    --el-main-padding: 0px;
 }
 
 </style>
