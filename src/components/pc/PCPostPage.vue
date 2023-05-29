@@ -73,8 +73,9 @@
                     <div style="text-align: left; font-size: 20px; width: 100%">
                         <el-text tag="b" style="font-size: 16px; color: black">内容：</el-text>
                         <div>
-                            <pre style="font-size: 14px; word-wrap: break-word;font-family: 'Open Sans', sans-serif;
-                            white-space: pre-wrap;">{{ post.content }}</pre>
+                            <!-- <pre style="font-size: 14px; word-wrap: break-word;font-family: 'Open Sans', sans-serif;
+                            white-space: pre-wrap;">{{ post.content }}</pre> -->
+                            <div v-html="post.content"></div>
                         </div>
                     </div>
 

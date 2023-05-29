@@ -5,8 +5,13 @@
                 <el-form-item label="标题">
                     <el-input v-model="formData.post_title" autosize maxlength="60"></el-input>
                 </el-form-item>
-                <el-form-item label="正文">
+                <!-- <el-form-item label="正文">
                     <el-input v-model="formData.post_body" type="textarea" :rows="6" maxlength="200"></el-input>
+                </el-form-item> -->
+                <el-form-item label="正文">
+                    <div style="width:100%">
+                        <MyEditor @input="updateContent" :sendData="formData.post_body"></MyEditor>
+                    </div>
                 </el-form-item>
                 <el-form-item label="类别">
                     <el-radio-group v-model="formData.pin_type">
@@ -38,8 +43,8 @@
 
 <script>
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons-vue';
-import { ElInput, ElFormItem, ElRadio, ElRadioGroup, ElForm, ElButton, ElDialog } from "element-plus"
 import PostBindPin from "@/components/sub_components/PostBindPin.vue";
+import MyEditor from "@/components/sub_components/QuillEditor.vue";
 
 export default {
     data() {
@@ -59,18 +64,17 @@ export default {
     components: {
         CheckOutlined,
         CloseOutlined,
-        ElInput,
-        ElFormItem, 
-        ElRadio,
-        ElRadioGroup,
-        ElForm, 
-        ElButton, 
-        ElDialog,
-        PostBindPin
+        PostBindPin,
+        MyEditor
     },
 
     methods: {
-        // 提交修改
+        updateContent(data) {
+            console.log(data)
+            this.formData.post_body = data;
+            console.log('update: ' + this.formData.post_body)
+        },
+
         submitForm() {
             if (this.formData.post_title === '') {
                 return this.$message.error("帖子标题不能为空")

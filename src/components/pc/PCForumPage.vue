@@ -62,7 +62,8 @@
                                     <el-col :span="24">
                                         <el-row>
                                             <div>
-                                                <p>{{ post.content }}</p>
+                                                <!-- <p>{{ post.content }}</p> -->
+                                                <div v-html="post.content"></div>
                                             </div>
                                         </el-row>
                                         <el-row>
