@@ -4,45 +4,35 @@
             <PageHeader />
         </el-header>
         <el-main>
-            <div class="main">
-                <div class="left"></div>
-                <div class="center">
-                    <div class="top">
-                        <el-row>
-                            <el-col :span="5">
-                                <div>
-                                    <el-avatar :size="70" shape="circle" :src="this.imageUrl" style="user-select: none;">
-                                    </el-avatar>
-                                </div>
-                            </el-col>
-                            <el-col :span="16">
-                                <div style="position: relative;">
-                                    <el-input v-model="search_context" placeholder="Search" @input="handleSearchInput"
-                                        @keyup.enter="handleSearchInput" style="width: 250px;"></el-input>
-                                    <div v-show="showDropdown" :style="{ position: 'relative', left: '0', width: '100%' }">
-                                        <div class="scrollable">
-                                            <div v-for="item in searchResults" :key="item.post_id"
-                                                @click="handleSelect(item.post_id)"
-                                                style="width: 250px;margin-top: 10px;margin-bottom: 10px;">
-                                                <span style="font-size: 18px;word-wrap:break-word;padding-left: 10px;">{{
-                                                    item.post_title }}</span>
-                                            </div>
-                                            <div v-if="noResults" style="width: 250px;margin-top: 10px;margin-bottom: 10px;">
-                                                <span style="font-size: 18px;word-wrap:break-word;padding-left: 10px;">不存在帖子</span>
-                                            </div>
-                                        </div>
+            <el-col :span="16" :offset="4">
+                <el-row gutter="20">
+                    <el-col :span="4">
+                    <el-avatar :size="70" shape="circle" :src="this.imageUrl" style="user-select: none;">
+                    </el-avatar>
+                    </el-col>
+                    <el-col :span="12">
+                        <div style="position: relative;">
+                            <el-input v-model="search_context" placeholder="Search" @input="handleSearchInput"
+                                      @keyup.enter="handleSearchInput" style="width: 250px;"></el-input>
+                            <div v-show="showDropdown"
+                                 :style="{position: 'relative', left: '0', width: '100%'}">
+                                <div class="scrollable">
+                                    <div v-for="item in searchResults" :key="item.post_id"
+                                         @click="handleSelect(item.post_id)"
+                                         style="width: 250px;margin-top: 10px;margin-bottom: 10px;">
+                                        <span style="font-size: 18px;word-wrap:break-word;padding-left: 10px;">{{
+                                                item.post_title
+                                            }}</span>
                                     </div>
                                 </div>
-                            </el-col>
-                            <el-col :span="3">
-                                <div>
-                                    <el-button @click="showNewPostDialog">新建帖子</el-button>
-                                    <new-post ref="child"></new-post>
-                                </div>
-                            </el-col>
-                        </el-row>
-                    </div>
-
+                            </div>
+                        </div>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-button @click="showNewPostDialog">新建帖子</el-button>
+                    </el-col>
+                </el-row>
+                        <new-post ref="child"></new-post>
                     <div class="bottom">
                         <div>
                             <el-radio-group v-model="tag">
@@ -102,9 +92,7 @@
                             :page-size="limit" :total="totalPosts">
                         </el-pagination>
                     </div>
-                </div>
-                <div class="right"></div>
-            </div>
+            </el-col>
         </el-main>
     </el-container>
 </template>
@@ -304,29 +292,10 @@ export default {
     color: #333;
 }
 
-.main {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 15%;
-}
-
-.left,
-.right {
-    width: 20%;
-}
-
 .center {
-    width: 70%;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.top {
-    display: flex;
-    width: 100%;
-    margin-bottom: 20px;
-    height: 100px;
 }
 
 .bottom {
