@@ -244,7 +244,7 @@ export default {
         },
 
         initForum() {
-            console.log("init")
+            // console.log("init")
             this.getIcon()
         },
 

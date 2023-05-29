@@ -181,7 +181,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <span style="margin-right: 10px;">共{{ floor.layers }}楼</span>
+                                        <span style="margin-right: 10px;">{{ floor.layers }}楼</span>
                                     </div>
                                 </div>
 
@@ -241,62 +241,6 @@
                                         </el-container>
                                     </div>
                                 </el-card>
-
-                                <el-dialog v-model="commentsDialogVisible" title="全部评论" width="50%" :modal="false">
-                                    <div v-for="comment in comments" :key="comment.id">
-                                        <el-card style="min-height: auto;" shadow="never">
-                                            <div>
-                                                <el-popover placement="right" width="220" trigger="hover">
-                                                    <p>昵称：{{ userInfo.name }}</p>
-                                                    <p>邮箱：{{ userInfo.email }}</p>
-                                                    <p>个人描述：{{ userInfo.description }}</p>
-                                                    <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
-                                                    <p>校区：{{ getCampus(userInfo.campus) }}</p>
-                                                    <p>性别：{{ getGender(userInfo.gender) }}</p>
-                                                    <template v-slot:reference>
-                                                        <el-link :underline="false" type="primary"
-                                                                 style="font-size:18px;"
-                                                                 @mouseenter="showPopover(comment.cuserId)">
-                                                            {{ comment.cuserName }}
-                                                        </el-link>
-                                                    </template>
-                                                </el-popover>
-
-                                                <span style="font-size: 18px;">发表于
-                                                    {{ getTimeSubstring(comment.createTime) }} </span>
-                                            </div>
-                                            <el-tooltip content="删除评论" placement="bottom">
-                                                <div>
-                                                    <el-button v-if="comment.is_auth" type="danger"
-                                                               @click="showDeleteComment(comment.id, floor.id)" circle
-                                                               plain>
-                                                        <DeleteOutlined/>
-                                                    </el-button>
-                                                </div>
-                                            </el-tooltip>
-                                            <el-tooltip content="举报评论" placement="bottom">
-                                                <div>
-                                                    <el-button type="danger"
-                                                               @click="showReportReplyPrompt(1, comment.id)"
-                                                               circle plain>
-                                                        <QuestionCircleOutlined/>
-                                                    </el-button>
-                                                </div>
-                                            </el-tooltip>
-                                            <div>
-                                                <p style="font-size: 18px;">{{ comment.content }}</p>
-                                            </div>
-                                        </el-card>
-                                    </div>
-                                    <el-form>
-                                        <el-form-item>
-                                            <el-input v-model="newCommentBody" type="textarea"></el-input>
-                                        </el-form-item>
-                                    </el-form>
-                                    <div>
-                                        <el-button type="primary" @click="addComment(floor.id)">提交评论</el-button>
-                                    </div>
-                                </el-dialog>
                             </el-card>
                         </div>
                         <div v-loading="loading" element-loading-text="Loading..."/>
@@ -305,6 +249,69 @@
 
                 <div class="right"></div>
             </div>
+
+            <el-dialog v-model="commentsDialogVisible" title="全部评论" width="50%" :draggable="true">
+                <div v-for="comment in comments" :key="comment.id">
+                    <el-card style="min-height: auto; margin-bottom: 20px">
+                        <div class="post_floor-header">
+                            <div style="width: 80%">
+                                <div style="width: 100%">
+                                    <div style="padding-left: 20px">
+                                        <el-popover placement="right" width="220" trigger="hover">
+                                            <p>昵称：{{ userInfo.name }}</p>
+                                            <p>邮箱：{{ userInfo.email }}</p>
+                                            <p>个人描述：{{ userInfo.description }}</p>
+                                            <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
+                                            <p>校区：{{ getCampus(userInfo.campus) }}</p>
+                                            <p>性别：{{ getGender(userInfo.gender) }}</p>
+                                            <template v-slot:reference>
+                                                <el-link :underline="false" type="primary" style="font-size:20px;"
+                                                         @mouseenter="showPopover(comment.cuserId)">
+                                                    {{ comment.cuserName }}
+                                                </el-link>
+                                            </template>
+                                        </el-popover>
+                                    </div>
+                                    <div style="margin-left: 20%">
+                                        <span style="font-size: 13px">——发表于 {{ getTimeSubstring(comment.createTime) }} </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 5px; font-size: 20px;padding-left: 20px; padding-right: 20px">
+                            {{ comment.content }}
+                        </div>
+
+                        <div class="clearfix" style="margin-bottom: 20px">
+                            <el-tooltip content="举报楼层" placement="bottom">
+                                <div style="float: right; margin-left: 10px; margin-right: 20px">
+                                    <el-button circle @click="showReportReplyPrompt(1, comment.id)">
+                                        <QuestionCircleOutlined style="color: red" />
+                                    </el-button>
+                                </div>
+                            </el-tooltip>
+                            <el-tooltip content="删除楼层" placement="bottom">
+                                <div style="float: right">
+                                    <el-button v-if="comment.is_auth" circle @click="showDeleteComment(comment.id, open_floor_id)">
+                                        <DeleteOutlined style="color: red" />
+                                    </el-button>
+                                </div>
+                            </el-tooltip>
+                        </div>
+                    </el-card>
+                </div>
+                <el-form>
+                    <el-form-item>
+                        <el-input v-model="newCommentBody" type="textarea"></el-input>
+                    </el-form-item>
+                </el-form>
+                <div class="clearfix">
+                    <div style="float: right">
+                        <el-button type="primary" @click="addComment(open_floor_id)">评论</el-button>
+                    </div>
+                </div>
+            </el-dialog>
         </el-main>
     </el-container>
 </template>
@@ -346,6 +353,8 @@ export default {
             comments: [],
 
             userInfo: {},
+
+            open_floor_id: 0,
         };
     },
 
@@ -543,7 +552,6 @@ export default {
 
         showComments(floorID) {
             this.loadAllComments(floorID)
-            this.commentsDialogVisible = true
         },
 
         loadAllComments(floorID) {
@@ -566,6 +574,8 @@ export default {
                 else {
                     that.comments = []
                 }
+                that.open_floor_id = floorID
+                that.commentsDialogVisible = true
             }).catch((error) => {
                 console.log(error);
             });
@@ -592,7 +602,16 @@ export default {
                 that.newCommentBody = ''
                 if (response.data.code === 200) {
                     that.loadAllComments(floorID)
-                    // todo
+                    that.$axios.get('/forum/floor/getCommentCaseByFloorIdForLazy/' + floorID, {
+                        headers: {
+                            'token': that.$cookies.get('user_token')
+                        }
+                    }).then(res => {
+                        let floor = that.floors.find(item => item.id === floorID)
+                        if (floor) {
+                            floor.comment_cases = res.data.comment_cases
+                        }
+                    }).catch((err) => console.log(err))
                 }
             })
         },
@@ -719,7 +738,17 @@ export default {
                         message: '删除成功',
                     });
                     that.loadAllComments(floorID)
-                    // todo
+                    that.$axios.get('/forum/floor/getCommentCaseByFloorIdForLazy/' + floorID, {
+                        headers: {
+                            'token': that.$cookies.get('user_token')
+                        }
+                    }).then(res => {
+                        let floor = that.floors.find(item => item.id === floorID)
+                        if (floor) {
+                            floor.comment_cases = res.data.comment_cases
+                        }
+                    }).catch((err) => console.log(err))
+
                 }
                 else {
                     this.$message({
