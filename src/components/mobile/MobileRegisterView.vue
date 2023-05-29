@@ -15,8 +15,8 @@
                               @keyup.enter="openVerified"></el-input>
                 </el-form-item>
 
-                <div style="display:flex;width: 400px;">
-                    <el-form-item prop="emailCode" style="width: 330px;padding-right: 110px;" :rules="emailCodeRules">
+                <div style="display:flex;">
+                    <el-form-item prop="emailCode" style="width: 50%px;padding-right: 110px;" :rules="emailCodeRules">
                         <el-input v-model="registerForm.emailCode" placeholder="请输入验证码"
                                   @keyup.enter="openVerified"></el-input>
                     </el-form-item>
@@ -269,6 +269,7 @@ export default {
 }
 
 .form-container {
+    width: 80%;
     display: flex;
     /* 添加Flex属性 */
     justify-content: center;
@@ -276,7 +277,7 @@ export default {
     position: relative;
     padding-left: 15px;
     padding-right: 15px;
-    padding-top: 15px;
+    padding-top: 10px;
     padding-bottom: 0;
     z-index: 1;
 }
@@ -289,12 +290,13 @@ export default {
     left: -10px; /* 向左移动一点 */
     right: -10px; /* 向右移动一点 */
     z-index: -1;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.1);
     border-radius: 20px; /* 圆角边框 */
 }
 
 .register-form {
     flex: 1; /* 添加Flex属性 */
+    width: 80%;
 }
 
 .el-form {

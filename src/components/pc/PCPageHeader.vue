@@ -134,7 +134,7 @@ export default {
             this.getIcon();
         },
 
-        LogOut() {
+        logOut() {
             this.$cookies.remove('user_token');
             this.$router.push({
                 path: '/',
@@ -147,98 +147,53 @@ export default {
 </script>
 
 <template>
-    <div>
         <el-menu
-                :default-active="Index"
                 class="el-menu-demo"
                 mode="horizontal"
                 :ellipsis="false"
+                background-color=#545454
+                text-color="white"
+                active-color=#2E8B57
+                active-text-color="white"
         >
             <el-menu-item v-on:click="clickToMap()" index="1">
-                <template #title>BUAAMapForum</template>
+                BUAAMapForum
             </el-menu-item>
             <el-menu-item v-on:click="clickToMap()" index="2">
-                <template #title>Map</template>
+                Map
             </el-menu-item>
             <el-menu-item v-on:click="clickToForum()" index="3">
-                <template #title>Forum</template>
+                Forum
             </el-menu-item>
-            <el-menu-item v-if="this.$cookies.get('user_type')===get_user_type_administrator()" v-on:click="clickToAdministrator()" index="4">
-                <template #title>Administrator</template>
+            <el-menu-item v-if="this.$cookies.get('user_type')===get_user_type_administrator()"
+                          v-on:click="clickToAdministrator()" index="4">
+                Administrator
             </el-menu-item>
             <div class="flex-grow"/>
-            <div v-if="this.$cookies.get('user_token') === null" class="last">
-                <el-menu-item v-on:click="clickToLogin()" index="5">
-                    <template #title>Login</template>
+            <el-menu-item v-if="this.$cookies.get('user_token') === null" v-on:click="clickToLogin()" index="5">
+                <template #title>Login</template>
+            </el-menu-item>
+            <el-sub-menu v-else index="5" v-on:click="clickToInfor()">
+                <template #title>
+                    <el-avatar
+                        :size="40"
+                        shape="circle"
+                        :src="this.imageUrl"
+                        style="user-select: none;">
+                    </el-avatar>
+                    <span style="margin-left:10px">
+                            {{ this.user.name }}
+                        </span>
+                </template>
+                <el-menu-item index="2-1" v-on:click="logOut">
+                    账号登出
                 </el-menu-item>
-            </div>
-            <div v-else>
-                <el-sub-menu index="5" v-on:click="clickToInfor()" class="last">
-                    <template #title>
-                        <img class="ava" :src="this.imageUrl" alt="头像">
-                        <!--<div class="imgBox"><el-avatar class="ava" :src="this.imageUrl"/></div>-->
-                        <p>{{ this.user.name }}</p>
-                    </template>
-                    <el-menu-item index="2-1">
-                        <el-button v-on:click="LogOut()">登出</el-button>
-                    </el-menu-item>
-                </el-sub-menu>
-            </div>
-
+            </el-sub-menu>
         </el-menu>
-    </div>
 </template>
 
 <style scoped>
-.class {
-    margin-top: 5%;
-}
-
-.el-col el-col-6 is-guttered {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
-
-.col {
-    margin: 0;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
-
-.last {
-    margin-left: 65%;
-}
-
-.imgBox {
-    width: 30%;
-    height: 30%;
-    padding-right: 15%;
-}
-
-.ava {
-    width: 30%;
-
-    max-width: 30%;
-    object-fit: cover;
-
-    padding-right: 8%;
-}
-
-.tag {
-    height: 100%;
-    width: 100%;
-}
-
 .flex-grow {
-    flex-grow: 10;
+    flex-grow: 1;
 }
-
-span {
-    font-size: 120%;
-}
-
-a {
-    font-size: 120%;
-    font-weight: 550;
-}
-</style>
+</style>>

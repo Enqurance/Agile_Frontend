@@ -3,7 +3,10 @@
         <div class="logo-container">
             <img src="/img/logo.png" alt="logo" style="width: 100%; height: auto;">
         </div>
-        <div class="form-container">
+        <div>
+            <p class="title">BUAAMapForum</p>
+        </div>
+        <div class="form-container" style="width: 50%;">
             <el-form ref="loginForm" :model="loginForm" class="login-form">
                 <el-form-item prop="email">
                     <el-input v-model="loginForm.email" placeholder="请输入用户邮箱" @keyup.enter="openVerified"></el-input>
@@ -110,7 +113,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .login-container {
     display: flex;
     flex-direction: column;
@@ -145,8 +148,8 @@ export default {
     justify-content: center;
     align-items: center;
     position: relative;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 100px;
+    padding-right: 100px;
     padding-top: 15px;
     padding-bottom: 0;
     z-index: 1;
@@ -176,7 +179,6 @@ export default {
 }
 
 .el-form-item {
-    width: 100%;
     text-align: center;
 }
 
@@ -186,6 +188,11 @@ export default {
     align-items: center;
     width: 400px;
     margin: 0 auto;
+}
+.title{
+    font-family: fantasy;
+    font-size: 2.8em;
+    color: #1f82ce;
 }
 </style>
 

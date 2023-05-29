@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-header style="padding-left: 0;padding-right: 0">
-            <PageHeader/>
+            <PageHeader />
         </el-header>
         <el-main>
             <div class="main">
@@ -10,144 +10,104 @@
                 <div class="center">
                     <div class="post_header">
                         <div class="title">
-                            <div class="clearfix">
-                                <div style="float: left">
-                                    <el-avatar :size="70" shape="circle" :src="this.imageUrl"
-                                               style="user-select: none;"/>
-                                </div>
-                                <div
-                                    style="float: left; padding-left: 15px; height: 70px; display: flex; align-items: center">
-                                    <div>
-                                        <div style="margin-bottom: 10px">
-                                            <el-popover placement="right" width="220" trigger="hover">
-                                                <p>昵称：{{ userInfo.name }}</p>
-                                                <p>邮箱：{{ userInfo.email }}</p>
-                                                <p>个人描述：{{ userInfo.description }}</p>
-                                                <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
-                                                <p>校区：{{ getCampus(userInfo.campus) }}</p>
-                                                <p>性别：{{ getGender(userInfo.gender) }}</p>
-                                                <template v-slot:reference>
-                                                    <el-link :underline="false" type="primary" style="font-size:18px;"
-                                                             @mouseenter="showPopover(post.userId)">
-                                                        {{ post.userName }}
-                                                    </el-link>
-                                                </template>
-                                            </el-popover>
-                                        </div>
-                                        <div>
-                                            <el-text tag="i">
-                                                创建时间：{{ getTimeSubstring(post.createTime) }}
-                                            </el-text>
-                                        </div>
-                                    </div>
+                            <h2 style="padding-bottom: 15px;">{{ post.title }}</h2>
+                            <div style="display: flex; align-items: center;margin-bottom: 10px;font-size:18px;">
+                                <el-tag class="tag" style="margin-right: 10px;">{{ _get_pin_type(post.tag) }}</el-tag>
+                                <el-popover placement="right" width="220" trigger="hover">
+                                    <p>昵称：{{ userInfo.name }}</p>
+                                    <p>邮箱：{{ userInfo.email }}</p>
+                                    <p>个人描述：{{ userInfo.description }}</p>
+                                    <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
+                                    <p>校区：{{ getCampus(userInfo.campus) }}</p>
+                                    <p>性别：{{ getGender(userInfo.gender) }}</p>
+                                    <template v-slot:reference>
+                                        <el-link :underline="false" type="primary" style="font-size:18px;"
+                                            @mouseenter="showPopover(post.userId)">{{ post.userName
+                                            }}</el-link>
+                                    </template>
+                                </el-popover>
+
+                                <p style="padding-left: 10px;">{{ getTimeSubstring(post.createTime) }}</p>
+
+                            </div>
+
+                            <div v-if="tags.length > 0"
+                                style="display: flex;flex-wrap: wrap;margin-top: 10px;margin-bottom: 10px;">
+                                <div v-for="(tag, index) in tags" :key="index" style="margin-right: 10px;">
+                                    <el-tag size="small" effect="plain" type="success">{{ tag }}</el-tag>
                                 </div>
                             </div>
 
-                            <h1>{{ post.title }}</h1>
-
-                            <div
-                                style="display: flex; align-items: center;margin-bottom: 10px;font-size:18px; margin-top: -15px">
-                                <div style="align-items: center; padding-right: 20px">
-                                    <el-tag class="tag" style="margin-right: 10px;">
-                                        {{ _get_pin_type(post.tag) }}
-                                    </el-tag>
-                                </div>
-                                <div v-if="tags.length > 0"
-                                     style="display: flex;flex-wrap: wrap;margin-top: 10px;margin-bottom: 10px;">
-                                    <div v-for="(tag, index) in tags" :key="index" style="margin-right: 10px;">
-                                        <el-tag size="small" effect="plain" type="success">{{ tag }}</el-tag>
-                                    </div>
-                                </div>
-                            </div>
+                            <el-tooltip content="删除帖子" placement="bottom">
+                                <el-button v-if="post.is_auth" type="danger" @click="showDeletePost" circle>
+                                    <DeleteOutlined />
+                                </el-button>
+                            </el-tooltip>
+                            <el-tooltip content="举报帖子" placement="bottom">
+                                <el-button type="danger" @click="showReportPostPrompt" circle>
+                                    <QuestionCircleOutlined />
+                                </el-button>
+                            </el-tooltip>
+                            <el-tooltip content="编辑帖子" placement="bottom">
+                                <el-button v-if="post.is_auth" @click="editPost" circle>
+                                    <EditOutlined />
+                                </el-button>
+                            </el-tooltip>
+                            <el-tooltip content="点赞帖子" placement="bottom">
+                                <el-button @click="addLike" circle>
+                                    <HeartTwoTone v-if="post.has_thumb" twoToneColor="#eb2f96" />
+                                    <HeartOutlined v-else />
+                                </el-button>
+                            </el-tooltip>
                         </div>
-
-                        <div style="width: 100px;padding-top: 20px">
-                            <el-descriptions :column="1" style="width: 100px;">
-                                <el-descriptions-item label="点赞数:">{{ post.thumbsUp }}</el-descriptions-item>
-                                <el-descriptions-item label="访问量:">{{ post.visit }}</el-descriptions-item>
-                                <el-descriptions-item label="楼层数:">{{ post.floorNum }}</el-descriptions-item>
+                        <div style="width: 100px;">
+                            <el-descriptions title="   " :column="1" style="width: 100px;">
+                                <el-descriptions-item label="点赞数">{{ post.thumbsUp }}</el-descriptions-item>
+                                <el-descriptions-item label="访问量">{{ post.visit }}</el-descriptions-item>
+                                <el-descriptions-item label="楼层数">{{ post.floorNum }}</el-descriptions-item>
                             </el-descriptions>
                         </div>
                     </div>
-
-                    <div style="text-align: left; font-size: 20px; width: 100%">
-                        <el-text tag="b" style="font-size: 16px; color: black">内容：</el-text>
-                        <div>
-                            <pre style="font-size: 14px; word-wrap: break-word;font-family: 'Open Sans', sans-serif;
-                            white-space: pre-wrap;">{{ post.content }}</pre>
-                        </div>
+                    <div class="post_content" style="text-align: left; font-size: 20px;">
+                        <p>{{ post.content }}</p>
                     </div>
 
-                    <div class="clearfix" style="position: relative; width: 100%; margin-bottom: 20px">
-                        <div style="float: left">
-                            <div class="clearfix">
-                                <el-tooltip content="删除帖子" placement="bottom">
-                                    <div style="float: left; margin-right: 10px">
-                                        <el-button v-if="post.is_auth" @click="showDeletePost" circle>
-                                            <DeleteOutlined style="color: red"/>
-                                        </el-button>
-                                    </div>
-                                </el-tooltip>
-                                <el-tooltip content="举报帖子" placement="bottom">
-                                    <div style="float: left; margin-right: 10px">
-                                        <el-button @click="showReportPostPrompt" circle>
-                                            <QuestionCircleOutlined style="color: red"/>
-                                        </el-button>
-                                    </div>
-                                </el-tooltip>
-                                <el-tooltip content="编辑帖子" placement="bottom">
-                                    <div style="float: left; margin-right: 10px">
-                                        <el-button v-if="post.is_auth" @click="editPost" circle>
-                                            <EditOutlined/>
-                                        </el-button>
-                                    </div>
-                                </el-tooltip>
-                                <el-tooltip content="点赞帖子" placement="bottom">
-                                    <div style="float: left; margin-right: 10px">
-                                        <el-button @click="addLike" circle>
-                                            <HeartTwoTone v-if="post.has_thumb" style="color: red" twoToneColor="red"/>
-                                            <HeartOutlined v-else style="color: black"/>
-                                        </el-button>
-                                    </div>
-                                </el-tooltip>
+                    <div>
+                        <el-dialog v-model="postDialogVisible">
+                            <div>
+                                <el-form>
+                                    <el-form-item label="标题">
+                                        <el-input v-model="formPost.title" autosize maxlength="60"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="正文">
+                                        <el-input v-model="formPost.content" type="textarea" :rows="6"
+                                            maxlength="200"></el-input>
+                                    </el-form-item>
+                                </el-form>
+                                <el-button type="primary" @click="submitEditForm">确认</el-button>
                             </div>
-                        </div>
-                        <div style="float: left; right: 0; position: absolute">
-                            <el-button type="info" plain @click="newFloorDialogVisible = true"
-                                       style="margin-left: 10px">
-                                回复帖子
-                            </el-button>
-                        </div>
+                        </el-dialog>
                     </div>
 
-                    <el-dialog v-model="postDialogVisible">
-                        <div>
-                            <el-form>
-                                <el-form-item label="标题">
-                                    <el-input v-model="formPost.title" autosize maxlength="60"></el-input>
-                                </el-form-item>
-                                <el-form-item label="正文">
-                                    <el-input v-model="formPost.content" type="textarea" :rows="6"
-                                              maxlength="200"></el-input>
+                    <div class="post_footer">
+                        <el-avatar :size="70" shape="circle" :src="this.imageUrl" style="user-select: none;">
+                        </el-avatar>
+                        <el-button type="info" plain @click="newFloorDialogVisible = true"
+                            style="margin-left: 10px;">回复帖子</el-button>
+                        <el-dialog v-model="newFloorDialogVisible">
+                            <el-form :model="newFloorForm" ref="newFloorForm" label-width="80px">
+                                <el-form-item label="评论内容">
+                                    <el-input v-model="newFloorForm.body" type="textarea"></el-input>
                                 </el-form-item>
                             </el-form>
-                            <el-button type="primary" @click="submitEditForm">确认</el-button>
-                        </div>
-                    </el-dialog>
+                            <div>
+                                <el-button type="primary" @click="addNewFloor">提交</el-button>
+                            </div>
+                        </el-dialog>
+                    </div>
 
-                    <el-dialog v-model="newFloorDialogVisible">
-                        <el-form :model="newFloorForm" ref="newFloorForm" label-width="80px">
-                            <el-form-item label="评论内容">
-                                <el-input v-model="newFloorForm.body" type="textarea"></el-input>
-                            </el-form-item>
-                        </el-form>
-                        <div>
-                            <el-button type="primary" @click="addNewFloor">提交</el-button>
-                        </div>
-                    </el-dialog>
-
-                    <div style="width: 100%;">
-                        <div v-for="floor in this.floors" :key="floor.id" style="padding-top: 5px;">
+                    <div class="post_floors" style="width: 100%;">
+                        <div v-for="floor in floors" :key="floor.id" style="padding-top: 5px;">
                             <el-card style="min-height: auto;">
                                 <div class="post_floor-header">
                                     <div>
@@ -160,9 +120,8 @@
                                             <p>性别：{{ getGender(userInfo.gender) }}</p>
                                             <template v-slot:reference>
                                                 <el-link :underline="false" type="primary" style="font-size:18px;"
-                                                         @mouseenter="showPopover(floor.userId)">
-                                                    {{ floor.userName }}
-                                                </el-link>
+                                                    @mouseenter="showPopover(floor.userId)">{{ floor.userName
+                                                    }}</el-link>
                                             </template>
                                         </el-popover>
                                         <span>发表于 {{ getTimeSubstring(floor.createTime) }} </span>
@@ -170,27 +129,22 @@
                                     <div class="floor-number">
                                         <span style="margin-right: 10px;">{{ floor.layers }}楼</span>
                                         <el-tooltip content="删除楼层" placement="bottom">
-                                            <div>
-                                                <el-button v-if="floor.is_auth" type="danger" plain
-                                                           @click="showDeleteFloor(floor.id)">
-                                                    <DeleteOutlined/>
-                                                </el-button>
-                                            </div>
+                                            <el-button v-if="floor.is_auth" type="danger" plain
+                                                @click="showDeleteFloor(floor.id)">
+                                                <DeleteOutlined />
+                                            </el-button>
                                         </el-tooltip>
                                         <el-tooltip content="举报楼层" placement="bottom">
-                                            <div>
-                                                <el-button type="danger" plain
-                                                           @click="showReportReplyPrompt(0, floor.id)">
-                                                    <QuestionCircleOutlined/>
-                                                </el-button>
-                                            </div>
+                                            <el-button type="danger" plain @click="showReportReplyPrompt(0, floor.id)">
+                                                <QuestionCircleOutlined />
+                                            </el-button>
                                         </el-tooltip>
                                     </div>
                                 </div>
                                 <div style="margin-bottom: 10px;font-size: 20px;">{{ floor.content }}</div>
 
                                 <div v-if="!floor.comment_cases"
-                                     style="display: flex; justify-content: flex-end;margin-right: 20px;">
+                                    style="display: flex; justify-content: flex-end;margin-right: 20px;">
                                     <el-button @click="showComments(floor.id)">回复楼层</el-button>
                                 </div>
 
@@ -206,34 +160,24 @@
                                                     <p>校区：{{ getCampus(userInfo.campus) }}</p>
                                                     <p>性别：{{ getGender(userInfo.gender) }}</p>
                                                     <template v-slot:reference>
-                                                        <el-link :underline="false" type="primary"
-                                                                 style="font-size:18px;"
-                                                                 @mouseenter="showPopover(comment.cuserId)">
-                                                            {{ comment.cuserName }}
-                                                        </el-link>
+                                                        <el-link :underline="false" type="primary" style="font-size:18px;"
+                                                            @mouseenter="showPopover(comment.cuserId)">{{ comment.cuserName }}</el-link>
                                                     </template>
                                                 </el-popover>
 
-                                                <span style="font-size: 18px;">发表于
-                                                    {{ getTimeSubstring(comment.createTime) }} </span>
+                                                <span style="font-size: 18px;">发表于 {{ getTimeSubstring(comment.createTime) }} </span>
                                             </div>
                                             <el-tooltip content="删除评论" placement="bottom">
-                                                <div>
-                                                    <el-button v-if="comment.is_auth" type="danger"
-                                                               @click="showDeleteComment(comment.id, floor.id)" circle
-                                                               plain>
-                                                        <DeleteOutlined/>
-                                                    </el-button>
-                                                </div>
+                                                <el-button v-if="comment.is_auth" type="danger"
+                                                    @click="showDeleteComment(comment.id, floor.id)" circle plain>
+                                                    <DeleteOutlined />
+                                                </el-button>
                                             </el-tooltip>
                                             <el-tooltip content="举报评论" placement="bottom">
-                                                <div>
-                                                    <el-button type="danger"
-                                                               @click="showReportReplyPrompt(1, comment.id)"
-                                                               circle plain>
-                                                        <QuestionCircleOutlined/>
-                                                    </el-button>
-                                                </div>
+                                                <el-button type="danger" @click="showReportReplyPrompt(1, comment.id)"
+                                                    circle plain>
+                                                    <QuestionCircleOutlined />
+                                                </el-button>
                                             </el-tooltip>
                                             <div>
                                                 <p style="font-size: 18px;">{{ comment.content }}</p>
@@ -261,9 +205,9 @@
                                                 <p>性别：{{ getGender(userInfo.gender) }}</p>
                                                 <template v-slot:reference>
                                                     <el-link :underline="false" type="primary" style="font-size:18px;"
-                                                             @mouseenter="showPopover(floor.comment_cases.cuserId)">
-                                                        {{ floor.comment_cases.cuserName }}
-                                                    </el-link>
+                                                        @mouseenter="showPopover(floor.comment_cases.cuserId)">{{
+                                                            floor.comment_cases.cuserName
+                                                        }}</el-link>
                                                 </template>
                                             </el-popover>
                                             <span> ：{{ floor.comment_cases.content }}</span>
@@ -273,6 +217,10 @@
                                 </el-card>
                             </el-card>
                         </div>
+
+                        <el-pagination v-if="totalFloors > 0" @current-change="handlePageChange" v-model="currentPage"
+                            :page-size="limit" :total="totalFloors">
+                        </el-pagination>
                     </div>
                 </div>
 
@@ -284,10 +232,10 @@
 
 
 <script>
-import {ref, getCurrentInstance} from 'vue'
+import { ref, onMounted, getCurrentInstance } from 'vue'
 import PageHeader from "@/components/pc/PCPageHeader.vue";
 import global from '@/global'
-import {DeleteOutlined, QuestionCircleOutlined, EditOutlined, HeartOutlined, HeartTwoTone} from '@ant-design/icons-vue';
+import { DeleteOutlined, QuestionCircleOutlined, EditOutlined, HeartOutlined, HeartTwoTone } from '@ant-design/icons-vue';
 
 export default {
     name: "PCPostpage",
@@ -306,7 +254,9 @@ export default {
             post: {},
 
             postDialogVisible: false,
-            formPost: {},
+            formPost: {
+
+            },
 
             newFloorDialogVisible: false,
             newFloorForm: {
@@ -318,12 +268,15 @@ export default {
 
             comments: [],
 
-            userInfo: {},
+            userInfo: {}
         };
     },
 
     setup() {
-        const {proxy} = getCurrentInstance();
+        const currentPage = ref(1);
+        const totalFloors = ref(0);
+
+        const { proxy } = getCurrentInstance();
         const imageUrl = ref('');
         const floors = ref([]);
         const offset = ref(0);
@@ -331,56 +284,43 @@ export default {
 
         const id = proxy.$route.params.postID;
 
-        const loadLazyFloors = () => {
+        const loadFloors = (offset) => {
             proxy.$axios.post('/forum/floor/getFloors', null, {
                 params: {
                     post_id: id,
-                    offset: offset.value,
-                    limit: limit
+                    offset: parseInt(offset.value),
+                    limit: parseInt(limit)
                 },
                 headers: {
                     'token': proxy.$cookies.get('user_token')
                 }
             }).then((res) => {
-                console.log(res)
+                //console.log(res)
                 if (res.data.code === 200) {
-                    // 懒加载
-                    floors.value = floors.value.concat(res.data.data.retFloors)
-                    offset.value += floors.value.length
-                    console.log(floors.value)
-                }
-                else {
+                    floors.value = res.data.data.retFloors;
+                    totalFloors.value = res.data.data.length;
+                } else {
                     floors.value = []
+                    totalFloors.value = 0;
                 }
             }).catch((error) => {
                 console.log(error);
             });
         };
 
-        const debounce = (f, delay) => {
-            let timer = null
-            return () => {
-                clearTimeout(timer)
-                timer = setTimeout(() => {
-                    f.apply(this, arguments)
-                }, delay)
-            }
-        }
+        const handlePageChange = (currentPage) => {
+            offset.value = (currentPage - 1) * limit;
+            loadFloors(offset);
+        };
 
-        const handleScroll = debounce(() => {
-            {
-                const windowHeight = window.innerHeight
-                const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-                const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
-                const distance = scrollHeight - (windowHeight + scrollTop)
-                if (distance <= 10) {
-                    loadLazyFloors() // 触发加载数据的方法
-                }
-            }
-        }, 1000)
+        onMounted(() => {
+            loadFloors(offset);
+        });
+
 
         return {
-            imageUrl, floors, limit, loadLazyFloors, handleScroll
+            imageUrl, floors, currentPage, totalFloors, limit,
+            handlePageChange, loadFloors
         };
     },
 
@@ -392,10 +332,10 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
-                // console.log(res)
+                console.log(res)
                 if (res.data.code === 200) {
                     that.userInfo = res.data.data
-                    // console.log(that.userInfo)
+                    console.log(that.userInfo)
                 }
             }).catch((res) => console.log(res))
         },
@@ -410,12 +350,12 @@ export default {
                     message: '请先登录!',
                     type: "warning"
                 })
-                this.$router.push({path: '/login'})
+                this.$router.push({ path: '/login' })
             }
         },
 
         initPost() {
-            // console.log("init")
+            console.log("init")
             this.getIcon()
             this.getPostDetail()
         },
@@ -428,8 +368,8 @@ export default {
                         'token': that.$cookies.get('user_token')
                     },
                 }).then((res) => {
-                this.imageUrl = res.data.data;
-            }).catch((res) => console.log(res))
+                    this.imageUrl = res.data.data;
+                }).catch((res) => console.log(res))
         },
 
 
@@ -444,16 +384,6 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
-                // console.log(res)
-                if (res.data.code === 500) {
-                    this.$message({
-                        message: '该帖子不存在!',
-                        type: "error"
-                    })
-                    this.$router.push({path: '/forum'})
-                    return
-                }
-
                 that.post = res.data.data
                 //console.log("getPostDetail()")
                 //console.log(res.data.data)
@@ -480,7 +410,9 @@ export default {
             }).then((response) => {
                 //console.log(response)
                 that.newFloorForm.body = ''
-                // todo
+                if (response.data.code === 200) {
+                    that.loadFloors(ref(0))
+                }
             })
             this.newFloorDialogVisible = false
         },
@@ -502,12 +434,11 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
-                // console.log(res.data)
+                console.log(res.data)
                 if (res.data.code === 200) {
                     that.comments = res.data.data.retComments
                     //console.log("getComments")
-                }
-                else {
+                } else {
                     that.comments = []
                 }
             }).catch((error) => {
@@ -536,7 +467,7 @@ export default {
                 that.newCommentBody = ''
                 if (response.data.code === 200) {
                     that.loadAllComments(floorID)
-                    // todo
+                    that.loadFloors(ref(0))
                 }
             })
         },
@@ -569,12 +500,12 @@ export default {
                 }
             }).then((res) => {
                 if (res.data.code === 200) {
-                    // console.log("删除的帖子id为：" + that.post.id)
+                    console.log("删除的帖子id为：" + that.post.id)
                     this.$message({
                         type: 'info',
                         message: '删除成功',
                     });
-                    that.$router.push({path: '/Forum'})
+                    that.$router.push({ path: '/Forum' })
                 }
                 else {
                     this.$message({
@@ -613,12 +544,12 @@ export default {
                 }
             }).then((res) => {
                 if (res.data.code === 200) {
-                    // console.log("删除的floor的id为：" + floorId)
+                    console.log("删除的floor的id为：" + floorId)
                     this.$message({
                         type: 'info',
                         message: '删除成功',
                     });
-                    // todo
+                    that.loadFloors(ref(0))
                 }
                 else {
                     this.$message({
@@ -656,13 +587,13 @@ export default {
                 }
             }).then((res) => {
                 if (res.data.code === 200) {
-                    // console.log("删除的comment的id为：" + commentId)
+                    console.log("删除的comment的id为：" + commentId)
                     this.$message({
                         type: 'info',
                         message: '删除成功',
                     });
                     that.loadAllComments(floorID)
-                    // todo
+                    that.loadFloors(ref(0))
                 }
                 else {
                     this.$message({
@@ -681,8 +612,7 @@ export default {
         submitEditForm() {
             if (this.formPost.title === '') {
                 return this.$message.error("帖子标题不能为空")
-            }
-            else if (this.formPost.content === '') {
+            } else if (this.formPost.content === '') {
                 return this.$message.error("帖子正文不能为空")
             }
 
@@ -709,15 +639,16 @@ export default {
         },
 
 
+
+
         showReportPostPrompt() {
             if (!this.$cookies.get('user_token')) {
                 this.$message({
                     message: '请先登录!',
                     type: "warning"
                 })
-                this.$router.push({path: '/login'})
-            }
-            else {
+                this.$router.push({ path: '/login' })
+            } else {
                 this.$prompt('请输入举报理由', '举报帖子', {
                     confirmButtonText: '确认',
                     cancelButtonText: '取消',
@@ -727,7 +658,7 @@ export default {
                             return '举报理由不能为空';
                         }
                     },
-                }).then(({value}) => {
+                }).then(({ value }) => {
                     this.reportPost(value);
                 }).catch(() => {
                     this.$message({
@@ -746,8 +677,8 @@ export default {
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
-            }).then(() => {
-                // console.log(response);
+            }).then(response => {
+                console.log(response);
             }).catch(error => {
                 console.error(error);
             });
@@ -759,9 +690,8 @@ export default {
                     message: '请先登录!',
                     type: "warning"
                 })
-                this.$router.push({path: '/login'})
-            }
-            else {
+                this.$router.push({ path: '/login' })
+            } else {
                 this.$prompt('请输入举报理由', '举报reply', {
                     confirmButtonText: '确认',
                     cancelButtonText: '取消',
@@ -771,7 +701,7 @@ export default {
                             return '举报理由不能为空';
                         }
                     },
-                }).then(({value}) => {
+                }).then(({ value }) => {
                     this.reportReply(value, type, id);
                 }).catch(() => {
                     this.$message({
@@ -781,9 +711,8 @@ export default {
                 });
             }
         },
-        reportReply(reason, type, id) {
-            // 执行举报reply的逻辑
-            // console.log('举报reply type= ' + type + '，理由为：' + reason);
+        reportReply(reason, type, id) {// 执行举报reply的逻辑
+            console.log('举报reply type= ' + type + '，理由为：' + reason);
             let that = this
             that.$axios.post('/forum/report/reportReply', {
                 id: id,
@@ -819,8 +748,7 @@ export default {
 
         getTimeSubstring(timeString) {
             if (timeString) {
-                // return timeString.substring(5, 16);
-                return timeString
+                return timeString.substring(5, 16);
             }
         },
 
@@ -834,35 +762,30 @@ export default {
 
         getGender(value) {
             return value === 1 ? '女' : value === 0 ? '男' : ''
-        },
-
+        }
     },
 
     mounted() {
         this.initPost();
-        window.addEventListener('scroll', this.handleScroll)
-        this.loadLazyFloors()
     },
 
     computed: {
         tags() {
             if (this.post.pinNameStr) {
                 return this.post.pinNameStr.split(";");
-            }
-            else {
+            } else {
                 return [];
             }
         }
     },
 }
 </script>
-
+    
 <style scoped>
 .title {
     align-items: flex-start;
     justify-content: space-between;
-    padding-top: 10px;
-    width: 500px;
+    padding-top: 10px
 }
 
 .title h2 {
@@ -894,8 +817,17 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    margin-bottom: 20px;
     width: 100%;
 }
+
+.post_footer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
 
 .post_floor-header {
     color: #999;
@@ -904,12 +836,6 @@ export default {
 
     display: flex;
     justify-content: space-between;
-}
-
-.clearfix:after {
-    content: '';
-    display: block;
-    clear: both;
 }
 
 </style>

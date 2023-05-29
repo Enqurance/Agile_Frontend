@@ -9,7 +9,11 @@ import MyPost_Mobile from '@/components/mobile/sub_components/infopage_sub_compo
 
 export default {
     name: "MobileInfoPage",
-    components: {  MyInfo_Mobile, MyComment_Mobile, MyMessage_Mobile, MyPost_Mobile },
+    components: {  
+        MyInfo_Mobile, 
+        MyComment_Mobile, 
+        MyMessage_Mobile, 
+        MyPost_Mobile },
     setup(){
         let Index = ref('1');
         return { Index,}
@@ -35,7 +39,6 @@ export default {
 .InforPage {
     width: 100%;
     height: 100%;
-    padding-right: 2%;
     display: block;
 }
 </style>

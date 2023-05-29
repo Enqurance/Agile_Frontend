@@ -43,7 +43,7 @@
           </el-dialog>
           <h3 class="hover"
               style="padding: 0 20px; height:28px;overflow: hidden"
-              @click="browseFloor(floor.id)">
+              @click="browseFloor(floor.post_id)">
             {{ floor.title }}
 
           </h3>
@@ -83,7 +83,7 @@
             </el-dialog>
             <h3 class="hover"
                 style="padding: 0 20px; height:28px;overflow: hidden"
-                @click="browseComment(comment.id)">
+                @click="browseComment(comment.post_id)">
               {{ comment.title }}
 
             </h3>

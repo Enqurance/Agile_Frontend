@@ -1,7 +1,7 @@
 <template>
     <div>
         <!--        <el-header height="7%">-->
-        <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3; background: black; opacity: 0.8"/>
+        <PageHeader style="position: fixed; top: 0; width: 100%; z-index: 3;"/>
         <!--        </el-header>-->
         <!--        <el-main style="height: 93%">-->
         <PlaceSearch class="on_div place_search" :style="{}"

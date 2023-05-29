@@ -1,284 +1,381 @@
 <template>
-  <div
-      style="padding: 1% 15% 3% 15%;background: rgb(246,246,246);width: 70%;height: 80%">
-    <div style="margin-bottom: 3%;font-size: 20px">
-      我的帖子
-      <!--      <el-button style="margin-left: 40%" size="large" type="primary">-->
-      <!--        创建-->
-      <!--      </el-button>-->
+    <div style="margin: 0 auto;padding: 0 3%; width: 80%">
+        <div class="sub_div" v-if="this.subMenu === 1">
+            <div style="overflow: auto">
+                <div v-if="posts.length === 0">
+                    <el-empty description="暂时还没有贴子"/>
+                </div>
+
+                <div v-else class="post_div" v-for="post in posts" :key="post.id">
+                    <div>
+                        <el-button style="float: right; margin-top: 20px;margin-right: 20px"
+                                   type="danger" @click="post.deleteDialog=true">
+                            删除
+                        </el-button>
+
+                        <el-popover placement="top-start" :hide-after="0" trigger="hover">
+                            <template #reference>
+                                <h3 class="link_hover"
+                                    style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
+                                    @click="browsePost(post.id)">
+                                    {{ post.title }}
+                                </h3>
+                            </template>
+                            <div style="text-align: center">
+                                <el-text tag="b" type="info">点击跳转至帖子</el-text>
+                            </div>
+                        </el-popover>
+
+                        <div style="padding-left: 20px; margin-right: 15%">
+                            <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                                <el-text tag="b" size="large">内容:</el-text>
+                                <el-text tag="i" size="large">
+                                    {{ post.content }}
+                                </el-text>
+                            </div>
+
+                            <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                                <el-text tag="b" size="large">标签:</el-text>
+                                <el-text size="large" :style="{color: _tag_to(post.tag).color}">
+                                    {{ _tag_to(post.tag).type }}
+                                </el-text>
+                            </div>
+
+                            <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                                <el-text tag="b" size="large">关联钉子:</el-text>
+                                <el-text size="large">
+                                    {{ post.pin_name_str }}
+                                </el-text>
+                            </div>
+
+                            <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                                <el-text tag="b" size="large">创建时间:</el-text>
+                                <el-text tag="i" size="large">
+                                    {{ post.createTime }}
+                                </el-text>
+                            </div>
+
+                            <div class="clearfix" style="padding: 0 10px 20px 20px;">
+                                <div style="float: left; margin-right: 30px">
+                                    <el-icon>
+                                        <ChatLineRound/>
+                                    </el-icon>
+                                    {{ post.floor_num }}
+                                </div>
+                                <div style="float: left; margin-right: 30px">
+                                    <span class="iconfont icon-dianzan" style="color: red"/>
+                                    {{ post.thumbs_up }}
+                                </div>
+                                <div style="float: left">
+                                    <span class="iconfont icon-dianji"/>
+                                    {{ post.visit }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <el-dialog v-model="post.deleteDialog" width="30%" center>
+                        <div style="; text-align: center">
+                            <el-text tag="b" style="color: black; font-size: 15px">
+                                您确定要删除这个帖子吗？相关的评论也将被删除。
+                            </el-text>
+                        </div>
+                        <template #footer>
+                            <div class="dialog-footer">
+                                <el-button style="margin-left: 50%" @click="post.deleteDialog = false">取消</el-button>
+                                <el-button type="primary" @click="deletePost(post)">确认</el-button>
+                            </div>
+                        </template>
+                    </el-dialog>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="sub_div" v-if="this.subMenu === 2">
+            <div style="overflow: auto">
+                <div v-if="bad_posts.length === 0">
+                    <el-empty class="empty_div" description="没有待整改贴子"/>
+                </div>
+
+                <div v-else class="post_div" v-for="post in bad_posts" :key="post.id">
+                    <div>
+                        <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
+                                   @click="post.deleteDialog=true">
+                            删除
+                        </el-button>
+                        <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="primary"
+                                   @click="editInfo(post)">
+                            整改
+                        </el-button>
+
+                        <el-popover placement="top-start" :hide-after="0" trigger="hover">
+                            <template #reference>
+                                <h3 class="link_hover"
+                                    style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
+                                    @click="browsePost(post.id)">
+                                    {{ post.title }}
+                                </h3>
+                            </template>
+                            <div style="text-align: center">
+                                <el-text tag="b" type="info">点击跳转至帖子</el-text>
+                            </div>
+                        </el-popover>
+
+                        <div style="margin-right: 15%">
+                            <div style="padding-left: 20px">
+                                <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                                    <el-text tag="b" size="large">内容:</el-text>
+                                    <el-text tag="i" size="large">
+                                        {{ post.content }}
+                                    </el-text>
+                                </div>
+
+                                <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                                    <el-text tag="b" size="large">标签:</el-text>
+                                    <el-text size="large" :style="{color: _tag_to(post.tag).color}">
+                                        {{ _tag_to(post.tag).type }}
+                                    </el-text>
+                                </div>
+
+                                <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                                    <el-text tag="b" size="large">关联钉子:</el-text>
+                                    <el-text size="large">
+                                        {{ post.pin_name_str }}
+                                    </el-text>
+                                </div>
+
+                                <div style="padding: 0 10px 10px 20px;overflow: hidden;">
+                                    <el-text tag="b" size="large">创建时间:</el-text>
+                                    <el-text tag="i" size="large">
+                                        {{ post.createTime }}
+                                    </el-text>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                                    <h4>整改原因: </h4>
+                                    <div>
+                                        <el-text style="padding-left: 20px" tag="i" size="large">
+                                            {{ post.reason }}
+                                        </el-text>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <el-dialog v-model="post.changeDialog" title="整改帖子" width="30%" center>
+                        <el-form>
+                            <el-form-item label="标题">
+                                <el-input v-model="post.new_title" autosize maxlength="60"></el-input>
+                            </el-form-item>
+                            <el-form-item label="正文">
+                                <el-input v-model="post.new_content" type="textarea" :rows="6"
+                                          maxlength="200"></el-input>
+                            </el-form-item>
+                        </el-form>
+
+                        <template #footer>
+                            <div class="dialog-footer">
+                                <el-button style="margin-left: 50%" @click="post.changeDialog = false">取消</el-button>
+                                <el-button type="primary" @click="changePost(post)">确认</el-button>
+                            </div>
+                        </template>
+                    </el-dialog>
+
+                    <el-dialog v-model="post.deleteDialog" width="30%" center>
+                        <div style="; text-align: center">
+                            <el-text tag="b" style="color: black; font-size: 15px">
+                                您确定要删除这个帖子吗？相关的评论也将被删除。
+                            </el-text>
+                        </div>
+                        <template #footer>
+                            <div class="dialog-footer">
+                                <el-button style="margin-left: 50%" @click="post.deleteDialog = false">取消</el-button>
+                                <el-button type="primary" @click="deletePost(post)">确认</el-button>
+                            </div>
+                        </template>
+                    </el-dialog>
+
+                </div>
+            </div>
+        </div>
     </div>
-    <el-menu
-        :default-active="activeIndex"
-        class="el-menu-demo"
-        mode="horizontal"
-    >
-      <el-menu-item index="1" @click="Index='1'">所有帖子</el-menu-item>
-      <div class="flex-grow"/>
-      <el-menu-item index="2" @click="Index='2'">待整改帖子</el-menu-item>
-    </el-menu>
-    <div v-if="this.Index==='1'">
-      <ul class="infinite-list" style="overflow: auto">
-        <div v-if="posts.length === 0">
-          <el-empty description="暂时还没有贴子"/>
-        </div>
-        <div v-for="post in posts" :key="post.id"
-             style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 98%;height: 150px ">
-          <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
-                     @click="post.deleteDialog=true">
-            删除
-          </el-button>
-
-          <el-dialog v-model="post.deleteDialog" title="删除帖子" width="30%" center>
-            <span style="text-align: center">
-              你确定要删除这个帖子吗？相关的评论也将被删除。
-            </span>
-            <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="post.deleteDialog = false">取消</el-button>
-              <el-button type="primary" @click="deletePost(post)">
-                确认
-              </el-button>
-            </span>
-            </template>
-          </el-dialog>
-          <h3 class="hover"
-              style="padding: 0 20px; height:28px;overflow: hidden"
-              @click="browsePost(post.id)">
-            {{ post.title }}
-
-          </h3>
-
-          <p style="padding: 0 20px;height:40px;overflow: hidden;">
-            {{ post.content }}
-          </p>
-          <div style="padding: 0 20px;">
-            <el-icon>
-              <ChatRound/>
-            </el-icon>
-            {{ post.floor_num }}
-          </div>
-        </div>
-      </ul>
-    </div>
-
-    <div v-if="this.Index==='2'">
-      <ul class="infinite-list" style="overflow: auto">
-        <div v-if="posts.length === 0">
-          <el-empty description="暂时还没有贴子"/>
-        </div>
-        <div v-for="post in bad_posts" :key="post.id"
-             style="border-radius: 20px; background: white; border: 2px solid rgb(246,246,246); width: 98%;height: 150px ">
-          <el-button style="float: right; margin-top: 20px;margin-right: 20px" type="danger"
-                     @click="post.deleteDialog=true">
-            删除
-          </el-button>
-          <el-button style="float: right; margin-top: 20px;margin-right: 20px"
-                     type="primary"
-                     @click="editInfo(post)">
-            整改
-          </el-button>
-          <el-dialog v-model="post.changeDialog" title="整改帖子" width="30%" center>
-            <el-input
-                v-model="post.new_title"
-                type="textarea"
-                placeholder="Please input"
-            />
-            <div style="margin: 20px 0"/>
-            <el-input
-                v-model="post.new_content"
-                type="textarea"
-                placeholder="Please input"
-            />
-            <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="post.changeDialog = false">取消</el-button>
-              <el-button type="primary" @click="changePost(post)">
-                确认
-              </el-button>
-            </span>
-            </template>
-          </el-dialog>
-
-          <el-dialog v-model="post.deleteDialog" title="删除帖子" width="30%" center>
-            <span style="text-align: center">
-              你确定要删除这个帖子吗？相关的评论也将被删除。
-            </span>
-            <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="post.deleteDialog = false">取消</el-button>
-              <el-button type="primary" @click="deletePost(post)">
-                确认
-              </el-button>
-            </span>
-            </template>
-          </el-dialog>
-          <h3 class="hover"
-              style="padding: 0 20px; height:28px;overflow: hidden"
-          >
-            {{ post.title }}
-
-          </h3>
-
-          <p style="padding: 0 20px;height:40px;overflow: hidden;">
-            {{ post.content }}
-          </p>
-
-          <div style="padding: 0 20px;">
-            <el-button @click="post.reasonDialog=true" size="small"> 查看原因</el-button>
-          </div>
-          <el-dialog v-model="post.reasonDialog" title="整改原因" width="30%" center>
-            <span style="text-align: center">
-              {{ post.reason }}
-            </span>
-            <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="post.reasonDialog = false">关闭</el-button>
-            </span>
-            </template>
-          </el-dialog>
-        </div>
-      </ul>
-    </div>
-  </div>
 </template>
 
 <script>
-import {ChatRound} from "@element-plus/icons-vue";
+import {ChatLineRound} from "@element-plus/icons-vue";
+import '@/assets/PinIcon/font3/iconfont.css'
+import global from "@/global";
 
 export default {
-  name: "MyPost",
-  components: {ChatRound},
-  data() {
-    return {
-      posts: [],
-      bad_posts: [],
-      activeIndex: '1',
-      Index: '1',
+    name: "MyPost",
+    components: {ChatLineRound},
+    props: {
+        subMenu: Number
+    },
+    data() {
+        return {
+            posts: [],
+            bad_posts: [],
+            activeIndex: '1',
+        }
+    },
+    methods: {
+        _tag_to(tag) {
+            let type = global.get_pin_type(tag)
+            let color = global.get_pin_color(tag)
+
+            return {
+                type, color
+            }
+        },
+
+        deletePost(post) {
+            let that = this
+            post.deleteDialog = false;
+            // console.log(post);
+            that.$axios.delete('/forum/post/deletePost/' + post.id, {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then((res) => {
+                if (res.data.code === 200) {
+                    // console.log("删除的帖子id为：" + post.id)
+                    this.$message({
+                        type: 'info',
+                        message: '删除成功',
+                    });
+                }
+                else {
+                    this.$message({
+                        message: res.data.message,
+                        type: 'error'
+                    })
+                }
+            }).catch((res) => console.log(res))
+        },
+        editInfo(post) {
+            post.changeDialog = true;
+            post.new_title = post.title;
+            post.new_content = post.content;
+        },
+        queryAllPost() {
+            let that = this
+            that.$axios.get('/InfoPage/MyPost/getMyAllPost', {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+
+            }).then((res) => {
+                // console.log(res)
+                if (res.data.code === 200) {
+                    // console.log("get post success")
+                    this.posts = res.data.data
+                }
+                else {
+                    this.$message({
+                        message: res.data.message,
+                        type: 'error'
+                    })
+                }
+            })
+        },
+        queryBadPost() {
+            let that = this
+            that.$axios.get('/InfoPage/MyPost/getMyBadPost', {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+
+            }).then((res) => {
+                // console.log(res)
+                if (res.data.code === 200) {
+                    // console.log("get bad post success")
+                    this.bad_posts = res.data.data
+                }
+                else {
+                    this.$message({
+                        message: res.data.message,
+                        type: 'error'
+                    })
+                }
+            })
+        },
+        browsePost(id) {
+            // 记得改
+            this.$router.push({path: '/Forum/' + id})
+        },
+        changePost(post) {
+            post.changeDialog = false;
+            let that = this
+            that.$axios.post('/InfoPage/MyPost/changePostById', {
+                post_id: post.id,
+                new_title: post.new_title,
+                new_content: post.new_content,
+            }, {
+                headers: {
+                    'token': that.$cookies.get('user_token')
+                }
+            }).then((res) => {
+                // console.log(res)
+                if (res.data.code === 200) {
+                    // console.log("change success")
+                    this.$message({
+                        message: "已提交整改，请耐心等待",
+                        type: 'success'
+                    })
+                }
+                else {
+                    this.$message({
+                        message: res.data.message,
+                        type: 'error'
+                    })
+                }
+            })
+        },
+    },
+    mounted() {
+        this.queryAllPost()
+        this.queryBadPost()
+    },
+    watch: {
+        subMenu(newData) {
+            // console.log(newData)
+        }
     }
-  },
-  methods: {
-    deletePost(post) {
-      let that = this
-      post.deleteDialog = false;
-      console.log(post);
-      that.$axios.delete('/forum/post/deletePost/' + post.id, {
-        headers: {
-          'token': that.$cookies.get('user_token')
-        }
-      }).then((res) => {
-        if (res.data.code === 200) {
-          console.log("删除的帖子id为：" + post.id)
-          this.$message({
-            type: 'info',
-            message: '删除成功',
-          });
-        } else {
-          this.$message({
-            message: res.data.message,
-            type: 'error'
-          })
-        }
-      }).catch((res) => console.log(res))
-    },
-    editInfo(post) {
-      post.changeDialog = true;
-      post.new_title = post.title;
-      post.new_content = post.content;
-    },
-    queryAllPost() {
-      let that = this
-      that.$axios.get('/InfoPage/MyPost/getMyAllPost', {
-        headers: {
-          'token': that.$cookies.get('user_token')
-        }
-
-      }).then((res) => {
-        console.log(res)
-        if (res.data.code === 200) {
-          console.log("get post success")
-          this.posts = res.data.data
-        } else {
-          this.$message({
-            message: res.data.message,
-            type: 'error'
-          })
-        }
-      })
-    },
-    queryBadPost() {
-      let that = this
-      that.$axios.get('/InfoPage/MyPost/getMyBadPost', {
-        headers: {
-          'token': that.$cookies.get('user_token')
-        }
-
-      }).then((res) => {
-        // console.log(res)
-        if (res.data.code === 200) {
-          console.log("get bad post success")
-          this.bad_posts = res.data.data
-        } else {
-          this.$message({
-            message: res.data.message,
-            type: 'error'
-          })
-        }
-      })
-    },
-    browsePost(id) {
-      // 记得改
-      this.$router.push({path: '/Forum/' + id})
-    },
-    changePost(post) {
-      post.changeDialog = false;
-      let that = this
-      that.$axios.post('/InfoPage/MyPost/changePostById', {
-        post_id: post.id,
-        new_title: post.new_title,
-        new_content: post.new_content,
-      }, {
-        headers: {
-          'token': that.$cookies.get('user_token')
-        }
-      }).then((res) => {
-        // console.log(res)
-        if (res.data.code === 200) {
-          console.log("change success")
-          this.$message({
-            message: "已提交整改，请耐心等待",
-            type: 'success'
-          })
-        } else {
-          this.$message({
-            message: res.data.message,
-            type: 'error'
-          })
-        }
-      })
-    },
-  },
-  mounted() {
-    this.queryAllPost()
-    this.queryBadPost()
-  }
 }
 </script>
 
 <style scoped>
 .infinite-list {
-  height: 460px;
-  padding: 0;
-  margin: 0;
-  list-style: none;
+    height: 500px;
+    list-style: none;
 }
 
-.infinite-list .infinite-list-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 50px;
-  background: var(--el-color-primary-light-9);
-  margin: 8px;
-  color: var(--el-color-primary);
+.empty_div {
+    margin-top: 10%;
 }
+
+.post_div {
+    margin: 20px 0;
+    border-radius: 20px;
+    background: white;
+    border: 2px solid rgb(246, 246, 246);
+    width: 98%;
+}
+
+.clearfix::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.link_hover {
+    cursor: pointer;
+}
+
 </style>

@@ -1,8 +1,12 @@
 <script>
-import {ref} from 'vue'
+import { Position, CollectionTag } from '@element-plus/icons-vue'
+
 export default {
     name: "MyPin",
-    components: {},
+    components: {
+        Position, 
+        CollectionTag
+    },
     inject: ['reload'],
     setup(){
     },
@@ -26,6 +30,8 @@ export default {
             ],
             count: 0,
             isReload: true,
+            deleteConfirm: false,
+            curI: 0,
         }
     },
     mounted() {
@@ -81,48 +87,61 @@ export default {
 <template>
     <div v-if="isReload">
     <div  v-if="count > 0">
-    <ul class="infinite-list" style="overflow: auto">
-        <li v-for="i in count" :key="i" class="infinite-list-item">
-            <el-card class="pinCard">
-                <div class="textItem">
-                    <el-container>
-                    <el-aside width="83%">
-                        <p>名字: {{ pins[i-1].name }}</p>
-                        <span style="padding-left: 5%; padding-right: 10%">位置： {{ pins[i-1].position }}</span>
-                        <span>简介：{{ pins[i-1].brief }}</span>
-                    </el-aside>
-                    <el-main>
-                        <el-button @click="deletePin(this.pins[i-1].id, i-1)" type="danger">Delete</el-button>
-                    </el-main>
-                    </el-container>
-                </div>
+    <el-scrollbar height="400px">
+        <p v-for="i in count" :key="i" class="scrollbar-demo-item">
+            <el-card shadow="hover">
+                <template #header>
+                    <div class="card-header">
+                        <span>{{ pins[i-1].name }}</span>
+                        <el-button @click="deleteConfirm = true; curI = i;" plain type="danger">删除钉子</el-button>
+                    </div>
+                </template>
+                <el-row>
+                    <el-col>
+                        <el-icon style="position:relative;top: 2px;margin-right: 10px">
+                            <Position/>
+                        </el-icon>
+                        位置：{{ pins[i-1].position }}
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col>
+                        <el-icon style="position:relative;top: 2px;margin-right: 10px">
+                            <CollectionTag/>
+                        </el-icon>
+                        简介：{{ pins[i-1].brief }}
+                    </el-col>
+                </el-row>
             </el-card>
-        </li>
-    </ul>
+        </p>    
+    </el-scrollbar>
     </div>
-    <div v-else><el-empty description="该用户没有私有钉子" /></div>
+        <div v-else><el-empty description="该用户没有私有钉子"/></div>
     </div>
+
+    <el-dialog
+        v-model="deleteConfirm"
+        title="确认"
+        width="30%"
+        align-center
+    >
+        <span>您确认删除该钉子吗？</span>
+        <template #footer>
+        <span class="dialog-footer">
+            <el-button @click="deleteConfirm = false">取消</el-button>
+            <el-button type="danger" plain @click="deletePin(this.pins[curI-1].id, curI-1); deleteConfirm = false">
+            确认
+            </el-button>
+        </span>
+        </template>
+    </el-dialog>
 </template>
 
 <style scoped>
-.infinite-list {
-  height: 400px;
-  width: 80%;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-.infinite-list .infinite-list-item {
+.card-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  height: 120px;
-  background: var(--el-color-primary-light-9);
-  margin: 10px;
-  color: var(--el-color-primary);
-}
-.infinite-list .infinite-list-item + .list-item {
-  margin-top: 5px;
 }
 
 .pinCard{
