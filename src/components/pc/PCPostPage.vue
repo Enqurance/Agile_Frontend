@@ -73,8 +73,9 @@
                     <div style="text-align: left; font-size: 20px; width: 100%">
                         <el-text tag="b" style="font-size: 16px; color: black">内容：</el-text>
                         <div>
-                            <pre style="font-size: 14px; word-wrap: break-word;font-family: 'Open Sans', sans-serif;
-                            white-space: pre-wrap;">{{ post.content }}</pre>
+                            <!-- <pre style="font-size: 14px; word-wrap: break-word;font-family: 'Open Sans', sans-serif;
+                            white-space: pre-wrap;">{{ post.content }}</pre> -->
+                            <div v-html="post.content"></div>
                         </div>
                     </div>
 
@@ -146,9 +147,9 @@
                         </div>
                     </el-dialog>
 
-                    <div style="width: 100%;">
-                        <div v-for="floor in this.floors" :key="floor.id" style="padding-top: 5px;">
-                            <el-card style="min-height: auto;">
+                    <div style="width: 100%; padding-bottom: 70px">
+                        <div v-for="floor in this.floors" :key="floor.id" style="padding-top: 10px;">
+                            <el-card style="min-height: auto; margin-bottom: 20px">
                                 <div class="post_floor-header">
                                     <div>
                                         <el-popover placement="right" width="220" trigger="hover">
@@ -273,6 +274,7 @@
                                 </el-card>
                             </el-card>
                         </div>
+                        <div v-loading="loading" element-loading-text="Loading..."/>
                     </div>
                 </div>
 
@@ -329,28 +331,43 @@ export default {
         const offset = ref(0);
         const limit = 5;
 
+        const loading = ref(false)
+
         const id = proxy.$route.params.postID;
 
         const loadLazyFloors = () => {
-            proxy.$axios.post('/forum/floor/getFloors', null, {
-                params: {
-                    post_id: id,
-                    offset: offset.value,
-                    limit: limit
-                },
+            proxy.$axios.post('/forum/floor/getFloorsForLazy', {
+                post_id: id,
+                offset_floor_id: offset.value,
+                limit: limit
+            }, {
                 headers: {
                     'token': proxy.$cookies.get('user_token')
                 }
             }).then((res) => {
-                console.log(res)
+                // console.log(res)
+
                 if (res.data.code === 200) {
                     // 懒加载
-                    floors.value = floors.value.concat(res.data.data.retFloors)
-                    offset.value += floors.value.length
-                    console.log(floors.value)
+                    let size = res.data.data.length
+                    if (size > 0) {
+                        floors.value = floors.value.concat(res.data.data)
+                        offset.value = res.data.data[size - 1].id
+                    }
+                    else {
+                        proxy.$message({
+                            message: '已显示全部楼层',
+                            type: 'success',
+                            grouping: true,
+                            showClose: true,
+                        })
+                    }
+                    // console.log(floors.value)
+                    // console.log(offset.value)
                 }
                 else {
                     floors.value = []
+                    offset.value = 0
                 }
             }).catch((error) => {
                 console.log(error);
@@ -358,11 +375,20 @@ export default {
         };
 
         const debounce = (f, delay) => {
+            console.log(1)
             let timer = null
+            let loadingTimer = null
             return () => {
                 clearTimeout(timer)
+                clearTimeout(loadingTimer)
+
+                loadingTimer = setTimeout(() => {
+                    loading.value = true
+                }, 200)
+
                 timer = setTimeout(() => {
                     f.apply(this, arguments)
+                    clearTimeout(loadingTimer)
                 }, delay)
             }
         }
@@ -373,14 +399,15 @@ export default {
                 const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
                 const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
                 const distance = scrollHeight - (windowHeight + scrollTop)
-                if (distance <= 10) {
+                if (distance <= 100) {
                     loadLazyFloors() // 触发加载数据的方法
+                    loading.value = false
                 }
             }
-        }, 1000)
+        }, 1500)
 
         return {
-            imageUrl, floors, limit, loadLazyFloors, handleScroll
+            imageUrl, floors, limit, loadLazyFloors, handleScroll, loading
         };
     },
 
@@ -480,7 +507,12 @@ export default {
             }).then((response) => {
                 //console.log(response)
                 that.newFloorForm.body = ''
-                // todo
+                this.$message({
+                    message: '请刷新加载新楼层',
+                    type: 'success',
+                    grouping: true,
+                    showClose: true,
+                })
             })
             this.newFloorDialogVisible = false
         },
@@ -614,11 +646,12 @@ export default {
             }).then((res) => {
                 if (res.data.code === 200) {
                     // console.log("删除的floor的id为：" + floorId)
+                    this.floors = this.floors.filter(item => item.id !== floorId)
+                    // console.log(this.floors)
                     this.$message({
                         type: 'info',
                         message: '删除成功',
                     });
-                    // todo
                 }
                 else {
                     this.$message({

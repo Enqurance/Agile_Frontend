@@ -6,6 +6,7 @@ import AMapLoader from "@amap/amap-jsapi-loader";
 import {shallowRef} from "@vue/reactivity";
 import global from "@/global";
 import MapPinInfo from "@/components/pc/sub_components/mappage_sub_components/MapPinInfo.vue";
+import CopyrightICP from "@/components/CopyrightICP.vue";
 
 export default defineComponent({
     name: "AdministratorPage",
@@ -14,7 +15,8 @@ export default defineComponent({
         Document,
         Location,
         IconMenu,
-        PCPageHeader
+        PCPageHeader,
+        CopyrightICP
     },
     data() {
         let map = shallowRef(null)
@@ -888,7 +890,7 @@ export default defineComponent({
                 </el-main>
             </el-container>
         </el-container>
-
+        <CopyrightICP/>
         <MapPinInfo :id="show_marker_id" :is_examine="now_examine" @close_drawer="show_marker_id = -1"/>
     </div>
 </template>
