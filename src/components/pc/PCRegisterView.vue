@@ -3,40 +3,43 @@
         <div class="logo-container">
             <img src="/img/logo.png" alt="logo" style="width: 100%; height: auto;">
         </div>
-        <div class="form-container">
-            <el-form ref="registerForm" :model="registerForm" class="register-form">
-                <el-form-item prop="username" :rules="usernameRules"> 
+        <div>
+            <p class="title">BUAAMapForum Register</p>
+        </div>
+        <div class="form-container" style="width: 35%;">
+            <el-form ref="registerForm" :model="registerForm" class="register-form"
+                label-position='right' label-width="80px">
+                <el-form-item prop="username" :rules="usernameRules" label="用户名"> 
                     <el-input v-model="registerForm.username" placeholder="请设置用户名"
                               @keyup.enter="openVerified"></el-input>
                 </el-form-item>
 
-                <el-form-item prop="email" :rules="emailRules">
+                <el-form-item prop="email" :rules="emailRules" label="邮箱">
                     <el-input v-model="registerForm.email" placeholder="请输入验证邮箱"
                               @keyup.enter="openVerified"></el-input>
                 </el-form-item>
 
-                <div style="display:flex;width: 400px;">
-                    <el-form-item prop="emailCode" style="width: 330px;padding-right: 110px;" :rules="emailCodeRules">
+                <el-form-item prop="emailCode" :rules="emailCodeRules" label="验证码">
+                    <div style="display:flex; width: 100%;">
                         <el-input v-model="registerForm.emailCode" placeholder="请输入验证码"
-                                  @keyup.enter="openVerified"></el-input>
-                    </el-form-item>
-                    <el-form-item prop="emailCodeBotton" style="flex: 1;">
-                        <el-button :disabled="countdown > 0" type="primary" @click="sendEmailCode" class="button_left"  style="width: 100px;">
+                              @keyup.enter="openVerified"/>
+                        <el-button :disabled="countdown > 0" type="primary" @click="sendEmailCode"  
+                            style="margin-left: 50px;">
                             {{ countdown > 0 ? `${countdown}秒后重发` : '发送验证码'}}
                         </el-button>
-                    </el-form-item>
-                </div>
+                    </div>
+                </el-form-item>
 
-                <el-form-item prop="password1" :rules="passwordRules">
+                <el-form-item prop="password1" :rules="passwordRules" label="密码">
                     <el-input type="password" v-model="registerForm.password1" placeholder="请输入密码"
                               @keyup.enter="openVerified"></el-input>
                 </el-form-item>
-                <el-form-item prop="password2" :rules="password2Rules">
+                <el-form-item prop="password2" :rules="password2Rules" label="确认密码">
                     <el-input type="password" v-model="registerForm.password2" placeholder="请确认密码"
                               @keyup.enter="openVerified"></el-input>
                 </el-form-item>
 
-                <el-form-item prop="grade" :rules="gradeRules">
+                <el-form-item prop="grade" :rules="gradeRules" label="年级">
                     <el-select v-model="registerForm.grade" placeholder="请选择年级" class="el-select">
                         <el-option label="本科" value="1"></el-option>
                         <el-option label="硕士" value="2"></el-option>
@@ -44,14 +47,14 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item prop="campus" :rules="campusRules">
+                <el-form-item prop="campus" :rules="campusRules" label="校区">
                     <el-select v-model="registerForm.campus" placeholder="请选择校区" class="el-select">
                         <el-option label="学院路校区" value="1"></el-option>
                         <el-option label="沙河校区" value="2"></el-option>
                     </el-select>
                 </el-form-item>
 
-                <el-form-item prop="gender" :rules="genderRules">
+                <el-form-item prop="gender" :rules="genderRules" label="性别">
                     <el-radio v-model="registerForm.gender" label=0>男</el-radio>
                     <el-radio v-model="registerForm.gender" label=1>女</el-radio>
                 </el-form-item>
@@ -261,7 +264,7 @@ export default {
 
 .logo-container {
     width: 180px;
-    height: 180px;
+    height: 120px;
     background: rgba(255, 255, 255, 0);
     margin-top: 0px;
     margin-bottom: 0px;
@@ -270,12 +273,8 @@ export default {
 
 .form-container {
     display: flex;
-    /* 添加Flex属性 */
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 100px;
+    padding-right: 100px;
     padding-top: 15px;
     padding-bottom: 0;
     z-index: 1;
@@ -289,7 +288,7 @@ export default {
     left: -10px; /* 向左移动一点 */
     right: -10px; /* 向右移动一点 */
     z-index: -1;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.2);
     border-radius: 20px; /* 圆角边框 */
 }
 
@@ -297,23 +296,12 @@ export default {
     flex: 1; /* 添加Flex属性 */
 }
 
-.el-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.el-form-item {
-    width: 100%;
-    text-align: center;
-}
-
-.button_left {
-    position: absolute;
-    right: 0%;
-}
-
 .el-select {
     width: 100%;
+}
+.title{
+    font-family: fantasy;
+    font-size: 2.8em;
+    color: #1f82ce;
 }
 </style>
