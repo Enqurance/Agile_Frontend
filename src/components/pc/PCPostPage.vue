@@ -566,7 +566,7 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
-                console.log(res.data)
+                // console.log(res.data)
                 if (res.data.code === 200) {
                     that.comments = res.data.data.retComments
                     //console.log("getComments")

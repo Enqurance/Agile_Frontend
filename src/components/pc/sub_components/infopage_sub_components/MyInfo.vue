@@ -1,5 +1,5 @@
 <template>
-    <el-row span="6" :gutter="20">
+    <el-row :span="6" :gutter="20">
         <el-col 
             :xs="{ span: 6 }"
             :sm="{ span: 4 }"
@@ -27,9 +27,9 @@
             :xs="{ span: 18 }"
             :sm="{ span: 20 }"
             :md="{ span: 21 }">
-            <el-row span="12"></el-row>
-            <el-row span="12">
-                <el-col span="18">
+            <el-row :span="12"></el-row>
+            <el-row :span="12">
+                <el-col :span="18">
                 <el-descriptions 
                     :title="user.name"
                     direction="vertical"
@@ -51,7 +51,7 @@
                     </el-descriptions-item>
                 </el-descriptions>
                 </el-col>
-                <el-col span="6" offset="12">
+                <el-col :span="6" :offset="12">
                     <el-button type="primary" plain :icon="Edit" @click="editVisible = true">编辑</el-button>
                     <el-button type="primary" plain :icon="Edit" @click="changePasswordVisible = true">修改密码</el-button>
                 </el-col>
