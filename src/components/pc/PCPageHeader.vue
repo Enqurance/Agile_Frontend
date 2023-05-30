@@ -151,9 +151,8 @@ export default {
                 class="el-menu-demo"
                 mode="horizontal"
                 :ellipsis="false"
-                background-color=#e4f2ff
-                text-color=#4298e7
-                active-color=#7dbfff
+                background-color=#3B3B3B
+                text-color=white
                 active-text-color=#4298e7
         >
             <el-menu-item v-on:click="clickToMap()" index="1">
