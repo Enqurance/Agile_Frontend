@@ -1,11 +1,12 @@
 <template>
     <router-view/>
-    <div style="height: 4rem;"></div>
-    <MobileNavigator v-if="this.$device==='mobile'"/>  
+    <div  v-if="this.$device==='mobile'">
+        <MobileNavigator/>  
+        <div style="height: 4rem;"></div>
+    </div>
 </template>
 
 <script>
-
 export default {
     name: 'App',
     components: {

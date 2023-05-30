@@ -1,6 +1,7 @@
 <template>
   <el-container>
-    <el-col span="20">
+    <el-main>
+      <div>
         <div>
           <div class="top">
             <el-avatar :size="70" shape="circle" :src="this.imageUrl" style="user-select: none;">
@@ -72,7 +73,9 @@
             </el-pagination>
           </div>
         </div>
-        </el-col>
+        <div class="right"></div>
+      </div>
+    </el-main>
   </el-container>
 </template>
 
@@ -83,7 +86,7 @@ import NewPost from "../sub_components/NewPost.vue";
 import global from '@/global'
 
 export default {
-  name: "MobileForumpage",
+  name: "PCForumpage",
 
   components: {
     NewPost,
@@ -268,9 +271,15 @@ export default {
   color: #333;
 }
 
+.left,
+.right {
+  width: 20%;
+}
+
 .top {
   display: flex;
   justify-content: space-between;
+  width: 100%;
   margin-bottom: 20px;
   height: 100px;
   align-items: center;
@@ -315,10 +324,5 @@ export default {
 
 .dropdown>div:hover {
   background-color: #f5f5f5;
-}
-
-.postCard{
-    width: 100%;
-    height: 100%;
 }
 </style>
