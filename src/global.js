@@ -8,7 +8,7 @@ let pin_type_dic = {
     7: "生活服务",
 }
 
-let pin_color_dic = {
+/*let pin_color_dic = {
     1: "orange",
     2: "green",
     3: "red",
@@ -16,6 +16,15 @@ let pin_color_dic = {
     5: "grey",
     6: "blue",
     7: "pink"
+}*/
+let pin_color_dic = {
+    1: "rgba(0, 47, 167, 1)",
+    2: "rgba(161, 62, 151, 1)",
+    3: "rgba(0, 165, 133, 1)",
+    4: "rgba(239, 184, 5, 1)",
+    5: "rgba(1, 132, 127, 1)",
+    6: "rgba(0, 49, 83, 1)",
+    7: "rgba(212, 72, 72, 1)",
 }
 
 let pin_state_dic = {
