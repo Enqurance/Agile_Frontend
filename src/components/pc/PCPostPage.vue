@@ -147,7 +147,7 @@
                     <el-dialog v-model="newFloorDialogVisible" title="新建楼层" center>
                         <el-form :model="newFloorForm" ref="newFloorForm" label-width="80px">
                             <el-form-item label="回复内容">
-                                <el-input v-model="newFloorForm.body" :rows="5" clearable type="textarea" autosize maxlength="30"></el-input>
+                                <el-input v-model="newFloorForm.body" :rows="5" clearable type="textarea" autosize maxlength="150"></el-input>
                             </el-form-item>
                         </el-form>
                         <div class="clearfix">
@@ -312,7 +312,7 @@
                 </div>
                 <el-form>
                     <el-form-item>
-                        <el-input v-model="newCommentBody" type="textarea" autosize maxlength="100"></el-input>
+                        <el-input v-model="newCommentBody" type="textarea" autosize maxlength="150"></el-input>
                     </el-form-item>
                 </el-form>
                 <div class="clearfix">
