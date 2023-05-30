@@ -301,9 +301,8 @@ export default {
 </script>
 
 <template>
-    <div class="InforPage">
-        <el-container class="MainPart">
-            <el-header height="20%">
+    <div style="padding-left: 7%;padding-right: 7%;">
+        <van-row class="InforRow">
                 <div class="headPart">
                     <div v-if="isReload" style="padding-top: 15%;">
                         <div @click="showLeft">
@@ -382,14 +381,17 @@ export default {
                     </div>
                 </div>
                 <el-divider />
-            </el-header>
-            <el-main style="padding-top: 0%;">
-                <div>
-                    <p style="font-size: 20px;">我的钉子</p>
+            </van-row>
+            <van-row class="InforRow">
+                <el-card style="width: 100%;">
+                    <template #header>
+                        <div class="card-header">
+                            <span>我的钉子</span>
+                        </div>
+                    </template>
                     <MyPin_Mobile></MyPin_Mobile>
-                </div>
-            </el-main>
-        </el-container>
+                </el-card>
+            </van-row>
         <!--edit Dialog-->
 
         <van-dialog v-model:show="editVisible" title="请编辑你的信息" show-cancel-button style="height: 55%;"
@@ -452,12 +454,6 @@ export default {
 </template>
 
 <style scoped>
-.InforPage {
-    width: 100%;
-    height: 100%;
-    padding-right: 2%;
-    display: block;
-}
 .headPart {
     width: 100%;
     height: 100%;
@@ -516,7 +512,7 @@ export default {
 }
 
 span {
-    font-size: 120%;
+    font-size: 100%;
 }
 
 a {
@@ -543,17 +539,8 @@ a {
     /* 图片不拉伸，并保持完整显示 */
 }
 
-.el-form-item {
-    width: 100%;
-    text-align: center;
-}
 .form {
     padding-top: 8%;
     padding-right: 10%;
-}
-.dialog-footer {
-    padding-left: 20%;
-    padding-right: 20%;
-    padding-bottom: 5%;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <quill-editor class="editor" ref="myTextEditor" v-model="content" :options="editorOption" @blur="onEditorBlur($event)"
+  <quill-editor class="editor" ref="myTextEditor"  v-model="content" :value="initialValue" :options="editorOption" @blur="onEditorBlur($event)"
     @focus="onEditorFocus($event)" @ready="onEditorReady($event)" @change="onEditorChange($event)">
   </quill-editor>
 </template>
@@ -9,6 +9,12 @@ import { quillEditor } from "vue-quill-editor/src";
 
 export default {
   name: "FWBtest",
+  props: {
+    initialValue: {
+      type: String,
+      required:true
+    }
+  },
   components: { quillEditor },
   data() {
     return {
@@ -29,7 +35,7 @@ export default {
             [{ font: [] }], // 字体种类
             [{ align: [] }], // 对齐方式
             ["clean"], // 清除文本格式
-            ["link", "image", "video"] // 链接、图片、视频
+            // ["link", "image", "video"] // 链接、图片、视频
           ], //工具菜单栏配置
         },
         placeholder: '请输入内容', //提示

@@ -41,6 +41,7 @@ const routes = [
         name: 'post',
         path: '/Forum/:postID',
         component: PostPage,
+        props: true,
     },
     {
         name: 'Administrator',

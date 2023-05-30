@@ -1,6 +1,6 @@
 <template>
     <div class="post-add">
-        <el-dialog :title="dialogTitle" v-model="dialogVisible">
+        <el-dialog :title="dialogTitle" v-model="dialogVisible" width="80%">
             <el-form :model="formData" label-width="100px">
                 <el-form-item label="标题">
                     <el-input v-model="formData.post_title" autosize maxlength="60"></el-input>
@@ -13,6 +13,7 @@
                         <MyEditor @input="updateContent" :sendData="formData.post_body"></MyEditor>
                     </div>
                 </el-form-item>
+                
                 <el-form-item label="类别">
                     <el-radio-group v-model="formData.pin_type">
                         <el-radio :label="1">餐饮</el-radio>
@@ -29,14 +30,14 @@
                 </el-form-item>
             </el-form>
 
-            <div>
+            <el-col :offset="2">
                 <el-button @click="dialogVisible = false">取消
                     <CloseOutlined />
                 </el-button>
                 <el-button type="primary" @click="submitForm">确认
                     <CheckOutlined />
                 </el-button>
-            </div>
+            </el-col>
         </el-dialog>
     </div>
 </template>
