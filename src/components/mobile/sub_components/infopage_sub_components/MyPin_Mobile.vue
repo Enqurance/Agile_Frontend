@@ -3,7 +3,7 @@ import {ref} from 'vue'
 import { Delete } from '@element-plus/icons-vue'
 export default {
     name: "MyPin_Mobile",
-    components: { Delete },
+    components: {  },
     setup(){
     },
     data(){
@@ -81,24 +81,38 @@ export default {
 <template>
     <div v-if="isReload">
     <div  v-if="count > 0">
-    <ul class="infinite-list" style="overflow: auto">
-        <li v-for="i in count" :key="i" class="infinite-list-item">
-            <el-card class="pinCard">
-                <div class="textItem">
-                    <el-container>
-                    <el-aside width="70%">
-                        <p>{{ pins[i-1].name }}</p>
-                    </el-aside>
-                    <el-main style="padding-right: 3%; padding-left: 3%;">
-                        <el-button @click="deletePin(this.pins[i-1].id, i-1)" type="danger" round size="small"><el-icon><Delete /></el-icon></el-button>
-                    </el-main>
-                    </el-container>
-                    <span style="padding-left: 5%; padding-right: 10%">位置： {{ pins[i-1].position }}</span>
-                    <span>简介：{{ pins[i-1].brief }}</span>
-                </div>
+    <el-scrollbar height="400px">
+        <p v-for="i in count" :key="i">
+            <el-card shadow="hover">
+                <template #header>
+                    <div class="card-header">
+                        <van-row>
+                            <van-col span="15"><span>{{ pins[i-1].name }}</span></van-col>
+                            <van-col span="9">
+                                <el-button @click="deleteConfirm = true; curI = i;" plain type="danger">删除钉子</el-button>
+                            </van-col>
+                        </van-row>
+                    </div>
+                </template>
+                <el-row>
+                    <el-col>
+                        <el-icon style="position:relative;top: 2px;margin-right: 10px">
+                            <Position/>
+                        </el-icon>
+                        位置：{{ pins[i-1].position }}
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col>
+                        <el-icon style="position:relative;top: 2px;margin-right: 10px">
+                            <CollectionTag/>
+                        </el-icon>
+                        简介：{{ pins[i-1].brief }}
+                    </el-col>
+                </el-row>
             </el-card>
-        </li>
-    </ul>
+        </p>    
+    </el-scrollbar>
     </div>
     <div v-else><el-empty description="该用户没有私有钉子" /></div>
     </div>
