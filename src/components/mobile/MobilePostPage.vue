@@ -9,9 +9,10 @@
             </span>
           </el-row>
           <el-row>
-            <div class="post_content" style="text-align: left; font-size: 20px">
+            <!-- <div class="post_content" style="text-align: left; font-size: 20px">
               {{ post.content }}
-            </div>
+            </div> -->
+            <div v-html="post.content"></div>
           </el-row>
           <el-row>
             <el-descriptions :column="3">
@@ -128,12 +129,16 @@
                 ></el-input>
               </el-form-item>
               <el-form-item label="正文">
-                <el-input
+                <!-- <el-input
                   v-model="formPost.content"
                   type="textarea"
                   :rows="6"
                   maxlength="200"
-                ></el-input>
+                ></el-input> -->
+                <div style="width:100%">
+                  <MyEditor @input="updateContent" :initialValue="post.content"
+                    :sendData="formPost.content"></MyEditor>
+                </div>
               </el-form-item>
             </el-form>
             <el-button type="primary" @click="submitEditForm">确认</el-button>
@@ -355,6 +360,7 @@
 <script>
 import { ref, onMounted, getCurrentInstance } from "vue";
 import global from "@/global";
+import MyEditor from "@/components/sub_components/QuillEditor.vue";
 import {
   DeleteOutlined,
   QuestionCircleOutlined,
@@ -372,6 +378,7 @@ export default {
     EditOutlined,
     HeartOutlined,
     HeartTwoTone,
+    MyEditor
   },
 
   data() {
@@ -457,6 +464,10 @@ export default {
   },
 
   methods: {
+    updateContent(data) {
+      this.formPost.content = data;
+    },
+
     showPopover(user_id) {
       let that = this;
       that.$axios
@@ -490,23 +501,21 @@ export default {
     },
 
     initPost() {
-      console.log("init");
-      this.getIcon();
-      this.getPostDetail();
+      this.getPostDetail()
     },
 
-    getIcon() {
-      let that = this;
-      that.$axios
-        .get("user/getIcon", {
-          headers: {
-            token: that.$cookies.get("user_token"),
-          },
-        })
-        .then((res) => {
-          this.imageUrl = res.data.data;
-        })
-        .catch((res) => console.log(res));
+    getIcon(id) {
+      let that = this
+      that.$axios.get('/user/getUserById/' + id, {
+        headers: {
+           'token': that.$cookies.get('user_token')
+        }
+        }).then((res) => {
+        // console.log(res)
+        if (res.data.code === 200) {
+          that.imageUrl = res.data.data.icon
+        }
+      }).catch((res) => console.log(res))
     },
 
     getPostDetail() {
@@ -525,6 +534,7 @@ export default {
           that.post = res.data.data;
           //console.log("getPostDetail()")
           //console.log(res.data.data)
+          that.getIcon(that.post.userId);
         })
         .catch((error) => {
           console.log(error);
