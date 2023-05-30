@@ -576,7 +576,7 @@ export default {
 
                 that.post = res.data.data
                 //console.log("getPostDetail()")
-                //console.log(res.data.data)
+                console.log(res.data.data)
                 that.getIcon(that.post.userId);
             }).catch((error) => {
                 console.log(error);
@@ -822,9 +822,7 @@ export default {
 
         editPost() {
             this.tokenCheck()
-            this.formPost.title = this.post.title
-            this.formPost.content = this.post.content
-            //console.log(this.formPost.content)
+            this.formPost = Object.assign({}, this.post)
             this.postDialogVisible = true
         },
         submitEditForm() {
@@ -849,7 +847,7 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
-                //console.log(res)
+                console.log(res)
                 if (res.data.code === 200) {
                     that.getPostDetail()
                 }
