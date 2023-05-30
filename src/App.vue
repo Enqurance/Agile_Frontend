@@ -2,7 +2,7 @@
     <router-view/>
     <div  v-if="this.$device==='mobile'">
         <MobileNavigator/>  
-        <div style="height: 2rem;"></div>
+        <div style="height: 4rem;"></div>
     </div>
 </template>
 

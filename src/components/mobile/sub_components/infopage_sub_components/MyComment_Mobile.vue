@@ -99,13 +99,19 @@
       </div>
     </div>
   </div>
+  <el-row></el-row>
+  <el-row></el-row>
+  <el-row><CopyrightICP/></el-row>
 </template>
 
 <script>
+import CopyrightICP from "@/components/CopyrightICP.vue"
 
 export default {
   name: "MyComment_Mobile",
-  components: {},
+  components: {
+    CopyrightICP
+  },
   data() {
     return {
       Index:'1',

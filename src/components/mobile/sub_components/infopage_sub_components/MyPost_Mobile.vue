@@ -141,14 +141,23 @@
       </div>
     </div>
   </div>
+  <el-row></el-row>
+  <el-row></el-row>
+  <el-row>
+    <CopyrightICP/>
+  </el-row>
 </template>
 
 <script>
 import {ChatRound} from "@element-plus/icons-vue";
+import CopyrightICP from "@/components/CopyrightICP.vue"
 
 export default {
   name: "MyPost_Mobile",
-  components: {ChatRound},
+  components: {
+    ChatRound,
+    CopyrightICP
+    },
   data() {
     return {
       posts: [
