@@ -2,10 +2,15 @@
 import {ref} from 'vue'
 import { Delete } from '@element-plus/icons-vue'
 import { Position, CollectionTag } from '@element-plus/icons-vue'
+import CopyrightICP from "@/components/CopyrightICP.vue"
+
 export default {
     name: "MyPin_Mobile",
-    components: { Position, 
-                CollectionTag },
+    components: { 
+        Position, 
+        CollectionTag,
+        CopyrightICP
+    },
     setup(){
     },
     data(){
@@ -135,6 +140,11 @@ export default {
             </el-card>
         </p>    
     </el-scrollbar>
+    <el-row></el-row>
+    <el-row>
+        <CopyrightICP/>
+    </el-row>
+    <el-row></el-row>
     </div>
     <div v-else><el-empty description="该用户没有私有钉子" /></div>
     </div>

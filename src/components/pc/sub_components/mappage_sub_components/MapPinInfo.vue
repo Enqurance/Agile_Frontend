@@ -24,7 +24,6 @@
                                     showClose: true,
                                     grouping: true
                                 })
-                                return
                             }
                             else {
                                 show_feedback = true; this.feedback.title = ''
@@ -49,14 +48,14 @@
                     </el-button>
                     </el-row>
             </el-card>
-            <div style="margin-top: 0px;margin-bottom: 0px;">
+            <div style="margin-top: 0;margin-bottom: 0;">
                 <el-dialog v-model="show_feedback" style="height: 250px;width: 40%">
                     <el-form>
                         <el-form-item label="标题：">
                             <el-input type="text" maxlength="10" v-model="feedback.title" autocomplete="off" />
                         </el-form-item>
                         <el-form-item label="内容：">
-                            <el-input type="textarea" clearable rows="3" v-model="feedback.reason" autocomplete="off" />
+                            <el-input type="textarea" autosize maxlength="100" clearable rows="3" v-model="feedback.reason" autocomplete="off" />
                         </el-form-item>
                     </el-form>
                     <div style="position: absolute;bottom: 10px; right: 20px">
@@ -93,7 +92,7 @@
                             <el-input v-model="formData.opening_time" type="textarea" autosize maxlength="100"></el-input>
                         </el-form-item>
                         <el-form-item label="电话">
-                            <el-input v-model="formData.phone"></el-input>
+                            <el-input v-model="formData.phone" type="textarea" autosize maxlength="30"></el-input>
                         </el-form-item>
                     </el-form>
                     <div>
@@ -348,7 +347,7 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             })
-                .then(response => {
+                .then(() => {
                     // console.log(response);
                     that.$emit('update_info', {
                         id: that.id,
@@ -382,7 +381,7 @@ export default {
 
             // console.log("before axio!");
 
-            var option = ({
+            let option = ({
                 url: 'photo/uploadPinPhoto',
                 method: 'post',
                 data: formData,
@@ -397,7 +396,7 @@ export default {
             })
 
             // console.log(that.photos.length)
-            that.$axios(option).then((res) => {
+            that.$axios(option).then(() => {
                 this.handleDblClick()
             }).catch((error) => console.log(error));
 
@@ -461,7 +460,6 @@ export default {
                     showClose: true,
                     grouping: true
                 })
-                return
             }
             else {
                 let that = this

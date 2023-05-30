@@ -9,14 +9,14 @@
 					</el-col>
 					<el-col :span="16" :offset="2">
                         <el-col :span="12">
-						<el-input v-model="search_context" placeholder="Search" @input="handleSearchInput"
+						<el-input v-model="search_context" placeholder="Search" maxlength="10" @input="handleSearchInput"
 								@keyup.enter="handleSearchInput" style="width: 100px;"></el-input>
 						<div v-show="showDropdown"
 							:style="{position: 'relative', left: '0', width: '100%'}">
 							<div class="scrollable">
 								<div v-for="item in searchResults" :key="item.post_id"
 									@click="handleSelect(item.post_id)"
-									style="width: 250px;margin-top: 10px;margin-bottom: 10px;">
+									style="width: 100px;margin-top: 10px;margin-bottom: 10px;">
 									<span style="font-size: 18px;word-wrap:break-word;padding-left: 10px;">{{
 											item.post_title
 										}}

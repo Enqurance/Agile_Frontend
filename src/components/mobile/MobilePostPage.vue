@@ -41,7 +41,7 @@
               >
               </el-avatar>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="8" :offset="1">
               <el-row>
                 <el-tag class="tag" style="margin-right: 10px"
                   >Tag:{{ _get_pin_type(post.tag) }}</el-tag
@@ -65,7 +65,7 @@
                 </template>
               </el-popover>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="11">
               <el-col :span="24">
                 <div v-if="tags.length > 0">
                   <div
@@ -144,7 +144,7 @@
         <el-dialog v-model="newFloorDialogVisible" width="75%">
           <el-form :model="newFloorForm" ref="newFloorForm" label-width="80px">
             <el-form-item label="评论内容">
-              <el-input v-model="newFloorForm.body" type="textarea"></el-input>
+              <el-input v-model="newFloorForm.body" type="textarea" maxlength="150"></el-input>
             </el-form-item>
           </el-form>
           <div>
@@ -248,7 +248,7 @@
                     <span> ：{{ floor.comment_cases.content }}</span>
                   </div>
                   <el-button @click="showComments(floor.id)"
-                    >查看全部评论</el-button
+                    >全部评论</el-button
                   >
                 </div>
               </el-card>
@@ -262,6 +262,8 @@
               v-model="currentPage"
               :page-size="limit"
               :total="totalFloors"
+              :small="true"
+              :pager-count="5"
             >
             </el-pagination>
           </el-row>
@@ -337,7 +339,7 @@
       </div>
       <el-form>
         <el-form-item>
-          <el-input v-model="newCommentBody" type="textarea"></el-input>
+          <el-input v-model="newCommentBody" type="textarea" maxlength="150"></el-input>
         </el-form-item>
       </el-form>
       <el-col :offset="19">

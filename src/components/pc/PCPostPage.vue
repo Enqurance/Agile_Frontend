@@ -147,7 +147,7 @@
                     <el-dialog v-model="newFloorDialogVisible" title="新建楼层" center>
                         <el-form :model="newFloorForm" ref="newFloorForm" label-width="80px">
                             <el-form-item label="回复内容">
-                                <el-input v-model="newFloorForm.body" :rows="5" clearable type="textarea"></el-input>
+                                <el-input v-model="newFloorForm.body" :rows="5" clearable type="textarea" autosize maxlength="150"></el-input>
                             </el-form-item>
                         </el-form>
                         <div class="clearfix">
@@ -312,7 +312,7 @@
                 </div>
                 <el-form>
                     <el-form-item>
-                        <el-input v-model="newCommentBody" type="textarea"></el-input>
+                        <el-input v-model="newCommentBody" type="textarea" autosize maxlength="150"></el-input>
                     </el-form-item>
                 </el-form>
                 <div class="clearfix">
@@ -381,7 +381,7 @@ export default {
 
         const id = proxy.$route.params.postID;
         const query_floor_id = proxy.$route.query['floor_id'];
-        console.log(query_floor_id)
+        // console.log(query_floor_id)
 
         const loadLazyFloorsToLayer = () => {
             proxy.$axios.post('/forum/floor/getFloorsForLazy', {
@@ -402,14 +402,23 @@ export default {
                     if (size > 0) {
                         floors.value = floors.value.concat(res.data.data)
                         offset.value = res.data.data[size - 1].id
-                    }
-                    else {
+
                         proxy.$message({
-                            message: `您所发评论在第${floors[size - 1].layers}楼`,
+                            message: `您所发评论在第${floors.value[size - 1].layers}楼`,
                             type: 'success',
                             grouping: true,
                             showClose: true,
                         })
+
+                        proxy.$nextTick(() => {
+                            // 获取整个页面的高度
+                            const pageHeight = document.documentElement.scrollHeight;
+                            // 将页面滚动到底部
+                            window.scrollTo({
+                                top: pageHeight - document.documentElement.clientHeight - 100,
+                                behavior: 'smooth'
+                            });
+                        });
                     }
                     // console.log(floors.value)
                     // console.log(offset.value)
@@ -501,7 +510,7 @@ export default {
 
     methods: {
         updateContent(data) {
-            console.log(data)
+            // console.log(data)
             this.formPost.content = data;
         },
 
@@ -545,7 +554,7 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
-                console.log(res)
+                // console.log(res)
                 if (res.data.code === 200) {
                     that.imageUrl = res.data.data.icon
                 }
@@ -576,7 +585,7 @@ export default {
 
                 that.post = res.data.data
                 //console.log("getPostDetail()")
-                console.log(res.data.data)
+                // console.log(res.data.data)
                 that.getIcon(that.post.userId);
             }).catch((error) => {
                 console.log(error);
@@ -659,7 +668,7 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((response) => {
-                //console.log(response)
+                // console.log(response)
                 that.newCommentBody = ''
                 if (response.data.code === 200) {
                     that.loadAllComments(floorID)
@@ -668,9 +677,10 @@ export default {
                             'token': that.$cookies.get('user_token')
                         }
                     }).then(res => {
+                        // console.log(res)
                         let floor = that.floors.find(item => item.id === floorID)
                         if (floor) {
-                            floor.comment_cases = res.data.comment_cases
+                            floor.comment_cases = res.data.data
                         }
                     }).catch((err) => console.log(err))
                 }
@@ -806,7 +816,7 @@ export default {
                     }).then(res => {
                         let floor = that.floors.find(item => item.id === floorID)
                         if (floor) {
-                            floor.comment_cases = res.data.comment_cases
+                            floor.comment_cases = res.data.data
                         }
                     }).catch((err) => console.log(err))
 
@@ -847,7 +857,7 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
-                console.log(res)
+                // console.log(res)
                 if (res.data.code === 200) {
                     that.getPostDetail()
                 }

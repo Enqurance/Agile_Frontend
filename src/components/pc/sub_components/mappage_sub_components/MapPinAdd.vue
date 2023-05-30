@@ -29,7 +29,7 @@
                     type="textarea" autosize maxlength="100"></el-input>
                 </el-form-item>
                 <el-form-item label="电话">
-                    <el-input v-model="formData.phone"></el-input>
+                    <el-input v-model="formData.phone" type="textarea" autosize maxlength="30"></el-input>
                 </el-form-item>
             </el-form>
             <div>
