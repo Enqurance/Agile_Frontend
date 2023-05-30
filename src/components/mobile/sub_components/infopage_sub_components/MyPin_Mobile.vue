@@ -1,9 +1,11 @@
 <script>
 import {ref} from 'vue'
 import { Delete } from '@element-plus/icons-vue'
+import { Position, CollectionTag } from '@element-plus/icons-vue'
 export default {
     name: "MyPin_Mobile",
-    components: {  },
+    components: { Position, 
+                CollectionTag },
     setup(){
     },
     data(){
@@ -26,6 +28,9 @@ export default {
             ],
             count: 0,
             isReload: true,
+            deleteConfirm: false,
+            applyConfirm: false,
+            curI: 0,
         }
     },
     mounted() {
@@ -72,7 +77,24 @@ export default {
                     })}
             })
             this.refreshPins(index);
-            console.log(this.pins);
+        },
+        applyPin(pid){
+            let that = this
+            that.$axios.get('examine/apply_for_public/' + pid, 
+                { 
+                    headers: { 
+                        'token': that.$cookies.get('user_token')
+                    },
+                }
+            ).then((res) => {
+                if (res.data.code === 200) {
+                } else {
+                    this.$message({
+                    message: res.data.message,
+                    type: 'error'
+                    })}
+            })
+            this.refreshPins(index);
         },
     }
 }
@@ -84,67 +106,51 @@ export default {
     <el-scrollbar height="400px">
         <p v-for="i in count" :key="i">
             <el-card shadow="hover">
-                <template #header>
-                    <div class="card-header">
-                        <van-row>
-                            <van-col span="15"><span>{{ pins[i-1].name }}</span></van-col>
-                            <van-col span="9">
-                                <el-button @click="deleteConfirm = true; curI = i;" plain type="danger">删除钉子</el-button>
-                            </van-col>
-                        </van-row>
-                    </div>
-                </template>
-                <el-row>
-                    <el-col>
+                <van-row>
+                    <van-col span="8"><span>{{ pins[i-1].name }}</span></van-col>
+                    <van-col span="8">
+                        <el-button @click="applyConfirm = true; curI = i;" plain type="success" size="small">申请公开</el-button>    
+                    </van-col>
+                    <van-col span="8">
+                        <el-button @click="deleteConfirm = true; curI = i;" plain type="danger" size="small">删除钉子</el-button>
+                    </van-col>
+                </van-row>
+                <van-divider style="margin-top:5%;margin-bottom:5%;"/>
+                <van-row>
+                    <van-col style="padding-bottom: 3%;">
                         <el-icon style="position:relative;top: 2px;margin-right: 10px">
                             <Position/>
                         </el-icon>
                         位置：{{ pins[i-1].position }}
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col>
+                    </van-col>
+                </van-row>
+                <van-row>
+                    <van-col>
                         <el-icon style="position:relative;top: 2px;margin-right: 10px">
                             <CollectionTag/>
                         </el-icon>
                         简介：{{ pins[i-1].brief }}
-                    </el-col>
-                </el-row>
+                    </van-col>
+                </van-row>
             </el-card>
         </p>    
     </el-scrollbar>
     </div>
     <div v-else><el-empty description="该用户没有私有钉子" /></div>
     </div>
+
+    <van-dialog v-model:show="deleteConfirm" title="删除确认" show-cancel-button
+        @confirm="deletePin(this.pins[curI-1].id, curI-1); deleteConfirm = false" 
+        @cancel="deleteConfirm = false">
+        <p style="text-align: center;">您确认删除该钉子吗？</p>
+    </van-dialog>
+
+    <van-dialog v-model:show="applyConfirm" title="删除确认" show-cancel-button
+        @confirm="applyPin(this.pins[curI-1].id, curI-1); applyConfirm = false" 
+        @cancel="applyConfirm = false">
+        <p style="text-align: center;">您确认将该钉子申请为公共钉子吗？</p>
+    </van-dialog>
 </template>
 
 <style scoped>
-.infinite-list {
-  height: 400px;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-.infinite-list .infinite-list-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 120px;
-  background: var(--el-color-primary-light-9);
-  margin: 10px;
-  color: var(--el-color-primary);
-}
-.infinite-list .infinite-list-item + .list-item {
-  margin-top: 2px;
-}
-
-.pinCard{
-    width: 100%;
-    height: 100%;
-}
-.textItem{
-    width: 100%;
-    height: 100%;
-}
 </style>
