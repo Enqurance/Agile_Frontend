@@ -1,36 +1,48 @@
 <template>
     <el-container>
         <el-header style="padding-left: 0;padding-right: 0">
-            <PageHeader/>
+            <PageHeader />
         </el-header>
         <el-main>
             <div class="main">
                 <div class="left"></div>
                 <div class="center">
                     <div class="top">
-                        <el-avatar :size="70" shape="circle" :src="this.imageUrl" style="user-select: none;">
-                        </el-avatar>
-
-                        <div style="position: relative;">
-                            <el-input v-model="search_context" placeholder="Search" @input="handleSearchInput"
-                                      @keyup.enter="handleSearchInput" style="width: 250px;"></el-input>
-                            <div v-show="showDropdown"
-                                 :style="{position: 'relative', left: '0', width: '100%'}">
-                                <div class="scrollable">
-                                    <div v-for="item in searchResults" :key="item.post_id"
-                                         @click="handleSelect(item.post_id)"
-                                         style="width: 250px;margin-top: 10px;margin-bottom: 10px;">
-                                        <span style="font-size: 18px;word-wrap:break-word;padding-left: 10px;">{{
-                                                item.post_title
-                                            }}</span>
+                        <el-row>
+                            <el-col :span="5">
+                                <div>
+                                    <el-avatar :size="70" shape="circle" :src="this.imageUrl" style="user-select: none;">
+                                    </el-avatar>
+                                </div>
+                            </el-col>
+                            <el-col :span="16">
+                                <div style="position: relative;">
+                                    <el-input v-model="search_context" placeholder="Search" @input="handleSearchInput"
+                                        @keyup.enter="handleSearchInput" style="width: 250px;"></el-input>
+                                    <div v-show="showDropdown" :style="{ position: 'relative', left: '0', width: '100%' }">
+                                        <div class="scrollable">
+                                            <div v-for="item in searchResults" :key="item.post_id"
+                                                @click="handleSelect(item.post_id)"
+                                                style="width: 250px;margin-top: 10px;margin-bottom: 10px;">
+                                                <span style="font-size: 18px;word-wrap:break-word;padding-left: 10px;">{{
+                                                    item.post_title }}</span>
+                                            </div>
+                                            <div v-if="noResults" style="width: 250px;margin-top: 10px;margin-bottom: 10px;">
+                                                <span style="font-size: 18px;word-wrap:break-word;padding-left: 10px;">不存在帖子</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <el-button @click="showNewPostDialog">新建帖子</el-button>
-                        <new-post ref="child"></new-post>
+                            </el-col>
+                            <el-col :span="3">
+                                <div>
+                                    <el-button @click="showNewPostDialog">新建帖子</el-button>
+                                    <new-post ref="child"></new-post>
+                                </div>
+                            </el-col>
+                        </el-row>
                     </div>
+
                     <div class="bottom">
                         <div>
                             <el-radio-group v-model="tag">
@@ -53,8 +65,8 @@
                                             <span>{{ post.title }}</span>
                                             <div>
                                                 <span style="padding-right: 20px">{{
-                                                        getTimeSubstring(post.createTime)
-                                                    }}</span>
+                                                    getTimeSubstring(post.createTime)
+                                                }}</span>
                                                 <el-tag class="tag" size="large">{{ _get_pin_type(post.tag) }}</el-tag>
                                             </div>
                                         </div>
@@ -69,16 +81,16 @@
                                         <el-row>
                                             <el-descriptions :column="3">
                                                 <el-descriptions-item min-width="100px" label="点赞数">{{
-                                                        post.thumbsUp
-                                                    }}
+                                                    post.thumbsUp
+                                                }}
                                                 </el-descriptions-item>
                                                 <el-descriptions-item min-width="100px" label="访问量">{{
-                                                        post.visit
-                                                    }}
+                                                    post.visit
+                                                }}
                                                 </el-descriptions-item>
                                                 <el-descriptions-item min-width="100px" label="楼层数">{{
-                                                        post.floorNum
-                                                    }}
+                                                    post.floorNum
+                                                }}
                                                 </el-descriptions-item>
                                             </el-descriptions>
                                         </el-row>
@@ -87,7 +99,7 @@
                             </router-link>
                         </div>
                         <el-pagination v-if="totalPosts > 0" @current-change="handlePageChange" v-model="currentPage"
-                                       :page-size="limit" :total="totalPosts">
+                            :page-size="limit" :total="totalPosts">
                         </el-pagination>
                     </div>
                 </div>
@@ -99,7 +111,7 @@
 
 
 <script>
-import {ref, onMounted, getCurrentInstance, watch} from 'vue'
+import { ref, onMounted, getCurrentInstance, watch } from 'vue'
 import PageHeader from "@/components/pc/PCPageHeader.vue";
 import NewPost from "../sub_components/NewPost.vue";
 import global from '@/global'
@@ -124,7 +136,7 @@ export default {
         const currentPage = ref(1);
         const totalPosts = ref(0);
 
-        const {proxy} = getCurrentInstance();
+        const { proxy } = getCurrentInstance();
         const imageUrl = ref('');
         const posts = ref([]); // 存储帖子列表
         const offset = ref(0); // 跳过的帖子数量
@@ -218,12 +230,8 @@ export default {
 
                     that.showDropdown = that.search_context !== "";
                 }
-                else {
-                    that.showDropdown = false
-                    that.$message({
-                        message: res.data.message,
-                        type: 'error'
-                    })
+                else if (res.data.code === 500) {
+                    that.searchResults = [];
                 }
             }).catch((res) => console.log(res))
 
@@ -238,7 +246,7 @@ export default {
                     message: '请先登录!',
                     type: "warning"
                 })
-                this.$router.push({path: '/login'})
+                this.$router.push({ path: '/login' })
             }
             this.$refs.child.dialogVisible = true
         },
@@ -256,8 +264,8 @@ export default {
                         'token': that.$cookies.get('user_token')
                     },
                 }).then((res) => {
-                this.imageUrl = res.data.data;
-            }).catch((res) => console.log(res))
+                    this.imageUrl = res.data.data;
+                }).catch((res) => console.log(res))
         },
 
         getTimeSubstring(timeString) {
@@ -274,6 +282,12 @@ export default {
 
     beforeUnmount() {
         document.removeEventListener('click', this.handleDocumentClick);
+    },
+
+    computed: {
+        noResults() {
+            return this.searchResults.length === 0;
+        }
     },
 }
 </script>
