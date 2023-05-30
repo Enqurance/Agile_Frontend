@@ -14,7 +14,7 @@
                     </el-col>
                     <el-col :span="10">
                         <div style="position: relative;">
-                            <el-input v-model="search_context" placeholder="Search" @input="handleSearchInput"
+                            <el-input v-model="search_context" placeholder="Search" maxlength="24" @input="handleSearchInput"
                                 @keyup.enter="handleSearchInput" style="width: 250px;"></el-input>
                             <div v-show="showDropdown" :style="{ position: 'relative', left: '0', width: '100%' }">
                                 <div class="scrollable">

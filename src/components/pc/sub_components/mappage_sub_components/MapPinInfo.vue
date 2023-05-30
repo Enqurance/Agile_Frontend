@@ -55,7 +55,7 @@
                             <el-input type="text" maxlength="10" v-model="feedback.title" autocomplete="off" />
                         </el-form-item>
                         <el-form-item label="内容：">
-                            <el-input type="textarea" clearable rows="3" v-model="feedback.reason" autocomplete="off" />
+                            <el-input type="textarea" autosize maxlength="100" clearable rows="3" v-model="feedback.reason" autocomplete="off" />
                         </el-form-item>
                     </el-form>
                     <div style="position: absolute;bottom: 10px; right: 20px">
@@ -92,7 +92,7 @@
                             <el-input v-model="formData.opening_time" type="textarea" autosize maxlength="100"></el-input>
                         </el-form-item>
                         <el-form-item label="电话">
-                            <el-input v-model="formData.phone"></el-input>
+                            <el-input v-model="formData.phone" type="textarea" autosize maxlength="30"></el-input>
                         </el-form-item>
                     </el-form>
                     <div>
