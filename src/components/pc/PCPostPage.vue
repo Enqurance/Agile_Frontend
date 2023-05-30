@@ -510,7 +510,7 @@ export default {
 
     methods: {
         updateContent(data) {
-            console.log(data)
+            // console.log(data)
             this.formPost.content = data;
         },
 
@@ -554,7 +554,7 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
-                console.log(res)
+                // console.log(res)
                 if (res.data.code === 200) {
                     that.imageUrl = res.data.data.icon
                 }
@@ -585,7 +585,7 @@ export default {
 
                 that.post = res.data.data
                 //console.log("getPostDetail()")
-                console.log(res.data.data)
+                // console.log(res.data.data)
                 that.getIcon(that.post.userId);
             }).catch((error) => {
                 console.log(error);
@@ -668,7 +668,7 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((response) => {
-                //console.log(response)
+                // console.log(response)
                 that.newCommentBody = ''
                 if (response.data.code === 200) {
                     that.loadAllComments(floorID)
@@ -677,9 +677,10 @@ export default {
                             'token': that.$cookies.get('user_token')
                         }
                     }).then(res => {
+                        // console.log(res)
                         let floor = that.floors.find(item => item.id === floorID)
                         if (floor) {
-                            floor.comment_cases = res.data.comment_cases
+                            floor.comment_cases = res.data.data
                         }
                     }).catch((err) => console.log(err))
                 }
@@ -815,7 +816,7 @@ export default {
                     }).then(res => {
                         let floor = that.floors.find(item => item.id === floorID)
                         if (floor) {
-                            floor.comment_cases = res.data.comment_cases
+                            floor.comment_cases = res.data.data
                         }
                     }).catch((err) => console.log(err))
 
@@ -856,7 +857,7 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((res) => {
-                console.log(res)
+                // console.log(res)
                 if (res.data.code === 200) {
                     that.getPostDetail()
                 }

@@ -71,9 +71,9 @@ export default {
 
     methods: {
         updateContent(data) {
-            console.log(data)
+            // console.log(data)
             this.formData.post_body = data;
-            console.log('update: ' + this.formData.post_body)
+            // console.log('update: ' + this.formData.post_body)
         },
 
         submitForm() {
@@ -102,7 +102,7 @@ export default {
             }).then((response) => {
                 //console.log(response.data)
                 that.bind_pins = []
-                if (response.data.code == 200) {
+                if (response.data.code === 200) {
                     that.$router.push(`/Forum/${response.data.data}`);
                 }
             })
