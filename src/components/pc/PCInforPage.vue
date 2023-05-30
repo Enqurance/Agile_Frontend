@@ -4,6 +4,8 @@ import MyInfo from '@/components/pc/sub_components/infopage_sub_components/MyInf
 import MyComment from "@/components/pc/sub_components/infopage_sub_components/MyComment.vue";
 import MyMessage from "@/components/pc/sub_components/infopage_sub_components/MyMessage.vue";
 import MyPost from "@/components/pc/sub_components/infopage_sub_components/MyPost.vue";
+import CopyrightICP from "@/components/CopyrightICP.vue";
+
 import {
     User,
     Reading,
@@ -15,7 +17,7 @@ export default {
     name: "PCInfoPage",
     components: { 
         PageHeader, User, Reading, ChatLineSquare, ChatRound, 
-        MyInfo, MyMessage, MyPost, MyComment 
+        MyInfo, MyMessage, MyPost, MyComment, CopyrightICP
     },
     data() {
         return {
@@ -114,6 +116,7 @@ export default {
                 <div v-if="this.Index.at(0) === '4'"><MyMessage :sub-menu="sub_menu" /></div>
             </el-main>
         </el-container>
+        <CopyrightICP/>
         </el-container>
 </template>
 

@@ -1,7 +1,5 @@
 <script>
-import { ref, reactive } from 'vue'
-import { Tab, Tabs } from 'vant';
-import { } from '@element-plus/icons-vue'
+import { ref } from 'vue'
 import MyInfo_Mobile from '@/components/mobile/sub_components/infopage_sub_components/MyInfo_Mobile.vue'
 import MyComment_Mobile from '@/components/mobile/sub_components/infopage_sub_components/MyComment_Mobile.vue'
 import MyMessage_Mobile from '@/components/mobile/sub_components/infopage_sub_components/MyMessage_Mobile.vue'
@@ -13,7 +11,8 @@ export default {
         MyInfo_Mobile, 
         MyComment_Mobile, 
         MyMessage_Mobile, 
-        MyPost_Mobile },
+        MyPost_Mobile,
+        },
     setup(){
         let Index = ref('1');
         return { Index,}
