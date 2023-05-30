@@ -325,6 +325,7 @@ import {DeleteOutlined, QuestionCircleOutlined, EditOutlined, HeartOutlined, Hea
 
 export default {
     name: "PCPostpage",
+    props: ['postID'],
 
     components: {
         PageHeader,
@@ -368,12 +369,55 @@ export default {
         const loading = ref(false)
 
         const id = proxy.$route.params.postID;
+        const query_floor_id = proxy.$route.query['floor_id'];
+        console.log(query_floor_id)
+
+        const loadLazyFloorsToLayer = () => {
+            proxy.$axios.post('/forum/floor/getFloorsForLazy', {
+                post_id: id,
+                offset_floor_id: query_floor_id,
+                limit: 1000000000,
+                order: 1
+            }, {
+                headers: {
+                    'token': proxy.$cookies.get('user_token')
+                }
+            }).then((res) => {
+                // console.log(res)
+
+                if (res.data.code === 200) {
+                    // 懒加载
+                    let size = res.data.data.length
+                    if (size > 0) {
+                        floors.value = floors.value.concat(res.data.data)
+                        offset.value = res.data.data[size - 1].id
+                    }
+                    else {
+                        proxy.$message({
+                            message: `您所发评论在第${floors[size - 1].layers}楼`,
+                            type: 'success',
+                            grouping: true,
+                            showClose: true,
+                        })
+                    }
+                    // console.log(floors.value)
+                    // console.log(offset.value)
+                }
+                else {
+                    floors.value = []
+                    offset.value = 0
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
 
         const loadLazyFloors = () => {
             proxy.$axios.post('/forum/floor/getFloorsForLazy', {
                 post_id: id,
                 offset_floor_id: offset.value,
-                limit: limit
+                limit: limit,
+                order: 0
             }, {
                 headers: {
                     'token': proxy.$cookies.get('user_token')
@@ -440,7 +484,7 @@ export default {
         }, 1500)
 
         return {
-            imageUrl, floors, limit, loadLazyFloors, handleScroll, loading
+            imageUrl, floors, limit, loadLazyFloors, handleScroll, loading, loadLazyFloorsToLayer, query_floor_id
         };
     },
 
@@ -927,7 +971,13 @@ export default {
     mounted() {
         this.initPost();
         window.addEventListener('scroll', this.handleScroll)
-        this.loadLazyFloors()
+
+        if (this.query_floor_id) {
+            this.loadLazyFloorsToLayer()
+        }
+        else {
+            this.loadLazyFloors()
+        }
     },
 
     computed: {
