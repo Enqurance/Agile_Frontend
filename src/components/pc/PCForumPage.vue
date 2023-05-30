@@ -104,7 +104,7 @@
                 <el-row>
                     <div>
                         <el-pagination v-if="totalPosts > 0" @current-change="handlePageChange" v-model="currentPage"
-                            :page-size="limit" pager-count="5" :total="totalPosts">
+                            :page-size="limit" :pager-count="5" :total="totalPosts">
                         </el-pagination>
                     </div>
                 </el-row>
@@ -201,7 +201,7 @@ export default {
         };
 
         watch(tag, (newVal, oldVal) => {
-            console.log(tag.value)
+            // console.log(tag.value)
             loadPosts(offset);
         });
 
