@@ -24,7 +24,6 @@
                                     showClose: true,
                                     grouping: true
                                 })
-                                return
                             }
                             else {
                                 show_feedback = true; this.feedback.title = ''
@@ -49,7 +48,7 @@
                     </el-button>
                     </el-row>
             </el-card>
-            <div style="margin-top: 0px;margin-bottom: 0px;">
+            <div style="margin-top: 0;margin-bottom: 0;">
                 <el-dialog v-model="show_feedback" style="height: 250px;width: 40%">
                     <el-form>
                         <el-form-item label="标题：">
@@ -348,7 +347,7 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             })
-                .then(response => {
+                .then(() => {
                     // console.log(response);
                     that.$emit('update_info', {
                         id: that.id,
@@ -382,7 +381,7 @@ export default {
 
             // console.log("before axio!");
 
-            var option = ({
+            let option = ({
                 url: 'photo/uploadPinPhoto',
                 method: 'post',
                 data: formData,
@@ -397,7 +396,7 @@ export default {
             })
 
             // console.log(that.photos.length)
-            that.$axios(option).then((res) => {
+            that.$axios(option).then(() => {
                 this.handleDblClick()
             }).catch((error) => console.log(error));
 
@@ -461,7 +460,6 @@ export default {
                     showClose: true,
                     grouping: true
                 })
-                return
             }
             else {
                 let that = this
