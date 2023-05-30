@@ -144,7 +144,7 @@
         <el-dialog v-model="newFloorDialogVisible" width="75%">
           <el-form :model="newFloorForm" ref="newFloorForm" label-width="80px">
             <el-form-item label="评论内容">
-              <el-input v-model="newFloorForm.body" type="textarea"></el-input>
+              <el-input v-model="newFloorForm.body" type="textarea" maxlength="150"></el-input>
             </el-form-item>
           </el-form>
           <div>
@@ -337,7 +337,7 @@
       </div>
       <el-form>
         <el-form-item>
-          <el-input v-model="newCommentBody" type="textarea"></el-input>
+          <el-input v-model="newCommentBody" type="textarea" maxlength="150"></el-input>
         </el-form-item>
       </el-form>
       <el-col :offset="19">

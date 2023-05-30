@@ -432,13 +432,13 @@ export default {
             @confirm="chPaConfirm" @cancel="chPaCancel">
             <el-form :model="user" label-width="120px" class="form">
                 <el-form-item label="请输入当前密码">
-                    <el-input v-model="curPassword" />
+                    <el-input type="password" maxlength="30" v-model="curPassword" />
                 </el-form-item>
                 <el-form-item label="新密码">
-                    <el-input v-model="newPassword" />
+                    <el-input type="password" maxlength="30" v-model="newPassword" />
                 </el-form-item>
                 <el-form-item label="确认新密码">
-                    <el-input v-model="tempPassword" />
+                    <el-input type="password" maxlength="30" v-model="tempPassword" />
                 </el-form-item>
             </el-form>
         </van-dialog>
