@@ -195,11 +195,52 @@ export default {
                             id: marker_info
                         }, that.markers_info[marker_info])
                         // console.log(marker_info)
-                        this.add_marker(info)
+                        // this.add_marker(info)
                     }
 
                     this.init_menu()
-                    // console.log(that.markers)
+
+                    // 创建点聚合
+                    // 设置聚合之后点的样式
+                    var count = 50;
+                    var _renderClusterMarker = function (context) {
+                        // console.log(context)
+                        // 选取聚合的marker中weight最大的点展示，即第0个
+                        var show_marker = context.clusterData[0]
+                        var content = "<div style='width: 100px'>"+show_marker.name +"</div>"+ '<div style=\"color:' + that._get_pin_color(show_marker.type) + '\"><span class="iconfont icon-location-full icon_class" ></span></div>';
+                        var offset = new AMap.Pixel(-9, -9);
+                        context.marker.setContent(content)
+                        context.marker.setOffset(offset)
+                    };
+                    // 设置聚合之前点的样式
+                    var _renderMarker = function(context) {
+                        // console.log(context)
+                        var content = "<div style='width: 100px'>"+context.data[0].name +"</div>"+ '<div style=\"color:' + that._get_pin_color(context.data[0].type) + '\"><span class="iconfont icon-location-full icon_class" ></span></div>';
+                        var offset = new AMap.Pixel(-9, -9);
+                        context.marker.setContent(content)
+                        context.marker.setOffset(offset)
+
+                        context.marker.on('click', function () {
+                            that.show_marker_id = parseInt(context.data[0].id)
+                        })
+                    }
+
+                    // 构建初始化的marker
+                    let markerClusterers = []
+                    for (let i in this.markers_info) {
+                        markerClusterers[i] = Object.assign({}, {'id': i, 'weight': parseInt(i)}, that.markers_info[i])
+                    }
+                    
+                    // 启动点聚合
+                    this.map.plugin(["AMap.MarkerClusterer"],function() {
+                        that.cluster = new AMap.MarkerClusterer(
+                            that.map,     // 地图实例
+                            Object.values(markerClusterers), // 海量点数据，数据中需包含经纬度信息字段 lnglat
+                            {
+                                renderClusterMarker: _renderClusterMarker, // 自定义聚合点样式
+                                renderMarker: _renderMarker, // 自定义非聚合点样式
+                            });
+                    });
                 }).catch((res) => {
                     console.log(res)
                 })
@@ -314,7 +355,7 @@ export default {
             marker.setLabel({
                 // eslint-disable-next-line no-undef
                 offset: new AMap.Pixel(0, -5),
-                content: info.name,
+                content: "<div class='testCss'>"+info.name+"</div>",
                 direction: 'top-center',
             })
             this.markers[info["id"]] = {
@@ -484,6 +525,11 @@ export default {
     width: 18%;
     margin-top: 7%;
     margin-left: 3%
+}
+
+.testCss {
+    border-radius: 5px;
+    font-size: large;
 }
 
 </style>

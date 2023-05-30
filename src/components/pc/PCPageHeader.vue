@@ -151,10 +151,10 @@ export default {
                 class="el-menu-demo"
                 mode="horizontal"
                 :ellipsis="false"
-                background-color=#545454
-                text-color="white"
-                active-color=#2E8B57
-                active-text-color="white"
+                background-color=#e4f2ff
+                text-color=#4298e7
+                active-color=#7dbfff
+                active-text-color=#4298e7
         >
             <el-menu-item v-on:click="clickToMap()" index="1">
                 BUAAMapForum
