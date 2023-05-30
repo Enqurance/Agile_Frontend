@@ -19,23 +19,23 @@
         </el-checkbox-group>
       </div>
 
-        </div>
-        <div :style="{width: screen_params.screenX+'px', height: screen_params.screenY+'px'}" class="bottom_div">
-            <div id="container" style="width: 100%; height: 100%" @click="close_search=true"></div>
-            <CopyrightICP/>
-        </div>
-        <MapPinAdd 
-            :is_add_pin="is_add_marker" 
-            :lnglat="click_marker_lnglat"
-            @addMarker="(e) => new_pin(e)"
-            @close_dialog="this.is_add_marker = false"/>
-        <!--        </el-main>-->
-        <SwitchPos 
-            :is_switch="is_switch" 
-            :lnglat="click_marker_lnglat" 
-            @close_dialog="this.is_switch = false"
-            @switch_pos="switch_pos"/>
     </div>
+    <div :style="{width: screen_params.screenX+'px', height: screen_params.screenY+'px'}" class="bottom_div">
+      <div id="container" style="width: 100%; height: 100%" @click="close_search=true"></div>
+      <CopyrightICP/>
+    </div>
+    <MapPinAdd
+        :is_add_pin="is_add_marker"
+        :lnglat="click_marker_lnglat"
+        @addMarker="(e) => new_pin(e)"
+        @close_dialog="this.is_add_marker = false"/>
+    <!--        </el-main>-->
+    <SwitchPos
+        :is_switch="is_switch"
+        :lnglat="click_marker_lnglat"
+        @close_dialog="this.is_switch = false"
+        @switch_pos="switch_pos"/>
+  </div>
 </template>
 
 <script>
@@ -49,22 +49,23 @@ import PageHeader from "@/components/pc/PCPageHeader.vue";
 import SwitchPos from "@/components/sub_components/mappage_sub_components/SwitchPos.vue"
 import global from "@/global";
 import '../../assets/PinIcon/font2/iconfont.css'
+import CopyrightICP from "@/components/CopyrightICP.vue";
 
 
 export default {
-    name: "PCMapHomepage",
-    components: {
-        MapPinInfo,
-        MapPinAdd,
-        PlaceSearch,
-        PageHeader,
-        SwitchPos,
-        CopyrightICP,
-    },
-    data() {
-        let map = shallowRef(null)
-        return {
-            close_search: false,
+  name: "PCMapHomepage",
+  components: {
+    MapPinInfo,
+    MapPinAdd,
+    PlaceSearch,
+    PageHeader,
+    SwitchPos,
+    CopyrightICP,
+  },
+  data() {
+    let map = shallowRef(null)
+    return {
+      close_search: false,
 
       screen_params: {
         screenX: 0,
@@ -341,7 +342,10 @@ export default {
     switch_pos(info) {
       let lnglat = info["lnglat"].split(";")
       this.markers_info[info["id"]].lnglat = lnglat.map(Number)
-      this.markerClusterers[info["id"]] = Object.assign({}, {'id': info.id, 'weight': parseInt(info.id)}, this.markers_info[info.id])
+      this.markerClusterers[info["id"]] = Object.assign({}, {
+        'id': info.id,
+        'weight': parseInt(info.id)
+      }, this.markers_info[info.id])
       this.create_cluster()
     },
     init_menu() {
@@ -431,7 +435,10 @@ export default {
         lnglat: info.lnglat
       }
 
-      this.markerClusterers[info.id] = Object.assign({}, {'id': info.id, 'weight': parseInt(info.id)}, this.markers_info[info.id])
+      this.markerClusterers[info.id] = Object.assign({}, {
+        'id': info.id,
+        'weight': parseInt(info.id)
+      }, this.markers_info[info.id])
 
       this.show_types[this._get_pin_type(info.type)].push(this.markerClusterers[info.id])
     },
