@@ -4,11 +4,11 @@
             <el-card class="box-card">
                 <template #header>
                     <div class="card-header">
-                    <el-col span="12">
+                    <el-col :span="12">
                         <span>{{ info.name }}</span>
                     </el-col>
-                    <el-col span="2"></el-col>
-                    <el-col span="10">
+                    <el-col :span="2"></el-col>
+                    <el-col :span="10">
                     <el-button
                         v-if="(info.visibility === 0 || this.$cookies.get('user_type') === get_user_type_administrator()) && is_examine === false && pin_state === 0"
                         @click="editInfo" type=primary plain>
