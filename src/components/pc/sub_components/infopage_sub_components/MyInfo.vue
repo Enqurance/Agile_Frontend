@@ -14,7 +14,7 @@
                 :before-upload="beforeAvatarUpload">
                 <el-tooltip effect="dark" content="点击更换头像" placement="right">
                     <el-avatar 
-                        :size="80" 
+                        :size="75" 
                         shape="square" 
                         :src="this.imageUrl"
                         style="user-select: none;">
@@ -29,11 +29,11 @@
             :md="{ span: 21 }">
             <el-row :span="12"></el-row>
             <el-row :span="12">
-                <el-col :span="18">
+                <el-col :span="20">
                 <el-descriptions 
                     :title="user.name"
                     direction="vertical"
-                    :column="4"
+                    :column="6"
                     >
                     <el-descriptions-item min-width="75px" label="校区">
                         <span style="font-size: 14px;">{{ user.campus === '1' ? '学院路校区' : '沙河校区' }}</span>
@@ -49,11 +49,13 @@
                     <el-descriptions-item min-width="100px" label="简介">
                         <span style="font-size: 14px;">{{ user.description }}</span>
                     </el-descriptions-item>
+                    <el-descriptions-item>
+                        <el-button type="primary" plain :icon="Edit" @click="editVisible = true">编辑</el-button>
+                    </el-descriptions-item>
+                    <el-descriptions-item>
+                        <el-button type="primary" plain :icon="Edit" @click="changePasswordVisible = true">修改密码</el-button>
+                    </el-descriptions-item>
                 </el-descriptions>
-                </el-col>
-                <el-col :span="6" :offset="12">
-                    <el-button type="primary" plain :icon="Edit" @click="editVisible = true">编辑</el-button>
-                    <el-button type="primary" plain :icon="Edit" @click="changePasswordVisible = true">修改密码</el-button>
                 </el-col>
             </el-row>
         </el-col>

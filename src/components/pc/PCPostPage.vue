@@ -113,7 +113,7 @@
                             </div>
                         </div>
                         <div style="float: left; right: 0; position: absolute">
-                            <el-button type="info" plain @click="newFloorDialogVisible = true" style="margin-left: 10px">
+                            <el-button type="success" plain @click="newFloorDialogVisible = true" style="margin-left: 10px">
                                 回复帖子
                             </el-button>
                         </div>
