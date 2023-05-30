@@ -16,7 +16,7 @@
                             <template #reference>
                                 <h3 class="link_hover"
                                     style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
-                                    @click="browseFloor(floor.post_id)">
+                                    @click="browseFloor(floor.post_id, floor.id)">
                                     帖子名称: {{ floor.title }}
                                 </h3>
                             </template>
@@ -81,7 +81,7 @@
                             <template #reference>
                                 <h3 class="link_hover"
                                     style="padding: 0 20px; width: 300px; height:28px;overflow: hidden"
-                                    @click="browseFloor(comment.post_id)">
+                                    @click="browseFloor(comment.post_id, comment.floor_id)">
                                     帖子名称: {{ comment.title }}
                                 </h3>
                             </template>
@@ -238,13 +238,13 @@ export default {
                 }
             })
         },
-        browseComment(id) {
+        browseComment(id, floor_id) {
             // 记得改
-            this.$router.push({path: '/Forum/' + id})
+            this.$router.push({path: '/Forum/' + id, query: {'floor_id': floor_id}})
         },
-        browseFloor(id) {
+        browseFloor(id, floor_id) {
             // 记得改
-            this.$router.push({path: '/Forum/' + id})
+            this.$router.push({path: '/Forum/' + id, query: {'floor_id': floor_id}})
         },
 
     },
