@@ -6,7 +6,7 @@
         <div>
             <p class="title">BUAAMapForum</p>
         </div>
-        <div class="form-container" style="width: 50%;">
+        <div class="form-container" style="width: 35%;">
             <el-form ref="loginForm" :model="loginForm" class="login-form">
                 <el-form-item prop="email">
                     <el-input v-model="loginForm.email" placeholder="请输入用户邮箱" @keyup.enter="openVerified"></el-input>
@@ -163,7 +163,7 @@ export default {
     left: -10px; /* 向左移动一点 */
     right: -10px; /* 向右移动一点 */
     z-index: -1;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.2);
     border-radius: 20px; /* 圆角边框 */
 }
 

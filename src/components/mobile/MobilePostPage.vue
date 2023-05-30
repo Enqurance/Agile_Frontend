@@ -1,13 +1,8 @@
 <template>
     <el-container>
-        <el-header style="padding-left: 0;padding-right: 0">
-            <PageHeader />
-        </el-header>
         <el-main>
             <div class="main">
-                <div class="left"></div>
-
-                <div class="center">
+                <div>
                     <div class="post_header">
                         <div class="title">
                             <h2 style="padding-bottom: 15px;">{{ post.title }}</h2>
@@ -92,7 +87,7 @@
                     <div class="post_footer">
                         <el-avatar :size="70" shape="circle" :src="this.imageUrl" style="user-select: none;">
                         </el-avatar>
-                        <el-button type="info" plain @click="newFloorDialogVisible = true"
+                        <el-button type="primary" plain @click="newFloorDialogVisible = true"
                             style="margin-left: 10px;">回复帖子</el-button>
                         <el-dialog v-model="newFloorDialogVisible">
                             <el-form :model="newFloorForm" ref="newFloorForm" label-width="80px">
@@ -107,7 +102,7 @@
                     </div>
 
                     <div class="post_floors" style="width: 100%;">
-                        <div v-for="floor in floors" :key="floor.id" style="padding-top: 5px;">
+                        <div v-for="floor in floors" :key="floor.id" style="padding-top: 10px;">
                             <el-card style="min-height: auto;">
                                 <div class="post_floor-header">
                                     <div>
@@ -124,7 +119,6 @@
                                                     }}</el-link>
                                             </template>
                                         </el-popover>
-                                        <span>发表于 {{ getTimeSubstring(floor.createTime) }} </span>
                                     </div>
                                     <div class="floor-number">
                                         <span style="margin-right: 10px;">{{ floor.layers }}楼</span>
@@ -233,15 +227,13 @@
 
 <script>
 import { ref, onMounted, getCurrentInstance } from 'vue'
-import PageHeader from "@/components/pc/PCPageHeader.vue";
 import global from '@/global'
 import { DeleteOutlined, QuestionCircleOutlined, EditOutlined, HeartOutlined, HeartTwoTone } from '@ant-design/icons-vue';
 
 export default {
-    name: "PCPostpage",
+    name: "MobilePostpage",
 
     components: {
-        PageHeader,
         DeleteOutlined,
         QuestionCircleOutlined,
         EditOutlined,
@@ -797,20 +789,6 @@ export default {
 .main {
     display: flex;
     justify-content: space-between;
-    margin: 0 15%;
-}
-
-.left,
-.right {
-    width: 15%;
-}
-
-.center {
-    width: 70%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
 }
 
 .post_header {
@@ -823,7 +801,6 @@ export default {
 
 .post_footer {
     display: flex;
-    justify-content: space-between;
     margin-bottom: 20px;
     align-items: center;
 }
