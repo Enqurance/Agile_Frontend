@@ -116,7 +116,7 @@
 
 <script>
 import { ref, onMounted, getCurrentInstance, watch } from 'vue'
-import NewPostMobile from "@/components/sub_components/NewPostMobile.vue";
+import NewPostMobile from "../sub_components/NewPostMobile.vue";
 import CopyrightICP from "@/components/CopyrightICP.vue";
 import global from '@/global'
 
