@@ -113,10 +113,10 @@ export default {
             <el-card shadow="hover">
                 <van-row>
                     <van-col span="8"><span>{{ pins[i-1].name }}</span></van-col>
-                    <van-col span="8">
+                    <van-col span="6" :offset="2">
                         <el-button @click="applyConfirm = true; curI = i;" plain type="success" size="small">申请公开</el-button>    
                     </van-col>
-                    <van-col span="8">
+                    <van-col span="6" :offset="2">
                         <el-button @click="deleteConfirm = true; curI = i;" plain type="danger" size="small">删除钉子</el-button>
                     </van-col>
                 </van-row>

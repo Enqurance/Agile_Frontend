@@ -42,8 +42,9 @@
                                 </div>
                             </div>
 
-                            <h1>{{ post.title }}</h1>
-
+                            <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;">
+                                <h1>{{ post.title }}</h1>
+                            </pre>
                             <div
                                 style="display: flex; align-items: center;margin-bottom: 10px;font-size:18px; margin-top: -15px">
                                 <div style="align-items: center; padding-right: 20px">
@@ -72,9 +73,9 @@
                     <div style="text-align: left; font-size: 20px; width: 100%">
                         <el-text tag="b" style="font-size: 16px; color: black">内容：</el-text>
                         <div style="padding-bottom: 10px">
-                            <!-- <pre style="font-size: 14px; word-wrap: break-word;font-family: 'Open Sans', sans-serif;
-                            white-space: pre-wrap;">{{ post.content }}</pre> -->
-                            <div v-html="post.content"></div>
+                            <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;">
+                                <div v-html="post.content"></div>
+                            </pre>
                         </div>
                     </div>
 
@@ -147,7 +148,8 @@
                     <el-dialog v-model="newFloorDialogVisible" title="新建楼层" center>
                         <el-form :model="newFloorForm" ref="newFloorForm" label-width="80px">
                             <el-form-item label="回复内容">
-                                <el-input v-model="newFloorForm.body" :rows="5" clearable type="textarea" autosize maxlength="150"></el-input>
+                                <el-input v-model="newFloorForm.body" :rows="5" clearable type="textarea" autosize
+                                    maxlength="150"></el-input>
                             </el-form-item>
                         </el-form>
                         <div class="clearfix">
@@ -238,7 +240,9 @@
                                                     <span>:</span>
                                                 </div>
                                                 <div>
-                                                    <pre>{{ floor.comment_cases.content }}</pre>
+                                                    <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;">
+                                                        {{ floor.comment_cases.content }}
+                                                    </pre>
                                                 </div>
                                             </el-main>
                                             <el-aside
@@ -1088,5 +1092,4 @@ export default {
 .el-main {
     --el-main-padding: 0px;
 }
-
 </style>
