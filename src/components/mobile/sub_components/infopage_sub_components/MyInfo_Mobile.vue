@@ -305,14 +305,42 @@ export default {
         <van-row class="InforRow">
                 <div class="headPart">
                     <div v-if="isReload" style="padding-top: 15%;">
-                        <div @click="showLeft">
                             <van-row gutter="25">
-                            <van-col span="12">
-                                <div class="pic-container"><img :src="this.imageUrl"></div>
-                            </van-col>
-                            <van-col span="10" style="padding-top: 17%">
-                                <span style="margin-left: 3%;font-size: 21px;">{{ this.user.name }}</span>
-                            </van-col>
+                            <el-col :span="4">
+                                <div @click="showLeft">
+                                <!-- <div class="pic-container"><img :src="this.imageUrl"></div> -->
+                                    <el-avatar :size="70" shape="square" :src="this.imageUrl" style="user-select: none;margin-top: 5px">
+					                </el-avatar>
+                                </div>
+                            </el-col>
+                            <el-col :span="18" :offset="2">
+                                <el-row>
+                                    <span style="font-size: 20px">{{ this.user.name }}</span>
+                                </el-row>
+                                <el-row>
+                                    <el-button @click="editVisible = true">编辑</el-button>
+                                    <el-button>
+                                        <el-dropdown>
+                                            <span class="el-dropdown-link" style="font-size: 14px;">
+                                                设置
+                                            </span>
+                                            <template #dropdown>
+                                                <el-dropdown-menu>
+                                                    <el-dropdown-item>
+                                                        <el-button @click="changePasswordVisible = true">修改密码</el-button>
+                                                    </el-dropdown-item>
+                                                    <el-dropdown-item>
+                                                        <el-button @click="contactUsVisible = true">联系我们</el-button>
+                                                    </el-dropdown-item>
+                                                    <el-dropdown-item>
+                                                        <el-button @click="logOut()">登出</el-button>
+                                                </el-dropdown-item>
+                                            </el-dropdown-menu>
+                                            </template>
+                                        </el-dropdown>
+                                    </el-button>
+                                </el-row>
+                            </el-col>
                             </van-row>
                         </div>
                         <van-popup 
@@ -323,18 +351,19 @@ export default {
                                 <div v-if="isReload" style="padding-top: 25%; 
                                     height: 40%; width: 40%; ">
                                     <el-tooltip class="item" effect="dark" content="点击更换头像" placement="right">
-                                    <div class="pic-container">
+                                    <el-row>
                                         <el-upload class="avatar-uploader" action="http://43.143.148.116:8080/photo/uploadUserIcon"
                                             :show-file-list="false" :on-success="handleAvatarSuccess"
                                             :before-upload="beforeAvatarUpload">
-                                        <img :src="this.imageUrl">
+                                            <el-avatar :size="70" shape="circle" :src="this.imageUrl" style="user-select: none;">
+					                        </el-avatar>
                                         </el-upload>
-                                    </div>
+                                    </el-row>
                                     </el-tooltip>
-                                    <span style="margin-left: 5%;font-size: 21px;">{{ this.user.name }}</span>
+                                    <span style="font-size: 21px;">{{ this.user.name }}</span>
                                 </div>
                                 <el-row class="firstRow">
-                                        <p style="padding-top: 8%; padding-bottom: 5%; font-size:1.2em">{{ user.description }}</p>
+                                        <p style="padding-top: 8%; padding-bottom: 5%; font-size:1.2em">简介：{{ user.description }}</p>
                                 <el-descriptions column=1>
                                     <el-descriptions-item label="校区:">
                                         <span style="font-size: 14px;">{{ user.campus == '1' ? '学院路校区' : '沙河校区' }}</span>
@@ -355,31 +384,6 @@ export default {
                             </div>
                         </van-popup>
                     </div>
-                    <div class="buttonArea">
-                        <div style="padding-top: 50%;"></div>
-                        <el-button round style="font-size: 14px;" @click="editVisible = true">编辑</el-button>
-                        <el-button round>
-                            <el-dropdown>
-                                <span class="el-dropdown-link" style="font-size: 14px;">
-                                    设置
-                                </span>
-                                <template #dropdown>
-                                    <el-dropdown-menu>
-                                        <el-dropdown-item>
-                                            <el-button @click="changePasswordVisible = true">修改密码</el-button>
-                                        </el-dropdown-item>
-                                        <el-dropdown-item>
-                                            <el-button @click="contactUsVisible = true">联系我们</el-button>
-                                        </el-dropdown-item>
-                                        <el-dropdown-item>
-                                            <el-button @click="logOut()">登出</el-button>
-                                        </el-dropdown-item>
-                                    </el-dropdown-menu>
-                                </template>
-                            </el-dropdown>
-                        </el-button>
-                    </div>
-                </div>
                 <el-divider />
             </van-row>
             <van-row class="InforRow">
@@ -518,18 +522,6 @@ span {
 a {
     font-size: 120%;
     font-weight: 550;
-}
-
-.pic-container {
-    aspect-ratio: 1/1;
-    height: 80%;
-    border-radius: 50%;
-    /* 设置圆角半径为容器宽高的一半 */
-    overflow: hidden;
-    /* 超出容器的部分隐藏 */
-    margin-top: 5%;
-    margin-left: 3%;
-    margin-bottom: 3%;
 }
 
 .pic-container img {
