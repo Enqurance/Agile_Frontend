@@ -213,8 +213,8 @@ export default {
         // console.log(context)
         // 选取聚合的marker中weight最大的点展示，即第0个
         const show_marker = context.clusterData[0];
-        const content = "<div style='width: 100px'>" + show_marker.name + "</div>" + '<div style=\"color:' + that._get_pin_color(show_marker.type) + '\"><span class="iconfont icon-location-full icon_class" ></span></div>';
-        const offset = new AMap.Pixel(-9, -9);
+        const content = "<div style='width: 100px; display: flex; opacity:" + that._get_pin_opacity(show_marker.type) + "; color: "+ that._get_pin_color(show_marker.type) +";'>"+ '<div style=\"color:' + that._get_pin_color(show_marker.type) + '\"><span class="iconfont icon-location-full icon_class" ></span></div>' + show_marker.name + "</div>";
+        const offset = new AMap.Pixel(-10.5, -12);
         context.marker.setContent(content)
         context.marker.setOffset(offset)
 
@@ -273,8 +273,8 @@ export default {
       // 设置聚合之前点的样式
       this.renderMarker_style = function (context) {
         // console.log(context)
-        const content = "<div style='width: 100px'>" + context.data[0].name + "</div>" + '<div style=\"color:' + that._get_pin_color(context.data[0].type) + '\"><span class="iconfont icon-location-full icon_class" ></span></div>';
-        const offset = new AMap.Pixel(-9, -9);
+        const content = "<div style='width: 100px; display: flex; opacity:" + that._get_pin_opacity(context.data[0].type) + "; color: "+ that._get_pin_color(context.data[0].type) +";'>"+ '<div style=\"color:' + that._get_pin_color(context.data[0].type) + '\"><span class="iconfont icon-location-full icon_class" ></span></div>' + context.data[0].name + "</div>";
+        const offset = new AMap.Pixel(-10.5, -12);
         context.marker.setContent(content)
         context.marker.setOffset(offset)
 
@@ -425,6 +425,7 @@ export default {
         lnglat: this.click_marker_lnglat
       }))
       this.create_cluster()
+      this.concentrate_pin(this.click_marker_simple_info.id)
     },
     add_marker(info) {
       // eslint-disable-next-line no-undef
@@ -488,6 +489,17 @@ export default {
     _get_pin_color(pin_type_id) {
       return global.get_pin_color(pin_type_id)
     },
+    _get_pin_opacity(pin_type_id) {
+      switch (pin_type_id) {
+        case 1: return 1;
+        case 2: return 1;
+        case 3: return 1;
+        case 4: return 1;
+        case 5: return 1;
+        case 6: return 1;
+        case 7: return 1;
+      }
+    },
     create_cluster() {
       let that = this
       this.map.plugin(["AMap.MarkerClusterer"], function () {
@@ -529,6 +541,7 @@ export default {
 }
 
 .bottom_div {
+  color: rgb(239, 184, 5);
   top: 0;
   position: absolute;
   z-index: 1;
