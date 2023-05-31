@@ -99,7 +99,6 @@ export default {
 
       center_pin_id: -1,
 
-      markers: {},
       show_types: {
         "餐饮": [],
         "园地": [],
@@ -128,15 +127,7 @@ export default {
         "购物",
         "生活服务",
       ],
-      last_types: [
-        "餐饮",
-        "园地",
-        "教学",
-        "体育",
-        "办公",
-        "购物",
-        "生活服务",
-      ],
+
       cluster: null,
       markerClusterers: [],
       renderClusterMarker_style: Object,
@@ -551,11 +542,6 @@ export default {
   width: 18%;
   margin-top: 7%;
   margin-left: 3%
-}
-
-.testCss {
-  border-radius: 5px;
-  font-size: large;
 }
 
 </style>
