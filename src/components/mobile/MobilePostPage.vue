@@ -118,32 +118,21 @@
         </el-col>
       </el-row>
       <div>
-        <el-dialog width="75%" v-model="postDialogVisible">
-          <div>
-            <el-form>
-              <el-form-item label="标题">
-                <el-input
-                  v-model="formPost.title"
-                  autosize
-                  maxlength="60"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="正文">
-                <!-- <el-input
-                  v-model="formPost.content"
-                  type="textarea"
-                  :rows="6"
-                  maxlength="200"
-                ></el-input> -->
-                <div style="width:100%">
-                  <MyEditor @input="updateContent" :initialValue="post.content"
+        <van-dialog v-model:show="postDialogVisible" :z-index="2000" style="padding: 3% 0;"
+          :show-cancel-button="true" @confirm="submitEditForm" title="编辑帖子" >
+          <van-form :model="formPost" style="margin: 20px 0">
+            <van-cell-group inset>
+              <van-field v-model="formPost.title" name="名称" label="标题" type="textarea"
+              autosize maxlength="60" 
+                 :rules="[{required: true, message: '请填写帖子标题'}]"/>
+              <van-cell title="正文" value="" />
+              <div>
+                <MyEditor @input="updateContent" :initialValue="post.content"
                     :sendData="formPost.content"></MyEditor>
-                </div>
-              </el-form-item>
-            </el-form>
-            <el-button type="primary" @click="submitEditForm">确认</el-button>
-          </div>
-        </el-dialog>
+              </div>
+            </van-cell-group>
+          </van-form>
+        </van-dialog>
       </div>
       <div>
         <el-dialog v-model="newFloorDialogVisible" width="75%">
