@@ -53,16 +53,20 @@
 								<el-card style="min-height: auto;">
 									<template #header>
 										<div class="card-header">
-											<el-col :span="16">
+											<el-col :span="14">
 												{{ post.title }}
 											</el-col>
-											<el-col :span="4">
+											<el-col :span="10"> 
+                                                <el-row style="margin-bottom: 10px">
 												<span>{{
 														getTimeSubstring(post.createTime)
 													}}</span>
-											</el-col>
-											<el-col :span="3">
-												<el-tag class="tag" size="small">{{ _get_pin_type(post.tag) }}</el-tag>
+                                                </el-row>
+                                                <el-row style="margin-bottom: 10px">   
+                                                    <el-col :offset="4"> 
+												        <el-tag class="tag" size="small">{{ _get_pin_type(post.tag) }}</el-tag>
+                                                    </el-col>
+                                                </el-row>
 											</el-col>
 										</div>
 									</template>
@@ -73,15 +77,15 @@
 										</el-row>
 										<el-row>
 											<el-descriptions :column="3">
-												<el-descriptions-item :min-width="100" align label="点赞数">{{
+												<el-descriptions-item :min-width="80" align label="点赞数">{{
 														post.thumbsUp
 													}}
 												</el-descriptions-item>
-												<el-descriptions-item :min-width="100" label="访问量">{{
+												<el-descriptions-item :min-width="80" label="访问量">{{
 														post.visit
 													}}
 												</el-descriptions-item>
-												<el-descriptions-item :min-width="100" label="楼层数">{{
+												<el-descriptions-item :min-width="80" label="楼层数">{{
 														post.floorNum
 													}}
 												</el-descriptions-item>

@@ -285,6 +285,9 @@ export default {
         context.marker.on('touchstart', function () {
           that.menu_isopen = false
           that.start_touch_time = Date.now()
+          if (that.timeout != null) {
+            clearTimeout(that.timeout)
+          }
           that.timeout = window.setTimeout(() => {
             if ((show_marker.visibility === 1 && that.$cookies.get('user_type') === "0") || that.$cookies.get('user_type') === null) {
               that.$message({
@@ -334,10 +337,12 @@ export default {
 
         context.marker.on('touchmove', function() {
           clearTimeout(that.timeout);
+          that.timeout = null;
         })
 
         context.marker.on('touchend', function () {
           clearTimeout(that.timeout);
+          that.timeout = null;
           if (Date.now() - that.start_touch_time < 500) {
             that.show_marker_id = parseInt(show_marker.id)
           }
@@ -354,6 +359,9 @@ export default {
         context.marker.on('touchstart', function () {
           that.menu_isopen = false
           that.start_touch_time = Date.now()
+          if (that.timeout != null) {
+            clearTimeout(that.timeout)
+          }
           that.timeout = window.setTimeout(() => {
             if ((context.data[0].visibility === 1 && that.$cookies.get('user_type') === "0") || that.$cookies.get('user_type') === null) {
               that.$message({
@@ -403,10 +411,12 @@ export default {
 
         context.marker.on('touchmove', function() {
           clearTimeout(that.timeout);
+          that.timeout = null;
         })
 
         context.marker.on('touchend', function () {
           clearTimeout(that.timeout);
+          that.timeout = null;
           if (Date.now() - that.start_touch_time < 500) {
             that.show_marker_id = parseInt(context.data[0].id)
           }
@@ -434,12 +444,14 @@ export default {
       let that = this
 
       //地图绑定鼠标右击事件——弹出右键菜单
-      console.log("event")
       this.map.on('touchstart', (e) => {
         that.menu_isopen = false
         if (e.touches > 1) {
+          clearTimeout(that.timeout);
+          return;
+        }
+        if (that.timeout != null) {
           clearTimeout(that.timeout)
-          return
         }
         that.timeout = window.setTimeout(() => {
           that.click_marker_lnglat = [e.lnglat.lng, e.lnglat.lat]
@@ -451,10 +463,12 @@ export default {
 
       this.map.on('touchmove', () => {
         clearTimeout(that.timeout);
+        that.timeout = null;
       });
 
       this.map.on('touchend', () => {
         clearTimeout(that.timeout);
+        that.timeout = null;
       })
 
     },
