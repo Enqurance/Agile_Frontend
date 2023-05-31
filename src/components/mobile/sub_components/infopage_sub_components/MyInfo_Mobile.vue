@@ -310,8 +310,8 @@ export default {
                             <van-col span="12">
                                 <div class="pic-container"><img :src="this.imageUrl"></div>
                             </van-col>
-                            <van-col span="10" style="padding-top: 10%">
-                                <p style="margin-left: 3%;font-size: 21px;">{{ this.user.name }}</p>
+                            <van-col span="10" style="padding-top: 17%">
+                                <span style="margin-left: 3%;font-size: 21px;">{{ this.user.name }}</span>
                             </van-col>
                             </van-row>
                         </div>
@@ -331,7 +331,7 @@ export default {
                                         </el-upload>
                                     </div>
                                     </el-tooltip>
-                                    <p style="margin-left: 5%;font-size: 21px;">{{ this.user.name }}</p>
+                                    <span style="margin-left: 5%;font-size: 21px;">{{ this.user.name }}</span>
                                 </div>
                                 <el-row class="firstRow">
                                         <p style="padding-top: 8%; padding-bottom: 5%; font-size:1.2em">{{ user.description }}</p>
