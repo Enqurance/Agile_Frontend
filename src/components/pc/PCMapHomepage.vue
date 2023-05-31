@@ -204,7 +204,11 @@ export default {
         // console.log(context)
         // 选取聚合的marker中weight最大的点展示，即第0个
         const show_marker = context.clusterData[0];
-        const content = "<div style='width: 100px; display: flex; opacity:" + that._get_pin_opacity(show_marker.type) + "; color: "+ that._get_pin_color(show_marker.type) +";'>"+ '<div style=\"color:' + that._get_pin_color(show_marker.type) + '\"><span class="iconfont icon-location-full icon_class" ></span></div>' + show_marker.name + "</div>";
+        const content = "<div style='width: 100px; display: flex; opacity:" + that._get_pin_opacity(show_marker.type) 
+            + "; color: "+ that._get_pin_color(show_marker.type) +";'>"
+            + '<div style=\"color:' + that._get_pin_color(show_marker.type) 
+            + '; font-family: "Microsoft Yahei;"\"><span class="iconfont icon-location-full icon_class" ></span></div>' 
+            + "<span style=\"font-weight: 550;\">" + show_marker.name + "</span></div>";
         const offset = new AMap.Pixel(-10.5, -12);
         context.marker.setContent(content)
         context.marker.setOffset(offset)
@@ -264,7 +268,12 @@ export default {
       // 设置聚合之前点的样式
       this.renderMarker_style = function (context) {
         // console.log(context)
-        const content = "<div style='width: 100px; display: flex; opacity:" + that._get_pin_opacity(context.data[0].type) + "; color: "+ that._get_pin_color(context.data[0].type) +";'>"+ '<div style=\"color:' + that._get_pin_color(context.data[0].type) + '\"><span class="iconfont icon-location-full icon_class" ></span></div>' + context.data[0].name + "</div>";
+        const content = "<div style='width: 100px; font-family: \"Microsoft Yahei\"; display: flex; opacity:" 
+            + that._get_pin_opacity(context.data[0].type) 
+            + "; color: "+ that._get_pin_color(context.data[0].type) +";'>"
+            + '<div style=\"color:' + that._get_pin_color(context.data[0].type) 
+            + '; \"><span class="iconfont icon-location-full icon_class" ></span></div>' 
+            + "<span style=\"font-weight: 550;\">" + context.data[0].name + "</span></div>";
         const offset = new AMap.Pixel(-10.5, -12);
         context.marker.setContent(content)
         context.marker.setOffset(offset)
