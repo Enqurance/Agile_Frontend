@@ -437,9 +437,11 @@ export default {
       console.log("event")
       this.map.on('touchstart', (e) => {
         that.menu_isopen = false
-        console.log("touch")
+        if (e.touches > 1) {
+          clearTimeout(that.timeout)
+          return
+        }
         that.timeout = window.setTimeout(() => {
-          console.log("show")
           that.click_marker_lnglat = [e.lnglat.lng, e.lnglat.lat]
           that.menu_xy = [e.pixel.x, e.pixel.y]
           that.menu_isopen = true
