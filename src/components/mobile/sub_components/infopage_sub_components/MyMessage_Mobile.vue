@@ -1,9 +1,18 @@
 <template>
   <el-row>
     <el-col :span="22" :offset="1">
-      <div style="margin-top: 3%; margin-bottom: 3%; font-size: 20px">
-        我的消息
-      </div>
+      <el-row>
+        <div
+          style="
+            margin-top: 3%;
+            margin-left: %2;
+            font-size: 24px;
+            font-weight: bold;
+          "
+        >
+          我的回复
+        </div>
+      </el-row>
       <el-row>
         <el-menu
           :default-active="activeIndex"
@@ -23,6 +32,63 @@
             全部删除</el-button
           >
         </el-row>
+        <el-scrollbar>
+          <div v-if="revs.length === 0">
+            <el-empty description="暂时还没有消息" />
+          </div>
+          <div v-for="rev in revs" :key="rev.id">
+            <el-row>
+              <el-card class="box-card">
+                <template #header>
+                  <div class="card-header">
+                    <el-col :span="16">
+                      <!-- <div v-if="rev.read === false" style="float: right">
+                        <el-icon>
+                          <Warning />
+                        </el-icon>
+                      </div>
+                      <el-icon style="float: right">
+                        <circle-close
+                          @click="rev.deleteDialog = true"
+                        ></circle-close>
+                      </el-icon> -->
+                      <pre
+                        style="
+                          word-wrap: break-word;
+                          font-family: 'Open Sans', sans-serif;
+                          white-space: pre-wrap;
+                          width: 100%;
+                        "
+                      ><div class="for-pre" @click="clickMsg(rev)">{{ rev.title }}</div></pre>
+                    </el-col>
+                    <el-col :span="6" :offset="2">
+                      <el-button
+                        v-if="rev.content"
+                        type="primary"
+                        @click="readDetail(rev)"
+                      >
+                        查看详情
+                      </el-button>
+                    </el-col>
+                  </div>
+                </template>
+                <el-row>
+                  <span> 内容：{{ rev.content }} </span>
+                </el-row>
+                <el-row>
+                  <el-text> 消息时间：{{ rev.time }} </el-text>
+                </el-row>
+              </el-card>
+            </el-row>
+            <el-dialog v-model="rev.detail" title="消息详情" width="80%" center>
+              <template #footer>
+                <span class="dialog-footer">
+                  <el-button @click="rev.detail = false">关闭</el-button>
+                </span>
+              </template>
+            </el-dialog>
+          </div>
+        </el-scrollbar>
         <el-dialog v-model="deleteRevDialog" center>
           <div style="text-align: center">
             <el-text tag="b" style="color: black; font-size: 15px">
@@ -40,90 +106,6 @@
             </div>
           </template>
         </el-dialog>
-        <el-scrollbar height="450px">
-          <div v-if="revs.length === 0">
-            <el-empty description="暂时还没有消息" />
-          </div>
-          <div
-            v-for="rev in revs"
-            :key="rev.id"
-            style="
-              border-radius: 20px;
-              background: white;
-              border: 3px solid rgb(240, 240, 240);
-              width: 92%;
-              margin-top: 20px;
-            "
-          >
-            <el-col :span="24">
-              <el-icon style="float: right">
-                <circle-close @click="rev.deleteDialog = true"></circle-close>
-              </el-icon>
-              <div v-if="rev.read === false" style="float: right">
-                <el-icon>
-                  <Warning />
-                </el-icon>
-              </div>
-              <el-col :span="20" :offset="2">
-                <el-row>
-                  <pre
-                    style="
-                      word-wrap: break-word;
-                      font-family: 'Open Sans', sans-serif;
-                      white-space: pre-wrap;
-                      width: 100%;
-                    "
-                  >
-                  <div @click="clickMsg(rev)">
-                    {{ rev.title }}
-                  </div>
-                    </pre>
-                </el-row>
-                <el-row>
-                  {{ rev.content }}
-                </el-row>
-                <el-row>
-                  <el-col :span="16">
-                    <span
-                      style="
-                        padding: 0 20px;
-                        font-size: 15px;
-                        height: 20px;
-                        width: 55%;
-                        overflow: hidden;
-                        display: inline-block;
-                      "
-                    >
-                      {{ rev.time }}
-                    </span>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-button
-                      v-if="rev.content"
-                      type="primary"
-                      size="small"
-                      @click="readDetail(rev)"
-                    >
-                      查看详情
-                    </el-button>
-                  </el-col>
-                </el-row>
-                <el-dialog
-                  v-model="rev.detail"
-                  title="消息详情"
-                  width="80%"
-                  center
-                >
-                  <template #footer>
-                    <span class="dialog-footer">
-                      <el-button @click="rev.detail = false">关闭</el-button>
-                    </span>
-                  </template>
-                </el-dialog>
-              </el-col>
-            </el-col>
-          </div>
-        </el-scrollbar>
       </div>
       <div v-if="this.Index === '2'">
         <el-row>
@@ -150,75 +132,67 @@
           </template>
         </el-dialog>
 
-        <el-scrollbar height="450px">
+        <el-scrollbar>
           <div v-if="snds.length === 0">
             <el-empty description="暂时还没有消息" />
           </div>
-          <div
-            v-for="snd in snds"
-            :key="snd.id"
-            style="
-              border-radius: 20px;
-              background: white;
-              border: 3px solid rgb(240, 240, 240);
-              width: 92%;
-              height: 150px;
-              margin-top: 20px;
-            "
-          >
-            <el-icon style="float: right">
-              <circle-close @click="snd.deleteDialog = true"></circle-close>
-            </el-icon>
-            <div v-if="snd.read === false" style="float: right">
-              <el-icon>
-                <Warning />
-              </el-icon>
-            </div>
-
-            <h3
-              style="
-                padding: 0 20px;
-                font-size: 18px;
-                height: 50px;
-                width: 80%;
-                overflow: hidden;
-              "
-              @click="clickMsg(snd)"
-            >
-              {{ snd.title }}
-            </h3>
-            <p
-              style="
-                padding: 0 20px;
-                font-size: 15px;
-                height: 20px;
-                width: 55%;
-                overflow: hidden;
-                display: inline-block;
-              "
-            >
-              {{ snd.time }}
-            </p>
-            <el-button
-              v-if="snd.content"
-              style="float: right; display: inline-block"
-              type="primary"
-              size="small"
-              @click="readDetail(snd)"
-            >
-              查看详情
-            </el-button>
-            <el-dialog v-model="snd.detail" title="消息详情" width="80%" center>
-              <span style="text-align: center">
-                {{ snd.content }}
-              </span>
-
-              <template #footer>
-                <span class="dialog-footer">
-                  <el-button @click="snd.detail = false">关闭</el-button>
+          <div v-for="snd in snds" :key="snd.id">
+            <el-row>
+              <el-card class="box-card">
+                <template #header>
+                  <div class="card-header">
+                    <el-col>
+                      <!-- <el-row>
+                      <el-icon style="float: right">
+                        <circle-close
+                          @click="snd.deleteDialog = true"
+                        ></circle-close>
+                      </el-icon>
+                      <div v-if="snd.read === false" style="float: right">
+                        <el-icon>
+                          <Warning />
+                        </el-icon>
+                      </div>
+                    </el-row> -->
+                      <el-row>
+                        <pre
+                          style="
+                            word-wrap: break-word;
+                            font-family: 'Open Sans', sans-serif;
+                            white-space: pre-wrap;
+                            width: 100%;
+                          "
+                        ><div class="for-pre" @click="clickMsg(snd)">{{ snd.title }}</div></pre>
+                      </el-row>
+                      <el-row>
+                        <el-text>
+                          {{ snd.time }}
+                        </el-text>
+                      </el-row>
+                    </el-col>
+                  </div>
+                </template>
+                <div v-if="snd.content">
+                  {{ snd.content }}
+                </div>
+                <div v-else>暂无详情</div>
+              </el-card>
+              <el-dialog
+                v-model="snd.detail"
+                title="消息详情"
+                width="80%"
+                center
+              >
+                <span style="text-align: center">
+                  {{ snd.content }}
                 </span>
-              </template>
-            </el-dialog>
+                <template #footer>
+                  <span class="dialog-footer">
+                    <el-button @click="snd.detail = false">关闭</el-button>
+                  </span>
+                </template>
+              </el-dialog>
+            </el-row>
           </div>
         </el-scrollbar>
       </div>
@@ -238,8 +212,8 @@ import CopyrightICP from "@/components/CopyrightICP.vue";
 export default {
   name: "MyMessage_Mobile",
   components: {
-    CircleClose,
-    Warning,
+    // CircleClose,
+    // Warning,
     CopyrightICP,
   },
   data() {
@@ -265,12 +239,6 @@ export default {
           this.$router.push({ path: "/Forum/" + msg.post_id });
         }
       }
-      // else {
-      //   if (msg.content === null) {
-      //     msg.content = msg.title;
-      //   }
-      //   msg.detail = true;
-      // }
     },
     deleteMessage(msg) {
       let that = this;
@@ -507,20 +475,19 @@ export default {
 </script>
 
 <style scoped>
-.infinite-list {
-  height: 360px;
-  padding: 0;
-  margin: 0;
-  list-style: none;
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.infinite-list .infinite-list-item {
-  display: inline-block;
-  align-items: center;
-  justify-content: center;
-  height: 50px;
-  background: var(--el-color-primary-light-9);
-  margin: 0;
-  color: var(--el-color-primary);
+.box-card {
+  width: 100%;
+}
+
+.for-pre {
+  font-weight: bold;
+  font-size: 20px;
+  color: #5d478b;
 }
 </style>
