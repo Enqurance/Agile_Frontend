@@ -127,11 +127,9 @@ export default {
                                     <ChatRound />
                                 </el-icon>
                                 <span>我的消息</span>
-                                <div v-if="this.hasUnread===true">
+                                <div v-if="this.hasUnread===true" style="padding-left: 20px;color: darkorange">
                                   <el-icon>
-                                    <warning>
-
-                                    </warning>
+                                    <warning />
                                   </el-icon>
                                 </div>
                             </template>
