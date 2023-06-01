@@ -74,9 +74,6 @@ export default {
     methods: {
         updateContent(content) {
             this.formData.post_body = content
-            // console.log(data)
-            // this.formData.post_body = data.data;
-            // console.log(this.formData.post_body)
         },
 
         submitForm() {

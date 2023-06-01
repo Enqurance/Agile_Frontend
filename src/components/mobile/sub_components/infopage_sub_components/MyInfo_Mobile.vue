@@ -301,15 +301,14 @@ export default {
 </script>
 
 <template>
-    <div style="padding-left: 7%;padding-right: 7%;">
-        <van-row class="InforRow">
+    <van-col span="22" offset="1">
+        <van-row>
                 <div class="headPart">
                     <div v-if="isReload" style="padding-top: 15%;">
                             <van-row gutter="25">
                             <el-col :span="4">
                                 <div @click="showLeft">
-                                <!-- <div class="pic-container"><img :src="this.imageUrl"></div> -->
-                                    <el-avatar :size="70" shape="square" :src="this.imageUrl" style="user-select: none;margin-top: 5px">
+                                    <el-avatar :size="70" shape="square" :src="this.imageUrl">
 					                </el-avatar>
                                 </div>
                             </el-col>
@@ -355,7 +354,7 @@ export default {
                                         <el-upload class="avatar-uploader" action="http://43.143.148.116:8080/photo/uploadUserIcon"
                                             :show-file-list="false" :on-success="handleAvatarSuccess"
                                             :before-upload="beforeAvatarUpload">
-                                            <el-avatar :size="70" shape="circle" :src="this.imageUrl" style="user-select: none;">
+                                            <el-avatar :size="70" shape="square" :src="this.imageUrl" style="user-select: none;">
 					                        </el-avatar>
                                         </el-upload>
                                     </el-row>
@@ -454,7 +453,7 @@ export default {
                 placeholder="Please input"/>
             </div>
         </van-dialog>
-    </div>
+    </van-col>
 </template>
 
 <style scoped>
@@ -463,7 +462,6 @@ export default {
     height: 100%;
     display: flex;
     flex-direction: row;
-    /*background-image: url('https://s2.loli.net/2023/04/25/VbTDNRqLr8UMZlB.png');*/
 }
 
 .headPart>div {
@@ -486,22 +484,6 @@ export default {
     border-right-color: gainsboro;
 }
 
-.firstRow {
-    margin-bottom: 10%;
-    display: block;
-    align-items: center;
-}
-
-.secondRow {
-    margin-right: 8%;
-    margin-bottom: 10%;
-}
-
-.thirdRow {
-    margin-right: 8%;
-    margin-bottom: 10%;
-}
-
 .avatar-uploader .el-upload {
     border: 1px dashed var(--el-border-color);
     border-radius: 6px;
@@ -513,22 +495,6 @@ export default {
 
 .avatar-uploader .el-upload:hover {
     border-color: var(--el-color-primary);
-}
-
-span {
-    font-size: 100%;
-}
-
-a {
-    font-size: 120%;
-    font-weight: 550;
-}
-
-.pic-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    /* 图片不拉伸，并保持完整显示 */
 }
 
 .form {

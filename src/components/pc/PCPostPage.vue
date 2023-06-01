@@ -1,5 +1,5 @@
 <template>
-    <el-container>
+    <el-container ref="container">
         <el-header style="padding-left: 0;padding-right: 0">
             <PageHeader />
         </el-header>
@@ -1014,6 +1014,15 @@ export default {
         }
         else {
             this.loadLazyFloors()
+        }
+
+        const container = this.$refs.container;
+        if (container) {
+            const hasScrollbar = window.innerHeight < document.body.offsetHeight;
+            console.log(container)
+            if (!hasScrollbar) {
+                // container.style.height = `${container.offsetHeight + 10}px`;
+            }
         }
     },
 
