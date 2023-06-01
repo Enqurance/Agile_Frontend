@@ -7,22 +7,24 @@ import MyPost from "@/components/pc/sub_components/infopage_sub_components/MyPos
 import CopyrightICP from "@/components/CopyrightICP.vue";
 
 import {
-    User,
-    Reading,
-    ChatLineSquare,
-    ChatRound,
+  User,
+  Reading,
+  ChatLineSquare,
+  ChatRound, CircleCheck, CircleClose, Warning,
 } from '@element-plus/icons-vue'
 
 export default {
     name: "PCInfoPage",
-    components: { 
-        PageHeader, User, Reading, ChatLineSquare, ChatRound, 
+    components: {
+      Warning,
+        PageHeader, User, Reading, ChatLineSquare, ChatRound,
         MyInfo, MyMessage, MyPost, MyComment, CopyrightICP
     },
     data() {
         return {
             isCollapse: false,
-            Index: '1'
+            Index: '1',
+            hasUnread:false,
         }
     },
     computed: {
@@ -39,10 +41,34 @@ export default {
         this.Index = '1'
         window.addEventListener('resize', this.handleResize)
         this.handleResize()
+
+        this.checkUnread()
+
     },
     methods: {
         handleResize() {
             this.isCollapse = window.innerWidth < 768 // 在窗口宽度小于 768px 时折叠菜单
+        },
+        checkUnread()
+        {
+          let that=this;
+          that.$axios.get('/InfoPage/MyMessage/checkUnreadMessage', {
+            headers: {
+              'token': that.$cookies.get('user_token')
+            }
+
+          }).then((res) => {
+            if (res.data.code === 200) {
+              // console.log("get rev success")
+              this.hasUnread = res.data.data
+            }
+            else {
+              this.$message({
+                message: res.data.message,
+                type: 'error'
+              })
+            }
+          })
         }
     },
     watch: {
@@ -60,10 +86,10 @@ export default {
             </el-header>
             <el-container style="height: 80%">
                 <el-aside width="15%">
-                    <el-menu 
-                        default-active="1" 
-                        :default-openeds="[]" 
-                        :collapse="isCollapse" 
+                    <el-menu
+                        default-active="1"
+                        :default-openeds="[]"
+                        :collapse="isCollapse"
                         style="height: 100%">
                         <el-menu-item index="1" @click="Index='1'">
                             <el-icon><User /></el-icon>
@@ -101,6 +127,13 @@ export default {
                                     <ChatRound />
                                 </el-icon>
                                 <span>我的消息</span>
+                                <div v-if="this.hasUnread===true">
+                                  <el-icon>
+                                    <warning>
+
+                                    </warning>
+                                  </el-icon>
+                                </div>
                             </template>
                             <el-menu-item-group>
                                 <el-menu-item index="4-1" @click="Index='4-1'">我收到的</el-menu-item>
