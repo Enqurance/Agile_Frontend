@@ -4,26 +4,16 @@
             <el-row>
                 <el-col :span="24">
                     <el-row>
-            <pre
-                style="
-                word-wrap: break-word;
-                font-family: 'Open Sans', sans-serif;
-                white-space: pre-wrap;
-                width: 100%;" >
-              <div class="post-title">{{ post.title }}</div>
-            </pre>
+                        <pre class="change-line" 
+                            style="font-family: Arial, sans-serif;
+                            font-size: 2rem;
+                            font-weight: bold;
+                            color: #333;">{{ post.title }}</pre>
                     </el-row>
                     <el-row>
-            <pre
-                style="
-                word-wrap: break-word;
-                font-family: 'Open Sans', sans-serif;
-                white-space: pre-wrap;
-                width: 100%;
-              "
-            >
-            <div v-html="post.content"></div>
-            </pre>
+                    
+                    <pre class="change-line"><div v-html="post.content"></div></pre>
+
                     </el-row>
                     <el-row>
                         <el-descriptions :column="3">
@@ -192,18 +182,8 @@
                                             </el-col>
                                         </div>
                                     </template>
-                                    <pre
-                                        style="
-                      word-wrap: break-word;
-                      font-family: 'Open Sans', sans-serif;
-                      white-space: pre-wrap;
-                      width: 100%;
-                    "
-                                    >
-                <div style="margin-bottom: 10px; font-size: 20px">
-                  {{ floor.content }}
-                </div>
-              </pre>
+
+                                    <pre class="change-line" style="margin-bottom: 10px; font-size: 20px">{{ floor.content }}</pre>
 
                                     <div
                                         v-if="!floor.comment_cases"
@@ -249,16 +229,8 @@
                                                     >
                                                 </template>
                                             </el-popover>
-                                            <pre
-                                                style="
-                          word-wrap: break-word;
-                          font-family: 'Open Sans', sans-serif;
-                          white-space: pre-wrap;
-                          width: 100%;
-                        "
-                                            >
-                    <span> {{ floor.comment_cases.content }}</span>
-                    </pre>
+                                            
+                                            <pre class="change-line">{{ floor.comment_cases.content }}</pre>
                                         </div>
                                         <el-button @click="showComments(floor.id)"
                                         >全部评论
@@ -362,18 +334,11 @@
                         </div>
                     </div>
 
-                    <pre
-                        style="
-              word-wrap: break-word;
-              font-family: 'Open Sans', sans-serif;
-              white-space: pre-wrap;
-              width: 100%;
-            "
-                    >
-          <div style="margin-bottom: 5px;font-size: 20px;padding-left: 20px;padding-right: 20px;">
-            {{ comment.content }}
-          </div>
-          </pre>
+                    <pre class="change-line" 
+                    style="margin-bottom: 5px;
+                    font-size: 20px;
+                    padding-left: 20px;
+                    padding-right: 20px;">{{ comment.content }}</pre>
 
                     <div class="clearfix" style="margin-bottom: 20px">
                         <el-tooltip content="举报楼层" placement="bottom">
@@ -1052,13 +1017,6 @@ export default {
     align-items: center;
 }
 
-.post-title {
-    font-family: Arial, sans-serif;
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-}
-
 .post_header {
     display: flex;
     justify-content: space-between;
@@ -1072,6 +1030,13 @@ export default {
 }
 
 .box-card {
+    width: 100%;
+}
+
+.change-line {
+    word-wrap: break-word;
+    font-family: 'Open Sans', sans-serif;
+    white-space: pre-wrap;
     width: 100%;
 }
 </style>

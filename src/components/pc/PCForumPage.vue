@@ -62,9 +62,7 @@
                                     <template #header>
                                         <div class="card-header">
                                             <el-col :span="16">
-                                                <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;width: 100%; ">
-                                                    <div>{{ post.title }}</div>
-                                                </pre>
+                                                <pre class="change-line">{{ post.title }}</pre>
                                             </el-col>
                                             <el-col :span="4">
                                                 <span>{{
@@ -78,9 +76,7 @@
                                     </template>
                                     <el-col :span="24">
                                         <el-row>
-                                            <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;width: 100%; ">
-                                            <div v-html="post.content"></div>
-                                            </pre>
+                                            <pre class="change-line"><div v-html="post.content"></div></pre>
                                         </el-row>
                                         <el-row>
                                             <el-descriptions :column="3">
@@ -345,5 +341,12 @@ export default {
     position: absolute;
     z-index: 9999;
     background-color: #fff
+}
+
+.change-line {
+    word-wrap: break-word;
+    font-family: 'Open Sans', sans-serif;
+    white-space: pre-wrap;
+    width: 100%;
 }
 </style>
