@@ -4,15 +4,14 @@
       <el-row>
         <el-col :span="24">
           <el-row>
-            <span class="post-title">
-              {{ post.title }}
-            </span>
+            <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;width: 100%; ">
+              <div class="post-title">{{ post.title }}</div>
+            </pre>
           </el-row>
           <el-row>
-            <!-- <div class="post_content" style="text-align: left; font-size: 20px">
-              {{ post.content }}
-            </div> -->
+            <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;width: 100%; ">
             <div v-html="post.content"></div>
+            </pre>
           </el-row>
           <el-row>
             <el-descriptions :column="3">
@@ -198,9 +197,11 @@
                   </el-tooltip>
                 </div>
               </div>
-              <div style="margin-bottom: 10px; font-size: 20px">
-                {{ floor.content }}
-              </div>
+              <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;width: 100%; ">
+                <div style="margin-bottom: 10px; font-size: 20px">
+                  {{ floor.content }}
+                </div>
+              </pre>
 
               <div
                 v-if="!floor.comment_cases"
@@ -239,7 +240,9 @@
                         >
                       </template>
                     </el-popover>
-                    <span> ：{{ floor.comment_cases.content }}</span>
+                    <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;width: 100%; ">
+                    <span> {{ floor.comment_cases.content }}</span>
+                    </pre>
                   </div>
                   <el-button @click="showComments(floor.id)"
                     >全部评论</el-button
@@ -291,6 +294,7 @@
             </div>
           </div>
 
+          <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;width: 100%; ">
           <div
             style="
               margin-bottom: 5px;
@@ -301,6 +305,7 @@
           >
             {{ comment.content }}
           </div>
+          </pre>
 
           <div class="clearfix" style="margin-bottom: 20px">
             <el-tooltip content="举报楼层" placement="bottom">
