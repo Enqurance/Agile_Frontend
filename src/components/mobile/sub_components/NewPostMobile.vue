@@ -69,7 +69,7 @@ export default {
 
     methods: {
         updateContent(data) {
-            this.formData.post_body = data;
+            this.formData.post_body = data.data;
         },
 
         submitForm() {

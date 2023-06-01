@@ -12,7 +12,7 @@ export default {
   props: {
     initialValue: {
       type: String,
-      required:true
+      // required:true
     }
   },
   components: { quillEditor },
