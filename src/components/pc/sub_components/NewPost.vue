@@ -10,7 +10,9 @@
                 </el-form-item> -->
                 <el-form-item label="正文">
                     <div style="width:100%">
-                        <MyEditor @input="updateContent" :sendData="formData.post_body"></MyEditor>
+                        <MyEditor 
+                        @input="(content) => updateContent(content)"
+                        :sendData="formData.post_body"></MyEditor>
                     </div>
                 </el-form-item>
                 
@@ -66,14 +68,15 @@ export default {
         CheckOutlined,
         CloseOutlined,
         PostBindPin,
-        MyEditor
+        MyEditor,
     },
 
     methods: {
-        updateContent(data) {
+        updateContent(content) {
+            this.formData.post_body = content
             // console.log(data)
-            this.formData.post_body = data;
-            // console.log('update: ' + this.formData.post_body)
+            // this.formData.post_body = data.data;
+            // console.log(this.formData.post_body)
         },
 
         submitForm() {
