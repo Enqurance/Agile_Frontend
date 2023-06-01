@@ -86,13 +86,12 @@ export default {
             let pins = this.bind_pins.join(';');
             //console.log(pins)
 
-            that.$axios.post('/forum/post/addPost', null, {
-                params: {
-                    tag: that.formData.pin_type,
-                    pinIdStr: pins,
-                    title: that.formData.post_title,
-                    content: that.formData.post_body,
-                },
+            that.$axios.post('/forum/post/addPost', {
+                tag: that.formData.pin_type,
+                pinIdStr: pins,
+                title: that.formData.post_title,
+                content: that.formData.post_body,
+            }, {
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
