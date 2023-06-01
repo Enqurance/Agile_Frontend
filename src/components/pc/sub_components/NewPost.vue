@@ -72,7 +72,7 @@ export default {
     methods: {
         updateContent(data) {
             // console.log(data)
-            this.formData.post_body = data;
+            this.formData.post_body = data.data;
             // console.log('update: ' + this.formData.post_body)
         },
 
