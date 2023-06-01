@@ -2,7 +2,16 @@
   <el-row>
     <el-col :span="22" :offset="1">
       <el-row>
-        <div style="margin-bottom: 3%; font-size: 20px">我的回复</div>
+        <div
+          style="
+            margin-top: 3%;
+            margin-left: %2;
+            font-size: 24px;
+            font-weight: bold;
+          "
+        >
+          我的回复
+        </div>
       </el-row>
       <el-menu
         :default-active="activeIndex"
@@ -13,6 +22,7 @@
         <div class="flex-grow" />
         <el-menu-item index="2" @click="Index = '2'">我的评论</el-menu-item>
       </el-menu>
+      <el-row></el-row>
       <div v-if="this.Index === '1'">
         <el-scrollbar>
           <div v-if="floors.length === 0">
@@ -31,9 +41,7 @@
                           white-space: pre-wrap;
                           width: 100%;
                         "
-                      >
-                        <div @click="browseFloor(floor.post_id)">{{ floor.title }}</div>
-                     </pre>
+                      ><div style="font-weight: bold;font-size: 20px" @click="browseFloor(floor.post_id)">{{ floor.title }}</div></pre>
                     </el-col>
                     <el-col :span="6" :offset="2">
                       <el-button
@@ -46,14 +54,10 @@
                   </div>
                 </template>
                 <el-row>
-                  <el-col :span="14" :offset="2">
-                    <span> 内容：{{ floor.content }} </span>
-                  </el-col>
-                  <el-col :span="8">
-                    <div style="padding: 0 20px; font-size: 16px">
-                      楼层：{{ floor.floor }}
-                    </div>
-                  </el-col>
+                  <span> 内容：{{ floor.content }} </span>
+                </el-row>
+                <el-row>
+                  <el-text> 楼层：{{ floor.floor }} </el-text>
                 </el-row>
                 <el-dialog
                   v-model="floor.deleteDialog"
@@ -90,32 +94,31 @@
               <el-card class="box-card">
                 <template #header>
                   <div class="card-header">
-                    <pre
-                      style="
-                        word-wrap: break-word;
-                        font-family: 'Open Sans', sans-serif;
-                        white-space: pre-wrap;
-                        width: 100%;
-                      "
-                    >{{ comment.title }}</pre>
-                    <el-button
-                      style="float: right; margin-top: 20px; margin-right: 20px"
-                      type="danger"
-                      @click="comment.deleteDialog = true"
-                    >
-                      删除
-                    </el-button>
+                    <el-col :span="16">
+                      <pre
+                        style="
+                          word-wrap: break-word;
+                          font-family: 'Open Sans', sans-serif;
+                          white-space: pre-wrap;
+                          width: 100%;
+                        "
+                      ><div style="font-weight: bold;font-size: 20px" @click="browseComment(comment.post_id)">{{ comment.title }}</div></pre>
+                    </el-col>
+                    <el-col :span="6" :offset="2">
+                      <el-button
+                        type="danger"
+                        @click="comment.deleteDialog = true"
+                      >
+                        删除
+                      </el-button>
+                    </el-col>
                   </div>
                 </template>
                 <el-row>
-                  <el-col :span="12" :offset="1">
-                    <span> 内容：{{ comment.content }}</span>
-                  </el-col>
-                  <el-col :span="11">
-                    <div style="font-size: 16px; padding: 0 10px">
-                      回复楼层：{{ comment.floor }}
-                    </div>
-                  </el-col>
+                  <span> 内容：{{ comment.content }}</span>
+                </el-row>
+                <el-row>
+                  <el-text> 回复楼层：{{ comment.floor }} </el-text>
                 </el-row>
                 <el-dialog
                   v-model="comment.deleteDialog"
@@ -284,14 +287,6 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.text {
-  font-size: 14px;
-}
-
-.item {
-  margin-bottom: 18px;
 }
 
 .box-card {
