@@ -4,15 +4,14 @@
       <el-row>
         <el-col :span="24">
           <el-row>
-            <span class="post-title">
-              {{ post.title }}
-            </span>
+            <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;width: 100%; ">
+              <div class="post-title">{{ post.title }}</div>
+            </pre>
           </el-row>
           <el-row>
-            <!-- <div class="post_content" style="text-align: left; font-size: 20px">
-              {{ post.content }}
-            </div> -->
+            <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;width: 100%; ">
             <div v-html="post.content"></div>
+            </pre>
           </el-row>
           <el-row>
             <el-descriptions :column="3">
@@ -118,32 +117,21 @@
         </el-col>
       </el-row>
       <div>
-        <el-dialog width="75%" v-model="postDialogVisible">
-          <div>
-            <el-form>
-              <el-form-item label="标题">
-                <el-input
-                  v-model="formPost.title"
-                  autosize
-                  maxlength="60"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="正文">
-                <!-- <el-input
-                  v-model="formPost.content"
-                  type="textarea"
-                  :rows="6"
-                  maxlength="200"
-                ></el-input> -->
-                <div style="width:100%">
-                  <MyEditor @input="updateContent" :initialValue="post.content"
+        <van-dialog v-model:show="postDialogVisible" :z-index="2000" style="padding: 3% 0;"
+          :show-cancel-button="true" @confirm="submitEditForm" title="编辑帖子" >
+          <van-form :model="formPost" style="margin: 20px 0">
+            <van-cell-group inset>
+              <van-field v-model="formPost.title" name="名称" label="标题" type="textarea"
+              autosize maxlength="60" 
+                 :rules="[{required: true, message: '请填写帖子标题'}]"/>
+              <van-cell title="正文" value="" />
+              <div>
+                <MyEditor @input="updateContent" :initialValue="post.content"
                     :sendData="formPost.content"></MyEditor>
-                </div>
-              </el-form-item>
-            </el-form>
-            <el-button type="primary" @click="submitEditForm">确认</el-button>
-          </div>
-        </el-dialog>
+              </div>
+            </van-cell-group>
+          </van-form>
+        </van-dialog>
       </div>
       <div>
         <el-dialog v-model="newFloorDialogVisible" width="75%">
@@ -209,9 +197,11 @@
                   </el-tooltip>
                 </div>
               </div>
-              <div style="margin-bottom: 10px; font-size: 20px">
-                {{ floor.content }}
-              </div>
+              <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;width: 100%; ">
+                <div style="margin-bottom: 10px; font-size: 20px">
+                  {{ floor.content }}
+                </div>
+              </pre>
 
               <div
                 v-if="!floor.comment_cases"
@@ -250,7 +240,9 @@
                         >
                       </template>
                     </el-popover>
-                    <span> ：{{ floor.comment_cases.content }}</span>
+                    <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;width: 100%; ">
+                    <span> {{ floor.comment_cases.content }}</span>
+                    </pre>
                   </div>
                   <el-button @click="showComments(floor.id)"
                     >全部评论</el-button
@@ -302,6 +294,7 @@
             </div>
           </div>
 
+          <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;width: 100%; ">
           <div
             style="
               margin-bottom: 5px;
@@ -312,6 +305,7 @@
           >
             {{ comment.content }}
           </div>
+          </pre>
 
           <div class="clearfix" style="margin-bottom: 20px">
             <el-tooltip content="举报楼层" placement="bottom">

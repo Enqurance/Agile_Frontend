@@ -27,6 +27,7 @@
                         </el-col>
                         <el-col :span="12">
 					    <el-button @click="showNewPostDialog">新建帖子</el-button>
+						<new-post-mobile ref="child"></new-post-mobile>
                         </el-col>
 					</el-col>
 				</el-row>
@@ -44,7 +45,6 @@
 									<el-radio :label="6">购物</el-radio>
 									<el-radio :label="7">生活服务</el-radio>
 								</el-radio-group>
-								<new-post ref="child"></new-post>
 							</div>
 					</template>
 						<div v-for="post in posts" :key="post.id" style="padding-top: 20px;">
@@ -54,7 +54,9 @@
 									<template #header>
 										<div class="card-header">
 											<el-col :span="14">
-												{{ post.title }}
+												<pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;width: 100%; ">
+                                                <div>{{ post.title }}</div>
+                                                </pre>
 											</el-col>
 											<el-col :span="10"> 
                                                 <el-row style="margin-bottom: 10px">
@@ -72,8 +74,9 @@
 									</template>
 									<el-col :span="24">
 										<el-row>
-											<!-- <p>{{ post.content }}</p> -->
-											<div v-html="post.content"></div>
+											<pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;width: 100%; ">
+                                            <div v-html="post.content"></div>
+                                            </pre>
 										</el-row>
 										<el-row>
 											<el-descriptions :column="3">
@@ -116,7 +119,7 @@
 
 <script>
 import { ref, onMounted, getCurrentInstance, watch } from 'vue'
-import NewPost from "../sub_components/NewPost.vue";
+import NewPostMobile from "../sub_components/NewPostMobile.vue";
 import CopyrightICP from "@/components/CopyrightICP.vue";
 import global from '@/global'
 
@@ -124,7 +127,7 @@ export default {
 	name: "PCForumpage",
 
 	components: {
-		NewPost,
+		NewPostMobile,
 		CopyrightICP,
 	},
 
