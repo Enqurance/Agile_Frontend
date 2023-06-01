@@ -31,28 +31,28 @@
                             </div>
                         </div>
                     </el-col>
-                    <el-col :span="3">
-                        <div>
-                            <el-button @click="showNewPostDialog">新建帖子</el-button>
-                            <new-post ref="child"></new-post>
-                        </div>
-                    </el-col>
                 </el-row>
                 <el-row>
                     <el-card class="box-card">
                         <template #header>
                             <div class="card-header">
-                                <el-radio-group v-model="tag">
-                                    <el-radio :label="0">全部</el-radio>
-                                    <el-radio :label="1">餐饮</el-radio>
-                                    <el-radio :label="2">园地</el-radio>
-                                    <el-radio :label="3">教学</el-radio>
-                                    <el-radio :label="4">体育</el-radio>
-                                    <el-radio :label="5">办公</el-radio>
-                                    <el-radio :label="6">购物</el-radio>
-                                    <el-radio :label="7">生活服务</el-radio>
-                                </el-radio-group>
-                                <new-post ref="child"></new-post>
+                                <el-row>
+                                    <el-radio-group v-model="tag">
+                                        <el-radio :label="0">全部</el-radio>
+                                        <el-radio :label="1">餐饮</el-radio>
+                                        <el-radio :label="2">园地</el-radio>
+                                        <el-radio :label="3">教学</el-radio>
+                                        <el-radio :label="4">体育</el-radio>
+                                        <el-radio :label="5">办公</el-radio>
+                                        <el-radio :label="6">购物</el-radio>
+                                        <el-radio :label="7">生活服务</el-radio>
+                                    </el-radio-group>
+                                    <new-post ref="child"></new-post>
+                                </el-row>                        
+                                <el-row justify="end">
+                                    <el-button @click="showNewPostDialog">新建帖子</el-button>
+                                    <new-post ref="child"></new-post>
+                                </el-row>
                             </div>
                         </template>
                         <div v-for="post in posts" :key="post.id" style="padding-top: 20px;">
