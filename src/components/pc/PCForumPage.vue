@@ -124,7 +124,7 @@
 <script>
 import { ref, onMounted, getCurrentInstance, watch } from 'vue'
 import PageHeader from "@/components/pc/PCPageHeader.vue";
-import NewPost from "../sub_components/NewPost.vue";
+import NewPost from "./sub_components/NewPost.vue";
 import CopyrightICP from "@/components/CopyrightICP.vue";
 import global from '@/global'
 
