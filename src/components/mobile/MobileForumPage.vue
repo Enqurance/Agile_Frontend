@@ -2,7 +2,7 @@
 	<el-container>
 		<el-main>
 			<el-col :span="24">
-				<el-row gutter="20">
+				<el-row :gutter="20">
 					<el-col :span="4" :offset="2">
 					<el-avatar :size="70" shape="circle" :src="this.imageUrl" style="user-select: none;">
 					</el-avatar>
@@ -103,7 +103,7 @@
 				<el-row>
 					<div>
 						<el-pagination v-if="totalPosts > 0" @current-change="handlePageChange" v-model="currentPage"
-									:page-size="limit" :small="true" pager-count="5" :total="totalPosts">
+									:page-size="limit" :small="true" :pager-count="5" :total="totalPosts">
 						</el-pagination>
 					</div>
 				</el-row>
@@ -124,7 +124,7 @@ import CopyrightICP from "@/components/CopyrightICP.vue";
 import global from '@/global'
 
 export default {
-	name: "PCForumpage",
+	name: "MobileForumpage",
 
 	components: {
 		NewPostMobile,
