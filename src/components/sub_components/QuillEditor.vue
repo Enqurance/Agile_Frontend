@@ -1,6 +1,6 @@
 <template>
-  <quill-editor class="editor" ref="myTextEditor"  v-model="content" :value="initialValue" :options="editorOption" @blur="onEditorBlur($event)"
-    @focus="onEditorFocus($event)" @ready="onEditorReady($event)" @change="onEditorChange($event)">
+  <quill-editor class="editor" ref="myTextEditor"  v-model="content" :value="initialValue" :options="editorOption" @blur="onEditorBlur"
+    @focus="onEditorFocus" @ready="onEditorReady" @change="onEditorChange">
   </quill-editor>
 </template>
 <script>

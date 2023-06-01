@@ -302,14 +302,14 @@
                         </pre>
 
                         <div class="clearfix" style="margin-bottom: 20px">
-                            <el-tooltip content="举报楼层" placement="bottom">
+                            <el-tooltip content="举报评论" placement="bottom">
                                 <div style="float: right; margin-left: 10px; margin-right: 20px">
                                     <el-button circle @click="showReportReplyPrompt(1, comment.id)">
                                         <QuestionCircleOutlined style="color: red" />
                                     </el-button>
                                 </div>
                             </el-tooltip>
-                            <el-tooltip content="删除楼层" placement="bottom">
+                            <el-tooltip content="删除评论" placement="bottom">
                                 <div style="float: right">
                                     <el-button v-if="comment.is_auth" circle
                                         @click="showDeleteComment(comment.id, open_floor_id)">
@@ -913,8 +913,22 @@ export default {
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
-            }).then(() => {
+            }).then((res) => {
                 // console.log(response);
+                if (res.data.code === 200) {
+                    that.$message({
+                        type: 'success',
+                        message: '已向管理员举报，请耐心等待举报结果！',
+                        showClose: true
+                    })
+                }
+                else {
+                    that.$message({
+                        type: 'error',
+                        message: res.data.message,
+                        showClose: true
+                    })
+                }
             }).catch(error => {
                 console.error(error);
             });
@@ -960,8 +974,22 @@ export default {
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
-            }).then(() => {
+            }).then((res) => {
                 //console.log(response);
+                if (res.data.code === 200) {
+                    that.$message({
+                        type: 'success',
+                        message: '已向管理员举报，请耐心等待举报结果！',
+                        showClose: true
+                    })
+                }
+                else {
+                    that.$message({
+                        type: 'error',
+                        message: res.data.message,
+                        showClose: true
+                    })
+                }
             }).catch(error => {
                 console.error(error);
             });

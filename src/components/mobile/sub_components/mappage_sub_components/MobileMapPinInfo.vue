@@ -435,12 +435,21 @@ export default {
                     'token': that.$cookies.get('user_token')
                 }
             }).then(() => {
-                that.pin_state = 1
-                that.$message({
-                    type: 'success',
-                    message: '申请成功，管理员将尽快审批！',
-                    showClose: true
-                })
+                if (res.data.code === 200) {
+                    that.pin_state = 1
+                    that.$message({
+                        type: 'success',
+                        message: '申请成功，管理员将尽快审批！',
+                        showClose: true
+                    })
+                }
+                else {
+                    that.$message({
+                        type: 'error',
+                        message: res.data.message,
+                        showClose: true
+                    })
+                }
             }).catch((error) => {
                 console.log(error)
                 that.$message({
@@ -490,13 +499,23 @@ export default {
                 }
             }).then(() => {
                 // console.log(res)
-                that.show_feedback = false
-                that.pin_state = 1
-                that.$message({
-                    type: 'success',
-                    message: '反馈成功，管理员将尽快审批！',
-                    showClose: true
-                })
+                if (res.data.code === 200) {
+                    that.show_feedback = false
+                    that.pin_state = 1
+                    that.$message({
+                        type: 'success',
+                        message: '反馈成功，管理员将尽快审批！',
+                        showClose: true
+                    })
+                }
+                else {
+                    that.show_feedback = false
+                    that.$message({
+                        type: 'error',
+                        message: res.data.message,
+                        showClose: true
+                    })
+                }
             }).catch((error) => {
                 console.log(error)
                 that.$message({
