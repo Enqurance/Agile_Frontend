@@ -8,7 +8,9 @@
                                maxlength="60" :rules="[{ required: true, message: '请填写帖子标题' }]" />
                     <van-cell title="正文" value="" />
                     <div>
-                        <MyEditor @input="updateContent" :initialValue="formData.content" :sendData="formData.content">
+                        <MyEditor 
+                        @input="(content) => updateContent(content)"
+                        :initialValue="formData.content" :sendData="formData.content">
                         </MyEditor>
                     </div>
                     <van-field name="类别" label="类别">
@@ -68,8 +70,8 @@ export default {
     },
 
     methods: {
-        updateContent(data) {
-            this.formData.post_body = data.data;
+        updateContent(content) {
+            this.formData.post_body = content;
         },
 
         submitForm() {

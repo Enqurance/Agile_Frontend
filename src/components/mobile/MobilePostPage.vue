@@ -313,7 +313,7 @@
                         <van-cell title="正文" value=""/>
                         <div>
                             <MyEditor
-                                @input="updateContent"
+                                @input="(content) => updateContent(content)"
                                 :initialValue="post.content"
                                 :sendData="formPost.content"
                             ></MyEditor>
@@ -531,8 +531,8 @@ export default {
     },
 
     methods: {
-        updateContent(data) {
-            this.formPost.content = data;
+        updateContent(content) {
+            this.formPost.content = content;
         },
 
         showPopover(user_id) {
