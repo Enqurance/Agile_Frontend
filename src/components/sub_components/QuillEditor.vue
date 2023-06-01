@@ -16,6 +16,9 @@ export default {
     }
   },
   components: { quillEditor },
+  emits: [
+    'input',
+  ],
   data() {
     return {
       content: null,

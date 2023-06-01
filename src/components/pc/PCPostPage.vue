@@ -132,8 +132,10 @@
                                 </el-form-item> -->
                                 <el-form-item label="正文">
                                     <div style="width:100%">
-                                        <MyEditor @input="updateContent" :initialValue="post.content"
-                                            :sendData="formPost.content"></MyEditor>
+                                        <MyEditor 
+                                        @input="(content) => updateContent(content)"
+                                        :sendData="formPost.content"
+                                        :initialValue="post.content"></MyEditor>
                                     </div>
                                 </el-form-item>
                             </el-form>
@@ -517,9 +519,9 @@ export default {
     },
 
     methods: {
-        updateContent(data) {
-            // console.log(data)
-            this.formPost.content = data;
+        updateContent(content) {
+            this.formPost.content = content
+            console.log('update')
         },
 
         showPopover(user_id) {
