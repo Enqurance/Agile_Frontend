@@ -913,8 +913,22 @@ export default {
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
-            }).then(() => {
+            }).then((res) => {
                 // console.log(response);
+                if (res.data.code === 200) {
+                    that.$message({
+                        type: 'success',
+                        message: '已向管理员举报，请耐心等待举报结果！',
+                        showClose: true
+                    })
+                }
+                else {
+                    that.$message({
+                        type: 'error',
+                        message: res.data.message,
+                        showClose: true
+                    })
+                }
             }).catch(error => {
                 console.error(error);
             });
@@ -960,8 +974,22 @@ export default {
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
-            }).then(() => {
+            }).then((res) => {
                 //console.log(response);
+                if (res.data.code === 200) {
+                    that.$message({
+                        type: 'success',
+                        message: '已向管理员举报，请耐心等待举报结果！',
+                        showClose: true
+                    })
+                }
+                else {
+                    that.$message({
+                        type: 'error',
+                        message: res.data.message,
+                        showClose: true
+                    })
+                }
             }).catch(error => {
                 console.error(error);
             });
