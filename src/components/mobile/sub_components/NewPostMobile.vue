@@ -1,6 +1,6 @@
 <template>
     <div class="post-add">
-        <van-dialog v-model:show="dialogVisible" :z-index="2000" style="padding: 3% 0;"
+        <van-dialog v-model:show="dialogVisible" :z-index="2000" style="padding: 3% 0;overflow-y: auto"
                     :show-cancel-button="true" title="新建帖子" @confirm="submitForm">
             <van-form :model="formData" style="margin: 20px 0">
                 <van-cell-group inset>

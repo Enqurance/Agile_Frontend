@@ -295,6 +295,7 @@
                 v-model:show="postDialogVisible"
                 :z-index="2000"
                 style="padding: 3% 0"
+                overflow-y: auto
                 :show-cancel-button="true"
                 @confirm="submitEditForm"
                 title="编辑帖子"

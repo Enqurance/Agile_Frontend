@@ -258,7 +258,9 @@
                                 </el-card>
                             </el-card>
                         </div>
+                        <div style="height: 60px" />
                         <div v-loading="loading" element-loading-text="Loading..." />
+                        <div style="height: 60px" />
                     </div>
                 </div>
 
@@ -1042,15 +1044,6 @@ export default {
         }
         else {
             this.loadLazyFloors()
-        }
-
-        const container = this.$refs.container;
-        if (container) {
-            const hasScrollbar = window.innerHeight < document.body.offsetHeight;
-            console.log(container)
-            if (!hasScrollbar) {
-                // container.style.height = `${container.offsetHeight + 10}px`;
-            }
         }
     },
 

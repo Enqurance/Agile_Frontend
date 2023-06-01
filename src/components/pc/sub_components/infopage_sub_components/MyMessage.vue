@@ -22,7 +22,7 @@
                 <div v-else class="post_div" v-for="rev in revs" :key="rev.id" @click="readMsg(rev)">
                     <div>
                         <div v-if="rev.read===false" style="float: right; margin-top: -15px">
-                            <el-icon color="blue" :size="20">
+                            <el-icon color="darkorange" :size="20">
                                 <Warning/>
                             </el-icon>
                         </div>
