@@ -436,7 +436,7 @@ export default {
       //地图绑定鼠标右击事件——弹出右键菜单
       this.map.on('touchstart', (e) => {
         that.menu_isopen = false
-        if (e.touches.length > 1) {
+        if (e.originEvent.touches.length > 1) {
           clearTimeout(that.timeout)
           return
         }
