@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import NewPost from "@/components/sub_components/NewPost.vue"
+import NewPost from "@/components/pc/sub_components/NewPost.vue"
 import axios from "@/axios/axios.js"
 import cookies from 'vue-cookies'
 

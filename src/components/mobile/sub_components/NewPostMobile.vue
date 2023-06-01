@@ -1,11 +1,11 @@
 <template>
     <div class="post-add">
         <van-dialog v-model:show="dialogVisible" :z-index="2000" style="padding: 3% 0;"
-            :show-cancel-button="true" title="新建帖子" @confirm="submitForm">
+                    :show-cancel-button="true" title="新建帖子" @confirm="submitForm">
             <van-form :model="formData" style="margin: 20px 0">
                 <van-cell-group inset>
-                    <van-field v-model="formData.title" name="名称" label="标题" type="textarea" autosize
-                        maxlength="60" :rules="[{ required: true, message: '请填写帖子标题' }]" />
+                    <van-field v-model="formData.post_title" name="名称" label="标题" type="textarea" autosize
+                               maxlength="60" :rules="[{ required: true, message: '请填写帖子标题' }]" />
                     <van-cell title="正文" value="" />
                     <div>
                         <MyEditor @input="updateContent" :initialValue="formData.content" :sendData="formData.content">
@@ -58,12 +58,22 @@ export default {
         MyEditor
     },
 
+    setup() {
+        const valid_type = (val) => {
+            return val >= 1 && val <= 7
+        }
+        return {
+            valid_type
+        }
+    },
+
     methods: {
         updateContent(data) {
             this.formData.post_body = data;
         },
 
         submitForm() {
+            console.log(this.formData)
             if (this.formData.post_title === '') {
                 return this.$message.error("帖子标题不能为空")
             } else if (this.formData.post_body === '') {
@@ -76,13 +86,12 @@ export default {
             let pins = this.bind_pins.join(';');
             //console.log(pins)
 
-            that.$axios.post('/forum/post/addPost', null, {
-                params: {
-                    tag: that.formData.pin_type,
-                    pinIdStr: pins,
-                    title: that.formData.post_title,
-                    content: that.formData.post_body,
-                },
+            that.$axios.post('/forum/post/addPost', {
+                tag: that.formData.pin_type,
+                pinIdStr: pins,
+                title: that.formData.post_title,
+                content: that.formData.post_body,
+            }, {
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
@@ -91,9 +100,16 @@ export default {
                 that.bind_pins = []
                 if (response.data.code === 200) {
                     that.$router.push(`/Forum/${response.data.data}`);
+                    that.dialogVisible = false
                 }
-            })
-            that.dialogVisible = false
+                else {
+                    this.$message({
+                        message: response.data,
+                        type: 'error',
+                        showClose: true,
+                    })
+                }
+            }).catch((error) => console.log(error))
         },
     },
 
