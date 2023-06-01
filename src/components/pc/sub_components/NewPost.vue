@@ -87,26 +87,25 @@ export default {
 
             let that = this
             let pins = this.bind_pins.join(';');
-            //console.log(pins)
+            console.log(this.formData)
 
-            that.$axios.post('/forum/post/addPost', null, {
-                params: {
-                    tag: that.formData.pin_type,
-                    pinIdStr: pins,
-                    title: that.formData.post_title,
-                    content: that.formData.post_body,
-                },
+            that.$axios.post('/forum/post/addPost', {
+                tag: that.formData.pin_type,
+                pinIdStr: pins,
+                title: that.formData.post_title,
+                content: that.formData.post_body,
+            }, {
                 headers: {
                     'token': that.$cookies.get('user_token')
                 }
             }).then((response) => {
-                //console.log(response.data)
+                console.log(response)
                 that.bind_pins = []
                 if (response.data.code === 200) {
                     that.$router.push(`/Forum/${response.data.data}`);
                 }
-            })
-            that.dialogVisible = false
+                that.dialogVisible = false
+            }).catch((error) => console.log(error))
         },
     },
 
