@@ -192,9 +192,11 @@
                                     </div>
                                 </div>
 
+                                <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;width: 100%; ">
                                 <div style="margin-bottom: 5px; font-size: 20px;padding-left: 20px; padding-right: 20px">
                                     {{ floor.content }}
                                 </div>
+                                </pre>
 
                                 <div class="clearfix" style="margin-bottom: 20px">
                                     <el-tooltip content="举报楼层" placement="bottom">
@@ -291,9 +293,11 @@
                             </div>
                         </div>
 
+                        <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;width: 100%; ">
                         <div style="margin-bottom: 5px; font-size: 20px;padding-left: 20px; padding-right: 20px">
                             {{ comment.content }}
                         </div>
+                        </pre>
 
                         <div class="clearfix" style="margin-bottom: 20px">
                             <el-tooltip content="举报楼层" placement="bottom">
