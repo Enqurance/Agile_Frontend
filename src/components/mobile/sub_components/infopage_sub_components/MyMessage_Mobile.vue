@@ -42,7 +42,7 @@
                 <template #header>
                   <div class="card-header">
                     <el-col :span="24">
-                      <!-- <div v-if="rev.read === false" style="float: right">
+                      <div v-if="rev.read === false" style="float: right">
                         <el-icon>
                           <Warning />
                         </el-icon>
@@ -51,7 +51,7 @@
                         <circle-close
                           @click="deleteMessage(rev)"
                         ></circle-close>
-                      </el-icon> -->
+                      </el-icon>
                       <div class="for-title">
                         {{ rev.title }}
                       </div>
