@@ -14,8 +14,7 @@
                                 <div style="float: left">
                                     <el-avatar :size="70" shape="circle" :src="this.imageUrl" style="user-select: none;" />
                                 </div>
-                                <div
-                                    style="float: left; padding-left: 15px; height: 70px; display: flex; align-items: center">
+                                <div style="float: left; padding-left: 15px; height: 70px; display: flex; align-items: center">
                                     <div>
                                         <div style="margin-bottom: 10px">
                                             <el-popover placement="right" width="220" trigger="hover">
@@ -47,7 +46,7 @@
                                 style="display: flex; align-items: center;margin-bottom: 10px;font-size:18px; margin-top: -15px">
                                 <div style="align-items: center; padding-right: 20px">
                                     <el-tag class="tag" style="margin-right: 10px;">
-                                        {{ _get_pin_type(post.tag) }}
+                                        Tag: {{ _get_pin_type(post.tag) }}
                                     </el-tag>
                                 </div>
                                 <div v-if="tags.length > 0"
