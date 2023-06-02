@@ -149,7 +149,7 @@
                                     </span>
                                 </van-row>
                                 <van-row>
-                                    <van-col :span="8" :offset="1">
+                                    <van-col :span="8" :offset="0.5" style="display: flex; align-items: center; ">
                                         <el-button circle @click="showReportReplyPrompt(0, floor.id)">
                                             <QuestionCircleOutlined style="color: red"/>
                                         </el-button>
@@ -157,7 +157,7 @@
                                             <DeleteOutlined style="color: red"/>
                                         </el-button>
                                     </van-col>
-                                    <van-col :span="10" :offset="4">
+                                    <van-col :span="10" :offset="4" style="display: flex; align-items: center; ">
                                         <div v-if="!floor.comment_cases" style="margin-top: 10px;">
                                             <el-button @click="showComments(floor.id)">回复楼层</el-button>
                                         </div>
@@ -176,7 +176,8 @@
                                                     <p>校区：{{ getCampus(userInfo.campus) }}</p>
                                                     <p>性别：{{ getGender(userInfo.gender) }}</p>
                                                     <template v-slot:reference>
-                                                        <el-link :underline="false" type="primary" style="font-size: 18px"
+                                                        <el-link :underline="false" type="primary"
+                                                                 style="font-size: 18px"
                                                                  @mouseenter="showPopover(floor.comment_cases.cuserId)">
                                                             {{ floor.comment_cases.cuserName }}
                                                         </el-link>
@@ -187,7 +188,8 @@
                                                 <pre class="change-line">{{ floor.comment_cases.content }}</pre>
                                             </van-row>
                                         </van-col>
-                                        <van-col :span="8" :offset="1" style="display: flex; align-items: center; justify-content: center">
+                                        <van-col :span="8" :offset="1"
+                                                 style="display: flex; align-items: center; justify-content: center">
                                             <el-button siz="small" @click="showComments(floor.id)">全部评论</el-button>
                                         </van-col>
                                     </van-row>
@@ -211,14 +213,9 @@
                     </el-pagination>
                 </van-row>
             </van-row>
-
-
-            <!--            <van-row>-->
-            <!--                <CopyrightICP/>-->
-            <!--            </van-row>-->
         </el-main>
 
-        <van-dialog v-model:show="postDialogVisible" :z-index="2000" style="padding: 3% 0" overflow-y: auto
+        <van-dialog v-model:show="postDialogVisible" :z-index="2000" style="padding: 3% 0; overflow-y: auto"
                     :show-cancel-button="true" @confirm="submitEditForm" title="编辑帖子">
             <van-form :model="formPost" style="margin: 20px 0">
                 <van-cell-group inset>
@@ -233,8 +230,9 @@
             </van-form>
         </van-dialog>
 
-        <el-dialog v-model="newFloorDialogVisible" width="75%">
-            <el-form :model="newFloorForm" ref="newFloorForm" label-width="80px">
+        <van-dialog v-model:show="newFloorDialogVisible" :z-index="2000"  style="padding: 3% 3%; overflow-y: auto"
+                    @confirm="addNewFloor" :show-cancel-button="true" title='回复帖子'>
+            <el-form :model="newFloorForm" ref="newFloorForm" style="margin-top: 20px">
                 <el-form-item label="评论内容">
                     <el-input
                         v-model="newFloorForm.body"
@@ -243,62 +241,64 @@
                     ></el-input>
                 </el-form-item>
             </el-form>
-            <div>
-                <el-button type="primary" @click="addNewFloor">提交</el-button>
-            </div>
-        </el-dialog>
+        </van-dialog>
 
-        <el-dialog v-model="commentsDialogVisible" title="全部评论" width="80%" :draggable="true">
-            <div v-for="comment in comments" :key="comment.id">
-                <el-card style="min-height: auto; margin-bottom: 20px">
-                    <div>
-                        <div style="width: 80%">
-                            <div style="width: 100%">
-                                <div style="padding-left: 20px">
-                                    {{ comment.cuserName }}
-                                </div>
-                                <div style="margin-left: 10%">
-                                    <span style="font-size: 10px">
-                                        ——发表于 {{ getTimeSubstring(comment.createTime) }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <pre class="change-line"
-                         style="margin-bottom: 5px;font-size: 20px;padding-left: 20px;padding-right: 20px;">
-                        {{ comment.content }}
-                    </pre>
-
-                    <div class="clearfix" style="margin-bottom: 20px">
-                        <el-tooltip content="举报楼层" placement="bottom">
-                            <div style="float: right;margin-left: 10px;margin-right: 20px;margin-bottom: 20px;">
+        <van-dialog v-model:show="commentsDialogVisible" :z-index="2000" style="padding: 3% 3%; max-height: 80%; overflow-y: auto"
+                    title="全部评论" :close-on-click-overlay="true" :scrollable="true" confirm-button-text="关闭" >
+            <div style="margin-top: 10px">
+                <div v-for="comment in comments" :key="comment.id">
+                    <el-card style="min-height: auto; margin-bottom: 20px">
+                        <van-row>
+                            <van-col :span="24">
+                                <el-popover placement="right" width="220" trigger="hover">
+                                    <p>昵称：{{ userInfo.name }}</p>
+                                    <p>邮箱：{{ userInfo.email }}</p>
+                                    <p>个人描述：{{ userInfo.description }}</p>
+                                    <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
+                                    <p>校区：{{ getCampus(userInfo.campus) }}</p>
+                                    <p>性别：{{ getGender(userInfo.gender) }}</p>
+                                    <template v-slot:reference>
+                                        <el-link :underline="false" type="primary" style="font-size:20px;"
+                                                 @mouseenter="showPopover(comment.cuserId)">
+                                            {{ comment.cuserName }}
+                                        </el-link>
+                                    </template>
+                                </el-popover>
+                            </van-col>
+                        </van-row>
+                        <van-row justify="end">
+                        <span style="font-size: 13px;color: #999">
+                            ——发表于 {{ getTimeSubstring(comment.createTime) }}
+                        </span>
+                        </van-row>
+                        <van-row>
+                            <van-col :span="24">
+                                <pre style="font-size: 20px" class="change-line">{{ comment.content }}</pre>
+                            </van-col>
+                        </van-row>
+                        <van-row>
+                            <van-col style="display: flex; align-items: center; ">
                                 <el-button circle @click="showReportReplyPrompt(1, comment.id)">
                                     <QuestionCircleOutlined style="color: red"/>
                                 </el-button>
-                            </div>
-                        </el-tooltip>
-                        <el-tooltip content="删除楼层" placement="bottom">
-                            <div style="float: right">
                                 <el-button v-if="comment.is_auth" circle
                                            @click="showDeleteComment(comment.id, open_floor_id)">
                                     <DeleteOutlined style="color: red"/>
                                 </el-button>
-                            </div>
-                        </el-tooltip>
-                    </div>
-                </el-card>
+                            </van-col>
+                        </van-row>
+                    </el-card>
+                </div>
+                <el-form>
+                    <el-form-item>
+                        <el-input v-model="newCommentBody" type="textarea" maxlength="150"/>
+                    </el-form-item>
+                </el-form>
+                <van-col :offset="19">
+                    <el-button type="primary" @click="addComment(open_floor_id)">评论</el-button>
+                </van-col>
             </div>
-            <el-form>
-                <el-form-item>
-                    <el-input v-model="newCommentBody" type="textarea" maxlength="150"/>
-                </el-form-item>
-            </el-form>
-            <van-col :offset="19">
-                <el-button type="primary" @click="addComment(open_floor_id)">评论</el-button>
-            </van-col>
-        </el-dialog>
+        </van-dialog>
     </el-container>
 </template>
 
