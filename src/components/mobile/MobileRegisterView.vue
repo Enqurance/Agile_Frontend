@@ -3,6 +3,9 @@
         <div class="logo-container">
             <img src="/img/logo.png" alt="logo" style="width: 100%; height: auto;">
         </div>
+        <div>
+            <p style="margin-top:0px; margin-bottom: 5px;" class="title">BUAAMapForum Register</p>
+        </div>
         <div class="form-container">
             <el-form ref="registerForm" :model="registerForm" class="register-form">
                 <el-form-item prop="username" :rules="usernameRules">
@@ -317,6 +320,11 @@ export default {
 
 .el-select {
     width: 100%;
+}
+.title{
+    font-family: fantasy;
+    font-size: 2.0em;
+    color: #1f82ce;
 }
 </style>
 

@@ -1,140 +1,174 @@
 <template>
     <el-container>
         <el-main>
-            <el-row>
-                <el-col :span="24">
-                    <el-row>
-                        <pre class="change-line" 
-                            style="font-family: Arial, sans-serif;
-                            font-size: 2rem;
-                            font-weight: bold;
-                            color: #333;">{{ post.title }}</pre>
-                    </el-row>
-                    <el-row>
-                    
-                    <pre class="change-line"><div v-html="post.content"></div></pre>
-
-                    </el-row>
-                    <el-row>
-                        <el-descriptions :column="3">
-                            <el-descriptions-item min-width="100px" label="点赞数">
-                                {{ post.thumbsUp }}
-                            </el-descriptions-item>
-                            <el-descriptions-item min-width="100px" label="访问量">
-                                {{ post.visit }}
-                            </el-descriptions-item>
-                            <el-descriptions-item min-width="100px" label="楼层数">
-                                {{ post.floorNum }}
-                            </el-descriptions-item>
-                            <el-descriptions-item min-width="200px" label="发布日期">
-                                {{ getTimeSubstring(post.createTime) }}
-                            </el-descriptions-item
-                            >
-                        </el-descriptions>
-                        <span style="margin-top: 2px"> </span>
-                    </el-row>
-                    <el-divider/>
-                    <el-row>
-                        <el-col :span="4">
+            <van-row>
+                <van-col :span="24">
+                    <van-row>
+                        <van-col :span="6" style="display: flex; align-items: center; justify-content: center">
                             <el-avatar
-                                :size="55"
+                                :size="70"
                                 shape="square"
                                 :src="this.imageUrl"
                                 style="user-select: none"
                             >
                             </el-avatar>
-                        </el-col>
-                        <el-col :span="8" :offset="1">
-                            <el-row>
-                                <el-tag class="tag" style="margin-right: 10px"
-                                >Tag:{{ _get_pin_type(post.tag) }}
-                                </el-tag
-                                >
-                            </el-row>
-                            <el-popover placement="right" width="220" trigger="hover">
-                                <p>昵称：{{ userInfo.name }}</p>
-                                <p>邮箱：{{ userInfo.email }}</p>
-                                <p>个人描述：{{ userInfo.description }}</p>
-                                <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
-                                <p>校区：{{ getCampus(userInfo.campus) }}</p>
-                                <p>性别：{{ getGender(userInfo.gender) }}</p>
-                                <template v-slot:reference>
-                                    <el-link
-                                        :underline="false"
-                                        type="primary"
-                                        style="font-size: 18px"
-                                        @mouseenter="showPopover(post.userId)"
-                                    >{{ post.userName }}
-                                    </el-link
-                                    >
-                                </template>
-                            </el-popover>
-                        </el-col>
-                        <el-col :span="11">
-                            <el-col :span="24">
-                                <div v-if="tags.length > 0">
-                                    <div
-                                        v-for="(tag, index) in tags"
-                                        :key="index"
-                                        style="margin-right: 10px; margin-top: 5px; display: inline"
-                                    >
-                                        <el-tag size="small" effect="plain" type="success">{{
-                                                tag
-                                            }}
-                                        </el-tag>
-                                    </div>
+                        </van-col>
+                        <van-col :span="12" style="padding-top: 5px; display: flex; align-items: center">
+                            <div style="padding-top: -5px">
+                                <van-row>
+                                    <el-popover placement="right" width="220" trigger="hover">
+                                        <p>昵称：{{ userInfo.name }}</p>
+                                        <p>邮箱：{{ userInfo.email }}</p>
+                                        <p>个人描述：{{ userInfo.description }}</p>
+                                        <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
+                                        <p>校区：{{ getCampus(userInfo.campus) }}</p>
+                                        <p>性别：{{ getGender(userInfo.gender) }}</p>
+                                        <template v-slot:reference>
+                                            <el-link
+                                                :underline="false"
+                                                type="primary"
+                                                style="font-size: 18px"
+                                                @mouseenter="showPopover(post.userId)"
+                                            >{{ post.userName }}
+                                            </el-link
+                                            >
+                                        </template>
+                                    </el-popover>
+                                </van-row>
+                                <van-row>
+                                    <el-text tag="i">
+                                        {{ getTimeSubstring(post.createTime) }}
+                                    </el-text>
+                                </van-row>
+                            </div>
+                        </van-col>
+                        <van-col :span="6">
+                            <el-descriptions :column="1" style="padding-top: 12px">
+                                <el-descriptions-item min-width="100px" label="点赞数">
+                                    {{ post.thumbsUp }}
+                                </el-descriptions-item>
+                                <el-descriptions-item min-width="100px" label="访问量">
+                                    {{ post.visit }}
+                                </el-descriptions-item>
+                                <el-descriptions-item min-width="100px" label="楼层数">
+                                    {{ post.floorNum }}
+                                </el-descriptions-item>
+                            </el-descriptions>
+                        </van-col>
+                    </van-row>
+                    <van-row justify="center">
+                        <van-col :span="22" :offset="1">
+                            <pre class="change-line" style="font-family: Arial, sans-serif;font-size: 2rem;font-weight: bold;
+                            color: #333;">{{ post.title }}</pre>
+                        </van-col>
+                    </van-row>
+                    <van-row justify="center">
+                        <van-col :span="22" :offset="1">
+                            <pre class="change-line"><div v-html="post.content"></div></pre>
+                        </van-col>
+                    </van-row>
+                    <el-divider/>
+                    <van-row>
+                        <van-col :span="5" style="display: flex; align-items: center; justify-content: center">
+                            <el-tag class="tag" style="margin-right: 10px">
+                                Tag:{{ _get_pin_type(post.tag) }}
+                            </el-tag>
+                        </van-col>
+                        <van-col :span="18" :offset="1">
+                            <div v-if="tags.length > 0">
+                                <div v-for="(tag, index) in tags" :key="index"
+                                     style="margin-right: 10px; margin-top: 5px; display: inline">
+                                    <el-tag size="small" effect="plain" type="success">
+                                        {{ tag }}
+                                    </el-tag>
                                 </div>
-                            </el-col>
-                        </el-col>
-                    </el-row>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col>
-                    <el-tooltip content="删除帖子" placement="bottom">
-                        <el-button
-                            v-if="post.is_auth"
-                            type="danger"
-                            @click="showDeletePost"
-                            circle
-                        >
-                            <DeleteOutlined/>
-                        </el-button>
-                    </el-tooltip>
-                    <el-tooltip content="举报帖子" placement="bottom">
-                        <el-button type="danger" @click="showReportPostPrompt" circle>
-                            <QuestionCircleOutlined/>
-                        </el-button>
-                    </el-tooltip>
-                    <el-tooltip content="编辑帖子" placement="bottom">
-                        <el-button v-if="post.is_auth" @click="editPost" circle>
-                            <EditOutlined/>
-                        </el-button>
-                    </el-tooltip>
-                    <el-tooltip content="点赞帖子" placement="bottom">
-                        <el-button @click="addLike" circle>
-                            <HeartTwoTone v-if="post.has_thumb" twoToneColor="#eb2f96"/>
-                            <HeartOutlined v-else/>
-                        </el-button>
-                    </el-tooltip>
-                    <el-button type="primary" plain @click="newFloorDialogVisible = true"
-                    >回复帖子
-                    </el-button
-                    >
-                </el-col>
-            </el-row>
-            <el-row></el-row>
-            <el-row></el-row>
-            <el-row>
-                <el-card class="box-card">
-                    <el-col :span="24">
-                        <div v-if="floors.length > 0">
-                            <div v-for="floor in floors" :key="floor.id" style="padding-top: 10px">
-                                <el-card>
-                                    <template #header>
-                                        <div class="card-header">
-                                            <el-col :span="14">
-                                                <el-popover placement="right" trigger="hover">
+                            </div>
+                        </van-col>
+                    </van-row>
+                </van-col>
+            </van-row>
+            <van-row>
+                <van-col :span="16">
+                    <el-button v-if="post.is_auth" @click="showDeletePost" circle>
+                        <DeleteOutlined style="color: red"/>
+                    </el-button>
+                    <el-button @click="showReportPostPrompt" circle>
+                        <QuestionCircleOutlined style="color: red"/>
+                    </el-button>
+                    <el-button v-if="post.is_auth" @click="editPost" circle>
+                        <EditOutlined/>
+                    </el-button>
+                    <el-button @click="addLike" circle>
+                        <HeartTwoTone v-if="post.has_thumb" style="color: red" twoToneColor="red"/>
+                        <HeartOutlined v-else style="color: black"/>
+                    </el-button>
+                </van-col>
+                <van-col :span='8'>
+                    <el-button type="primary" plain @click="newFloorDialogVisible = true">回复帖子</el-button>
+                </van-col>
+            </van-row>
+            <van-row style="margin-top: 10%">
+                <van-col :span="24">
+                    <div v-if="floors.length > 0">
+                        <div v-for="floor in floors" :key="floor.id" style="padding-bottom: 20px">
+                            <el-card>
+                                <van-row>
+                                    <van-col :span="19">
+                                        <el-popover placement="right" trigger="hover">
+                                            <p>昵称：{{ userInfo.name }}</p>
+                                            <p>邮箱：{{ userInfo.email }}</p>
+                                            <p>个人描述：{{ userInfo.description }}</p>
+                                            <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
+                                            <p>校区：{{ getCampus(userInfo.campus) }}</p>
+                                            <p>性别：{{ getGender(userInfo.gender) }}</p>
+                                            <template v-slot:reference>
+                                                <el-link
+                                                    :underline="false"
+                                                    type="primary"
+                                                    style="font-size: 18px"
+                                                    @mouseenter="showPopover(floor.userId)"
+                                                >{{ floor.userName }}
+                                                </el-link
+                                                >
+                                            </template>
+                                        </el-popover>
+                                    </van-col>
+                                    <van-col :span="5">
+                                        <span style="color: #999;font-size: 18px;">{{ floor.layers }}楼</span>
+                                    </van-col>
+                                </van-row>
+
+                                <van-row>
+                                    <van-col :span="24">
+                                        <pre style="font-size: 20px" class="change-line">{{ floor.content }}</pre>
+                                    </van-col>
+                                </van-row>
+                                <van-row justify="end">
+                                    <span style="font-size: 13px;color: #999">
+                                            ——发表于 {{ getTimeSubstring(floor.createTime) }}
+                                    </span>
+                                </van-row>
+                                <van-row>
+                                    <van-col :span="8" :offset="0.5" style="display: flex; align-items: center; ">
+                                        <el-button circle @click="showReportReplyPrompt(0, floor.id)">
+                                            <QuestionCircleOutlined style="color: red"/>
+                                        </el-button>
+                                        <el-button v-if="floor.is_auth" circle @click="showDeleteFloor(floor.id)">
+                                            <DeleteOutlined style="color: red"/>
+                                        </el-button>
+                                    </van-col>
+                                    <van-col :span="10" :offset="4" style="display: flex; align-items: center; ">
+                                        <div v-if="!floor.comment_cases" style="margin-top: 10px;">
+                                            <el-button @click="showComments(floor.id)">回复楼层</el-button>
+                                        </div>
+                                    </van-col>
+                                </van-row>
+
+                                <el-card v-if="floor.comment_cases" shadow="never" style="margin-top: 5px">
+                                    <van-row>
+                                        <van-col :span="15">
+                                            <van-row>
+                                                <el-popover placement="right" width="220" trigger="hover">
                                                     <p>昵称：{{ userInfo.name }}</p>
                                                     <p>邮箱：{{ userInfo.email }}</p>
                                                     <p>个人描述：{{ userInfo.description }}</p>
@@ -142,249 +176,129 @@
                                                     <p>校区：{{ getCampus(userInfo.campus) }}</p>
                                                     <p>性别：{{ getGender(userInfo.gender) }}</p>
                                                     <template v-slot:reference>
-                                                        <el-link
-                                                            :underline="false"
-                                                            type="primary"
-                                                            style="font-size: 18px"
-                                                            @mouseenter="showPopover(floor.userId)"
-                                                        >{{ floor.userName }}
-                                                        </el-link
-                                                        >
+                                                        <el-link :underline="false" type="primary"
+                                                                 style="font-size: 18px"
+                                                                 @mouseenter="showPopover(floor.comment_cases.cuserId)">
+                                                            {{ floor.comment_cases.cuserName }}
+                                                        </el-link>
                                                     </template>
                                                 </el-popover>
-                                            </el-col>
-                                            <el-col :span="5">
-                                                <span>{{ floor.layers }}楼</span>
-                                            </el-col>
-                                            <el-col :span="5">
-                                                <el-tooltip
-                                                    v-if="floor.is_auth"
-                                                    content="删除楼层"
-                                                    placement="bottom"
-                                                >
-                                                    <el-button
-                                                        type="danger"
-                                                        plain
-                                                        @click="showDeleteFloor(floor.id)"
-                                                    >
-                                                        <DeleteOutlined/>
-                                                    </el-button>
-                                                </el-tooltip>
-                                                <el-tooltip content="举报楼层" placement="bottom">
-                                                    <el-button
-                                                        type="danger"
-                                                        plain
-                                                        @click="showReportReplyPrompt(0, floor.id)"
-                                                    >
-                                                        <QuestionCircleOutlined/>
-                                                    </el-button>
-                                                </el-tooltip>
-                                            </el-col>
-                                        </div>
-                                    </template>
-
-                                    <pre class="change-line" style="margin-bottom: 10px; font-size: 20px">{{ floor.content }}</pre>
-
-                                    <div
-                                        v-if="!floor.comment_cases"
-                                        style="
-                      display: flex;
-                      justify-content: flex-end;
-                      margin-right: 20px;
-                    "
-                                    >
-                                        <el-button @click="showComments(floor.id)"
-                                        >回复楼层
-                                        </el-button
-                                        >
-                                    </div>
+                                            </van-row>
+                                            <van-row>
+                                                <pre class="change-line">{{ floor.comment_cases.content }}</pre>
+                                            </van-row>
+                                        </van-col>
+                                        <van-col :span="8" :offset="1"
+                                                 style="display: flex; align-items: center; justify-content: center">
+                                            <el-button siz="small" @click="showComments(floor.id)">全部评论</el-button>
+                                        </van-col>
+                                    </van-row>
                                 </el-card>
-
-                                <el-card v-if="floor.comment_cases" shadow="never">
-                                    <div
-                                        style="
-                      display: flex;
-                      align-items: center;
-                      justify-content: space-between;
-                    "
-                                    >
-                                        <div>
-                                            <el-popover placement="right" width="220" trigger="hover">
-                                                <p>昵称：{{ userInfo.name }}</p>
-                                                <p>邮箱：{{ userInfo.email }}</p>
-                                                <p>个人描述：{{ userInfo.description }}</p>
-                                                <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
-                                                <p>校区：{{ getCampus(userInfo.campus) }}</p>
-                                                <p>性别：{{ getGender(userInfo.gender) }}</p>
-                                                <template v-slot:reference>
-                                                    <el-link
-                                                        :underline="false"
-                                                        type="primary"
-                                                        style="font-size: 18px"
-                                                        @mouseenter="
-                              showPopover(floor.comment_cases.cuserId)
-                            "
-                                                    >{{ floor.comment_cases.cuserName }}
-                                                    </el-link
-                                                    >
-                                                </template>
-                                            </el-popover>
-                                            
-                                            <pre class="change-line">{{ floor.comment_cases.content }}</pre>
-                                        </div>
-                                        <el-button @click="showComments(floor.id)"
-                                        >全部评论
-                                        </el-button
-                                        >
-                                    </div>
-                                </el-card>
-                            </div>
+                            </el-card>
                         </div>
-                        <div v-else style="text-align: center">暂无回复</div>
-                    </el-col>
-                </el-card>
-                <el-row></el-row>
-                <el-row>
-                    <el-pagination
-                        v-if="totalFloors > 0"
-                        @current-change="handlePageChange"
-                        v-model="currentPage"
-                        :page-size="limit"
-                        :total="totalFloors"
-                        :small="true"
-                        :pager-count="5"
-                    >
+                    </div>
+
+                    <div v-else>
+                        <el-card>
+                            <van-row justify="center">
+                                暂无回复
+                            </van-row>
+                        </el-card>
+                    </div>
+                </van-col>
+                <van-row></van-row>
+                <van-row>
+                    <el-pagination v-if="totalFloors > 0" @current-change="handlePageChange" v-model="currentPage"
+                                   :page-size="limit" :total="totalFloors" :small="true" :pager-count="5">
                     </el-pagination>
-                </el-row>
-            </el-row>
-            <el-row></el-row>
-            <el-row>
-                <CopyrightICP/>
-            </el-row>
+                </van-row>
+            </van-row>
         </el-main>
-        <div>
-            <van-dialog
-                v-model:show="postDialogVisible"
-                :z-index="2000"
-                style="padding: 3% 0"
-                overflow-y: auto
-                :show-cancel-button="true"
-                @confirm="submitEditForm"
-                title="编辑帖子"
-            >
-                <van-form :model="formPost" style="margin: 20px 0">
-                    <van-cell-group inset>
-                        <van-field
-                            v-model="formPost.title"
-                            name="名称"
-                            label="标题"
-                            type="textarea"
-                            autosize
-                            maxlength="60"
-                            :rules="[{ required: true, message: '请填写帖子标题' }]"
-                        />
-                        <van-cell title="正文" value=""/>
-                        <div>
-                            <MyEditor
-                                @input="(content) => updateContent(content)"
-                                :initialValue="post.content"
-                                :sendData="formPost.content"
-                            ></MyEditor>
-                        </div>
-                    </van-cell-group>
-                </van-form>
-            </van-dialog>
-        </div>
-        <div>
-            <el-dialog v-model="newFloorDialogVisible" width="75%">
-                <el-form :model="newFloorForm" ref="newFloorForm" label-width="80px">
-                    <el-form-item label="评论内容">
-                        <el-input
-                            v-model="newFloorForm.body"
-                            type="textarea"
-                            maxlength="150"
-                        ></el-input>
-                    </el-form-item>
-                </el-form>
-                <div>
-                    <el-button type="primary" @click="addNewFloor">提交</el-button>
-                </div>
-            </el-dialog>
-        </div>
-        <el-dialog
-            v-model="commentsDialogVisible"
-            title="全部评论"
-            width="80%"
-            :draggable="true"
-        >
-            <div v-for="comment in comments" :key="comment.id">
-                <el-card style="min-height: auto; margin-bottom: 20px">
+
+        <van-dialog v-model:show="postDialogVisible" :z-index="2000" style="padding: 3% 0; overflow-y: auto"
+                    :show-cancel-button="true" @confirm="submitEditForm" title="编辑帖子">
+            <van-form :model="formPost" style="margin: 20px 0">
+                <van-cell-group inset>
+                    <van-field v-model="formPost.title" name="名称" label="标题" type="textarea" autosize maxlength="60"
+                               :rules="[{ required: true, message: '请填写帖子标题' }]"/>
+                    <van-cell title="正文" value=""/>
                     <div>
-                        <div style="width: 80%">
-                            <div style="width: 100%">
-                                <div style="padding-left: 20px">
-                                    {{ comment.cuserName }}
-                                </div>
-                                <div style="margin-left: 10%">
-                  <span style="font-size: 10px">
-                    ——发表于 {{ getTimeSubstring(comment.createTime) }}
-                  </span>
-                                </div>
-                            </div>
-                        </div>
+                        <MyEditor @input="(content) => updateContent(content)" :initialValue="post.content"
+                                  :sendData="formPost.content"/>
                     </div>
+                </van-cell-group>
+            </van-form>
+        </van-dialog>
 
-                    <pre class="change-line" 
-                    style="margin-bottom: 5px;
-                    font-size: 20px;
-                    padding-left: 20px;
-                    padding-right: 20px;">{{ comment.content }}</pre>
-
-                    <div class="clearfix" style="margin-bottom: 20px">
-                        <el-tooltip content="举报楼层" placement="bottom">
-                            <div
-                                style="
-                  float: right;
-                  margin-left: 10px;
-                  margin-right: 20px;
-                  margin-bottom: 20px;
-                "
-                            >
-                                <el-button circle @click="showReportReplyPrompt(1, comment.id)">
-                                    <QuestionCircleOutlined style="color: red"/>
-                                </el-button>
-                            </div>
-                        </el-tooltip>
-                        <el-tooltip content="删除楼层" placement="bottom">
-                            <div style="float: right">
-                                <el-button
-                                    v-if="comment.is_auth"
-                                    circle
-                                    @click="showDeleteComment(comment.id, open_floor_id)"
-                                >
-                                    <DeleteOutlined style="color: red"/>
-                                </el-button>
-                            </div>
-                        </el-tooltip>
-                    </div>
-                </el-card>
-            </div>
-            <el-form>
-                <el-form-item>
+        <van-dialog v-model:show="newFloorDialogVisible" :z-index="2000"  style="padding: 3% 3%; overflow-y: auto"
+                    @confirm="addNewFloor" :show-cancel-button="true" title='回复帖子'>
+            <el-form :model="newFloorForm" ref="newFloorForm" style="margin-top: 20px">
+                <el-form-item label="评论内容">
                     <el-input
-                        v-model="newCommentBody"
+                        v-model="newFloorForm.body"
                         type="textarea"
                         maxlength="150"
                     ></el-input>
                 </el-form-item>
             </el-form>
-            <el-col :offset="19">
-                <el-button type="primary" @click="addComment(open_floor_id)"
-                >评论
-                </el-button
-                >
-            </el-col>
-        </el-dialog>
+        </van-dialog>
+
+        <van-dialog v-model:show="commentsDialogVisible" :z-index="2000" style="padding: 3% 3%; max-height: 80%; overflow-y: auto"
+                    title="全部评论" :close-on-click-overlay="true" :scrollable="true" confirm-button-text="关闭" >
+            <div style="margin-top: 10px">
+                <div v-for="comment in comments" :key="comment.id">
+                    <el-card style="min-height: auto; margin-bottom: 20px">
+                        <van-row>
+                            <van-col :span="24">
+                                <el-popover placement="right" width="220" trigger="hover">
+                                    <p>昵称：{{ userInfo.name }}</p>
+                                    <p>邮箱：{{ userInfo.email }}</p>
+                                    <p>个人描述：{{ userInfo.description }}</p>
+                                    <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
+                                    <p>校区：{{ getCampus(userInfo.campus) }}</p>
+                                    <p>性别：{{ getGender(userInfo.gender) }}</p>
+                                    <template v-slot:reference>
+                                        <el-link :underline="false" type="primary" style="font-size:20px;"
+                                                 @mouseenter="showPopover(comment.cuserId)">
+                                            {{ comment.cuserName }}
+                                        </el-link>
+                                    </template>
+                                </el-popover>
+                            </van-col>
+                        </van-row>
+                        <van-row justify="end">
+                        <span style="font-size: 13px;color: #999">
+                            ——发表于 {{ getTimeSubstring(comment.createTime) }}
+                        </span>
+                        </van-row>
+                        <van-row>
+                            <van-col :span="24">
+                                <pre style="font-size: 20px" class="change-line">{{ comment.content }}</pre>
+                            </van-col>
+                        </van-row>
+                        <van-row>
+                            <van-col style="display: flex; align-items: center; ">
+                                <el-button circle @click="showReportReplyPrompt(1, comment.id)">
+                                    <QuestionCircleOutlined style="color: red"/>
+                                </el-button>
+                                <el-button v-if="comment.is_auth" circle
+                                           @click="showDeleteComment(comment.id, open_floor_id)">
+                                    <DeleteOutlined style="color: red"/>
+                                </el-button>
+                            </van-col>
+                        </van-row>
+                    </el-card>
+                </div>
+                <el-form>
+                    <el-form-item>
+                        <el-input v-model="newCommentBody" type="textarea" maxlength="150"/>
+                    </el-form-item>
+                </el-form>
+                <van-col :offset="19">
+                    <el-button type="primary" @click="addComment(open_floor_id)">评论</el-button>
+                </van-col>
+            </div>
+        </van-dialog>
     </el-container>
 </template>
 
@@ -969,9 +883,10 @@ export default {
         },
 
         getTimeSubstring(timeString) {
-            if (timeString) {
-                return timeString.substring(5, 16);
-            }
+            // if (timeString) {
+            //     return timeString.substring(5, 16);
+            // }
+            return timeString
         },
 
         getGrade(value) {
@@ -1025,7 +940,7 @@ export default {
     width: 100%;
 }
 
-.el-row {
+.van-row {
     margin-bottom: 10px;
 }
 
@@ -1039,4 +954,11 @@ export default {
     white-space: pre-wrap;
     width: 100%;
 }
+
+.el-button:focus {
+    color: white;
+    background: white;
+    outline: none;
+}
+
 </style>
