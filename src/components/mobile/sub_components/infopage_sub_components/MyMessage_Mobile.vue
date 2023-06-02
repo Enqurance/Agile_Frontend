@@ -41,52 +41,31 @@
               <el-card class="box-card">
                 <template #header>
                   <div class="card-header">
-                    <el-col :span="16">
-                      <!-- <div v-if="rev.read === false" style="float: right">
+                    <el-col :span="24">
+                      <div v-if="rev.read === false" style="float: right">
                         <el-icon>
                           <Warning />
                         </el-icon>
                       </div>
                       <el-icon style="float: right">
                         <circle-close
-                          @click="rev.deleteDialog = true"
+                          @click="deleteMessage(rev)"
                         ></circle-close>
-                      </el-icon> -->
-                      <pre
-                        style="
-                          word-wrap: break-word;
-                          font-family: 'Open Sans', sans-serif;
-                          white-space: pre-wrap;
-                          width: 100%;
-                        "
-                      ><div class="for-pre" @click="clickMsg(rev)">{{ rev.title }}</div></pre>
-                    </el-col>
-                    <el-col :span="6" :offset="2">
-                      <el-button
-                        v-if="rev.content"
-                        type="primary"
-                        @click="readDetail(rev)"
-                      >
-                        查看详情
-                      </el-button>
+                      </el-icon>
+                      <div class="for-title">
+                        {{ rev.title }}
+                      </div>
                     </el-col>
                   </div>
                 </template>
-                <el-row>
-                  <span> 内容：{{ rev.content }} </span>
+                <el-row  @click="clickMsg(rev)">
+                  <div>内容：{{ rev.content }}</div>
                 </el-row>
                 <el-row>
                   <el-text> 消息时间：{{ rev.time }} </el-text>
                 </el-row>
               </el-card>
             </el-row>
-            <el-dialog v-model="rev.detail" title="消息详情" width="80%" center>
-              <template #footer>
-                <span class="dialog-footer">
-                  <el-button @click="rev.detail = false">关闭</el-button>
-                </span>
-              </template>
-            </el-dialog>
           </div>
         </el-scrollbar>
         <el-dialog v-model="deleteRevDialog" center>
@@ -142,10 +121,10 @@
                 <template #header>
                   <div class="card-header">
                     <el-col>
-                      <!-- <el-row>
+                      <el-row>
                       <el-icon style="float: right">
                         <circle-close
-                          @click="snd.deleteDialog = true"
+                          @click="deleteMessage(snd)"
                         ></circle-close>
                       </el-icon>
                       <div v-if="snd.read === false" style="float: right">
@@ -153,16 +132,11 @@
                           <Warning />
                         </el-icon>
                       </div>
-                    </el-row> -->
+                    </el-row>
                       <el-row>
-                        <pre
-                          style="
-                            word-wrap: break-word;
-                            font-family: 'Open Sans', sans-serif;
-                            white-space: pre-wrap;
-                            width: 100%;
-                          "
-                        ><div class="for-pre" @click="clickMsg(snd)">{{ snd.title }}</div></pre>
+                        <div class="for-title" @click="clickMsg(snd)">
+                          {{ snd.title }}
+                        </div>
                       </el-row>
                       <el-row>
                         <el-text>
@@ -198,11 +172,12 @@
       </div>
     </el-col>
   </el-row>
-  <el-row></el-row>
-  <el-row></el-row>
   <el-row>
     <CopyrightICP />
   </el-row>
+  <el-row></el-row>
+  <el-row></el-row>
+  <el-row> </el-row>
 </template>
 
 <script>
@@ -212,8 +187,8 @@ import CopyrightICP from "@/components/CopyrightICP.vue";
 export default {
   name: "MyMessage_Mobile",
   components: {
-    // CircleClose,
-    // Warning,
+     CircleClose,
+     Warning,
     CopyrightICP,
   },
   data() {
@@ -485,7 +460,7 @@ export default {
   width: 100%;
 }
 
-.for-pre {
+.for-title {
   font-weight: bold;
   font-size: 20px;
   color: #5d478b;

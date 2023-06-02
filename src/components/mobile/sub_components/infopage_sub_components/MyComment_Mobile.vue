@@ -34,14 +34,12 @@
                 <template #header>
                   <div class="card-header">
                     <el-col :span="16">
-                      <pre
-                        style="
-                          word-wrap: break-word;
-                          font-family: 'Open Sans', sans-serif;
-                          white-space: pre-wrap;
-                          width: 100%;
-                        "
-                      ><div style="font-weight: bold;font-size: 20px" @click="browseFloor(floor.post_id)">{{ floor.title }}</div></pre>
+                      <div
+                        style="font-weight: bold; font-size: 20px"
+                        @click="browseFloor(floor.post_id)"
+                      >
+                        {{ floor.title }}
+                      </div>
                     </el-col>
                     <el-col :span="6" :offset="2">
                       <el-button
@@ -95,14 +93,12 @@
                 <template #header>
                   <div class="card-header">
                     <el-col :span="16">
-                      <pre
-                        style="
-                          word-wrap: break-word;
-                          font-family: 'Open Sans', sans-serif;
-                          white-space: pre-wrap;
-                          width: 100%;
-                        "
-                      ><div style="font-weight: bold;font-size: 20px" @click="browseComment(comment.post_id)">{{ comment.title }}</div></pre>
+                      <div
+                        style="font-weight: bold; font-size: 20px"
+                        @click="browseComment(comment.post_id)"
+                      >
+                        {{ comment.title }}
+                      </div>
                     </el-col>
                     <el-col :span="6" :offset="2">
                       <el-button
@@ -147,9 +143,12 @@
       </div>
     </el-col>
   </el-row>
+  <el-row>
+    <CopyrightICP />
+  </el-row>
   <el-row></el-row>
   <el-row></el-row>
-  <el-row><CopyrightICP /></el-row>
+  <el-row> </el-row>
 </template>
 
 <script>
@@ -290,6 +289,13 @@ export default {
 }
 
 .box-card {
+  width: 100%;
+}
+
+.change-line {
+  word-wrap: break-word;
+  font-family: "Open Sans", sans-serif;
+  white-space: pre-wrap;
   width: 100%;
 }
 </style>

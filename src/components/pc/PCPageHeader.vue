@@ -153,7 +153,7 @@ export default {
                 :ellipsis="false"
                 background-color=#3B3B3B
                 text-color=white
-                active-text-color=#4298e7
+                :default-active="Index"
         >
             <el-menu-item v-on:click="clickToMap()" index="1">
                 BUAAMapForum
