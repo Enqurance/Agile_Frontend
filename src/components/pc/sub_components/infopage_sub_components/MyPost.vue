@@ -3,7 +3,7 @@
         <div class="sub_div" v-if="this.subMenu === 1">
             <div style="overflow: auto">
                 <div v-if="posts.length === 0">
-                    <el-empty description="暂时还没有贴子"/>
+                    <el-empty class="empty_div" description="暂时还没有贴子"/>
                 </div>
 
                 <div v-else class="post_div" v-for="post in posts" :key="post.id">
@@ -27,11 +27,8 @@
                         </el-popover>
 
                         <div style="padding-left: 20px; margin-right: 15%">
-                            <div style="padding: 0 10px 20px 20px;overflow: hidden;">
-                                <el-text tag="b" size="large">内容:</el-text>
-                                <el-text tag="i" size="large">
-                                    {{ post.content }}
-                                </el-text>
+                            <div style="padding: 0 0 20px 20px;overflow: hidden;">
+                                <div v-html="post.content" />
                             </div>
 
                             <div style="padding: 0 10px 20px 20px;overflow: hidden;">
@@ -41,7 +38,7 @@
                                 </el-text>
                             </div>
 
-                            <div style="padding: 0 10px 20px 20px;overflow: hidden;">
+                            <div v-if="post.pin_name_str" style="padding: 0 10px 20px 20px;overflow: hidden;">
                                 <el-text tag="b" size="large">关联钉子:</el-text>
                                 <el-text size="large">
                                     {{ post.pin_name_str }}
@@ -249,6 +246,8 @@ export default {
                         type: 'info',
                         message: '删除成功',
                     });
+                    that.queryAllPost()
+                    that.queryBadPost()
                 }
                 else {
                     this.$message({
