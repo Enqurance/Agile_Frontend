@@ -1,7 +1,7 @@
 <template>
     <el-container ref="container">
         <el-header style="padding-left: 0;padding-right: 0">
-            <PageHeader />
+            <PageHeader/>
         </el-header>
         <el-main>
             <div class="main">
@@ -12,11 +12,12 @@
                         <div class="title">
                             <div class="clearfix">
                                 <div style="float: left">
-                                    <el-avatar :size="70" shape="circle" :src="this.imageUrl" style="user-select: none;" />
+                                    <el-avatar :size="70" shape="circle" :src="this.imageUrl"
+                                               style="user-select: none;"/>
                                 </div>
                                 <div style="float: left; padding-left: 15px; height: 70px; display: flex; align-items: center">
                                     <div>
-                                        <div style="margin-bottom: 10px">
+                                        <div style="margin-bottom: 5px">
                                             <el-popover placement="right" width="220" trigger="hover">
                                                 <p>昵称：{{ userInfo.name }}</p>
                                                 <p>邮箱：{{ userInfo.email }}</p>
@@ -26,14 +27,14 @@
                                                 <p>性别：{{ getGender(userInfo.gender) }}</p>
                                                 <template v-slot:reference>
                                                     <el-link :underline="false" type="primary" style="font-size:18px;"
-                                                        @mouseenter="showPopover(post.userId)">
+                                                             @mouseenter="showPopover(post.userId)">
                                                         {{ post.userName }}
                                                     </el-link>
                                                 </template>
                                             </el-popover>
                                         </div>
                                         <div>
-                                            <el-text tag="i">
+                                            <el-text tag="i" style="display: flex; align-items: center; ">
                                                 创建时间：{{ getTimeSubstring(post.createTime) }}
                                             </el-text>
                                         </div>
@@ -50,7 +51,7 @@
                                     </el-tag>
                                 </div>
                                 <div v-if="tags.length > 0"
-                                    style="display: flex;flex-wrap: wrap;margin-top: 10px;margin-bottom: 10px;">
+                                     style="display: flex;flex-wrap: wrap;margin-top: 10px;margin-bottom: 10px;">
                                     <div v-for="(tag, index) in tags" :key="index" style="margin-right: 10px;">
                                         <el-tag size="small" effect="plain" type="success">{{ tag }}</el-tag>
                                     </div>
@@ -80,36 +81,37 @@
                                 <el-tooltip content="删除帖子" placement="bottom">
                                     <div style="float: left; margin-right: 10px">
                                         <el-button v-if="post.is_auth" @click="showDeletePost" circle>
-                                            <DeleteOutlined style="color: red" />
+                                            <DeleteOutlined style="color: red"/>
                                         </el-button>
                                     </div>
                                 </el-tooltip>
                                 <el-tooltip content="举报帖子" placement="bottom">
                                     <div style="float: left; margin-right: 10px">
                                         <el-button @click="showReportPostPrompt" circle>
-                                            <QuestionCircleOutlined style="color: red" />
+                                            <QuestionCircleOutlined style="color: red"/>
                                         </el-button>
                                     </div>
                                 </el-tooltip>
                                 <el-tooltip content="编辑帖子" placement="bottom">
                                     <div style="float: left; margin-right: 10px">
                                         <el-button v-if="post.is_auth" @click="editPost" circle>
-                                            <EditOutlined />
+                                            <EditOutlined/>
                                         </el-button>
                                     </div>
                                 </el-tooltip>
                                 <el-tooltip content="点赞帖子" placement="bottom">
                                     <div style="float: left; margin-right: 10px">
                                         <el-button @click="addLike" circle>
-                                            <HeartTwoTone v-if="post.has_thumb" style="color: red" twoToneColor="red" />
-                                            <HeartOutlined v-else style="color: black" />
+                                            <HeartTwoTone v-if="post.has_thumb" style="color: red" twoToneColor="red"/>
+                                            <HeartOutlined v-else style="color: black"/>
                                         </el-button>
                                     </div>
                                 </el-tooltip>
                             </div>
                         </div>
                         <div style="float: left; right: 0; position: absolute">
-                            <el-button type="success" plain @click="newFloorDialogVisible = true" style="margin-left: 10px">
+                            <el-button type="success" plain @click="newFloorDialogVisible = true"
+                                       style="margin-left: 10px">
                                 回复帖子
                             </el-button>
                         </div>
@@ -127,8 +129,9 @@
                                 </el-form-item> -->
                                 <el-form-item label="正文">
                                     <div style="width:100%">
-                                        <MyEditor @input="(content) => updateContent(content)" :sendData="formPost.content"
-                                            :initialValue="post.content"></MyEditor>
+                                        <MyEditor @input="(content) => updateContent(content)"
+                                                  :sendData="formPost.content"
+                                                  :initialValue="post.content"></MyEditor>
                                     </div>
                                 </el-form-item>
                             </el-form>
@@ -144,7 +147,7 @@
                         <el-form :model="newFloorForm" ref="newFloorForm" label-width="80px">
                             <el-form-item label="回复内容">
                                 <el-input v-model="newFloorForm.body" :rows="5" clearable type="textarea" autosize
-                                    maxlength="150"></el-input>
+                                          maxlength="150"></el-input>
                             </el-form-item>
                         </el-form>
                         <div class="clearfix">
@@ -169,8 +172,9 @@
                                                     <p>校区：{{ getCampus(userInfo.campus) }}</p>
                                                     <p>性别：{{ getGender(userInfo.gender) }}</p>
                                                     <template v-slot:reference>
-                                                        <el-link :underline="false" type="primary" style="font-size:20px;"
-                                                            @mouseenter="showPopover(floor.userId)">
+                                                        <el-link :underline="false" type="primary"
+                                                                 style="font-size:20px;"
+                                                                 @mouseenter="showPopover(floor.userId)">
                                                             {{ floor.userName }}
                                                         </el-link>
                                                     </template>
@@ -188,33 +192,31 @@
                                     </div>
                                 </div>
 
-                                <div style="width: 100%;">
-                                    <pre class="change-line"
-                                        style="margin-bottom: 5px;
-                                        font-size: 20px;
-                                        padding-left: 20px;
-                                        padding-right: 20px">{{ floor.content }}</pre>
-                                </div>
+                                <el-row>
+                                    <el-col :offset="1" :span="22">
+                                        <pre class="change-line" style="margin-bottom: 5px;font-size: 20px;">{{ floor.content }}</pre>
+                                    </el-col>
+                                </el-row>
 
                                 <div class="clearfix" style="margin-bottom: 20px">
                                     <el-tooltip content="举报楼层" placement="bottom">
                                         <div style="float: right; margin-left: 10px; margin-right: 20px">
                                             <el-button circle @click="showReportReplyPrompt(0, floor.id)">
-                                                <QuestionCircleOutlined style="color: red" />
+                                                <QuestionCircleOutlined style="color: red"/>
                                             </el-button>
                                         </div>
                                     </el-tooltip>
                                     <el-tooltip content="删除楼层" placement="bottom">
                                         <div style="float: right">
                                             <el-button v-if="floor.is_auth" circle @click="showDeleteFloor(floor.id)">
-                                                <DeleteOutlined style="color: red" />
+                                                <DeleteOutlined style="color: red"/>
                                             </el-button>
                                         </div>
                                     </el-tooltip>
                                 </div>
 
                                 <div v-if="!floor.comment_cases"
-                                    style="display: flex; justify-content: flex-end;margin-right: 20px;">
+                                     style="display: flex; justify-content: flex-end;margin-right: 20px;">
                                     <el-button @click="showComments(floor.id)">回复楼层</el-button>
                                 </div>
                                 <el-card v-else shadow="never">
@@ -231,8 +233,8 @@
                                                         <p>性别：{{ getGender(userInfo.gender) }}</p>
                                                         <template v-slot:reference>
                                                             <el-link :underline="false" type="primary"
-                                                                style="font-size:18px;"
-                                                                @mouseenter="showPopover(floor.comment_cases.cuserId)">
+                                                                     style="font-size:18px;"
+                                                                     @mouseenter="showPopover(floor.comment_cases.cuserId)">
                                                                 {{ floor.comment_cases.cuserName }}
                                                             </el-link>
                                                         </template>
@@ -252,9 +254,9 @@
                                 </el-card>
                             </el-card>
                         </div>
-                        <div style="height: 60px" />
-                        <div v-loading="loading" element-loading-text="Loading..." />
-                        <div style="height: 60px" />
+                        <div style="height: 60px"/>
+                        <div v-loading="loading" element-loading-text="Loading..."/>
+                        <div style="height: 60px"/>
                     </div>
                 </div>
 
@@ -277,22 +279,24 @@
                                             <p>性别：{{ getGender(userInfo.gender) }}</p>
                                             <template v-slot:reference>
                                                 <el-link :underline="false" type="primary" style="font-size:20px;"
-                                                    @mouseenter="showPopover(comment.cuserId)">
+                                                         @mouseenter="showPopover(comment.cuserId)">
                                                     {{ comment.cuserName }}
                                                 </el-link>
                                             </template>
                                         </el-popover>
                                     </div>
                                     <div style="margin-left: 20%">
-                                        <span style="font-size: 13px">——发表于 {{ getTimeSubstring(comment.createTime) }}
+                                        <span style="font-size: 13px">——发表于 {{
+                                                getTimeSubstring(comment.createTime)
+                                            }}
                                         </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <pre class="change-line" 
-                            style="margin-bottom: 5px;
+                        <pre class="change-line"
+                             style="margin-bottom: 5px;
                             font-size: 20px;
                             padding-left: 20px;
                             padding-right: 20px;">{{ comment.content }}</pre>
@@ -301,15 +305,15 @@
                             <el-tooltip content="举报评论" placement="bottom">
                                 <div style="float: right; margin-left: 10px; margin-right: 20px">
                                     <el-button circle @click="showReportReplyPrompt(1, comment.id)">
-                                        <QuestionCircleOutlined style="color: red" />
+                                        <QuestionCircleOutlined style="color: red"/>
                                     </el-button>
                                 </div>
                             </el-tooltip>
                             <el-tooltip content="删除评论" placement="bottom">
                                 <div style="float: right">
                                     <el-button v-if="comment.is_auth" circle
-                                        @click="showDeleteComment(comment.id, open_floor_id)">
-                                        <DeleteOutlined style="color: red" />
+                                               @click="showDeleteComment(comment.id, open_floor_id)">
+                                        <DeleteOutlined style="color: red"/>
                                     </el-button>
                                 </div>
                             </el-tooltip>
@@ -333,10 +337,10 @@
 
 
 <script>
-import { ref, getCurrentInstance } from 'vue'
+import {ref, getCurrentInstance} from 'vue'
 import PageHeader from "@/components/pc/PCPageHeader.vue";
 import global from '@/global'
-import { DeleteOutlined, QuestionCircleOutlined, EditOutlined, HeartOutlined, HeartTwoTone } from '@ant-design/icons-vue';
+import {DeleteOutlined, QuestionCircleOutlined, EditOutlined, HeartOutlined, HeartTwoTone} from '@ant-design/icons-vue';
 import MyEditor from "@/components/sub_components/QuillEditor.vue";
 
 export default {
@@ -377,7 +381,7 @@ export default {
     },
 
     setup() {
-        const { proxy } = getCurrentInstance();
+        const {proxy} = getCurrentInstance();
         const imageUrl = ref('');
         const floors = ref([]);
         const offset = ref(0);
@@ -545,7 +549,7 @@ export default {
                     message: '请先登录!',
                     type: "warning"
                 })
-                this.$router.push({ path: '/login' })
+                this.$router.push({path: '/login'})
             }
         },
 
@@ -585,7 +589,7 @@ export default {
                         message: '该帖子不存在!',
                         type: "error"
                     })
-                    this.$router.push({ path: '/forum' })
+                    this.$router.push({path: '/forum'})
                     return
                 }
 
@@ -726,7 +730,7 @@ export default {
                         type: 'info',
                         message: '删除成功',
                     });
-                    that.$router.push({ path: '/Forum' })
+                    that.$router.push({path: '/Forum'})
                 }
                 else {
                     this.$message({
@@ -878,7 +882,7 @@ export default {
                     message: '请先登录!',
                     type: "warning"
                 })
-                this.$router.push({ path: '/login' })
+                this.$router.push({path: '/login'})
             }
             else {
                 this.$prompt('请输入举报理由', '举报帖子', {
@@ -890,7 +894,7 @@ export default {
                             return '举报理由不能为空';
                         }
                     },
-                }).then(({ value }) => {
+                }).then(({value}) => {
                     this.reportPost(value);
                 }).catch(() => {
                     this.$message({
@@ -936,7 +940,7 @@ export default {
                     message: '请先登录!',
                     type: "warning"
                 })
-                this.$router.push({ path: '/login' })
+                this.$router.push({path: '/login'})
             }
             else {
                 this.$prompt('请输入举报理由', '举报reply', {
@@ -948,7 +952,7 @@ export default {
                             return '举报理由不能为空';
                         }
                     },
-                }).then(({ value }) => {
+                }).then(({value}) => {
                     this.reportReply(value, type, id);
                 }).catch(() => {
                     this.$message({

@@ -139,7 +139,7 @@
                                 </van-row>
 
                                 <van-row>
-                                    <van-col :span="24">
+                                    <van-col :offset="1" :span="22">
                                         <pre style="font-size: 20px" class="change-line">{{ floor.content }}</pre>
                                     </van-col>
                                 </van-row>
