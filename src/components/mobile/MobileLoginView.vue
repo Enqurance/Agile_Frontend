@@ -4,6 +4,9 @@
             <img src="/img/logo.png" alt="logo" style="width: 100%; height: auto;">
         </div>
         <div>
+            <p class="title">BUAAMapForum</p>
+        </div>
+        <div>
             <van-form :model="loginForm" class="login-form">
                 <van-cell-group inset>
                     <van-field
@@ -149,6 +152,11 @@ export default {
     align-items: center;
     width: 400px;
     margin: 0 auto;
+}
+.title{
+    font-family: fantasy;
+    font-size: 2.0em;
+    color: #1f82ce;
 }
 </style>
 
