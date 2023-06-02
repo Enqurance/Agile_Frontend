@@ -177,7 +177,8 @@
                                                 </el-popover>
                                             </div>
                                             <div style="margin-left: 20%">
-                                                <span style="font-size: 13px">——发表于 {{ getTimeSubstring(floor.createTime) }}
+                                                <span style="font-size: 13px">
+                                                    ——发表于 {{ getTimeSubstring(floor.createTime) }}
                                                 </span>
                                             </div>
                                         </div>
@@ -192,7 +193,7 @@
                                         style="margin-bottom: 5px;
                                         font-size: 20px;
                                         padding-left: 20px;
-                                        padding-right: 20px;">{{ floor.content }}</pre>
+                                        padding-right: 20px">{{ floor.content }}</pre>
                                 </div>
 
                                 <div class="clearfix" style="margin-bottom: 20px">
