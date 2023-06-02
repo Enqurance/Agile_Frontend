@@ -4,7 +4,7 @@
             <img src="/img/logo.png" alt="logo" style="width: 100%; height: auto;">
         </div>
         <div>
-            <p style="margin-top:0px; margin-bottom: 5px;" class="title">BUAAMapForum Register</p>
+            <p style="margin-top:0px; margin-bottom: 5px;" class="title">Register</p>
         </div>
         <div class="form-container">
             <el-form ref="registerForm" :model="registerForm" class="register-form">
