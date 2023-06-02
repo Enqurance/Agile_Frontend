@@ -42,16 +42,16 @@
                 <template #header>
                   <div class="card-header">
                     <el-col :span="16">
-                      <!-- <div v-if="rev.read === false" style="float: right">
+                     <div v-if="rev.read === false" style="float: right">
                         <el-icon>
                           <Warning />
                         </el-icon>
                       </div>
                       <el-icon style="float: right">
                         <circle-close
-                          @click="rev.deleteDialog = true"
+                          @click="deleteMessage(rev)"
                         ></circle-close>
-                      </el-icon> -->
+                      </el-icon>
                       <pre
                         style="
                           word-wrap: break-word;
@@ -142,10 +142,10 @@
                 <template #header>
                   <div class="card-header">
                     <el-col>
-                      <!-- <el-row>
+                      <el-row>
                       <el-icon style="float: right">
                         <circle-close
-                          @click="snd.deleteDialog = true"
+                          @click="deleteMessage(snd)"
                         ></circle-close>
                       </el-icon>
                       <div v-if="snd.read === false" style="float: right">
@@ -153,7 +153,7 @@
                           <Warning />
                         </el-icon>
                       </div>
-                    </el-row> -->
+                    </el-row>
                       <el-row>
                         <pre
                           style="
@@ -212,8 +212,8 @@ import CopyrightICP from "@/components/CopyrightICP.vue";
 export default {
   name: "MyMessage_Mobile",
   components: {
-    // CircleClose,
-    // Warning,
+     CircleClose,
+     Warning,
     CopyrightICP,
   },
   data() {
