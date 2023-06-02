@@ -42,9 +42,7 @@
                                 </div>
                             </div>
 
-                            <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;">
-                                <h1>{{ post.title }}</h1>
-                            </pre>
+                            <pre class="change-line"><h1>{{ post.title }}</h1></pre>
                             <div
                                 style="display: flex; align-items: center;margin-bottom: 10px;font-size:18px; margin-top: -15px">
                                 <div style="align-items: center; padding-right: 20px">
@@ -73,9 +71,7 @@
                     <div style="text-align: left; font-size: 20px; width: 100%">
                         <el-text tag="b" style="font-size: 16px; color: black">内容：</el-text>
                         <div style="padding-bottom: 10px">
-                            <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;">
-                                <div v-html="post.content"></div>
-                            </pre>
+                            <pre class="change-line"><div v-html="post.content"></div></pre>
                         </div>
                     </div>
 
@@ -132,10 +128,8 @@
                                 </el-form-item> -->
                                 <el-form-item label="正文">
                                     <div style="width:100%">
-                                        <MyEditor 
-                                        @input="(content) => updateContent(content)"
-                                        :sendData="formPost.content"
-                                        :initialValue="post.content"></MyEditor>
+                                        <MyEditor @input="(content) => updateContent(content)" :sendData="formPost.content"
+                                            :initialValue="post.content"></MyEditor>
                                     </div>
                                 </el-form-item>
                             </el-form>
@@ -194,11 +188,13 @@
                                     </div>
                                 </div>
 
-                                <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;width: 100%; ">
-                                <div style="margin-bottom: 5px; font-size: 20px;padding-left: 20px; padding-right: 20px">
-                                    {{ floor.content }}
+                                <div style="width: 100%;">
+                                    <pre class="change-line"
+                                        style="margin-bottom: 5px;
+                                        font-size: 20px;
+                                        padding-left: 20px;
+                                        padding-right: 20px;">{{ floor.content }}</pre>
                                 </div>
-                                </pre>
 
                                 <div class="clearfix" style="margin-bottom: 20px">
                                     <el-tooltip content="举报楼层" placement="bottom">
@@ -244,9 +240,7 @@
                                                     <span>:</span>
                                                 </div>
                                                 <div>
-                                                    <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;">
-                                                        {{ floor.comment_cases.content }}
-                                                    </pre>
+                                                    <pre class="change-line">{{ floor.comment_cases.content }}</pre>
                                                 </div>
                                             </el-main>
                                             <el-aside
@@ -297,11 +291,11 @@
                             </div>
                         </div>
 
-                        <pre style="word-wrap: break-word;font-family: 'Open Sans', sans-serif;white-space: pre-wrap;width: 100%; ">
-                        <div style="margin-bottom: 5px; font-size: 20px;padding-left: 20px; padding-right: 20px">
-                            {{ comment.content }}
-                        </div>
-                        </pre>
+                        <pre class="change-line" 
+                            style="margin-bottom: 5px;
+                            font-size: 20px;
+                            padding-left: 20px;
+                            padding-right: 20px;">{{ comment.content }}</pre>
 
                         <div class="clearfix" style="margin-bottom: 20px">
                             <el-tooltip content="举报评论" placement="bottom">
@@ -1127,5 +1121,12 @@ export default {
 
 .el-main {
     --el-main-padding: 0px;
+}
+
+.change-line {
+    word-wrap: break-word;
+    font-family: 'Open Sans', sans-serif;
+    white-space: pre-wrap;
+    width: 100%;
 }
 </style>
