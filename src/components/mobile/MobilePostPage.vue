@@ -4,7 +4,7 @@
             <van-row>
                 <van-col :span="24">
                     <van-row>
-                        <van-col :span="6" style="display: flex; align-items: center; ; justify-content: center">
+                        <van-col :span="6" style="display: flex; align-items: center; justify-content: center">
                             <el-avatar
                                 :size="70"
                                 shape="square"
@@ -56,15 +56,16 @@
                             </el-descriptions>
                         </van-col>
                     </van-row>
-                    <van-row>
-                        <pre class="change-line"
-                             style="font-family: Arial, sans-serif;
-                            font-size: 2rem;
-                            font-weight: bold;
+                    <van-row justify="center">
+                        <van-col :span="22" :offset="1">
+                            <pre class="change-line" style="font-family: Arial, sans-serif;font-size: 2rem;font-weight: bold;
                             color: #333;">{{ post.title }}</pre>
+                        </van-col>
                     </van-row>
-                    <van-row>
-                        <pre class="change-line"><div v-html="post.content"></div></pre>
+                    <van-row justify="center">
+                        <van-col :span="22" :offset="1">
+                            <pre class="change-line"><div v-html="post.content"></div></pre>
+                        </van-col>
                     </van-row>
                     <el-divider/>
                     <van-row>
@@ -109,7 +110,7 @@
             <van-row style="margin-top: 10%">
                 <van-col :span="24">
                     <div v-if="floors.length > 0">
-                        <div v-for="floor in floors" :key="floor.id" style="padding-top: 10px">
+                        <div v-for="floor in floors" :key="floor.id" style="padding-bottom: 20px">
                             <el-card>
                                 <van-row>
                                     <van-col :span="19">
@@ -137,41 +138,71 @@
                                     </van-col>
                                 </van-row>
 
-                                <pre class="change-line"
-                                     style="margin-bottom: 10px; font-size: 20px">{{ floor.content }}</pre>
-
-                                <div v-if="!floor.comment_cases"
-                                     style="display: flex;justify-content: flex-end;margin-right: 20px;">
-                                    <el-button @click="showComments(floor.id)">回复楼层</el-button>
-                                </div>
-
-                                <el-card v-if="floor.comment_cases" shadow="never">
-                                    <div style="display: flex;align-items: center;justify-content: space-between;">
-                                        <div>
-                                            <el-popover placement="right" width="220" trigger="hover">
-                                                <p>昵称：{{ userInfo.name }}</p>
-                                                <p>邮箱：{{ userInfo.email }}</p>
-                                                <p>个人描述：{{ userInfo.description }}</p>
-                                                <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
-                                                <p>校区：{{ getCampus(userInfo.campus) }}</p>
-                                                <p>性别：{{ getGender(userInfo.gender) }}</p>
-                                                <template v-slot:reference>
-                                                    <el-link :underline="false" type="primary" style="font-size: 18px"
-                                                             @mouseenter="showPopover(floor.comment_cases.cuserId)">
-                                                        {{ floor.comment_cases.cuserName }}
-                                                    </el-link>
-                                                </template>
-                                            </el-popover>
-
-                                            <pre class="change-line">{{ floor.comment_cases.content }}</pre>
+                                <van-row>
+                                    <van-col :span="24">
+                                        <pre style="font-size: 20px" class="change-line">{{ floor.content }}</pre>
+                                    </van-col>
+                                </van-row>
+                                <van-row justify="end">
+                                    <span style="font-size: 13px;color: #999">
+                                            ——发表于 {{ getTimeSubstring(floor.createTime) }}
+                                    </span>
+                                </van-row>
+                                <van-row>
+                                    <van-col :span="8" :offset="1">
+                                        <el-button circle @click="showReportReplyPrompt(0, floor.id)">
+                                            <QuestionCircleOutlined style="color: red"/>
+                                        </el-button>
+                                        <el-button v-if="floor.is_auth" circle @click="showDeleteFloor(floor.id)">
+                                            <DeleteOutlined style="color: red"/>
+                                        </el-button>
+                                    </van-col>
+                                    <van-col :span="10" :offset="4">
+                                        <div v-if="!floor.comment_cases" style="margin-top: 10px;">
+                                            <el-button @click="showComments(floor.id)">回复楼层</el-button>
                                         </div>
-                                        <el-button @click="showComments(floor.id)">全部评论</el-button>
-                                    </div>
+                                    </van-col>
+                                </van-row>
+
+                                <el-card v-if="floor.comment_cases" shadow="never" style="margin-top: 5px">
+                                    <van-row>
+                                        <van-col :span="15">
+                                            <van-row>
+                                                <el-popover placement="right" width="220" trigger="hover">
+                                                    <p>昵称：{{ userInfo.name }}</p>
+                                                    <p>邮箱：{{ userInfo.email }}</p>
+                                                    <p>个人描述：{{ userInfo.description }}</p>
+                                                    <p>学习阶段：{{ getGrade(userInfo.grade) }}</p>
+                                                    <p>校区：{{ getCampus(userInfo.campus) }}</p>
+                                                    <p>性别：{{ getGender(userInfo.gender) }}</p>
+                                                    <template v-slot:reference>
+                                                        <el-link :underline="false" type="primary" style="font-size: 18px"
+                                                                 @mouseenter="showPopover(floor.comment_cases.cuserId)">
+                                                            {{ floor.comment_cases.cuserName }}
+                                                        </el-link>
+                                                    </template>
+                                                </el-popover>
+                                            </van-row>
+                                            <van-row>
+                                                <pre class="change-line">{{ floor.comment_cases.content }}</pre>
+                                            </van-row>
+                                        </van-col>
+                                        <van-col :span="8" :offset="1" style="display: flex; align-items: center; justify-content: center">
+                                            <el-button siz="small" @click="showComments(floor.id)">全部评论</el-button>
+                                        </van-col>
+                                    </van-row>
                                 </el-card>
                             </el-card>
                         </div>
                     </div>
-                    <div v-else style="text-align: center">暂无回复</div>
+
+                    <div v-else>
+                        <el-card>
+                            <van-row justify="center">
+                                暂无回复
+                            </van-row>
+                        </el-card>
+                    </div>
                 </van-col>
                 <van-row></van-row>
                 <van-row>
@@ -929,6 +960,5 @@ export default {
     background: white;
     outline: none;
 }
-
 
 </style>
