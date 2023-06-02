@@ -8,15 +8,6 @@ let pin_type_dic = {
     7: "生活服务",
 }
 
-/*let pin_color_dic = {
-    1: "orange",
-    2: "green",
-    3: "red",
-    4: "yellow",
-    5: "grey",
-    6: "blue",
-    7: "pink"
-}*/
 let pin_color_dic = {
     1: "rgba(0, 47, 167, 1)",
     2: "rgba(161, 62, 151, 1)",
