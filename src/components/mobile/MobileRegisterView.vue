@@ -19,7 +19,7 @@
                 </el-form-item>
 
                 <div style="display:flex;">
-                    <el-form-item prop="emailCode" style="width: 50%px;padding-right: 110px;" :rules="emailCodeRules">
+                    <el-form-item prop="emailCode" style="width: 50%;padding-right: 110px;" :rules="emailCodeRules">
                         <el-input v-model="registerForm.emailCode" placeholder="请输入验证码"
                                   @keyup.enter="openVerified"></el-input>
                     </el-form-item>
@@ -106,7 +106,7 @@ export default {
 
             usernameRules: [
                 { required: true, message: '用户名不能为空', trigger: ['blur', 'change'] },
-                { min: 8, max: 20, message: '用户名长度为8-20位', trigger: ['blur', 'change'] }
+                { min: 3, max: 20, message: '用户名长度为3-20位', trigger: ['blur', 'change'] }
             ],
 
             emailRules: [

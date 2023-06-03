@@ -106,7 +106,7 @@ export default {
 
             usernameRules: [
                 { required: true, message: '用户名不能为空', trigger: ['blur', 'change'] },
-                { min: 8, max: 20, message: '用户名长度为8-20位', trigger: ['blur', 'change'] }
+                { min: 3, max: 20, message: '用户名长度为3-20位', trigger: ['blur', 'change'] }
             ],
         
             emailRules: [
