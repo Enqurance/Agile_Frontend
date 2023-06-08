@@ -203,8 +203,8 @@ export default defineComponent({
                 })
                 that.map.setZooms(that.beihang_zoom)
 
-                let bounds = that.map.getBounds();
-                that.map.setLimitBounds(bounds);
+                // let bounds = that.map.getBounds();
+                // that.map.setLimitBounds(bounds);
 
                 that.markers_info = {}
                 that.$axios.get('examine/get_pin', {
