@@ -167,8 +167,8 @@ export default {
         })
         this.map.setZooms(that.beihang_zoom)
 
-        let bounds = this.map.getBounds();
-        this.map.setLimitBounds(bounds);
+        // let bounds = this.map.getBounds();
+        // this.map.setLimitBounds(bounds);
 
         this.markers_info = {}
         that.$axios.get('map/getUserAllBriefPin', {
@@ -378,6 +378,13 @@ export default {
         }
       }, 1);
 
+        //聚焦北航
+        contextMenu.addItem("聚焦北航", function () {
+            that.map.setCenter(that.beihang_center)
+            that.map.setZooms(that.beihang_zoom[0])
+            contextMenu.close()
+        }, 2);
+
       //右键添加Marker标记
       // eslint-disable-next-line no-unused-vars
       contextMenu.addItem("添加标记", function () {
@@ -390,7 +397,7 @@ export default {
         }
         that.is_add_marker = true
         contextMenu.close()
-      }, 2);
+      }, 3);
 
       contextMenu.addItem("移动钉子", function () {
         if (!that.$cookies.get('user_token')) {
@@ -402,7 +409,7 @@ export default {
         }
         that.is_switch = true
         contextMenu.close()
-      }, 2);
+      }, 4);
 
       //地图绑定鼠标右击事件——弹出右键菜单
       this.map.on('rightclick', function (e) {
