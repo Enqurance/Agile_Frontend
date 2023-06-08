@@ -152,8 +152,5 @@ export default {
 </template>
 
 <style scoped>
-.MainPart{
-    height: 92%;
-}
 
 </style>
