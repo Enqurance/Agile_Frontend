@@ -105,6 +105,7 @@ export default {
             isShow: false,
 
             usernameRules: [
+                { pattern: /^\S+$/, message: '用户名中不可以有空白字符', trigger: ['blur', 'change'] },
                 { required: true, message: '用户名不能为空', trigger: ['blur', 'change'] },
                 { min: 3, max: 20, message: '用户名长度为3-20位', trigger: ['blur', 'change'] }
             ],
