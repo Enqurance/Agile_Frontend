@@ -96,6 +96,7 @@ export default {
                         <el-button @click="deleteConfirm = true; curI = i;" plain type="danger">删除钉子</el-button>
                     </div>
                 </template>
+                <el-scrollbar>
                 <el-row>
                     <el-col>
                         <el-icon style="position:relative;top: 2px;margin-right: 10px">
@@ -112,6 +113,7 @@ export default {
                         简介：{{ pins[i-1].brief }}
                     </el-col>
                 </el-row>
+                </el-scrollbar>
             </el-card>
         </p>    
     </el-scrollbar>

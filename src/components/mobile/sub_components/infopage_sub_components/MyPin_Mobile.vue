@@ -121,6 +121,7 @@ export default {
                     </van-col>
                 </van-row>
                 <van-divider style="margin-top:5%;margin-bottom:5%;"/>
+                <el-scrollbar>
                 <van-row>
                     <van-col style="padding-bottom: 3%;">
                         <el-icon style="position:relative;top: 2px;margin-right: 10px">
@@ -137,6 +138,7 @@ export default {
                         简介：{{ pins[i-1].brief }}
                     </van-col>
                 </van-row>
+                </el-scrollbar>
             </el-card>
         </p>    
     </el-scrollbar>
