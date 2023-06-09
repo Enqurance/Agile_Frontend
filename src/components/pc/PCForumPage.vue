@@ -14,18 +14,21 @@
                     </el-col>
                     <el-col :span="10">
                         <div style="position: relative;">
-                            <el-input v-model="search_context" placeholder="Search" maxlength="24" @input="handleSearchInput"
-                                @keyup.enter="handleSearchInput" style="width: 250px;"></el-input>
+                            <el-input v-model="search_context" placeholder="Search" maxlength="24"
+                                @input="handleSearchInput" @keyup.enter="handleSearchInput" style="width: 250px;"></el-input>
                             <div v-show="showDropdown" :style="{ position: 'relative', left: '0', width: '100%' }">
                                 <div class="scrollable">
                                     <div v-for="item in searchResults" :key="item.post_id"
-                                        @click="handleSelect(item.post_id)"
-                                        style="width: 250px;margin-top: 10px;margin-bottom: 10px;">
-                                        <span style="font-size: 18px;word-wrap:break-word;padding-left: 10px;">{{
-                                            item.post_title }}</span>
+                                        @click="handleSelect(item.post_id)" class="scrollable_item">
+                                        <div class="search_box">
+                                            <img class="search_icon" src="@/assets/images/search.png" />
+                                            <div class="search_cont" :title="item.post_title">
+                                                {{ item.post_title }}
+                                            </div>
+                                        </div>
                                     </div>
                                     <div v-if="noResults" style="width: 250px;margin-top: 10px;margin-bottom: 10px;">
-                                        <span style="font-size: 18px;word-wrap:break-word;padding-left: 10px;">不存在帖子</span>
+                                        <div class="search_cont" >不存在帖子</div>
                                     </div>
                                 </div>
                             </div>
@@ -115,7 +118,6 @@
         </el-main>
     </el-container>
 </template>
-
 
 <script>
 import { ref, onMounted, getCurrentInstance, watch } from 'vue'
@@ -339,8 +341,60 @@ export default {
     overflow-y: auto;
     border: 1px solid #ccc;
     position: absolute;
+    top: 10px;
     z-index: 9999;
-    background-color: #fff
+    background-color: #fff;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+/** 修改滚动条样式 */
+.scrollable::-webkit-scrollbar {
+    width: 4px;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: #e7e7e8;
+    opacity: 0.2;
+}
+
+.scrollable::-webkit-scrollbar-track {
+    border-radius: 0;
+    background: none;
+}
+
+.scrollable_item {
+    width: 250px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.search_box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 5px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.search_icon {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+}
+
+.search_cont {
+    width: calc(100% - 20px);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 16px;
+    word-wrap: break-word;
+    padding-left: 10px;
 }
 
 .change-line {
