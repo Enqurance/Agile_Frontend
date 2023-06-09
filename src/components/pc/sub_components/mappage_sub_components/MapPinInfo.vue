@@ -16,10 +16,10 @@
                         修改信息
                     </el-button>
                     <el-button v-if="info.visibility === 1 && this.$cookies.get('user_type') === '0'" class="float_right"
-                        size="large" :type="pin_state === 0 ? 'success' : 'warning'" plain @click="() => {
+                        size="large" :type="pin_state === 0 ? 'success' : 'info'" plain @click="() => {
                             if (this.pin_state === 1) {
                                 this.$message({
-                                    type: 'warning',
+                                    type: 'info',
                                     message: '已申请，管理员将尽快审批！',
                                     showClose: true,
                                     grouping: true
@@ -455,7 +455,7 @@ export default {
         apply_public() {
             if (this.pin_state === 1) {
                 this.$message({
-                    type: 'warning',
+                    type: 'info',
                     message: '已申请，管理员将尽快审批！',
                     showClose: true,
                     grouping: true
@@ -466,11 +466,11 @@ export default {
 
                 ElMessageBox.confirm(
                     '确认申请为公共钉？',
-                    'Warning',
+                    '确认',
                     {
                         confirmButtonText: '确认',
                         cancelButtonText: '取消',
-                        type: 'warning',
+                        type: 'info',
                     }
                 ).then(() => {
                     that.$axios.get('/examine/apply_for_public/' + that.id, {
@@ -527,11 +527,11 @@ export default {
 
             ElMessageBox.confirm(
                 '确认反馈内容？',
-                'Warning',
+                '确认',
                 {
                     confirmButtonText: '确认',
                     cancelButtonText: '取消',
-                    type: 'warning',
+                    type: 'info',
                 }
             ).then(() => {
                 that.$axios.post('/examine/apply_for_feedback/' + that.id, {
