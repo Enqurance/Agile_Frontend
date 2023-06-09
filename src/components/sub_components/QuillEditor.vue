@@ -59,8 +59,26 @@ export default {
     onEditorReady(editor) {
     },
     // 值发生变化
-    onEditorChange(editor) {
-      this.content = editor.html;
+    onEditorChange({delta, oldContents, source}) {
+      let quill  = this.$refs.myTextEditor.quill;
+      let text = quill.getText().trim(); 
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+      };
+      // text = text.replace(/[&<>"']/g, (m) => map[m]);
+      // this.content = html.replace(/[&<>"']/g, (m) => map[m]);
+      if (text.length > 1000) {
+        text = text.substring(0, 1000)
+        quill.setText(text);
+        this.$message.warning("输入的长度不能超出1000位字符");
+        return false;
+      }
+      this.content = text.replace(/[&<>"']/g, (m) => map[m]);
+      console.log(this.content);
       this.$emit("input", this.content);
       //console.log(editor);
     },
@@ -70,9 +88,6 @@ export default {
       return this.$refs.myTextEditor.quillEditor;
     }
   },
-  mounted() {
-    // console.log('this is my editor',this.editor);
-  }
 }
 </script>
 <style>
