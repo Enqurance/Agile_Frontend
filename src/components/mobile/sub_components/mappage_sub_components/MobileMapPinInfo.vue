@@ -41,7 +41,7 @@
                     this.$cookies.get('user_type') === '0'
                   "
                   size="small"
-                  text="申请公开"
+                  :text="pin_state === 0 ? '申请公开' : '已申请' "
                   @touchend="open_public"
                   style="margin-left: 5px"
                 >
@@ -52,7 +52,7 @@
                     this.$cookies.get('user_type') === '0'
                   "
                   size="small"
-                  text="反馈"
+                  :text="pin_state === 0 ? '反馈' : '已反馈' "
                   @touchend="open_feedback"
                   style="margin-left: 5px"
                 >
@@ -546,7 +546,7 @@ export default {
     open_public() {
       if (this.pin_state === 1) {
         this.$message({
-          type: "warning",
+          type: "info",
           message: "已申请，管理员将尽快审批！",
           showClose: true,
           grouping: true,
@@ -565,7 +565,7 @@ export default {
             token: that.$cookies.get("user_token"),
           },
         })
-        .then(() => {
+        .then((res) => {
           if (res.data.code === 200) {
             that.pin_state = 1;
             that.$message({
@@ -594,7 +594,7 @@ export default {
     open_feedback() {
       if (this.pin_state === 1) {
         this.$message({
-          type: "warning",
+          type: "info",
           message: "已申请，管理员将尽快审批！",
           showClose: true,
           grouping: true,
@@ -632,7 +632,7 @@ export default {
             },
           }
         )
-        .then(() => {
+        .then((res) => {
           // console.log(res)
           if (res.data.code === 200) {
             that.show_feedback = false;

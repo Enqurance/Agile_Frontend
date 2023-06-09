@@ -11,8 +11,8 @@ export default {
         // console.log(page);
         let Index = ref('5');
 
-        if (page === '/') {
-            Index = '2';
+        if (page === '/Intro') {
+            Index = '1';
         }
         else if (page === '/home') {
             Index = '2';
@@ -51,6 +51,13 @@ export default {
     methods: {
         get_user_type_administrator() {
             return global.user_type_administrator
+        },
+        clickToIntro(){
+            this.Index = '1';
+            this.$router.push({
+                path: '/Intro',
+                query: {},
+            })
         },
         clickToMap() {
             this.Index = '2';
@@ -155,7 +162,7 @@ export default {
                 text-color=white
                 :default-active="Index"
         >
-            <el-menu-item v-on:click="clickToMap()" index="1">
+            <el-menu-item v-on:click="clickToIntro()" index="1">
                 BUAAMapForum
             </el-menu-item>
             <el-menu-item v-on:click="clickToMap()" index="2">
