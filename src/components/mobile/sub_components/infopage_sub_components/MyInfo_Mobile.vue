@@ -21,20 +21,7 @@ export default {
             gender: 0,
             description: "tell you later .",
         });
-        const tempUser = reactive({
-            name: "initial",
-            icon: '',
-            campus: "initial",
-            grade: "initial",
-            gender: 0,
-            description: "tell you later .",
-        });
-
-        // password:
-        const curPassword = ref('');
-        const newPassword = ref('');
-        const tempPassword = ref('');
-
+        
         const editVisible = ref(false);
         const changePasswordVisible = ref(false);
         const imageUrl = ref('');
@@ -55,8 +42,8 @@ export default {
         ]);
 
         return {
-            editVisible, user, tempUser,
-            changePasswordVisible, curPassword, newPassword, tempPassword,
+            editVisible, user,
+            changePasswordVisible,
             imageUrl, tags,
             contactUsVisible, suggestion,
             show, showLeft,
@@ -163,8 +150,8 @@ export default {
             let that = this
             this.$axios.post('user/changePasswordByToken',
                 {
-                    password: this.curPassword,
-                    newPassword: this.newPassword,
+                    password: this.passwordForm.curPassword,
+                    newPassword: this.passwordForm.newPassword,
                 },
                 {
                     headers: {
@@ -192,17 +179,7 @@ export default {
                 }).catch((res) => console.log(res))
         },
         chPaConfirm() {
-            console.log("chpaConfirm")
-            if (this.newPassword !== this.tempPassword) {
-                this.$message({
-                    message: "两次新密码不一致",
-                    type: 'error',
-                    grouping: true
-                })
-            }
-            else {
-                this.changePassword();
-            }
+            this.changePassword();
         },
         chPaCancel() {
             this.changePasswordVisible = false;
@@ -295,7 +272,50 @@ export default {
 
     },
     data() {
-        return { isReload: true, }
+        return { 
+            isReload: true, 
+            tempUser:{
+                name: '',
+                campus: "initial",
+                grade: "initial",
+                gender: 0,
+                description: "tell you later .",
+            },
+            usernameRules: [
+                { pattern: /^\S+$/, message: '用户名中不可以有空白字符', trigger: ['blur', 'change'] },
+                { required: true, message: '用户名不能为空', trigger: ['blur', 'change'] },
+                { min: 3, max: 20, message: '用户名长度为3-20位', trigger: ['blur', 'change'] }
+            ],
+
+            
+            passwordForm:{
+                curPassword:'',
+                newPassword:'',
+                tempPassword:'',
+            },
+
+            curPasswordRules: [
+                { required: true, message: '密码不能为空', trigger: ['blur', 'change'] },
+            ],
+
+            passwordRules: [
+                { required: true, message: '密码不能为空', trigger: ['blur', 'change'] },
+                { min: 6, max: 20, message: '密码长度为6-20位', trigger: ['blur', 'change'] },
+                { pattern: /^[a-zA-Z0-9]+$/, message: '密码只能含有字母和数字', trigger: ['blur', 'change'] }
+            ],
+
+            password2Rules:[
+                { required: true, message: '请再次输入密码', trigger: ['blur', 'change'] },
+                { validator: (rule, value, callback) => {
+                    if (value !== this.passwordForm.newPassword) {
+                        callback(new Error('两次输入的密码不一致！'))
+                    } else {
+                        callback()
+                    }
+                }, trigger: ['blur', 'change'] }
+            ],
+        
+        }
     }
 }
 </script>
@@ -399,9 +419,9 @@ export default {
 
         <van-dialog v-model:show="editVisible" title="请编辑你的信息" show-cancel-button style="height: 55%;"
             @confirm="editConfirm" @cancel="editCancel">
-            <el-form :model="user" label-width="100px" class="form">
-                <el-form-item label="用户名">
-                    <el-input v-model="tempUser.name" />
+            <el-form :model="tempUser" label-width="100px" class="form">
+                <el-form-item label="用户名"  prop="name" :rules="usernameRules">
+                    <el-input maxlength="22" v-model="tempUser.name"/>
                 </el-form-item>
                 <el-form-item label="校区">
                     <el-select v-model="tempUser.campus" placeholder="请选择校区" class="el-select">
@@ -419,7 +439,7 @@ export default {
                 </el-form-item>
 
                 <el-form-item label="个人描述">
-                    <el-input v-model="tempUser.description" />
+                    <el-input type="textarea" autosize maxlength="100" v-model="tempUser.description" />
                 </el-form-item>
 
                 <el-form-item label="性别">
@@ -433,15 +453,15 @@ export default {
 
         <van-dialog v-model:show="changePasswordVisible" title="修改密码" show-cancel-button style="height: 38%;"
             @confirm="chPaConfirm" @cancel="chPaCancel">
-            <el-form :model="user" label-width="120px" class="form">
-                <el-form-item label="请输入当前密码">
-                    <el-input type="password" maxlength="30" v-model="curPassword" />
+            <el-form :model="passwordForm" label-width="120px">
+                <el-form-item label="请输入当前密码" prop="curPassword" :rules="curPasswordRules">
+                    <el-input type="password" maxlength="22" v-model="passwordForm.curPassword" />
                 </el-form-item>
-                <el-form-item label="新密码">
-                    <el-input type="password" maxlength="30" v-model="newPassword" />
+                <el-form-item label="新密码" prop="newPassword" :rules="passwordRules">
+                    <el-input type="password" maxlength="22" v-model="passwordForm.newPassword" />
                 </el-form-item>
-                <el-form-item label="确认新密码">
-                    <el-input type="password" maxlength="30" v-model="tempPassword" />
+                <el-form-item label="确认新密码" prop="tempPassword" :rules="password2Rules">
+                    <el-input type="password" maxlength="22" v-model="passwordForm.tempPassword" />
                 </el-form-item>
             </el-form>
         </van-dialog>
