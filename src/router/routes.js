@@ -5,6 +5,7 @@ import RegisterPage from "@/components/RegisterPage.vue";
 import ForumPage from "@/components/ForumPage.vue";
 import AdministratorPage from "@/components/AdministratorPage.vue";
 import PostPage from "@/components/PostPage.vue";
+import IntroPage from "@/components/IntroPage.vue";
 
 const routes = [
     {
@@ -47,6 +48,11 @@ const routes = [
         name: 'Administrator',
         path: '/Administrator',
         component: AdministratorPage,
+    },
+    {
+        name: 'intro',
+        path: '/Intro',
+        component: IntroPage,
     },
 ]
 
