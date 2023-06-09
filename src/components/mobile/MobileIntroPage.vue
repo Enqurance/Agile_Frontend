@@ -34,8 +34,8 @@ export default {
         </van-row>
         <van-row style="height: 30%">
             <div class="content-container">
-                <p class="content">这里是Agile-埃杰软工小组,
-                        在应用中大家可以以Pin的形式浏览北航校园，也可以在论坛中进行咨询/分享，我们希望通过本应用为大家的大学生活提供便捷。</p>
+                <p class="content">
+                    在这里大家可以以Pin的形式浏览北航校园，也可以在论坛中进行咨询/分享，我们希望通过本应用为大家的大学生活提供便捷。</p>
             </div>
         </van-row>
         <van-row style="height: 15%; padding:0 20% 0 20%;">
@@ -69,7 +69,7 @@ export default {
     text-align: center;
 }
 .content{
-    padding-top: 8%;
+    padding-top: 10%;
     font-size: 1.0em;
 }
 .header{
