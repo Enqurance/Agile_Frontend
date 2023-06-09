@@ -53,10 +53,10 @@
             <MyPin></MyPin>
         </el-card>
     </el-row>
-    <el-dialog v-model="editVisible" title="请编辑你的信息" width="50%">
-        <el-form :model="user" label-width="100px">
-            <el-form-item label="用户名">
-                <el-input maxlength="20" v-model="tempUser.name" />
+    <el-dialog v-model="editVisible" title="请编辑你的信息" width="50%" :close-on-click-modal="false" :show-close="false">
+        <el-form :model="tempUser" label-width="100px">
+            <el-form-item label="用户名" prop="name" :rules="usernameRules">
+                <el-input maxlength="22" v-model="tempUser.name" />
             </el-form-item>
             <el-form-item label="校区">
                 <el-select v-model="tempUser.campus" placeholder="请选择校区" class="el-select">
@@ -154,14 +154,14 @@ export default {
             gender: 0,
             description: "tell you later .",
         });
-        const tempUser = reactive({
-            name: "initial",
-            icon: '',
-            campus: "initial",
-            grade: "initial",
-            gender: 0,
-            description: "tell you later .",
-        });
+        // const tempUser = reactive({
+        //     name: "initial",
+        //     icon: '',
+        //     campus: "initial",
+        //     grade: "initial",
+        //     gender: 0,
+        //     description: "tell you later .",
+        // });
 
         // password:
         const curPassword = ref('');
@@ -183,7 +183,7 @@ export default {
         ]);
 
         return {
-            editVisible, user, tempUser,
+            editVisible, user,
             changePasswordVisible, curPassword, newPassword, tempPassword,
             imageUrl, tags,
             contactUsVisible, suggestion,
@@ -412,7 +412,21 @@ export default {
         },
     },
     data() {
-        return { isReload: true, }
+        return { 
+            isReload: true, 
+            tempUser:{
+                name: '',
+                campus: "initial",
+                grade: "initial",
+                gender: 0,
+                description: "tell you later .",
+            },
+            usernameRules: [
+                { pattern: /^\S+$/, message: '用户名中不可以有空白字符', trigger: ['blur', 'change'] },
+                { required: true, message: '用户名不能为空', trigger: ['blur', 'change'] },
+                { min: 3, max: 20, message: '用户名长度为3-20位', trigger: ['blur', 'change'] }
+            ]
+        }
     }
 }
 </script>
