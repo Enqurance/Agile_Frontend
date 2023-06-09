@@ -66,11 +66,13 @@ export default {
                     </el-menu>
                 </el-aside>
                 <el-main height="100%" style="padding: 0px 0px 0px 0px;">
-                    <!--基本信息部分 可直接講div縮起-->
+
+                    <!--基本信息部分 可直接将div縮起-->
                     <div v-if="this.Index.at(0) === '1'" style="height: 100%">
                         <el-container style="height: 100%;">
                         <el-header height="60%" class="header">
                             <view class="bg"><image class='back' src='@/assets/back.png'/></view>
+                            <view class="co"></view>
                             <view class="up">
                                 <p class="title">BUAAMapForum</p>
                                 <p class="detail">from Group Agile-埃杰</p>
@@ -84,9 +86,11 @@ export default {
                         </el-card>
                         </el-container>
                     </div>
+
                     <!--功能介紹部分-->
                     <div v-if="this.Index.at(0) === '2'" style="height: 100%">
                     </div>
+
                     <!--成員信息部分-->
                     <div v-if="this.Index === '3-1'" style="height: 100%;">
                         <el-row height="10%" style="padding: 2% 0px 0px 2%;  margin-bottom: 0px;">
@@ -102,14 +106,14 @@ export default {
                                         <el-row :gutter="20" style="width: 100%; margin: 0px 0px 0px 0px;">
                                             <el-cow :span="12">
                                             <el-avatar
-                                                :size="40"
+                                                :size="45"
                                                 shape="circle"
                                                 :src="this.imageUrl"
                                                 style="user-select: none;">
                                             </el-avatar>
                                             </el-cow>
-                                            <el-cow :span="12" style=" padding-left: 5%; padding-top: 5%">
-                                            <span>林子杰</span>
+                                            <el-cow :span="12" style=" padding-left: 8%; padding-top: 5%">
+                                            <span style="font-size: 1.1em;">林子杰</span>
                                             </el-cow>
                                         </el-row>
                                     </template>
@@ -131,14 +135,14 @@ export default {
                                         <el-row :gutter="20" style="width: 100%; margin: 0px 0px 0px 0px;">
                                             <el-cow :span="12">
                                             <el-avatar
-                                                :size="40"
+                                                :size="45"
                                                 shape="circle"
                                                 :src="this.imageUrl"
                                                 style="user-select: none;">
                                             </el-avatar>
                                             </el-cow>
-                                            <el-cow :span="12" style=" padding-left: 5%; padding-top: 5%">
-                                            <span>徐凯</span>
+                                            <el-cow :span="12" style=" padding-left: 8%; padding-top: 5%">
+                                            <span style="font-size: 1.1em;">徐凯</span>
                                             </el-cow>
                                         </el-row>
                                     </template>
@@ -150,14 +154,14 @@ export default {
                                         <el-row :gutter="20" style="width: 100%; margin: 0px 0px 0px 0px;">
                                             <el-cow :span="12">
                                             <el-avatar
-                                                :size="40"
+                                                :size="45"
                                                 shape="circle"
                                                 :src="this.imageUrl"
                                                 style="user-select: none;">
                                             </el-avatar>
                                             </el-cow>
-                                            <el-cow :span="12" style=" padding-left: 5%; padding-top: 5%">
-                                            <span>庞睿加</span>
+                                            <el-cow :span="12" style=" padding-left: 8%; padding-top: 5%">
+                                            <span style="font-size: 1.1em;">庞睿加</span>
                                             </el-cow>
                                         </el-row>
                                     </template>
@@ -169,14 +173,14 @@ export default {
                                         <el-row :gutter="20" style="width: 100%; margin: 0px 0px 0px 0px;">
                                             <el-cow :span="12">
                                             <el-avatar
-                                                :size="40"
+                                                :size="45"
                                                 shape="circle"
                                                 :src="this.imageUrl"
                                                 style="user-select: none;">
                                             </el-avatar>
                                             </el-cow>
-                                            <el-cow :span="12" style=" padding-left: 5%; padding-top: 5%">
-                                            <span>秦铭悦</span>
+                                            <el-cow :span="12" style=" padding-left: 8%; padding-top: 5%">
+                                            <span style="font-size: 1.1em;">秦铭悦</span>
                                             </el-cow>
                                         </el-row>
                                     </template>
@@ -188,14 +192,14 @@ export default {
                                         <el-row :gutter="20" style="width: 100%; margin: 0px 0px 0px 0px;">
                                             <el-cow :span="12">
                                             <el-avatar
-                                                :size="40"
+                                                :size="45"
                                                 shape="circle"
                                                 :src="this.imageUrl"
                                                 style="user-select: none;">
                                             </el-avatar>
                                             </el-cow>
-                                            <el-cow :span="12" style=" padding-left: 5%; padding-top: 5%">
-                                            <span>吳湛宇</span>
+                                            <el-cow :span="12" style=" padding-left: 8%; padding-top: 5%">
+                                            <span style="font-size: 1.1em;">吳湛宇</span>
                                             </el-cow>
                                         </el-row>
                                     </template>
@@ -217,14 +221,14 @@ export default {
                                         <el-row :gutter="20" style="width: 100%; margin: 0px 0px 0px 0px;">
                                             <el-cow :span="12">
                                             <el-avatar
-                                                :size="40"
+                                                :size="45"
                                                 shape="circle"
                                                 :src="this.imageUrl"
                                                 style="user-select: none;">
                                             </el-avatar>
                                             </el-cow>
-                                            <el-cow :span="12" style=" padding-left: 5%; padding-top: 5%">
-                                            <span>李治圻</span>
+                                            <el-cow :span="12" style=" padding-left: 8%; padding-top: 5%">
+                                            <span style="font-size: 1.1em;">李治圻</span>
                                             </el-cow>
                                         </el-row>
                                     </template>
@@ -236,14 +240,14 @@ export default {
                                         <el-row :gutter="20" style="width: 100%; margin: 0px 0px 0px 0px;">
                                             <el-cow :span="12">
                                             <el-avatar
-                                                :size="40"
+                                                :size="45"
                                                 shape="circle"
                                                 :src="this.imageUrl"
                                                 style="user-select: none;">
                                             </el-avatar>
                                             </el-cow>
-                                            <el-cow :span="12" style=" padding-left: 5%; padding-top: 5%">
-                                            <span>杜维康</span>
+                                            <el-cow :span="12" style=" padding-left: 8%; padding-top: 5%">
+                                            <span style="font-size: 1.1em;">杜维康</span>
                                             </el-cow>
                                         </el-row>
                                     </template>
@@ -266,12 +270,14 @@ export default {
     font-size: 3.2em;
     color: #164d78;
     text-align: center;
-    padding-top: 10%;
+    padding-top: 11%;
+    text-shadow: 0.4px 0.4px 0.8px rgb(12, 11, 105);
 }
 .detail{
     font-family: fantasy;
     font-size: 2.0em;
     color: #164d78;
+    text-shadow: 0.4px 0.4px 0.8px rgb(12, 11, 105);
     text-align: center;
 }
 .logo-container {
@@ -297,12 +303,20 @@ export default {
     height: 60%;
     position: relative;
 }
+.co{
+    width: 85%;
+    height: 60%;
+    background-color: #b6c2cf;
+    opacity: 0.15;
+    background-size: cover;
+    position: absolute;
+}
 .bg{
     width: 85%;
     height: 60%;
     position: absolute;
-    background: url("@/assets/back.png");
+    background: url("@/assets/images/back.png");
     background-size: cover;
-    opacity: 0.5
+    opacity: 0.4
 }
 </style>

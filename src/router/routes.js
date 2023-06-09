@@ -6,6 +6,7 @@ import ForumPage from "@/components/ForumPage.vue";
 import AdministratorPage from "@/components/AdministratorPage.vue";
 import PostPage from "@/components/PostPage.vue";
 import IntroPage from "@/components/IntroPage.vue";
+import MobileIntroPeople from "@/components/mobile/sub_components/intropage_sub_components/MobileIntroPeople.vue"
 
 const routes = [
     {
@@ -53,6 +54,16 @@ const routes = [
         name: 'intro',
         path: '/Intro',
         component: IntroPage,
+    },
+    {
+        name: 'introFeat',
+        path: '/IntroFeat',
+        component: IntroPage,
+    },
+    {
+        name: 'introPeople',
+        path: '/IntroPeople',
+        component: MobileIntroPeople,
     },
 ]
 
