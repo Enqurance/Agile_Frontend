@@ -73,7 +73,7 @@ export default {
                         </el-sub-menu>
                     </el-menu>
                 </el-aside>
-                <el-main height="100%" style="padding: 0px 0px 0px 0px;">
+                <el-main height="100%" style="padding: 0px 5% 0px 0px;">
 
                     <!--基本信息部分 可直接将div縮起-->
                     <div v-if="this.Index.at(0) === '1'" style="height: 100%">
@@ -130,10 +130,13 @@ export default {
                                         <span style="font-size: 1.1em;">
                                         "你相信引力吗？人与人之间是有引力的，我已经相信这句话了"
                                     </span></el-row>
-                                    <el-row style="padding:5% 5% 10% 5%;"><span style="padding:0% 0% 8% 0%; font-size: 1.1em;">
+                                    <el-row style="padding:5% 5% 5% 5%;"><span style="padding:0% 0% 5% 0%; font-size: 1.1em;">
                                         主要贡献：
                                     </span><span style="font-size: 1.1em;">
                                         作为团队PM，同时参与了前端测试与美化
+                                    </span></el-row>
+                                    <el-row style="padding:5% 5% 3% 5%;"><span style="font-size: 1.1em;">
+                                        联系方式：Enqurance@Outlook.com
                                     </span></el-row>
                                 </el-card>
                             </div></el-col>
@@ -168,10 +171,13 @@ export default {
                                         <span style="font-size: 1.1em;">
                                         "专业bug制造机~"
                                     </span></el-row>
-                                    <el-row style="padding:5% 5% 10% 5%;"><span style="padding:0% 0% 8% 0%; font-size: 1.1em;">
+                                    <el-row style="padding:5% 5% 5% 5%;"><span style="padding:0% 0% 8% 0%; font-size: 1.1em;">
                                         主要贡献：
                                     </span><span style="font-size: 1.1em;">
-                                        前端开发，参与了地图、管理员页面开发与前端美化
+                                        前端开发，参与地图、管理员页面开发与前端美化
+                                    </span></el-row>
+                                    <el-row style="padding:5% 5% 3% 5%;"><span style="font-size: 1.1em;">
+                                        联系方式：20373398@buaa.edu.cn
                                     </span></el-row>
                                 </el-card>
                             </div></el-col>
@@ -196,10 +202,13 @@ export default {
                                         <span style="font-size: 1.1em;">
                                         "代码跑起来我们再聊。"
                                     </span></el-row>
-                                    <el-row style="padding:5% 5% 10% 5%;"><span style="padding:0% 0% 8% 0%; font-size: 1.1em;">
+                                    <el-row style="padding:5% 5% 5% 5%;"><span style="padding:0% 0% 8% 0%; font-size: 1.1em;">
                                         主要贡献：
                                     </span><span style="font-size: 1.1em;">
                                         前端开发，参与了个人、介绍页面开发与前端美化
+                                    </span></el-row>
+                                    <el-row style="padding:5% 5% 3% 5%;"><span style="font-size: 1.1em;">
+                                        联系方式：pangrj@buaa.edu.cn
                                     </span></el-row>
                                 </el-card>
                             </div></el-col>
@@ -224,10 +233,13 @@ export default {
                                         <span style="font-size: 1.1em;">
                                         "头像是本人每天状态（真的没有夹带纸片人私货）"
                                     </span></el-row>
-                                    <el-row style="padding:5% 5% 10% 5%;"><span style="padding:0% 0% 8% 0%; font-size: 1.1em;">
+                                    <el-row style="padding:5% 5% 5% 5%;"><span style="padding:0% 0% 8% 0%; font-size: 1.1em;">
                                         主要贡献：
                                     </span><span style="font-size: 1.1em;">
                                         前端开发，参与了地图、论坛页面开发与前端功能
+                                    </span></el-row>
+                                    <el-row style="padding:5% 5% 3% 5%;"><span style="font-size: 1.1em;">
+                                        联系方式：lune8777@gmail.com
                                     </span></el-row>
                                 </el-card>
                             </div></el-col>
@@ -252,10 +264,13 @@ export default {
                                         <span style="font-size: 1.1em;">
                                         "不知道写点什么，干脆写点bug吧。bug↑↑bug ！"
                                     </span></el-row>
-                                    <el-row style="padding:5% 5% 10% 5%;"><span style="padding:0% 0% 8% 0%; font-size: 1.1em;">
+                                    <el-row style="padding:5% 5% 5% 5%;"><span style="padding:0% 0% 8% 0%; font-size: 1.1em;">
                                         主要贡献：
                                     </span><span style="font-size: 1.1em;">
                                         前端开发，参与了信息页面开发与前端测试
+                                    </span></el-row>
+                                    <el-row style="padding:5% 5% 3% 5%;"><span style="font-size: 1.1em;">
+                                        联系方式：864294516@qq.com
                                     </span></el-row>
                                 </el-card>
                             </div></el-col>
@@ -290,10 +305,13 @@ export default {
                                         <span style="font-size: 1.1em;">
                                         "渴望学好专业课，掌握多种技术，就是不知道有没有和头发达成共识┬＿┬"
                                     </span></el-row>
-                                    <el-row style="padding:5% 5% 10% 5%;"><span style="padding:0% 0% 8% 0%; font-size: 1.1em;">
+                                    <el-row style="padding:5% 5% 5% 5%;"><span style="padding:0% 0% 5% 0%; font-size: 1.1em;">
                                         主要贡献：
                                     </span><span style="font-size: 1.1em;">
                                         后端开发，参与了接口实现与后端测试
+                                    </span></el-row>
+                                    <el-row style="padding:5% 5% 3% 5%;"><span style="font-size: 1.1em;">
+                                        联系方式：1437207980@qq.com
                                     </span></el-row>
                                 </el-card>
                             </div></el-col>
@@ -318,10 +336,13 @@ export default {
                                         <span style="font-size: 1.1em;">
                                         "一个喜欢打篮球、看小说的 Bug 制造机 (((;꒪ꈊ꒪;)))"
                                     </span></el-row>
-                                    <el-row style="padding:5% 5% 10% 5%;"><span style="padding:0% 0% 8% 0%; font-size: 1.1em;">
+                                    <el-row style="padding:5% 5% 5% 5%;"><span style="padding:0% 0% 5% 0%; font-size: 1.1em;">
                                         主要贡献：
                                     </span><span style="font-size: 1.1em;">
                                         后端开发，参与了接口实现与后端测试
+                                    </span></el-row>
+                                    <el-row style="padding:5% 5% 3% 5%;"><span style="font-size: 1.1em;">
+                                        联系方式：sisyphusdu@gmail.com
                                     </span></el-row>
                                 </el-card>
                             </div></el-col>

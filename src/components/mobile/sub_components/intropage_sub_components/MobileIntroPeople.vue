@@ -60,11 +60,16 @@ export default {
                         "你相信引力吗？人与人之间是有引力的，我已经相信这句话了"
                         </span>
                     </van-row>
-                    <van-row style="padding:5% 5% 10% 5%;">
-                        <span style="padding:0% 0% 8% 0%;">
+                    <van-row style="padding:5% 5% 5% 5%;">
+                        <span style="padding:0% 0% 3% 0%;">
                         主要贡献：
                         </span><span>
                         作为团队PM，同时参与了前端测试与美化
+                        </span>
+                    </van-row>
+                    <van-row style="padding:5% 5% 4% 5%;">
+                        <span>
+                            联系方式：Enqurance@Outlook.com
                         </span>
                     </van-row>
                 </el-card>
@@ -95,12 +100,17 @@ export default {
                             "专业bug制造机~"
                             </span>
                         </van-row>
-                        <van-row style="padding:5% 5% 10% 5%;">
-                            <span style="padding:0% 0% 8% 0%;">
+                        <van-row style="padding:5% 5% 5% 5%;">
+                            <span style="padding:0% 0% 3% 0%;">
                             主要贡献：
                             </span><span>
                             前端开发，参与了地图、管理员页面开发与前端美化
                             </span>
+                        </van-row>
+                        <van-row style="padding:5% 5% 4% 5%;">
+                        <span>
+                            联系方式：20373398@buaa.edu.cn
+                        </span>
                         </van-row>
                     </el-card>
             </van-row>
@@ -126,12 +136,17 @@ export default {
                             "代码跑起来我们再聊。"
                             </span>
                         </van-row>
-                        <van-row style="padding:5% 5% 10% 5%;">
-                            <span style="padding:0% 0% 8% 0%;">
+                        <van-row style="padding:5% 5% 5% 5%;">
+                            <span style="padding:0% 0% 3% 0%;">
                             主要贡献：
                             </span><span>
                             前端开发，参与了个人、介绍页面开发与前端美化
                             </span>
+                        </van-row>
+                        <van-row style="padding:5% 5% 4% 5%;">
+                        <span>
+                            联系方式：pangrj@buaa.edu.cn
+                        </span>
                         </van-row>
                     </el-card>
             </van-row>
@@ -157,12 +172,17 @@ export default {
                                 "头像是本人每天状态（真的没有夹带纸片人私货）"
                             </span>
                         </van-row>
-                        <van-row style="padding:5% 5% 10% 5%;">
-                            <span style="padding:0% 0% 8% 0%;">
+                        <van-row style="padding:5% 5% 5% 5%;">
+                            <span style="padding:0% 0% 3% 0%;">
                             主要贡献：
                             </span><span>
                                 前端开发，参与了地图、论坛页面开发与前端功能
                             </span>
+                        </van-row>
+                        <van-row style="padding:5% 5% 4% 5%;">
+                        <span>
+                            联系方式：lune8777@gmail.com
+                        </span>
                         </van-row>
                     </el-card>
             </van-row>
@@ -188,12 +208,17 @@ export default {
                                 "不知道写点什么，干脆写点bug吧。bug↑↑bug ！"
                             </span>
                         </van-row>
-                        <van-row style="padding:5% 5% 10% 5%;">
-                            <span style="padding:0% 0% 8% 0%;">
+                        <van-row style="padding:5% 5% 5% 5%;">
+                            <span style="padding:0% 0% 3% 0%;">
                             主要贡献：
                             </span><span>
                                 前端开发，参与了信息页面开发与前端测试
                             </span>
+                        </van-row>
+                        <van-row style="padding:5% 5% 4% 5%;">
+                        <span>
+                            联系方式：864294516@qq.com
+                        </span>
                         </van-row>
                     </el-card>
             </van-row>
@@ -223,12 +248,17 @@ export default {
                                 "渴望学好专业课，掌握多种技术，就是不知道有没有和头发达成共识┬＿┬"
                             </span>
                         </van-row>
-                        <van-row style="padding:5% 5% 10% 5%;">
-                            <span style="padding:0% 0% 8% 0%;">
+                        <van-row style="padding:5% 5% 5% 5%;">
+                            <span style="padding:0% 0% 3% 0%;">
                             主要贡献：
                             </span><span>
                                 后端开发，参与了接口实现与后端测试
                             </span>
+                        </van-row>
+                        <van-row style="padding:5% 5% 4% 5%;">
+                        <span>
+                            联系方式：1437207980@qq.com
+                        </span>
                         </van-row>
                     </el-card>
             </van-row>
@@ -254,16 +284,23 @@ export default {
                                 "一个喜欢打篮球、看小说的 Bug 制造机 (((;꒪ꈊ꒪;)))"
                             </span>
                         </van-row>
-                        <van-row style="padding:5% 5% 10% 5%;">
-                            <span style="padding:0% 0% 8% 0%;">
+                        <van-row style="padding:5% 5% 5% 5%;">
+                            <span style="padding:0% 0% 3% 0%;">
                             主要贡献：
                             </span><span>
                                 后端开发，参与了接口实现与后端测试
                             </span>
                         </van-row>
+                        <van-row style="padding:5% 5% 4% 5%;">
+                        <span>
+                            联系方式：sisyphusdu@gmail.com
+                        </span>
+                        </van-row>
                     </el-card>
             </van-row>
-            <van-row><CopyrightICP></CopyrightICP></van-row>
+            <van-row style="padding: 10% 10% 0 10%;">
+            <div><CopyrightICP/></div>
+            </van-row>
     </div>
 </template>
 
