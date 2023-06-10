@@ -17,6 +17,14 @@ export default {
         return {
             isCollapse: false,
             Index: '1',
+
+            lzj: require('@/assets/images/lzj.png'),
+            xk: require('@/assets/images/xk.png'),
+            prj: require('@/assets/images/prj.png'),
+            qmy: require('@/assets/images/qmy.png'),
+            wzy: require('@/assets/images/wzy.png'),
+            lzq: require('@/assets/images/lzq.png'),
+            dwk: require('@/assets/images/dwk.png'),
         }
     },
     computed: {
@@ -71,7 +79,7 @@ export default {
                     <div v-if="this.Index.at(0) === '1'" style="height: 100%">
                         <el-container style="height: 100%;">
                         <el-header height="60%" class="header">
-                            <view class="bg"><image class='back' src='@/assets/back.png'/></view>
+                            <view class="bg"></view>
                             <view class="co"></view>
                             <view class="up">
                                 <p class="title">BUAAMapForum</p>
@@ -104,19 +112,28 @@ export default {
                                 <el-card>
                                     <template #header>
                                         <el-row :gutter="20" style="width: 100%; margin: 0px 0px 0px 0px;">
-                                            <el-cow :span="12">
+                                            <el-col :span="12">
                                             <el-avatar
-                                                :size="45"
+                                                :size="50"
                                                 shape="circle"
-                                                :src="this.imageUrl"
+                                                :src="this.lzj"
                                                 style="user-select: none;">
                                             </el-avatar>
-                                            </el-cow>
-                                            <el-cow :span="12" style=" padding-left: 8%; padding-top: 5%">
-                                            <span style="font-size: 1.1em;">林子杰</span>
-                                            </el-cow>
+                                            </el-col>
+                                            <el-col :span="12" style=" padding-left: 3%; padding-top: 10%">
+                                            <span style="font-size: 1.2em;">林子杰</span>
+                                            </el-col>
                                         </el-row>
                                     </template>
+                                    <el-row style="border-bottom-width: thin;border-bottom-style: double;border-bottom-color: gainsboro; padding:5% 5% 10% 5%;">
+                                        <span style="font-size: 1.1em;">
+                                        "你相信引力吗？人与人之间是有引力的，我已经相信这句话了"
+                                    </span></el-row>
+                                    <el-row style="padding:5% 5% 10% 5%;"><span style="padding:0% 0% 8% 0%; font-size: 1.1em;">
+                                        主要贡献：
+                                    </span><span style="font-size: 1.1em;">
+                                        作为团队PM，同时参与了前端测试与美化
+                                    </span></el-row>
                                 </el-card>
                             </div></el-col>
                         </el-row>
@@ -133,76 +150,112 @@ export default {
                                 <el-card>
                                     <template #header>
                                         <el-row :gutter="20" style="width: 100%; margin: 0px 0px 0px 0px;">
-                                            <el-cow :span="12">
+                                            <el-col :span="12">
                                             <el-avatar
-                                                :size="45"
+                                                :size="50"
                                                 shape="circle"
-                                                :src="this.imageUrl"
+                                                :src="this.xk"
                                                 style="user-select: none;">
                                             </el-avatar>
-                                            </el-cow>
-                                            <el-cow :span="12" style=" padding-left: 8%; padding-top: 5%">
-                                            <span style="font-size: 1.1em;">徐凯</span>
-                                            </el-cow>
+                                            </el-col>
+                                            <el-col :span="12" style=" padding-left: 3%; padding-top: 10%">
+                                            <span style="font-size: 1.2em;">徐凯</span>
+                                            </el-col>
                                         </el-row>
                                     </template>
+                                    <el-row style="height: 15%; border-bottom-width: thin;border-bottom-style: double;border-bottom-color: gainsboro; padding:5% 5% 18% 5%;">
+                                        <span style="font-size: 1.1em;">
+                                        "专业bug制造机~"
+                                    </span></el-row>
+                                    <el-row style="padding:5% 5% 10% 5%;"><span style="padding:0% 0% 8% 0%; font-size: 1.1em;">
+                                        主要贡献：
+                                    </span><span style="font-size: 1.1em;">
+                                        前端开发，参与了地图、管理员页面开发与前端美化
+                                    </span></el-row>
                                 </el-card>
                             </div></el-col>
                             <el-col :span="6"><div>
                                 <el-card>
                                     <template #header>
                                         <el-row :gutter="20" style="width: 100%; margin: 0px 0px 0px 0px;">
-                                            <el-cow :span="12">
+                                            <el-col :span="12">
                                             <el-avatar
-                                                :size="45"
+                                                :size="50"
                                                 shape="circle"
-                                                :src="this.imageUrl"
+                                                :src="this.prj"
                                                 style="user-select: none;">
                                             </el-avatar>
-                                            </el-cow>
-                                            <el-cow :span="12" style=" padding-left: 8%; padding-top: 5%">
-                                            <span style="font-size: 1.1em;">庞睿加</span>
-                                            </el-cow>
+                                            </el-col>
+                                            <el-col :span="12" style=" padding-left: 3%; padding-top: 10%">
+                                            <span style="font-size: 1.2em;">庞睿加</span>
+                                            </el-col>
                                         </el-row>
                                     </template>
+                                    <el-row style="height: 15%;  border-bottom-width: thin;border-bottom-style: double;border-bottom-color: gainsboro; padding:5% 5% 18% 5%;">
+                                        <span style="font-size: 1.1em;">
+                                        "代码跑起来我们再聊。"
+                                    </span></el-row>
+                                    <el-row style="padding:5% 5% 10% 5%;"><span style="padding:0% 0% 8% 0%; font-size: 1.1em;">
+                                        主要贡献：
+                                    </span><span style="font-size: 1.1em;">
+                                        前端开发，参与了个人、介绍页面开发与前端美化
+                                    </span></el-row>
                                 </el-card>
                             </div></el-col>
                             <el-col :span="6"><div>
                                 <el-card>
                                     <template #header>
                                         <el-row :gutter="20" style="width: 100%; margin: 0px 0px 0px 0px;">
-                                            <el-cow :span="12">
+                                            <el-col :span="12">
                                             <el-avatar
-                                                :size="45"
+                                                :size="50"
                                                 shape="circle"
-                                                :src="this.imageUrl"
+                                                :src="this.qmy"
                                                 style="user-select: none;">
                                             </el-avatar>
-                                            </el-cow>
-                                            <el-cow :span="12" style=" padding-left: 8%; padding-top: 5%">
-                                            <span style="font-size: 1.1em;">秦铭悦</span>
-                                            </el-cow>
+                                            </el-col>
+                                            <el-col :span="12" style=" padding-left: 3%; padding-top: 10%">
+                                            <span style="font-size: 1.2em;">秦铭悦</span>
+                                            </el-col>
                                         </el-row>
                                     </template>
+                                    <el-row style="height: 15%;  border-bottom-width: thin;border-bottom-style: double;border-bottom-color: gainsboro; padding:5% 5% 10% 5%;">
+                                        <span style="font-size: 1.1em;">
+                                        "头像是本人每天状态（真的没有夹带纸片人私货）"
+                                    </span></el-row>
+                                    <el-row style="padding:5% 5% 10% 5%;"><span style="padding:0% 0% 8% 0%; font-size: 1.1em;">
+                                        主要贡献：
+                                    </span><span style="font-size: 1.1em;">
+                                        前端开发，参与了地图、论坛页面开发与前端功能
+                                    </span></el-row>
                                 </el-card>
                             </div></el-col>
                             <el-col :span="6"><div>
                                 <el-card>
                                     <template #header>
                                         <el-row :gutter="20" style="width: 100%; margin: 0px 0px 0px 0px;">
-                                            <el-cow :span="12">
+                                            <el-col :span="12">
                                             <el-avatar
-                                                :size="45"
+                                                :size="50"
                                                 shape="circle"
-                                                :src="this.imageUrl"
+                                                :src="this.wzy"
                                                 style="user-select: none;">
                                             </el-avatar>
-                                            </el-cow>
-                                            <el-cow :span="12" style=" padding-left: 8%; padding-top: 5%">
-                                            <span style="font-size: 1.1em;">吳湛宇</span>
-                                            </el-cow>
+                                            </el-col>
+                                            <el-col :span="12" style=" padding-left: 3%; padding-top: 10%">
+                                            <span style="font-size: 1.2em;">吴湛宇</span>
+                                            </el-col>
                                         </el-row>
                                     </template>
+                                    <el-row style="height: 15%;  border-bottom-width: thin;border-bottom-style: double;border-bottom-color: gainsboro; padding:5% 5% 10% 5%;">
+                                        <span style="font-size: 1.1em;">
+                                        "不知道写点什么，干脆写点bug吧。bug↑↑bug ！"
+                                    </span></el-row>
+                                    <el-row style="padding:5% 5% 10% 5%;"><span style="padding:0% 0% 8% 0%; font-size: 1.1em;">
+                                        主要贡献：
+                                    </span><span style="font-size: 1.1em;">
+                                        前端开发，参与了信息页面开发与前端测试
+                                    </span></el-row>
                                 </el-card>
                             </div></el-col>
                         </el-row>
@@ -219,38 +272,56 @@ export default {
                                 <el-card>
                                     <template #header>
                                         <el-row :gutter="20" style="width: 100%; margin: 0px 0px 0px 0px;">
-                                            <el-cow :span="12">
+                                            <el-col :span="12">
                                             <el-avatar
-                                                :size="45"
+                                                :size="50"
                                                 shape="circle"
-                                                :src="this.imageUrl"
+                                                :src="this.lzq"
                                                 style="user-select: none;">
                                             </el-avatar>
-                                            </el-cow>
-                                            <el-cow :span="12" style=" padding-left: 8%; padding-top: 5%">
-                                            <span style="font-size: 1.1em;">李治圻</span>
-                                            </el-cow>
+                                            </el-col>
+                                            <el-col :span="12" style=" padding-left: 3%; padding-top: 10%">
+                                            <span style="font-size: 1.2em;">李治圻</span>
+                                            </el-col>
                                         </el-row>
                                     </template>
+                                    <el-row style="height: 15%;  border-bottom-width: thin;border-bottom-style: double;border-bottom-color: gainsboro; padding:5% 5% 10% 5%;">
+                                        <span style="font-size: 1.1em;">
+                                        "渴望学好专业课，掌握多种技术，就是不知道有没有和头发达成共识┬＿┬"
+                                    </span></el-row>
+                                    <el-row style="padding:5% 5% 10% 5%;"><span style="padding:0% 0% 8% 0%; font-size: 1.1em;">
+                                        主要贡献：
+                                    </span><span style="font-size: 1.1em;">
+                                        后端开发，参与了接口实现与后端测试
+                                    </span></el-row>
                                 </el-card>
                             </div></el-col>
                             <el-col :span="6"><div>
                                 <el-card>
                                     <template #header>
                                         <el-row :gutter="20" style="width: 100%; margin: 0px 0px 0px 0px;">
-                                            <el-cow :span="12">
+                                            <el-col :span="12">
                                             <el-avatar
-                                                :size="45"
+                                                :size="50"
                                                 shape="circle"
-                                                :src="this.imageUrl"
+                                                :src="this.dwk"
                                                 style="user-select: none;">
                                             </el-avatar>
-                                            </el-cow>
-                                            <el-cow :span="12" style=" padding-left: 8%; padding-top: 5%">
-                                            <span style="font-size: 1.1em;">杜维康</span>
-                                            </el-cow>
+                                            </el-col>
+                                            <el-col :span="12" style=" padding-left: 3%; padding-top: 10%">
+                                            <span style="font-size: 1.2em;">杜维康</span>
+                                            </el-col>
                                         </el-row>
                                     </template>
+                                    <el-row style="height: 15%;  border-bottom-width: thin;border-bottom-style: double;border-bottom-color: gainsboro; padding:5% 5% 18% 5%;">
+                                        <span style="font-size: 1.1em;">
+                                        "一个喜欢打篮球、看小说的 Bug 制造机 (((;꒪ꈊ꒪;)))"
+                                    </span></el-row>
+                                    <el-row style="padding:5% 5% 10% 5%;"><span style="padding:0% 0% 8% 0%; font-size: 1.1em;">
+                                        主要贡献：
+                                    </span><span style="font-size: 1.1em;">
+                                        后端开发，参与了接口实现与后端测试
+                                    </span></el-row>
                                 </el-card>
                             </div></el-col>
                             <el-col :span="8"><div>
