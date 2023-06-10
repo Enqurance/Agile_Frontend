@@ -1,6 +1,6 @@
 <script>
 import PageHeader from './PCPageHeader.vue'
-import CopyrightICP from "@/components/CopyrightICP.vue";
+import PCIntro from './sub_components/PCIntro.vue';
 
 import {
   User, Star, 
@@ -10,8 +10,8 @@ import {
 export default {
     name: "PCIntroPage",
     components: {
-        CopyrightICP, PageHeader,
-        User, Reading, Star, 
+        PageHeader,
+        User, Reading, Star, PCIntro
     },
     data() {
         return {
@@ -97,6 +97,7 @@ export default {
 
                     <!--功能介紹部分-->
                     <div v-if="this.Index.at(0) === '2'" style="height: 100%">
+                        <PCIntro/>
                     </div>
 
                     <!--成員信息部分-->
@@ -330,7 +331,6 @@ export default {
                     </div>
                 </el-main>
             </el-container>
-            <CopyrightICP></CopyrightICP>
         </el-container>
     </div>
 </template>
