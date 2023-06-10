@@ -4,7 +4,6 @@ import CopyrightICP from "@/components/CopyrightICP.vue";
 export default {
     name: "MobileIntroPeople",
     components: {
-        CopyrightICP,
     },
     setup(){
         const onClickLeft = () => history.back();
@@ -299,7 +298,6 @@ export default {
                     </el-card>
             </van-row>
             <van-row style="padding: 10% 10% 0 10%;">
-            <div><CopyrightICP/></div>
             </van-row>
     </div>
 </template>
