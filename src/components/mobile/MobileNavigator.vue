@@ -21,6 +21,7 @@ export default defineComponent({
 <template>
     <div>
         <van-tabbar :key="count" v-model="tabbar_model" :route="true">
+            <van-tabbar-item :key="4" to="/Intro">介绍</van-tabbar-item>
             <van-tabbar-item :key="0" to="/home">地图</van-tabbar-item>
             <van-tabbar-item :key="1" to="/forum">论坛</van-tabbar-item>
             <van-tabbar-item v-if="this.$cookies.get('user_token') !== null" :key="2" to="/InforPage">我的</van-tabbar-item>
