@@ -158,7 +158,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <p>{{ post.content }}</p>
+                                    <div v-html="post.content"></div>
                                 </div>
                             </el-card>
                         </router-link>
