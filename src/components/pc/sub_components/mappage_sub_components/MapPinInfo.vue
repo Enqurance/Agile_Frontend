@@ -121,7 +121,9 @@
                 </template>
                     <el-carousel trigger="click" height="150">
                         <el-carousel-item v-for="photoUrl in photos" :key="photoUrl">
-                            <img :src="photoUrl" class="photo" @contextmenu.prevent="deletePhoto(photoUrl)" />
+                            <div class="photo">
+                                <el-image :src="photoUrl" @contextmenu.prevent="deletePhoto(photoUrl)" />
+                            </div>
                         </el-carousel-item>
                     </el-carousel>
                 </el-card>
@@ -632,8 +634,8 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
     height: 100%;
+    width: 100%;
     object-fit: contain;
 }
 

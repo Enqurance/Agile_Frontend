@@ -9,7 +9,7 @@ export default {
         let router = useRouter()
         let page = toRaw(router).currentRoute.value.fullPath;
         // console.log(page);
-        let Index = ref('5');
+        let Index = ref('2');
 
         if (page === '/Intro') {
             Index = '1';
@@ -166,18 +166,18 @@ export default {
                 BUAAMapForum
             </el-menu-item>
             <el-menu-item v-on:click="clickToMap()" index="2">
-                Map
+                地图界面
             </el-menu-item>
             <el-menu-item v-on:click="clickToForum()" index="3">
-                Forum
+                论坛界面
             </el-menu-item>
             <el-menu-item v-if="this.$cookies.get('user_type')===get_user_type_administrator()"
                           v-on:click="clickToAdministrator()" index="4">
-                Administrator
+                管理界面
             </el-menu-item>
             <div class="flex-grow"/>
             <el-menu-item v-if="this.$cookies.get('user_token') === null" v-on:click="clickToLogin()" index="5">
-                <template #title>Login</template>
+                <template #title>登陆</template>
             </el-menu-item>
             <el-sub-menu v-else index="5" v-on:click="clickToInfor()">
                 <template #title>
