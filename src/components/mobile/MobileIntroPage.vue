@@ -39,7 +39,7 @@ export default {
             </div>
         </van-row>
         <van-row style="height: 15%; padding:0 20% 0 20%;">
-            <van-cell title="功能介绍" is-link to="" />
+            <van-cell title="功能介绍" is-link to="introFeat" />
             <van-cell title="成员信息" is-link to="introPeople" />
         </van-row>
         <van-row style="height: 10%;" ><CopyrightICP></CopyrightICP></van-row>
